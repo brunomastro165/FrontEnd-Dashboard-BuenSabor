@@ -6,4 +6,6 @@ export interface IButton {
     Icon: ElementType,
     active: string,
     setActive: Dispatch<SetStateAction<string>>,
+    subButton: IButton[] | null,
+    child: boolean,
 }

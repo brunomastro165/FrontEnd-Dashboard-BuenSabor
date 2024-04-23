@@ -4,13 +4,13 @@ import { CiSquarePlus } from "react-icons/ci";
 import { useParams } from 'react-router-dom';
 import NavBar from '../../ui/NavBar/NavBar';
 
-const Productos = () => {
+const Manufacturados = () => {
 
     //Acá iría el fetch al endpoint que carga todos los productos
 
     return (
         <>
-            <NavBar title='Productos' />
+            <NavBar title='Manufacturados' />
             <div className='m-0 md:m-16 pt-10'>
                 <div className='w-full  flex items-center justify-center '>
                     <div className='flex items-center justify-center fixed w-full z-50 '>
@@ -33,4 +33,4 @@ const Productos = () => {
     )
 }
 
-export default Productos
+export default Manufacturados

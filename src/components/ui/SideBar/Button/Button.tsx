@@ -1,13 +1,10 @@
 import React, { FC } from 'react'
+import { IButton } from '../../../../types/Button'
 import { Link } from 'react-router-dom'
-import { IButton } from '../../../types/Button'
-import { useState } from 'react'
 
-const Button: FC<IButton> = ({ Icon, link, text, active, setActive }) => {
-
-
+const Button: FC<IButton> = ({ Icon, active, link, setActive, subButton, text, child }) => {
     return (
-        <div className=' w-full'>
+        <div className={`${child && 'absolute'} w-full`}>
             <div className=''>
                 <Link to={link} onClick={() => setActive(text)}>
                     <div className={`flex text-start items-center 
