@@ -19,10 +19,9 @@ const AppRouter = () => {
         <>
             <div className='flex flex-row'>
                 <SideBar />
-                <div className='ml-72 w-full'>
+                <div className='md:ml-72 w-full'>
                     <Routes>
                         <Route path='/' element={<Home />}></Route>
-                        <Route path='/generales' element={<Generales />} />
                         <Route path='/manufacturados' element={<Manufacturados />} />
                         <Route path='/insumos' element={<Insumos />} />
                         <Route path='/promociones' element={<Promociones />} />

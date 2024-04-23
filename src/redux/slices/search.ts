@@ -1,7 +1,7 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 interface InitialState {
-  search: string | null;
+  search: string;
 }
 
 const initialState: InitialState = {

@@ -1,12 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
-import auth from "../slices/auth";
-import AuthUser from "../slices/auth";
-import GlobalSearch from "../slices/search"
+import GlobalSearch from "../slices/search";
+
 // ...
 
 export const store = configureStore({
   reducer: {
-    auth: AuthUser.reducer,
     search: GlobalSearch.reducer,
   },
 });

@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 
 const Button: FC<IButton> = ({ Icon, active, link, setActive, subButton, text, child }) => {
     return (
-        <div className={`${child && 'absolute'} w-full`}>
+        <div className={`${child && 'absolute '} w-full`}>
             <div className=''>
                 <Link to={link} onClick={() => setActive(text)}>
                     <div className={`flex text-start items-center 

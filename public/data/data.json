@@ -1,0 +1,233 @@
+[
+    {
+        "id": 6,
+        "nombre": "Empanadas de carne",
+        "descripcion": "Empanadas rellenas de carne molida, cebolla y especias.",
+        "categoria": "Comida argentina",
+        "precio": 7
+    },
+    {
+        "id": 7,
+        "nombre": "Hummus",
+        "descripcion": "Puré de garbanzos con tahini, ajo, limón y aceite de oliva.",
+        "categoria": "Comida árabe",
+        "precio": 5
+    },
+    {
+        "id": 8,
+        "nombre": "Pho",
+        "descripcion": "Sopa vietnamita de fideos de arroz con carne o tofu.",
+        "categoria": "Comida vietnamita",
+        "precio": 9
+    },
+    {
+        "id": 9,
+        "nombre": "Paella",
+        "descripcion": "Arroz con azafrán, mariscos, pollo y verduras.",
+        "categoria": "Comida española",
+        "precio": 14
+    },
+    {
+        "id": 10,
+        "nombre": "Burrito",
+        "descripcion": "Tortilla de harina rellena de carne, frijoles, arroz y verduras.",
+        "categoria": "Comida mexicana",
+        "precio": 6
+    },
+    {
+        "id": 11,
+        "nombre": "Ramen",
+        "descripcion": "Sopa japonesa de fideos con caldo de carne o miso.",
+        "categoria": "Comida japonesa",
+        "precio": 11
+    },
+    {
+        "id": 12,
+        "nombre": "Falafel",
+        "descripcion": "Croquetas de garbanzos fritas con especias.",
+        "categoria": "Comida árabe",
+        "precio": 4
+    },
+    {
+        "id": 13,
+        "nombre": "Moussaka",
+        "descripcion": "Plato griego de berenjenas, carne molida y bechamel.",
+        "categoria": "Comida griega",
+        "precio": 12
+    },
+    {
+        "id": 14,
+        "nombre": "Ceviche",
+        "descripcion": "Pescado crudo marinado en jugo de limón, cebolla y cilantro.",
+        "categoria": "Comida peruana",
+        "precio": 10
+    },
+    {
+        "id": 15,
+        "nombre": "Tom Yum Goong",
+        "descripcion": "Sopa tailandesa picante con camarones, lemongrass y hongos.",
+        "categoria": "Comida tailandesa",
+        "precio": 8
+    },
+    {
+        "id": 16,
+        "nombre": "Lasagna",
+        "descripcion": "Pasta en capas con salsa de tomate, carne molida y queso.",
+        "categoria": "Comida italiana",
+        "precio": 13
+    },
+    {
+        "id": 17,
+        "nombre": "Sashimi",
+        "descripcion": "Rebanadas finas de pescado crudo o marisco fresco.",
+        "categoria": "Comida japonesa",
+        "precio": 15
+    },
+    {
+        "id": 18,
+        "nombre": "Guacamole",
+        "descripcion": "Puré de aguacate con tomate, cebolla, cilantro y limón.",
+        "categoria": "Comida mexicana",
+        "precio": 5
+    },
+    {
+        "id": 19,
+        "nombre": "Souvlaki",
+        "descripcion": "Carne o verduras asadas en brochetas.",
+        "categoria": "Comida griega",
+        "precio": 9
+    },
+    {
+        "id": 20,
+        "nombre": "Pad See Ew",
+        "descripcion": "Fideos de arroz salteados con pollo, brócoli, huevo y salsa de soja.",
+        "categoria": "Comida tailandesa",
+        "precio": 10
+    },
+    {
+        "id": 21,
+        "nombre": "Spring Rolls",
+        "descripcion": "Rollitos rellenos de carne, verduras o fideos.",
+        "categoria": "Comida vietnamita",
+        "precio": 6
+    },
+    {
+        "id": 22,
+        "nombre": "Enchiladas",
+        "descripcion": "Tortillas de maíz rellenas de carne, queso y salsa.",
+        "categoria": "Comida mexicana",
+        "precio": 8
+    },
+    {
+        "id": 23,
+        "nombre": "Poutine",
+        "descripcion": "Papas fritas cubiertas con queso cuajada y salsa gravy.",
+        "categoria": "Comida canadiense",
+        "precio": 7
+    },
+    {
+        "id": 24,
+        "nombre": "Falafel Pita",
+        "descripcion": "Pita rellena de falafel, hummus, ensalada y tahini.",
+        "categoria": "Comida árabe",
+        "precio": 6
+    },
+    {
+        "id": 25,
+        "nombre": "Gyro",
+        "descripcion": "Pan pita relleno de carne de cordero, cebolla, tomate y salsa tzatziki.",
+        "categoria": "Comida griega",
+        "precio": 8
+    },
+    {
+        "id": 26,
+        "nombre": "Sushi Maki",
+        "descripcion": "Arroz y otros ingredientes envueltos en una hoja de alga nori.",
+        "categoria": "Comida japonesa",
+        "precio": 12
+    },
+    {
+        "id": 27,
+        "nombre": "Pho Ga",
+        "descripcion": "Sopa vietnamita de fideos de arroz con pollo.",
+        "categoria": "Comida vietnamita",
+        "precio": 8
+    },
+    {
+        "id": 28,
+        "nombre": "Paella Valenciana",
+        "descripcion": "Paella tradicional con pollo, conejo, judías verdes y garbanzos.",
+        "categoria": "Comida española",
+        "precio": 16
+    },
+    {
+        "id": 29,
+        "nombre": "Quesadilla",
+        "descripcion": "Tortilla de harina rellena de queso y otros ingredientes.",
+        "categoria": "Comida mexicana",
+        "precio": 5
+    },
+    {
+        "id": 30,
+        "nombre": "Tempura",
+        "descripcion": "Verduras o mariscos fritos en una masa ligera.",
+        "categoria": "Comida japonesa",
+        "precio": 13
+    },
+    {
+        "id": 31,
+        "nombre": "Baba Ghanoush",
+        "descripcion": "Puré de berenjenas con tahini, ajo, limón y aceite de oliva.",
+        "categoria": "Comida árabe",
+        "precio": 4
+    },
+    {
+        "id": 32,
+        "nombre": "Moussaka Vegetariana",
+        "descripcion": "Moussaka sin carne, con berenjenas, patatas y bechamel.",
+        "categoria": "Comida griega",
+        "precio": 10
+    },
+    {
+        "id": 33,
+        "nombre": "Ceviche de Camarones",
+        "descripcion": "Ceviche hecho con camarones, cebolla roja, cilantro y ají limo.",
+        "categoria": "Comida peruana",
+        "precio": 12
+    },
+    {
+        "id": 34,
+        "nombre": "Tom Kha Kai",
+        "descripcion": "Sopa tailandesa cremosa con pollo, champiñones y leche de coco.",
+        "categoria": "Comida tailandesa",
+        "precio": 9
+    },
+    {
+        "id": 35,
+        "nombre": "Lasagna Vegetariana",
+        "descripcion": "Lasagna sin carne, con verduras, ricotta y queso mozzarella.",
+        "categoria": "Comida italiana",
+        "precio": 12
+    },
+    {
+        "id": 36,
+        "nombre": "Sashimi Mixto",
+        "descripcion": "Selección de sashimi de diferentes tipos de pescado y marisco.",
+        "categoria": "Comida japonesa",
+        "precio": 20
+    },
+    {
+        "id": 39,
+        "nombre": "Gyros Pita",
+        "descripcion": "Pita rellena de carne de cerdo, cebolla, tomate y salsa tzatziki.",
+        "categoria": "Comida griega",
+        "precio": 7
+    },
+    {
+        "id": 40,
+        "nombre": "Banoffee Pie",
+        "descripcion": "Tarta de plátano con caramelo, crema batida y nueces.",
+        "categoria": "Comida inglesa",
+        "precio": 8
+    }
+]
