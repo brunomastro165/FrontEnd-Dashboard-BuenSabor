@@ -4,11 +4,7 @@ import { ITable } from '../../../types/Table/Table'
 import TableItemSkeleton from './TableItemSkeleton'
 
 
-const Table: FC<ITable> = ({ items }) => {
-
-    useEffect(() => {
-        console.log(items)
-    }, [items])
+const Table: FC<ITable> = ({ items, row1, row2, row3, row4, row5, endpoint }) => {
 
     return (
         <div className='w-full'>
@@ -17,11 +13,11 @@ const Table: FC<ITable> = ({ items }) => {
                     {/* head */}
                     <thead className=''>
                         <tr className='text-lg'>
-                            <th>ID</th>
-                            <th>Nombre</th>
-                            <th>Descripcion</th>
-                            <th>Categoría</th>
-                            <th>Precio</th>
+                            <th>{row1}</th>
+                            <th>{row2}</th>
+                            <th>{row3}</th>
+                            <th>{row4}</th>
+                            <th>{row5}</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
@@ -30,12 +26,12 @@ const Table: FC<ITable> = ({ items }) => {
                             items.length > 0 ?
                                 (items.map((item) =>
                                 (<TableItem
-                                    categoria={item.categoria}
-                                    descripcion={item.descripcion}
                                     id={item.id}
-                                    nombre={item.nombre}
-                                    precio={item.precio}
-                                    key={item.id}
+                                    denominacion={item.denominacion}
+                                    param2={item.param2}
+                                    param3={item.param3}
+                                    param4={item.param4}
+                                    endpoint={endpoint}
                                 />))
 
                                 ) : (

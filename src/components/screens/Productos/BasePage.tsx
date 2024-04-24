@@ -9,7 +9,7 @@ import { IItem } from '../../../types/Table/TableItem';
 
 const ITEMS_PER_PAGE = 15;
 
-const BasePage: FC<IBasePage> = ({ data, title, loading }) => {
+const BasePage: FC<IBasePage> = ({ data, title, loading, row1, row2, row3, row4, row5, endpoint }) => {
 
     const [filteredData, setFilteredData] = useState<IItem[]>([]);
 
@@ -19,7 +19,7 @@ const BasePage: FC<IBasePage> = ({ data, title, loading }) => {
 
     useEffect(() => {
         setCurrentPage(1);
-        const filteredInsumosData = data.filter(d => d.nombre.toLowerCase().includes(selector.toLowerCase()));
+        const filteredInsumosData = data.filter(d => d.denominacion.toLowerCase().includes(selector.toLowerCase()));
         setFilteredData(filteredInsumosData);
     }, [selector, loading]);
 
@@ -39,7 +39,9 @@ const BasePage: FC<IBasePage> = ({ data, title, loading }) => {
             <div className='m-0 md:m-16 pt-10'>
                 <SearchBar />
                 <div className='pt-16'>
-                    {currentItems.length >= 0 ? <Table items={currentItems} />
+                    {currentItems.length >= 0 ? <Table items={currentItems} row1={row1} row2={row2} row3={row3}
+                        row4={row4} row5={row5} endpoint={endpoint}
+                    />
                         :
                         <div className=' flex flex-col justify-center items-center text-center w-full '>
                             <img src="/assets/img/buscando.svg" alt=""
@@ -48,7 +50,7 @@ const BasePage: FC<IBasePage> = ({ data, title, loading }) => {
                         </div>}
 
                     {/* Acá va el paginador */}
-                    
+
                     <div className='flex flex-row items-center justify-center '>
                         {[...Array(totalPages)].map((_, index) => (
                             <button
