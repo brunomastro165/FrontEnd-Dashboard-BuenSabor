@@ -9,9 +9,7 @@ import { GoFileDirectory } from "react-icons/go";
 import UserSection from './UserSection';
 import { IButton } from '../../../types/Button';
 import ButtonContainer from './Button/ButtonContainer';
-
-
-
+import { TbCategory2 } from "react-icons/tb";
 
 
 const SideBar = () => {
@@ -33,6 +31,8 @@ const SideBar = () => {
         { Icon: TiTags, text: "Promociones", link: "/promociones", active: active, setActive: setActive, subButton: null, child: false },
         { Icon: GoFileDirectory, text: "Empresa", link: "/empresa", active: active, setActive: setActive, subButton: null, child: false },
         { Icon: FaRegUser, text: "Usuarios", link: "/usuarios", active: active, setActive: setActive, subButton: null, child: false },
+        { Icon: TbCategory2, text: "Categorías", link: "/categorias", active: active, setActive: setActive, subButton: null, child: false },
+
 
     ];
 

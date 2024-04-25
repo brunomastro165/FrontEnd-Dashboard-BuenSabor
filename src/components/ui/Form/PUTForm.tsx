@@ -2,8 +2,8 @@ import React, { FC, useState, useEffect, ChangeEvent } from 'react';
 import { IForm } from '../../../types/Form';
 
 
-const Form: FC<IForm> = ({ data, open, setOpen }) => {
-    
+const PUTForm: FC<IForm> = ({ data, open, setOpen }) => {
+
     const [formData, setFormData] = useState<{ [key: string]: string }>({});
 
     const [transformData, setTransformData] = useState<{ [key: string]: string }>({});
@@ -69,4 +69,4 @@ const Form: FC<IForm> = ({ data, open, setOpen }) => {
     );
 };
 
-export default Form;
+export default PUTForm;
