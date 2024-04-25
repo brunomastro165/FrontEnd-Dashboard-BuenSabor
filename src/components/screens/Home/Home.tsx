@@ -23,15 +23,19 @@ const Home = () => {
     return (
         <>
             <NavBar title='Inicio' />
-            <div className=' h-screen flex justify-center items-center align-middle bg-white'>
-                <div className='p-5 shadow-lg rounded-md size-2/6'>
-                    <LinesChart/>
+            <div className=' h-auto flex flex-col md:flex-col justify-center items-center align-middle bg-white mt-24'>
+
+                <div className='flex flex-row w-full  justify-center items-center'>
+                    <div className='p-5 shadow-lg rounded-md size-2/6'>
+                        <LinesChart />
+                    </div>
+                    <div className='p-5 shadow-lg rounded-md size-2/6'>
+                        <BarChart />
+                    </div>
                 </div>
-                <div className='p-5 shadow-lg rounded-md size-2/6'>
-                    <BarChart/>
-                </div>
-                <div className='p-5 shadow-lg rounded-md size-2/6'>
-                    <PolarChart/>
+
+                <div className='p-5 shadow-lg rounded-md size-2/6 justify-center flex'>
+                    <PolarChart />
                 </div>
             </div>
         </>
