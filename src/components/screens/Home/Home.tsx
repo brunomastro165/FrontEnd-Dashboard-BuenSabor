@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import NavBar from '../../ui/NavBar/NavBar'
-import { Doughnut } from 'react-chartjs-2';
 import { fetchData } from '../../api/Fetch';
-import { VerticalBarChart } from '../../chartJS/VerticalBarChart';
+import { LinesChart } from '../../chartJS/LinesChart';
+import BarChart from '../../chartJS/BarChart';
+import { PolarChart } from '../../chartJS/PolarChart';
 
 const Home = () => {
 
@@ -22,8 +23,16 @@ const Home = () => {
     return (
         <>
             <NavBar title='Inicio' />
-            <div className='mt-24'>
-
+            <div className=' h-screen flex justify-center items-center align-middle bg-white'>
+                <div className='p-5 shadow-lg rounded-md size-2/6'>
+                    <LinesChart/>
+                </div>
+                <div className='p-5 shadow-lg rounded-md size-2/6'>
+                    <BarChart/>
+                </div>
+                <div className='p-5 shadow-lg rounded-md size-2/6'>
+                    <PolarChart/>
+                </div>
             </div>
         </>
     )
