@@ -11,8 +11,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@reduxjs/toolkit": "^2.2.3",
     "@cubejs-client/core": "^0.31.0",
+    "@headlessui/react": "^1.7.19",
+    "@headlessui/tailwindcss": "^0.2.0",
+    "@reduxjs/toolkit": "^2.2.3",
+    "@remixicon/react": "^4.2.0",
+    "@tremor/react": "^3.16.1",
     "chart.js": "^4.4.2",
     "react": "^18.2.0",
     "react-chartjs-2": "^5.2.0",
@@ -22,6 +26,7 @@
     "react-router-dom": "^6.22.3"
   },
   "devDependencies": {
+    "@tailwindcss/forms": "^0.5.7",
     "@types/react": "^18.2.66",
     "@types/react-dom": "^18.2.22",
     "@typescript-eslint/eslint-plugin": "^7.2.0",

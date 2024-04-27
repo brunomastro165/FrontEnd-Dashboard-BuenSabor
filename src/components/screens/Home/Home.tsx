@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import NavBar from '../../ui/NavBar/NavBar'
 import { fetchData } from '../../api/Fetch';
-import { LinesChart } from '../../chartJS/LinesChart';
-import BarChart from '../../chartJS/BarChart';
-import { PolarChart } from '../../chartJS/PolarChart';
+import Example from '../../tremor/Example';
+import { GraficoArea } from '../../tremor/GraficoArea';
+import { TrackerServ } from '../../tremor/TrackerServ';
 
 const Home = () => {
 
@@ -23,15 +23,18 @@ const Home = () => {
     return (
         <>
             <NavBar title='Inicio' />
-            <div className=' h-screen flex justify-center items-center align-middle bg-white'>
-                <div className='p-5 shadow-lg rounded-md size-2/6'>
-                    <LinesChart/>
+            <div className='my- h-1/2 flex justify-center items-center align-middle'>
+                <div className='p-5 rounded-md size-2/6'>
+                    <GraficoArea/>
                 </div>
-                <div className='p-5 shadow-lg rounded-md size-2/6'>
-                    <BarChart/>
+                
+            </div>
+            <div className='mt-36 h-1/2 flex justify-center items-center align-middle'>
+                <div className='p-5 rounded-md size-3/6'>
+                    <Example/>
                 </div>
-                <div className='p-5 shadow-lg rounded-md size-2/6'>
-                    <PolarChart/>
+                <div className='p-5 rounded-md size-2/6'>
+                    <TrackerServ/>
                 </div>
             </div>
         </>
