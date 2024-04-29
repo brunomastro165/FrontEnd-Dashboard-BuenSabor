@@ -11,7 +11,7 @@ export default {
     "./node_modules/@tremor/**/*.{js,ts,jsx,tsx}",
   ],
   daisyui:{
-    themes: [],
+    themes: ["ligth"],
   },
   theme: {
     fontFamily: {
