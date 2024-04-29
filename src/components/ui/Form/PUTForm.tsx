@@ -2,7 +2,7 @@ import React, { FC, useState, useEffect, ChangeEvent } from 'react';
 import { IForm } from '../../../types/Form';
 
 
-const Form: FC<IForm> = ({ data, open, setOpen }) => {
+const PUTForm: FC<IForm> = ({ data, open, setOpen }) => {
 
     const [formData, setFormData] = useState<{ [key: string]: string }>({});
 
@@ -12,9 +12,6 @@ const Form: FC<IForm> = ({ data, open, setOpen }) => {
         setFormData(data);
         setTransformData(data)
     }, [data]);
-
-    console.log("Sexualidad")
-    console.log(transformData)
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -36,7 +33,7 @@ const Form: FC<IForm> = ({ data, open, setOpen }) => {
                     {key}
                 </label>
             </>
-            )
+        )
     }
 
     return (
@@ -73,4 +70,4 @@ const Form: FC<IForm> = ({ data, open, setOpen }) => {
     );
 };
 
-export default Form;
+export default PUTForm;

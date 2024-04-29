@@ -7,7 +7,7 @@ import { IBasePage } from '../../../types/BasePage';
 import { IItem } from '../../../types/Table/TableItem';
 
 
-const ITEMS_PER_PAGE = 15;
+const ITEMS_PER_PAGE = 2;
 
 const BasePage: FC<IBasePage> = ({ data, title, loading, row1, row2, row3, row4, row5, endpoint }) => {
 
@@ -36,7 +36,7 @@ const BasePage: FC<IBasePage> = ({ data, title, loading, row1, row2, row3, row4,
     return (
         <>
             <NavBar title={title} />
-            <div className='m-0 md:m-16 pt-10'>
+            <div className='m-0 md:m-16 pt-14'>
                 <SearchBar />
                 <div className='pt-16'>
                     {currentItems.length >= 0 ? <Table items={currentItems} row1={row1} row2={row2} row3={row3}

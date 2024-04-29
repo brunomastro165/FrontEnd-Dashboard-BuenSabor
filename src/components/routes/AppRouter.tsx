@@ -12,6 +12,7 @@ import Home from '../screens/Home/Home'
 import Manufacturados from '../screens/Productos/Manufacturados'
 import Insumos from '../screens/Productos/Insumos'
 import Generales from '../screens/Productos/Generales'
+import Categorias from '../screens/Categorias/Categorias'
 
 const AppRouter = () => {
 
@@ -27,6 +28,7 @@ const AppRouter = () => {
                         <Route path='/promociones' element={<Promociones />} />
                         <Route path='/empresa' element={<Empresa />} />
                         <Route path='/usuarios' element={<Usuario />} />
+                        <Route path='/categorias' element={<Categorias />} />
                     </Routes>
                 </div>
             </div>
