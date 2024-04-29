@@ -1,5 +1,4 @@
-import React, { FC, useRef } from 'react'
-import { useParams } from 'react-router-dom';
+import { FC } from 'react'
 import { INavBar } from '../../../types/NavBar';
 import { MdFastfood } from "react-icons/md";
 
