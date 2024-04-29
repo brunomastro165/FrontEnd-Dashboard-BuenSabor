@@ -20,7 +20,7 @@ const TableItem: FC<IItem> = ({ id, denominacion, param2, param3, param4, endpoi
 
     return (
         <>
-            <tr className='hover:bg-gray-200 cursor-pointer'>
+            <tr className='hover:bg-gray-200 cursor-pointer border-none'>
                 <th className='w-10'>{id}</th>
                 <td className='w-72'>{denominacion}</td>
                 <td className='w-72'>{param2}</td>
@@ -33,7 +33,7 @@ const TableItem: FC<IItem> = ({ id, denominacion, param2, param3, param4, endpoi
             </tr>
 
             {open && (
-                <div className="fixed z-50 inset-0 overflow-y-auto w-full">
+                <div className="fixed z-50 inset-0 overflow-y-auto w-full ">
                     <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0 m-14">
                         <div className="fixed inset-0 transition-opacity" aria-hidden="true">
                             <div className="absolute inset-0 bg-gray-500 opacity-75"></div>

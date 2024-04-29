@@ -27,7 +27,7 @@ const Table: FC<ITable> = ({ items, row1, row2, row3, row4, row5, endpoint }) =>
         <>
             <div className='w-full  flex justify-end  my-4'>
 
-                <button className='text-2xl font-Roboto btn  btn-success hover:text-white text-white '
+                <button className='text-2xl font-Roboto btn btn-success bg-white text-green-600 hover:text-white  hover:bg-green-600'
                     onClick={() => { fetchForm() }}>Agregar +</button>
                 {/*Este botón debería ir vinculado con el PUT de producto */}
                 {/* <button className='text-white text-5xl ml-4 rounded-md bg-green-600  shadow-lg justify-end'>
@@ -50,7 +50,7 @@ const Table: FC<ITable> = ({ items, row1, row2, row3, row4, row5, endpoint }) =>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody className=''>
                             {
                                 items.length > 0 ?
                                     (items.map((item) =>
