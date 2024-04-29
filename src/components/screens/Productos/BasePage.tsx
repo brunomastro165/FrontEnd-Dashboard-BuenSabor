@@ -7,7 +7,7 @@ import { IBasePage } from '../../../types/BasePage';
 import { IItem } from '../../../types/Table/TableItem';
 
 
-const ITEMS_PER_PAGE = 2;
+const ITEMS_PER_PAGE = 15;
 
 const BasePage: FC<IBasePage> = ({ data, title, loading, row1, row2, row3, row4, row5, endpoint }) => {
 
