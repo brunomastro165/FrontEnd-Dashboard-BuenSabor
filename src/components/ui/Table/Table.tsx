@@ -6,6 +6,8 @@ import { CiSquarePlus } from 'react-icons/ci'
 import { fetchData } from '../../api/Fetch'
 import Form from '../Form/Form'
 import PUTForm from '../Form/PUTForm'
+import EmpresaForm from '../Form/EmpresaForm'
+import AManufacturadoForm from '../Form/AManufacturadoForm'
 
 
 const Table: FC<ITable> = ({ items, row1, row2, row3, row4, row5, endpoint }) => {
@@ -80,7 +82,8 @@ const Table: FC<ITable> = ({ items, row1, row2, row3, row4, row5, endpoint }) =>
                         </div>
                         <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
                         <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle  w-full md:w-1/2">
-                            <PUTForm data={data[0]} open={open} setOpen={setOpen} />
+                            {endpoint === "empresas" && <EmpresaForm open={open} setOpen={setOpen} />}
+                            {endpoint === "articulosManufacturados" && <AManufacturadoForm open={open} setOpen={setOpen} />}
                         </div>
                     </div>
                 </div>
