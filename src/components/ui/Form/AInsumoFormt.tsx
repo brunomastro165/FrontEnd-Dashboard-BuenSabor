@@ -1,7 +1,7 @@
 import React, { ChangeEvent, Dispatch, FC, SetStateAction, useEffect, useState } from 'react'
 import { useForm } from '../../../hooks/useForm'
 import { ISucursal } from '../../../types/Sucursal'
-import { genericInput } from './Inputs/GenericInput';
+import { booleanInput, genericInput } from './Inputs/GenericInput';
 import { BackendClient } from '../../../services/BackendClient';
 import { IEmpresa } from '../../../types/Empresa';
 import { IUnidadMedida } from '../../../types/UnidadMedida';
@@ -18,18 +18,17 @@ type FormState = {
     id: number,
     denominacion: string,
     precioVenta: number,
+    precioCompra: number,
     imagenes: [] //Falta tipar
     unidadMedida: IUnidadMedida;
-    descripcion: string,
-    tiempoEstimadoEnMinutos: number,
-    preparacion: string,
-    articuloManufacturadoDetalles: [], //Falta tipar
-    stock: number,
+    stockActual: number,
+    stockMaximo: number,
+    esParaElaborar: boolean,
 };
 
 class GenericBackend extends BackendClient<T> { } //Métodos genéricos 
 
-const AManufacturadoForm: FC<IForm> = ({ open, setOpen }) => {
+const AInsumoForm: FC<IForm> = ({ open, setOpen }) => {
 
     const backend = new GenericBackend(); //Objeto de BackendClient
 
@@ -38,20 +37,19 @@ const AManufacturadoForm: FC<IForm> = ({ open, setOpen }) => {
 
     //const [selectedSucursales, setSelectedSucursales] = useState<ISucursal[] | undefined>([]);
 
-    const { handleChange, values, resetForm, handleSelect, handleChoose, handleFileDrop } = useForm<FormState>({
+    const { handleChange, values, resetForm, handleChoose, handleFileDrop } = useForm<FormState>({
         id: 0,
         denominacion: '',
-        descripcion: '',
-        articuloManufacturadoDetalles: [], //Podría tiparse
-        imagenes: [], //Podría tiparse
         precioVenta: 0,
-        preparacion: '',
-        tiempoEstimadoEnMinutos: 0,
-        stock: 0,
+        precioCompra: 0,
+        imagenes: [], //Falta tipar
+        stockActual: 0,
+        stockMaximo: 0,
+        esParaElaborar: true,
         unidadMedida: {
             id: 0,
             denominacion: '',
-        }
+        },
     })
 
     const handleSubmit = () => {
@@ -87,15 +85,15 @@ const AManufacturadoForm: FC<IForm> = ({ open, setOpen }) => {
                     <div key={index}>
                         <input
                             type="radio"
-                            id={`sucursales${index}`}
-                            name='sucursales'
+                            id={`unidadMedida${index}`}
+                            name='unidadMedida'
                             value={unidad.denominacion}
                             onChange={(e) => handleChoose(e, unidadesMedida, setUnidadSeleccionada, 'denominacion', 'unidadMedida')}
                         //onClick={() => setSelected(unidad.denominacion)}
                         //className={`peer ${selected === unidad.denominacion ? 'p-12' : ''}`}
                         //checked={medidaSeleccionada?.denominacion === unidad.denominacion}
                         />
-                        <label htmlFor={`sucursales${index}`} className="ml-2">
+                        <label htmlFor={`unidadMedida${index}`} className="ml-2">
                             {unidad.denominacion}
                         </label>
                     </div>
@@ -104,70 +102,7 @@ const AManufacturadoForm: FC<IForm> = ({ open, setOpen }) => {
         )
     }
 
-    //Manejo del input DETALLE
-
-    const [articulosInsumo, setArticulosInsumo] = useState<IArticuloInsumo[]>([])
-
-    const [articuloSeleccionado, setArticuloSeleccionado] = useState<IArticuloInsumo>();
-
-    const getInsumos = async () => {
-        const res: IArticuloInsumo[] = await backend.getAll("http://localhost:8080/articulosInsumos");
-        setArticulosInsumo(res);
-        //setLoaded(true);
-    }
-
-    useEffect(() => {
-        getInsumos();
-    }, [])
-
-    console.log("este")
     //console.log(articulosInsumo)
-
-    const [test, setTest] = useState<number[]>([]);
-
-
-    const [array, setArray] = useState<[]>([]);
-
-
-    //SUMAR LOS ELEMENTOS A UN ARRAY, USAR UN HANDLECHANGE MODIFICADO PARA QUE CUANDO SE 
-    //SUMEN LOS ELEMENTOS SE LLAME A LA FUNCIÓN HANDLESELECT
-    const aMDetalle = () => {
-
-        const handleClick = () => {
-            setArray(prevArray => [...prevArray, '']);
-        };
-
-        return (
-            <>
-                <div className='font-Roboto text-xl'>Articulos insumo: </div>
-                <button className='btn' onClick={handleClick}>Agregar insumo</button>
-                {array.map((cantidad, index) => (articulosInsumo
-                    .filter((articulo) => articulo.esParaElaborar)
-                    .map((articulo) => (
-                        <div key={index}>
-                            <input
-                                multiple
-                                type="radio"
-                                id={`articuloInsumo${index}`}
-                                name='articuloInsumo'
-                                value={articulo.denominacion}
-                                onChange={(e) => handleChoose(e, articulosInsumo, setArticuloSeleccionado, 'denominacion', 'articuloManufacturadoDetalles')}
-                            //onClick={() => setSelected(unidad.denominacion)}
-                            //className={`peer ${selected === unidad.denominacion ? 'p-12' : ''}`}
-                            //checked={medidaSeleccionada?.denominacion === unidad.denominacion}
-                            />
-                            {articuloSeleccionado?.denominacion === articulo.denominacion[index] && <input type="number" />}
-
-                            <label htmlFor={`articuloInsumo${index}`} className="ml-2">
-                                {articulo.denominacion}
-                            </label>
-                        </div>
-                    ))))
-
-                }
-            </>
-        )
-    }
 
     return (
         <div className='w-full flex flex-col items-center justify-center space-y-4 p-10 '
@@ -182,17 +117,19 @@ const AManufacturadoForm: FC<IForm> = ({ open, setOpen }) => {
             {/*Mapeo los objetos que traigo al formulario, dependiendo de cada objeto, genero un input distinto */}
 
             <div className='w-full'>
+
                 <div className="relative z-0 w-full mb-5 group">
                     {genericInput('denominacion', "text", values.denominacion, handleChange)}
                     {genericInput('descripcion', 'text', values.descripcion, handleChange)}
                     {genericInput('precioVenta', 'number', values.precioVenta, handleChange)}
-                    {genericInput('preparacion', 'text', values.preparacion, handleChange)}
-                    {genericInput('tiempoEstimadoEnMinutos', 'number', values.tiempoEstimadoEnMinutos, handleChange)}
-                    {genericInput('stock', 'number', values.tiempoEstimadoEnMinutos, handleChange)}
+                    {genericInput('precioCompra', 'number', values.precioCompra, handleChange)}
+                    {genericInput('stockActual', 'number', values.stockActual, handleChange)}
+                    {genericInput('stockMaximo', 'number', values.stockMaximo, handleChange)}
                     {unidadInput()}
                     <DragDrop onDrop={handleFileDrop} />
-                    {aMDetalle()}
+                    {booleanInput('esParaElaborar', 'boolean', values.esParaElaborar, handleChange)}
                 </div>
+
             </div>
 
             <button className='bg-red-600 text-white px-4 py-2 rounded-md active:scale-95 transition-all'
@@ -201,4 +138,4 @@ const AManufacturadoForm: FC<IForm> = ({ open, setOpen }) => {
     )
 }
 
-export default AManufacturadoForm
+export default AInsumoForm

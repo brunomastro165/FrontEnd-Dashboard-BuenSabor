@@ -25,8 +25,8 @@ const Manufacturados = () => {
             id: manufacturado.id,
             denominacion: manufacturado.denominacion,
             param2: manufacturado.descripcion,
-            param3: manufacturado.precioVenta, // Aquí puedes poner la categoría que desees
-            param4: manufacturado.tiempoEstimadoEnMinutos
+            param3: manufacturado.precioVenta,
+            param4: manufacturado.tiempoEstimadoMinutos // CAMBIAR
         }));
     }
 
@@ -51,7 +51,7 @@ const Manufacturados = () => {
                 row2="Denominación"
                 row3="Descripción"
                 row4="Precio venta"
-                row5="Tiempo estimado"
+                row5="Stock"
                 endpoint="articulosManufacturados"
             />
         </>

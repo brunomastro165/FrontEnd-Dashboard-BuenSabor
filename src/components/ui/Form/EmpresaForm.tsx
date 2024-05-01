@@ -1,7 +1,7 @@
 import React, { ChangeEvent, Dispatch, FC, SetStateAction, useEffect, useState } from 'react'
 import { useForm } from '../../../hooks/useForm'
 import { ISucursal } from '../../../types/Sucursal'
-import { genericInput } from './GenericInput';
+import { genericInput } from './Inputs/GenericInput';
 import { BackendClient } from '../../../services/BackendClient';
 import { IEmpresa } from '../../../types/Empresa';
 
@@ -37,6 +37,15 @@ const EmpresaForm: FC<IForm> = ({ open, setOpen }) => {
     setLoaded(true);
   }
 
+  const postEmpresa = async (data) => {
+    try {
+      const res: IEmpresa = await backend.post("http://localhost:8080/empresas", data);
+      console.log(res)
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
   useEffect(() => {
     getSucursales();
   }, [loaded])
@@ -52,9 +61,9 @@ const EmpresaForm: FC<IForm> = ({ open, setOpen }) => {
   })
 
   const handleSubmit = () => {
-    console.log("A")
-    console.log(values);
+    postEmpresa(values)
     resetForm();
+    setOpen(false)
   }
 
   const sucursalesInput = () => {
@@ -91,7 +100,7 @@ const EmpresaForm: FC<IForm> = ({ open, setOpen }) => {
     >
       <div className='w-full flex justify-end '>
         <h1 className='flex text-end justify-end bg-red-600 btn btn-error rounded-full text-white text-xl cursor-pointer w-min'
-          onClick={() => setOpen(false)}>X</h1>
+          onClick={() => { setOpen(false), resetForm() }}>X</h1>
       </div>
 
       <h2 className='text-3xl font-Roboto'>Agrega tu empresa</h2>

@@ -43,3 +43,39 @@ export const fileInput = (key: string, handleFileChange) => {
         </>
     )
 }
+
+export const booleanInput = (name: string, type: string, value, handleChange) => {
+    return (
+        <div className="my-4">
+            <label htmlFor={name} className="font-Roboto text-xl first-letter:uppercase">
+                <h1 className="first-letter:uppercase">{name}</h1>
+            </label>
+            <div className="flex flex-col space-y-4">
+                <label className={`btn font-Roboto text-lg ${document.getElementById(`${name}-true`)?.checked ? 'bg-green-500 text-white' : ''}`}>
+                    Si, es para elaborar
+                    <input
+                        className="hidden"
+                        type="radio"
+                        name={name}
+                        id={`${name}-true`}
+                        value='true'
+                        onChange={handleChange}
+                        required
+                    />
+                </label>
+                <label className={`btn font-Roboto text-lg ${document.getElementById(`${name}-false`)?.checked ? 'bg-red-500 text-white' : ''}`}>
+                    No, no es para elaborar
+                    <input
+                        className="hidden"
+                        type="radio"
+                        name={name}
+                        id={`${name}-false`}
+                        value='false'
+                        onChange={handleChange}
+                        required
+                    />
+                </label>
+            </div>
+        </div>
+    );
+}

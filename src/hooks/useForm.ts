@@ -11,7 +11,6 @@ export const useForm = <T extends FormValues>(initialValues: T) => {
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { value, name } = event.target;
     setValues({ ...values, [`${name}`]: value });
-    console.log(values);
   };
 
   //PARA SELECCIONES DE IMAGENES

@@ -7,3 +7,10 @@ const handleSelect = (e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectE
       sucursales: sucursalSeleccionada
     }))
   }
+
+
+  const getUnidades = async () => {
+    const res: IUnidadMedida[] = await backend.getAll("http://localhost:8080/unidadesMedidas");
+    setUnidadesMedida(res);
+    setLoaded(true);
+}

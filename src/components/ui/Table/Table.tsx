@@ -8,6 +8,8 @@ import Form from '../Form/Form'
 import PUTForm from '../Form/PUTForm'
 import EmpresaForm from '../Form/EmpresaForm'
 import AManufacturadoForm from '../Form/AManufacturadoForm'
+import AInsumoForm from '../Form/AInsumoFormt'
+import UsuarioForm from '../Form/UsuarioForm'
 
 
 const Table: FC<ITable> = ({ items, row1, row2, row3, row4, row5, endpoint }) => {
@@ -84,6 +86,8 @@ const Table: FC<ITable> = ({ items, row1, row2, row3, row4, row5, endpoint }) =>
                         <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle  w-full md:w-1/2">
                             {endpoint === "empresas" && <EmpresaForm open={open} setOpen={setOpen} />}
                             {endpoint === "articulosManufacturados" && <AManufacturadoForm open={open} setOpen={setOpen} />}
+                            {endpoint === "articulosInsumos" && <AInsumoForm open={open} setOpen={setOpen} />}
+                            {endpoint === "usuarios" && <UsuarioForm open={open} setOpen={setOpen} />}
                         </div>
                     </div>
                 </div>

@@ -11,11 +11,11 @@ const DragDrop = ({ onDrop }) => {
     });
 
     return (
-        <div className='my-5'>
+        <div className='my-5 rounded'>
             <h1 className='font-Roboto text-xl my-5'>Seleccionar imágenes: </h1>
-            <div {...getRootProps()} className='active:scale-95 transition-all'>
+            <div {...getRootProps()} className='active:scale-95 transition-all bg-slate-100 rounded-xl'>
                 <input {...getInputProps()} className='border bg-black' />
-                <div className='w-full h-full border p-5 font-Roboto text-lg text-center'>Haz clic para seleccionar archivos</div>
+                <div className='w-full h-full border p-5 font-Roboto text-xl text-center'>Haz clic para seleccionar archivos</div>
             </div>
         </div>
     );

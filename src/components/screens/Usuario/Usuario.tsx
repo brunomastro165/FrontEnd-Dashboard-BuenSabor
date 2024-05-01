@@ -1,11 +1,14 @@
 import React from 'react'
 import NavBar from '../../ui/NavBar/NavBar'
+import ContainerCardsRol from '../../ui/CointainerCards/ContainerCardsRol'
 
 const Usuario = () => {
     return (
         <>
-            <NavBar title='Usuario' />
-            <div>Usuario</div>
+            <NavBar title='Usuarios' />
+            <div className='mt-24'>
+                <ContainerCardsRol />
+            </div>
         </>
     )
 }
