@@ -86,7 +86,30 @@
               }
             }
           ],
-          "subCategorias": []
+          "subCategorias": [
+            {
+              "id": 6,
+              "denominacion": "Pizzas vegetarianas",
+              "articulos": [
+                {
+                  "id": 1,
+                  "denominacion": "Denominacion traguito",
+                  "precioVenta": 70,
+                  "imagenes": [
+                    {
+                      "id": 1,
+                      "url": "https://m.media-amazon.com/images/I/51v8nyxSOYL._SL1500_.jpg"
+                    }
+                  ],
+                  "unidadMedida": {
+                    "id": 1,
+                    "denominacion": "Litros"
+                  }
+                }
+              ],
+              "subCategorias": []
+            }
+          ]
         },
         {
           "id": 1,
@@ -119,7 +142,30 @@
               "id": 3,
               "denominacion": "Tragos",
               "articulos": [],
-              "subCategorias": []
+              "subCategorias": [
+                {
+                  "id": 5,
+                  "denominacion": "Traguito",
+                  "articulos": [
+                    {
+                      "id": 1,
+                      "denominacion": "Denominacion traguito",
+                      "precioVenta": 70,
+                      "imagenes": [
+                        {
+                          "id": 1,
+                          "url": "https://m.media-amazon.com/images/I/51v8nyxSOYL._SL1500_.jpg"
+                        }
+                      ],
+                      "unidadMedida": {
+                        "id": 1,
+                        "denominacion": "Litros"
+                      }
+                    }
+                  ],
+                  "subCategorias": []
+                }
+              ]
             }
           ]
         }
@@ -898,7 +944,36 @@
           "id": 3,
           "denominacion": "Tragos",
           "articulos": [],
-          "subCategorias": []
+          "subCategorias": [
+            {
+              "id": 6,
+              "denominacion": "Especialidad",
+              "articulos": [],
+              "subCategorias": []
+            },
+            {
+              "id": 8,
+              "denominacion": "Fernet",
+              "articulos": [
+                {
+                  "id": 1,
+                  "denominacion": "Coca cola",
+                  "precioVenta": 70,
+                  "imagenes": [
+                    {
+                      "id": 1,
+                      "url": "https://m.media-amazon.com/images/I/51v8nyxSOYL._SL1500_.jpg"
+                    }
+                  ],
+                  "unidadMedida": {
+                    "id": 1,
+                    "denominacion": "Litros"
+                  }
+                }
+              ],
+              "subCategorias": []
+            }
+          ]
         },
         {
           "id": 2,
@@ -923,34 +998,6 @@
           "subCategorias": []
         }
       ]
-    },
-    {
-      "id": 2,
-      "denominacion": "Gaseosas",
-      "articulos": [
-        {
-          "id": 1,
-          "denominacion": "Coca cola",
-          "precioVenta": 70,
-          "imagenes": [
-            {
-              "id": 1,
-              "url": "https://m.media-amazon.com/images/I/51v8nyxSOYL._SL1500_.jpg"
-            }
-          ],
-          "unidadMedida": {
-            "id": 1,
-            "denominacion": "Litros"
-          }
-        }
-      ],
-      "subCategorias": []
-    },
-    {
-      "id": 3,
-      "denominacion": "Tragos",
-      "articulos": [],
-      "subCategorias": []
     },
     {
       "id": 4,
