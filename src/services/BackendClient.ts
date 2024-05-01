@@ -47,7 +47,7 @@ export abstract class BackendClient<T> extends AbstractBackendClient<T> {
   }
 
   // Método para obtener todos los elementos
-  async getAll(url: string): Promise<T[]> {
+   async getAll(url: string): Promise<T[]> {
     const path = url;
     const options: RequestInit = {
       method: "GET",
