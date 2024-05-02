@@ -27,8 +27,6 @@ class GenericBackend extends BackendClient<T> { } //Métodos genéricos
 
 const SucursalForm: FC<IForm> = ({ open, setOpen }) => {
 
-    console.log("que")
-
     const backend = new GenericBackend(); //Objeto de BackendClient
 
     const { id } = useParams(); //Uso useParams para averiguar en qué empresa estamos parados
@@ -48,9 +46,15 @@ const SucursalForm: FC<IForm> = ({ open, setOpen }) => {
     }
 
     const postSucursal = async (data) => {
+
+        const idString = String(id);
+
+        //Esta sería la forma REAL de hacer la petición
+        const res: ISucursal = await backend.post(`http://localhost:8080/empresas/${idString}/sucursales`, values);
+
         try {
-            const res: IEmpresa = await backend.post("http://localhost:8080/empresas", data);
-            console.log(res)
+            //const res: ISucursal = await backend.post(`http://localhost:8080/empresas/${idString}/sucursales`, values);
+            console.log()
         } catch (error) {
             console.error(error)
         }
@@ -69,7 +73,7 @@ const SucursalForm: FC<IForm> = ({ open, setOpen }) => {
         horarioCierre: '',
         domicilio: '', //FALTA TIPAR
         categorias: null,
-        promociones: '', //FALTA TIPAR
+        promociones: '', //FALTA TIPAR (No sabría cómo meter esto)
     })
 
     const handleSubmit = () => {

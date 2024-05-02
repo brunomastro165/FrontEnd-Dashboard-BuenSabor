@@ -38,9 +38,6 @@ const SucursalPorEmpresa = () => {
         fetchInsumo();
     }, [loading])
 
-    console.log("FUNCIONA")
-
-    console.log(data)
     return (
         <>
             <BasePage

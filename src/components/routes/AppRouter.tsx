@@ -16,6 +16,7 @@ import Categorias from '../screens/Categorias/Categorias'
 import UsuariosPorRol from '../screens/Usuario/UsuariosPorRol'
 import EmpresaV2 from '../screens/Empresa/EmpresaV2'
 import SucursalPorEmpresa from '../screens/Empresa/SucursalesPorEmpresa'
+import ProductosPorPromociones from '../screens/Promociones/ProductosPorPromociones'
 
 const AppRouter = () => {
 
@@ -35,6 +36,7 @@ const AppRouter = () => {
                         <Route path='/categorias' element={<Categorias />} />
                         <Route path='/empresas' element={<EmpresaV2 />} />
                         <Route path='/empresas/:id' element={<SucursalPorEmpresa />} />
+                        <Route path='/promociones/:id' element={<ProductosPorPromociones />} />
                     </Routes>
                 </div>
             </div>

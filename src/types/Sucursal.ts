@@ -1,4 +1,5 @@
 import { ICategoria } from "./Categoria";
+import { IEmpresa } from "./Empresa";
 
 export interface ISucursal {
   id: number;
@@ -8,4 +9,5 @@ export interface ISucursal {
   domicilio: string;
   categorias: ICategoria[];
   promociones: string;
+ // empresa: IEmpresa;
 }

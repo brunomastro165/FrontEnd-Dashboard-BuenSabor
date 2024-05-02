@@ -28,7 +28,7 @@ const EmpresaV2 = () => {
             <NavBar title='Empresas' />
             <div className='mt-24'>
                 <ContainerCards data={empresas} />
-                
+
             </div>
         </>
     )
