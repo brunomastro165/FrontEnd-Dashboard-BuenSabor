@@ -29,7 +29,7 @@ const SideBar = () => {
             child: false,
         },
         { Icon: TiTags, text: "Promociones", link: "/promociones", active: active, setActive: setActive, subButton: null, child: false },
-        { Icon: GoFileDirectory, text: "Empresa", link: "/empresa", active: active, setActive: setActive, subButton: null, child: false },
+        { Icon: GoFileDirectory, text: "Empresa", link: "/empresas", active: active, setActive: setActive, subButton: null, child: false },
         { Icon: FaRegUser, text: "Usuarios", link: "/usuarios", active: active, setActive: setActive, subButton: null, child: false },
         { Icon: TbCategory2, text: "Categorías", link: "/categorias", active: active, setActive: setActive, subButton: null, child: false },
 

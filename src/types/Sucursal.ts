@@ -5,4 +5,5 @@ export interface ISucursal {
   horarioCierre: string;
   domicilio: string;
   categorias: string;
+  promociones: string;
 }

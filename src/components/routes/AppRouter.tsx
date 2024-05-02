@@ -14,6 +14,8 @@ import Insumos from '../screens/Productos/Insumos'
 import Generales from '../screens/Productos/Generales'
 import Categorias from '../screens/Categorias/Categorias'
 import UsuariosPorRol from '../screens/Usuario/UsuariosPorRol'
+import EmpresaV2 from '../screens/Empresa/EmpresaV2'
+import SucursalPorEmpresa from '../screens/Empresa/SucursalesPorEmpresa'
 
 const AppRouter = () => {
 
@@ -27,10 +29,12 @@ const AppRouter = () => {
                         <Route path='/manufacturados' element={<Manufacturados />} />
                         <Route path='/insumos' element={<Insumos />} />
                         <Route path='/promociones' element={<Promociones />} />
-                        <Route path='/empresa' element={<Empresa />} />
+                        {/* <Route path='/empresa' element={<Empresa />} /> */}
                         <Route path='/usuarios' element={<Usuario />} />
                         <Route path="/usuarios/:id" element={<UsuariosPorRol />} />
                         <Route path='/categorias' element={<Categorias />} />
+                        <Route path='/empresas' element={<EmpresaV2 />} />
+                        <Route path='/empresas/:id' element={<SucursalPorEmpresa />} />
                     </Routes>
                 </div>
             </div>
