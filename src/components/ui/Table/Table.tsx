@@ -10,6 +10,7 @@ import EmpresaForm from '../Form/EmpresaForm'
 import AManufacturadoForm from '../Form/AManufacturadoForm'
 import AInsumoForm from '../Form/AInsumoFormt'
 import UsuarioForm from '../Form/UsuarioForm'
+import SucursalForm from '../Form/SucursalForm'
 
 
 const Table: FC<ITable> = ({ items, row1, row2, row3, row4, row5, endpoint }) => {
@@ -21,10 +22,10 @@ const Table: FC<ITable> = ({ items, row1, row2, row3, row4, row5, endpoint }) =>
 
     const fetchForm = async () => {
         //Fetchea el primer ID del tipo de dato del endpoint
-        const response = await fetchData(`http://localhost:8080/${endpoint}`);
-        setData(response);
+        // const response = await fetchData(`http://localhost:8080/${endpoint}`);
+        // setData(response);
         setOpen(true);
-        console.log(response[0])
+        // console.log(response[0])
     }
 
     return (
@@ -37,7 +38,6 @@ const Table: FC<ITable> = ({ items, row1, row2, row3, row4, row5, endpoint }) =>
                 {/* <button className='text-white text-5xl ml-4 rounded-md bg-green-600  shadow-lg justify-end'>
                         <CiSquarePlus className='hover:-rotate-90 transition-all' />
                     </button> */}
-
             </div>
 
             <div className='w-full'>
@@ -88,6 +88,7 @@ const Table: FC<ITable> = ({ items, row1, row2, row3, row4, row5, endpoint }) =>
                             {endpoint === "articulosManufacturados" && <AManufacturadoForm open={open} setOpen={setOpen} />}
                             {endpoint === "articulosInsumos" && <AInsumoForm open={open} setOpen={setOpen} />}
                             {endpoint === "usuarios" && <UsuarioForm open={open} setOpen={setOpen} />}
+                            {endpoint === "sucursal" && <SucursalForm open={open} setOpen={setOpen} />}
                         </div>
                     </div>
                 </div>
