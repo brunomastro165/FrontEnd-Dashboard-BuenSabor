@@ -1,11 +1,13 @@
-export interface IArticuloInsumo{
-    id:number,
-    denominacion:string,
-    precioVenta:number,
-    imagenes:[]
-    unidadMedida:null
-    precioCompra:number,
-    stockActual:number,
-    stockMaximo:number,
-    esParaElaborar:boolean
+import { IUnidadMedida } from "./UnidadMedida";
+
+export interface IArticuloInsumo {
+  id: number;
+  denominacion: string;
+  precioVenta: number;
+  imagenes: [];
+  unidadMedida: IUnidadMedida;
+  precioCompra: number;
+  stockActual: number;
+  stockMaximo: number;
+  esParaElaborar: boolean;
 }

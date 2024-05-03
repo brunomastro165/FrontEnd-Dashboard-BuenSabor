@@ -25,29 +25,16 @@ const Home = () => {
             <NavBar title='Inicio' />
             <div className='my- h-1/2 flex justify-center items-center align-middle'>
                 <div className='p-5 rounded-md size-2/6'>
-                    <GraficoArea/>
+                    <GraficoArea />
                 </div>
-                
+
             </div>
             <div className='mt-36 h-1/2 flex justify-center items-center align-middle'>
                 <div className='p-5 rounded-md size-3/6'>
-                    <Example/>
+                    <Example />
                 </div>
                 <div className='p-5 rounded-md size-2/6'>
-                    <TrackerServ/>
-            <div className=' h-auto flex flex-col md:flex-col justify-center items-center align-middle bg-white mt-24'>
-
-                <div className='flex flex-row w-full  justify-center items-center'>
-                    <div className='p-5 shadow-lg rounded-md size-2/6'>
-                        <LinesChart />
-                    </div>
-                    <div className='p-5 shadow-lg rounded-md size-2/6'>
-                        <BarChart />
-                    </div>
-                </div>
-
-                <div className='p-5 shadow-lg rounded-md size-2/6 justify-center flex'>
-                    <PolarChart />
+                    <TrackerServ />
                 </div>
             </div>
         </>

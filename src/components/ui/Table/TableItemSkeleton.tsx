@@ -4,7 +4,7 @@ import { MdOutlineDelete } from 'react-icons/md'
 
 const TableItemSkeleton = () => {
   return (
-    <tr className='hover cursor-pointer animate-pulse'>
+    <tr className='hover cursor-pointer animate-pulse border-red-600'>
       <th></th>
       <td>Cargando...</td>
       <td>Cargando...</td>

@@ -1,36 +1,51 @@
-import React, { FC, useState } from 'react'
-import { IContainerCards } from '../../../types/ContainerCards/ContainerCards'
-import CardEmpresa from '../Cards/CardEmpresa'
+import React, { useEffect, useState } from 'react'
+import { BackendClient } from '../../../services/BackendClient';
+import { IRol } from '../../../types/Rol';
+import CardRol from '../Cards/CardRol';
 import EmpresaForm from '../Form/EmpresaForm';
 import RolForm from '../Form/RolForm';
 
-const ContainerCards: FC<IContainerCards> = ({ data }) => {
+class Backend extends BackendClient<T> { }
+
+const ContainerCardsRol = () => {
+
+    const backend = new Backend();
+
+    const [roles, setRoles] = useState<IRol[]>([]);
 
     const [open, setOpen] = useState<boolean>(false);
 
+    const getRol = async () => {
+        const res: IRol[] = await backend.getAll("http://localhost:8080/roles");
+        setRoles(res);
+    }
+
+    useEffect(() => {
+        getRol();
+    }, [])
+
+    console.log(roles)
     return (
         <>
 
             <div className='w-full flex justify-center items-center'>
                 <button className='text-2xl font-Roboto btn btn-success bg-white text-green-600 hover:text-white  hover:bg-green-600'
-                    onClick={() => setOpen(true)}>Agregar empresa +</button>
+                    onClick={() => setOpen(true)}>Agregar rol +</button>
             </div>
 
             <div className='m-5 flex items-center justify-center  h-screen p-2'>
                 <div className='flex mb-24 flex-wrap items-center w-full justify-around'>
-                    {data.map((empresa, index) => (
-                        console.log(empresa.nombre),
-                        <CardEmpresa
-                            nombre={empresa.nombre}
-                            cuil={empresa.cuil}
-                            id={empresa.id}
-                            razonSocial={empresa.razonSocial}
-                            sucursales={empresa.sucursales}
-                            key={index}
-                        />
+                    {roles.map((rol, index) => (
+                        console.log(rol.usuarios),
+                        <CardRol
+                            denominacion={rol.denominacion}
+                            id={rol.id}
+                            usuarios={rol.usuarios}
+                            key={index} />
                     ))}
                 </div>
             </div>
+
 
             {open && (
                 <div className="fixed z-50 inset-0 overflow-y-auto w-full">
@@ -40,14 +55,14 @@ const ContainerCards: FC<IContainerCards> = ({ data }) => {
                         </div>
                         <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
                         <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle  w-full md:w-1/2">
-                            <EmpresaForm open={open} setOpen={setOpen} />
+                            <RolForm open={open} setOpen={setOpen} />
                         </div>
                     </div>
                 </div>
-
             )}
         </>
     )
+
 }
 
-export default ContainerCards
+export default ContainerCardsRol

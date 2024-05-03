@@ -13,12 +13,27 @@ const Form: FC<IForm> = ({ data, open, setOpen }) => {
         setTransformData(data)
     }, [data]);
 
-    console.log("Sexualidad")
-    console.log(transformData)
-
-    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
+
+        console.log(formData);
     };
+
+    console.log("Sex")
+    console.log(transformData.sucursales);
+
+    function test() {
+
+        setTimeout(() => {
+            console.log("Acá");
+            transformData.sucursales.map((sucursal) => {
+                console.log(sucursal);
+            });
+        }, 3000);
+
+    }
+
+    test();
 
     const genericInput = (key: string, type: string) => {
         return (
@@ -36,7 +51,29 @@ const Form: FC<IForm> = ({ data, open, setOpen }) => {
                     {key}
                 </label>
             </>
-            )
+        )
+    }
+
+    const sucursalesInput = (key: string) => {
+        return (
+            <>
+                {transformData.sucursales.map((sucursal, index) => (
+                    <div key={index}>
+                        <input
+                            type="checkbox"
+                            id={`${key}${index}`}
+                            name={key}
+                            value={sucursal.id}
+                            onChange={handleChange}
+                            className="peer"
+                        />
+                        <label htmlFor={`${key}${index}`} className="ml-2">
+                            {sucursal.nombre}
+                        </label>
+                    </div>
+                ))}
+            </>
+        )
     }
 
     return (
@@ -52,20 +89,19 @@ const Form: FC<IForm> = ({ data, open, setOpen }) => {
 
             <h2 className='text-3xl font-Roboto'>Formulario para agregar</h2>
 
-            {/*Mapeo los objetos que traigo al formulario, dependiendo de cada objeto, genero un input distinto (por ahora hay TEXT y NUMBER)*/}
+            {/*Mapeo los objetos que traigo al formulario, dependiendo de cada objeto, genero un input distinto */}
             {Object.keys(transformData).map((key, index) => (
                 <div key={index} className='w-full'>
-                    {key !== "id" && transformData[key] !== undefined &&
-                        <div className="relative z-0 w-full mb-5 group">
-                            {typeof transformData[key] === 'number' ? (
-                                // Renderiza este input si el tipo de dato es 'number'
-                                genericInput(key, "number")
-                            ) : (
-                                // Renderiza este input si el tipo de dato no es 'number'
-                                genericInput(key, "text")
-                            )}
-                        </div>
-                    }
+                    {typeof transformData[key] === 'number' ? (
+                        // Renderiza este input si el tipo de dato es 'number'
+                        genericInput(key, "number")
+                    ) : key === 'sucursales' ? (
+                        // Renderiza este input si la clave es 'sucursales'
+                        sucursalesInput(key)
+                    ) : (
+                        // Renderiza este input si el tipo de dato no es 'number' y la clave no es 'sucursales'
+                        genericInput(key, "text")
+                    )}
                 </div>
             ))}
 
