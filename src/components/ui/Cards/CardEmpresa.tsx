@@ -2,15 +2,15 @@ import React, { FC } from 'react'
 import { IEmpresa } from '../../../types/Empresa'
 import { useNavigate } from 'react-router-dom';
 import { FaUserTie } from 'react-icons/fa';
+import { ISucursal } from '../../../types/Sucursal';
 
 const CardEmpresa: FC<IEmpresa> = ({ cuil, id, nombre, razonSocial, sucursales }) => {
 
     const navigate = useNavigate();
 
-    function pushCard(data: IEmpresa[]) {
-        if (sucursales.length >= 1) {
-            navigate(`/empresas/${id}`, { state: { data } })
-        }
+    function pushCard(data: ISucursal[]) {
+        const idEmpresa = 1;
+        navigate(`/${idEmpresa}/sucursales`, { state: { data } })
     }
 
     return (

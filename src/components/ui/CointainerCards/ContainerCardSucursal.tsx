@@ -4,8 +4,15 @@ import CardEmpresa from '../Cards/CardEmpresa'
 import EmpresaForm from '../Form/EmpresaForm';
 import RolForm from '../Form/RolForm';
 import { useNavigate } from 'react-router-dom';
+import CardSucursal from '../Cards/CardSucursal';
+import { ISucursal } from '../../../types/Sucursal';
+import SucursalForm from '../Form/SucursalForm';
 
-const ContainerCards: FC<IContainerCards> = ({ data }) => {
+interface IContainerCardSucursal {
+    data: ISucursal[]
+}
+
+const ContainerCardSucursal: FC<IContainerCardSucursal> = ({ data }) => {
 
     const [open, setOpen] = useState<boolean>(false);
 
@@ -13,20 +20,23 @@ const ContainerCards: FC<IContainerCards> = ({ data }) => {
         <>
             <div className='w-full flex justify-center items-center'>
                 <button className='text-2xl font-Roboto btn btn-success bg-white text-green-600 hover:text-white  hover:bg-green-600'
-                    onClick={() => setOpen(true)}>Agregar empresa +</button>
+                    onClick={() => setOpen(true)}>Agregar sucursal +</button>
             </div>
 
             <div className='m-5 flex items-center justify-center  h-screen p-2'>
                 <div className='flex mb-24 flex-wrap items-center w-full justify-around'>
-                    {data.map((empresa, index) => (
-                        console.log(empresa.nombre),
-                        <CardEmpresa
-                            nombre={empresa.nombre}
-                            cuil={empresa.cuil}
-                            id={empresa.id}
-                            razonSocial={empresa.razonSocial}
-                            sucursales={empresa.sucursales}
-                            key={index}
+                    {data.map((sucursal, index) => (
+
+                        <CardSucursal
+                            categorias={sucursal.categorias}
+                            domicilio={sucursal.domicilio}
+                            horarioApertura={sucursal.horarioApertura}
+                            horarioCierre={sucursal.horarioCierre}
+                            id={sucursal.id}
+                            nombre={sucursal.nombre}
+                            promociones={sucursal.promociones}
+                            imagen={sucursal.imagen}
+                            key={sucursal.id}
                         />
                     ))}
                 </div>
@@ -40,7 +50,7 @@ const ContainerCards: FC<IContainerCards> = ({ data }) => {
                         </div>
                         <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
                         <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle  w-full md:w-1/2">
-                            <EmpresaForm open={open} setOpen={setOpen} />
+                            <SucursalForm open={open} setOpen={setOpen} />
                         </div>
                     </div>
                 </div>
@@ -50,4 +60,4 @@ const ContainerCards: FC<IContainerCards> = ({ data }) => {
     )
 }
 
-export default ContainerCards
+export default ContainerCardSucursal

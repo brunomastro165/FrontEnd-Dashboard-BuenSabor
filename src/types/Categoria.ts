@@ -1,6 +1,8 @@
+import { IArticuloInsumo } from "./ArticuloInsumo";
+
 export interface ICategoria {
   id: number;
   denominacion: string;
-  articulos: Array<any>;
+  articulos: IArticuloInsumo[];
   subCategorias: ICategoria[];
 }

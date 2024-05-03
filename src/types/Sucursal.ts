@@ -1,5 +1,5 @@
 import { ICategoria } from "./Categoria";
-import { IEmpresa } from "./Empresa";
+import { IPromos } from "./Promos";
 
 export interface ISucursal {
   id: number;
@@ -8,6 +8,7 @@ export interface ISucursal {
   horarioCierre: string;
   domicilio: string;
   categorias: ICategoria[];
-  promociones: string;
- // empresa: IEmpresa;
+  promociones: IPromos[];
+  imagen: string;
+  // empresa: IEmpresa;
 }
