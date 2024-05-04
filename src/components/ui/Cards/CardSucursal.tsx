@@ -19,13 +19,9 @@ const CardSucursal: FC<ISucursal> = ({ categorias, domicilio, horarioApertura, h
 
     const { idEmpresa } = useParams();
 
-    console.log("ACÁ TA LA EMPRESA")
-    console.log(idEmpresa)
-
     function pushCard() {
         dispatch(setLogged(true))
         const idSucursales = id;
-        const idEmpresa = id;
         navigate(`/${idEmpresa}/sucursales/${idSucursales}/home`)
     }
 

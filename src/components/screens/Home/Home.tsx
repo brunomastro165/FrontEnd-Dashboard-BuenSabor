@@ -19,6 +19,8 @@ const Home = () => {
     const dispatch = useAppDispatch()
 
     const url = `/${idEmpresa}/sucursales/${idSucursales}`
+    console.log("toy cansao")
+    console.log(url)
 
     useEffect(() => {
         const fetchInsumo = async () => {

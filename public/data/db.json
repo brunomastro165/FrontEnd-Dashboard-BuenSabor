@@ -1813,13 +1813,13 @@
       ]
     },
     {
-      "id": "2",
+      "id": 2,
       "nombre": "bruno",
       "razonSocial": "Venta de Alimentos",
       "cuil": "0313321",
       "sucursales": [
         {
-          "id": "1",
+          "id": 1,
           "nombre": "En chacras",
           "horarioApertura": "17:00:00",
           "horarioCierre": "23:00:00",
@@ -1886,7 +1886,7 @@
                   "articulos": [
                     {
                       "id": 1,
-                      "denominacion": "Denominacion traguito",
+                      "denominacion": "traguito",
                       "precioVenta": 70,
                       "imagenes": [
                         {
@@ -2012,7 +2012,7 @@
           "imagen":"https://hips.hearstapps.com/hmg-prod/images/heydar-aliyev-center-royalty-free-image-1676560677.jpg"
         },
         {
-          "id": "2",
+          "id": 2,
           "nombre": "En godoy cruz",
           "horarioApertura": "16:00:00",
           "horarioCierre": "23:30:00",
@@ -2118,13 +2118,13 @@
       ]
     },
     {
-      "id": "3",
+      "id": 3,
       "nombre": "32131123",
       "razonSocial": "312312",
       "cuil": "0312132",
       "sucursales": [
         {
-          "id": "1",
+          "id": 1,
           "nombre": "En chacras",
           "horarioApertura": "17:00:00",
           "horarioCierre": "23:00:00",
@@ -2319,13 +2319,13 @@
       ]
     },
     {
-      "id": "4",
+      "id": 4,
       "nombre": "Susanga",
       "razonSocial": "Venta de Alimentos",
       "cuil": "012",
       "sucursales": [
         {
-          "id": "2",
+          "id": 2,
           "nombre": "En godoy cruz",
           "horarioApertura": "16:00:00",
           "horarioCierre": "23:30:00",
@@ -2431,7 +2431,7 @@
       ]
     },
     {
-      "id": "5",
+      "id": 5,
       "nombre": "empresa copada",
       "razonSocial": "Venta de Alimentos",
       "cuil": "00",
@@ -2444,7 +2444,7 @@
       "cuil": "9",
       "sucursales": [
         {
-          "id": "1",
+          "id": 1,
           "nombre": "En chacras",
           "horarioApertura": "17:00:00",
           "horarioCierre": "23:00:00",

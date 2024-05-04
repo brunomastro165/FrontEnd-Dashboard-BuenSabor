@@ -9,7 +9,7 @@ const CardEmpresa: FC<IEmpresa> = ({ cuil, id, nombre, razonSocial, sucursales }
     const navigate = useNavigate();
 
     function pushCard(data: ISucursal[]) {
-        const idEmpresa = 1;
+        const idEmpresa = id;
         navigate(`/${idEmpresa}/sucursales`, { state: { data } })
     }
 

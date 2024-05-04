@@ -69,13 +69,17 @@ const Manufacturados = () => {
                 const idEmpresaString = idEmpresa.toString()
                 const response: IEmpresa = await backend.get("http://localhost:8080/empresas", idEmpresaString)
 
+                console.log(response)
+
                 //Una vez dentro de la empresa, buscamos la sucursal seleccionada con useParams
                 const idSucursalNumber = Number(idSucursales)
                 const sucursal: ISucursal | undefined = response.sucursales.find((sucursal: ISucursal) => sucursal.id === idSucursalNumber)
 
+                console.log(sucursal)
                 //Ahora buscamos las categorías dentro de la sucursal que fué seleccionada
                 const categorias: ICategoria[] | undefined = sucursal?.categorias
 
+                console.log(categorias)
                 //Llamada a la función obtener articulos, la cual nos retorna todos los articulosManufacturados dentro de todas las categorías
                 const arCategorias: ICategoria[] | undefined = categorias;
                 let articulos: IArticuloManufacturado[] = [];
@@ -87,6 +91,7 @@ const Manufacturados = () => {
                 //Llamada a la función transformData, la cual nos retorna los datos de articuloManufacturado en un tipo de dato
                 //compatible con la el componente Table
 
+                console.log(":(")
                 console.log(articulos)
                 const transformedData = transformData(articulos);
                 setData(transformedData);
