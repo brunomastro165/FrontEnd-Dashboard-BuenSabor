@@ -12,7 +12,6 @@ export default {
   ],
   daisyui:{
     themes: ['light'],
-    themes: ["ligth"],
   },
   theme: {
     fontFamily: {
