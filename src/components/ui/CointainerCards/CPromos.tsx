@@ -14,9 +14,9 @@ const CPromos: FC<IContainerPromo> = ({ data }) => {
 
     return (
         <>
-            <div className='w-full flex justify-center items-center'>
+            <div className=' translate-x-12 -translate-y-10 fixed z-50'>
                 <button className='text-2xl font-Roboto btn btn-success bg-white text-green-600 hover:text-white  hover:bg-green-600'
-                    onClick={() => setOpen(true)}>Agregar promoción +</button>
+                    onClick={() => setOpen(true)}>Agregar +</button>
             </div>
 
             <div className='m-5 flex items-center justify-center  h-screen p-2'>
@@ -24,7 +24,7 @@ const CPromos: FC<IContainerPromo> = ({ data }) => {
                     {data.map((promo, index) => (
                         //console.log(empresa.nombre),
                         <CardPromo
-                            articulosManufacturados={promo.articulosManufacturados}
+                            articulos={promo.articulos}
                             denominacion={promo.denominacion}
                             descripcionDescuento={promo.descripcionDescuento}
                             fechaDesde={promo.fechaDesde}
@@ -33,7 +33,7 @@ const CPromos: FC<IContainerPromo> = ({ data }) => {
                             horaHasta={promo.horaHasta}
                             precioPromocional={promo.precioPromocional}
                             id={promo.id}
-                            imagen={promo.imagen}
+                            imagenes={promo.imagenes}
                             tipoPromocion={promo.tipoPromocion}
                             key={promo.id}
                         />
@@ -53,7 +53,6 @@ const CPromos: FC<IContainerPromo> = ({ data }) => {
                         </div>
                     </div>
                 </div>
-
             )}
         </>
     )

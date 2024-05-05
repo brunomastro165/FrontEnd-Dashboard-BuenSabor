@@ -41,13 +41,14 @@ const AppRouter = () => {
                         <Route path='/:idEmpresa/sucursales/:idSucursales/manufacturados' element={<Manufacturados />} />
                         <Route path='/:idEmpresa/sucursales/:idSucursales/insumos' element={<Insumos />} />
                         <Route path='/:idEmpresa/sucursales/:idSucursales/promociones' element={<Promociones />} />
+                        <Route path='/:idEmpresa/sucursales/:idSucursales/promociones/:idPromocion' element={<ProductosPorPromociones />} />
                         {/* <Route path='/empresa' element={<Empresa />} /> */}
                         <Route path='/:idEmpresa/sucursales/:idSucursales/usuarios' element={<Usuario />} />
                         <Route path="/:idEmpresa/sucursales/:idSucursales/usuarios/:id" element={<UsuariosPorRol />} />
                         <Route path='/:idEmpresa/sucursales/:idSucursales/categorias' element={<Categorias />} />
-                        <Route path='/:idEmpresa/sucursales/:idSucursales/empresas' element={<EmpresaV2 />} />
+                        <Route path='/:idEmpresa/sucursales/:idSucursales/empresa' element={<EmpresaV2 />} />
                         <Route path='/:idEmpresa/sucursales/:idSucursales/empresas/:id' element={<SucursalPorEmpresa />} />
-                        <Route path='/:idEmpresa/sucursales/:idSucursales/promociones/:id' element={<ProductosPorPromociones />} />
+                       
                     </Routes>
                 </div>
             </div>

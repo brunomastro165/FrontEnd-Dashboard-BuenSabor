@@ -1661,7 +1661,7 @@
               "imagenes": []
             }
           ],
-          "imagen":"https://hips.hearstapps.com/hmg-prod/images/bosco-verticale-designed-by-stefano-boeri-2014-royalty-free-image-1676998427.jpg?crop=0.669xw:1.00xh;0.166xw,0&resize=640:*"
+          "imagen": "https://hips.hearstapps.com/hmg-prod/images/bosco-verticale-designed-by-stefano-boeri-2014-royalty-free-image-1676998427.jpg?crop=0.669xw:1.00xh;0.166xw,0&resize=640:*"
         },
         {
           "id": 2,
@@ -1808,12 +1808,12 @@
               "imagenes": []
             }
           ],
-          "imagen":"https://hips.hearstapps.com/hmg-prod/images/heydar-aliyev-center-royalty-free-image-1676560677.jpg"
+          "imagen": "https://hips.hearstapps.com/hmg-prod/images/heydar-aliyev-center-royalty-free-image-1676560677.jpg"
         }
       ]
     },
     {
-      "id": 2,
+      "id": "2",
       "nombre": "bruno",
       "razonSocial": "Venta de Alimentos",
       "cuil": "0313321",
@@ -2006,10 +2006,15 @@
                   }
                 }
               ],
-              "imagenes": []
+              "imagenes": [
+                {
+                  "id": 1,
+                  "url": "https://m.media-amazon.com/images/I/51v8nyxSOYL._SL1500_.jpg"
+                }
+              ]
             }
           ],
-          "imagen":"https://hips.hearstapps.com/hmg-prod/images/heydar-aliyev-center-royalty-free-image-1676560677.jpg"
+          "imagen": "https://hips.hearstapps.com/hmg-prod/images/heydar-aliyev-center-royalty-free-image-1676560677.jpg"
         },
         {
           "id": 2,
@@ -2111,14 +2116,62 @@
             }
           ],
           "promociones": [
-            2
+            {
+              "id": 1,
+              "denominacion": "Dia de los Enamorados",
+              "fechaDesde": "2024-02-13",
+              "fechaHasta": "2024-02-15",
+              "horaDesde": "00:00:00",
+              "horaHasta": "23:59:00",
+              "descripcionDescuento": "El descuento que se hace por san valentin, un dia antes y un dia despues",
+              "precioPromocional": 100,
+              "tipoPromocion": "promocion",
+              "articulos": [
+                {
+                  "id": 1,
+                  "denominacion": "Coca cola",
+                  "precioVenta": 70,
+                  "imagenes": [
+                    {
+                      "id": 1,
+                      "url": "https://m.media-amazon.com/images/I/51v8nyxSOYL._SL1500_.jpg"
+                    }
+                  ],
+                  "unidadMedida": {
+                    "id": 1,
+                    "denominacion": "Litros"
+                  }
+                },
+                {
+                  "id": 6,
+                  "denominacion": "Pizza Muzarella",
+                  "precioVenta": 150,
+                  "imagenes": [
+                    {
+                      "id": 6,
+                      "url": "https://assets.elgourmet.com/wp-content/uploads/2023/03/8metlvp345_portada-pizza-1024x686.jpg.webp"
+                    }
+                  ],
+                  "unidadMedida": {
+                    "id": 4,
+                    "denominacion": "Porciones"
+                  }
+                }
+              ],
+              "imagenes": [
+                {
+                  "id": 1,
+                  "url": "https://m.media-amazon.com/images/I/51v8nyxSOYL._SL1500_.jpg"
+                }
+              ]
+            }
           ],
-          "imagen":"https://hips.hearstapps.com/hmg-prod/images/heydar-aliyev-center-royalty-free-image-1676560677.jpg"
+          "imagen": "https://hips.hearstapps.com/hmg-prod/images/heydar-aliyev-center-royalty-free-image-1676560677.jpg"
         }
       ]
     },
     {
-      "id": 3,
+      "id": "3",
       "nombre": "32131123",
       "razonSocial": "312312",
       "cuil": "0312132",
@@ -2314,12 +2367,12 @@
               "imagenes": []
             }
           ],
-          "imagen":"https://hips.hearstapps.com/hmg-prod/images/heydar-aliyev-center-royalty-free-image-1676560677.jpg"
+          "imagen": "https://hips.hearstapps.com/hmg-prod/images/heydar-aliyev-center-royalty-free-image-1676560677.jpg"
         }
       ]
     },
     {
-      "id": 4,
+      "id": "4",
       "nombre": "Susanga",
       "razonSocial": "Venta de Alimentos",
       "cuil": "012",
@@ -2426,19 +2479,19 @@
           "promociones": [
             2
           ],
-          "imagen":"https://hips.hearstapps.com/hmg-prod/images/heydar-aliyev-center-royalty-free-image-1676560677.jpg"
+          "imagen": "https://hips.hearstapps.com/hmg-prod/images/heydar-aliyev-center-royalty-free-image-1676560677.jpg"
         }
       ]
     },
     {
-      "id": 5,
+      "id": "5",
       "nombre": "empresa copada",
       "razonSocial": "Venta de Alimentos",
       "cuil": "00",
       "sucursales": []
     },
     {
-      "id": 0,
+      "id": "0",
       "nombre": "Empresa chota",
       "razonSocial": "Vendedores de poronga",
       "cuil": "9",
@@ -2634,7 +2687,7 @@
               "imagenes": []
             }
           ],
-          "imagen":"https://hips.hearstapps.com/hmg-prod/images/heydar-aliyev-center-royalty-free-image-1676560677.jpg"
+          "imagen": "https://hips.hearstapps.com/hmg-prod/images/heydar-aliyev-center-royalty-free-image-1676560677.jpg"
         }
       ]
     }

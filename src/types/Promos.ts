@@ -11,7 +11,7 @@ export interface IPromos {
     descripcionDescuento: string,
     precioPromocional: number,
     tipoPromocion: string,
-    articulosManufacturados: IArticuloManufacturado[],
-    imagen: IImagen[]
+    articulos: IArticuloManufacturado[],
+    imagenes: IImagen[]
 }
 

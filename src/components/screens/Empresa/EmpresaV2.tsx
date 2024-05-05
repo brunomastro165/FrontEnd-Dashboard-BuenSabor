@@ -4,7 +4,8 @@ import NavBar from '../../ui/NavBar/NavBar'
 import { IRol } from '../../../types/Rol';
 import { IEmpresa } from '../../../types/Empresa';
 import { BackendClient } from '../../../services/BackendClient';
-
+import { useParams } from 'react-router-dom';
+import ContainerCardEmpresa from '../../ui/CointainerCards/ContainerCardEmpresa';
 
 class Backend extends BackendClient<T> { }
 
@@ -12,23 +13,36 @@ const EmpresaV2 = () => {
 
     const backend = new Backend();
 
-    const [empresas, setEmpresas] = useState<IEmpresa[]>([]);
+    const [empresa, setEmpresa] = useState<IEmpresa>();
 
-    const getEmpresas = async () => {
-        const res: IEmpresa[] = await backend.getAll("http://localhost:8080/empresas");
-        setEmpresas(res);
+    const { idEmpresa, idSucursales } = useParams();
+
+    const getEmpresa = async () => {
+        if (idEmpresa) {
+            console.log("SETEMPRESA")
+            const idEmpresaString = idEmpresa.toString()
+            const response: IEmpresa = await backend.get("http://localhost:8080/empresas", idEmpresaString)
+
+            console.log(response)
+            setEmpresa(response);
+        }
     }
 
     useEffect(() => {
-        getEmpresas();
+        getEmpresa();
     }, [])
 
     return (
         <>
             <NavBar title='Empresas' />
             <div className='mt-24'>
-                <ContainerCards data={empresas} />
-
+                <ContainerCardEmpresa
+                    cuil={empresa?.cuil}
+                    id={empresa?.id}
+                    nombre={empresa?.nombre}
+                    razonSocial={empresa?.razonSocial}
+                    sucursales={empresa?.sucursales}
+                    key={empresa?.id} />
             </div>
         </>
     )
