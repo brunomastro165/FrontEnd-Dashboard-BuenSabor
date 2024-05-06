@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useState } from 'react';
 
 import { IoHomeOutline } from "react-icons/io5";
@@ -10,29 +10,46 @@ import UserSection from './UserSection';
 import { IButton } from '../../../types/Button';
 import ButtonContainer from './Button/ButtonContainer';
 import { TbCategory2 } from "react-icons/tb";
-
+import { useParams } from 'react-router-dom';
+import { useAppSelector } from '../../../hooks/redux';
 
 const SideBar = () => {
 
     const [active, setActive] = useState("Home");
 
+    const [idEmpresa, setIdEmpresa] = useState<number>(1)
+    const [idSucursales, setIdSucursales] = useState<number>(1)
+
+    //const {idEmpresa} = useParams()
+
+    const url = useAppSelector((state) => state.globalUrl.url);
+
+    useEffect(() => {
+        console.log("URL SIDEBAR")
+        console.log((url))
+    }, [url])
+
+
+    console.log("SIDEBAR")
+    console.log(idEmpresa)
+    //console.log(`/${idEmpresa}/sucursales/${idSucursales}/home`)
+
     //Hice todo para que modificando este JSON se modifiquen directamente los botones de la sidebar con sus configuraciones 
     const Buttons: IButton[] = [
-        { Icon: IoHomeOutline, text: "Inicio", link: "/", active: active, setActive: setActive, subButton: null, child: false },
+        { Icon: IoHomeOutline, text: "Inicio", link: `${url}/home`, active: active, setActive: setActive, subButton: null, child: false },
 
         //El ícono de productos va a tener otros dos dentro
         {
             Icon: MdOutlineShoppingBag, text: "Productos", link: "", active: active, setActive: setActive,
             subButton: [
-                { Icon: MdOutlineShoppingBag, text: "Manufacturados", link: "/manufacturados", active: active, setActive: setActive, subButton: null, child: true },
-                { Icon: MdOutlineShoppingBag, text: "Insumos", link: "/insumos", active: active, setActive: setActive, subButton: null, child: true }],
+                { Icon: MdOutlineShoppingBag, text: "Manufacturados", link: `${url}/manufacturados`, active: active, setActive: setActive, subButton: null, child: true },
+                { Icon: MdOutlineShoppingBag, text: "Insumos", link: `${url}/insumos`, active: active, setActive: setActive, subButton: null, child: true }],
             child: false,
         },
-        { Icon: TiTags, text: "Promociones", link: "/promociones", active: active, setActive: setActive, subButton: null, child: false },
-        { Icon: GoFileDirectory, text: "Empresa", link: "/empresas", active: active, setActive: setActive, subButton: null, child: false },
-        { Icon: FaRegUser, text: "Usuarios", link: "/usuarios", active: active, setActive: setActive, subButton: null, child: false },
-        { Icon: TbCategory2, text: "Categorías", link: "/categorias", active: active, setActive: setActive, subButton: null, child: false },
-
+        { Icon: TiTags, text: "Promociones", link: `${url}/promociones`, active: active, setActive: setActive, subButton: null, child: false },
+        { Icon: GoFileDirectory, text: "Empresa", link: `${url}/empresa`, active: active, setActive: setActive, subButton: null, child: false },
+        { Icon: FaRegUser, text: "Usuarios", link: `${url}/usuarios`, active: active, setActive: setActive, subButton: null, child: false },
+        { Icon: TbCategory2, text: "Categorías", link: `${url}/categorias`, active: active, setActive: setActive, subButton: null, child: false },
 
     ];
 

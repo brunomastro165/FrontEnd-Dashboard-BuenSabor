@@ -17,26 +17,38 @@ import UsuariosPorRol from '../screens/Usuario/UsuariosPorRol'
 import EmpresaV2 from '../screens/Empresa/EmpresaV2'
 import SucursalPorEmpresa from '../screens/Empresa/SucursalesPorEmpresa'
 import ProductosPorPromociones from '../screens/Promociones/ProductosPorPromociones'
+import Inicio from '../screens/Inicio/Inicio'
+import Sucursal from '../screens/Sucursal/Sucursal'
+import { useAppSelector } from '../../hooks/redux'
 
 const AppRouter = () => {
 
+
+    const selector = useAppSelector((state) => state.logged.logged);
+
+    const baseUrl = "/:idEmpresa/sucursales/:idSucursales"
+    
     return (
         <>
             <div className='flex flex-row'>
-                <SideBar />
-                <div className='md:ml-72 w-full'>
+                {selector && <SideBar />}
+                <div className={`${selector && 'md:ml-72'} w-full`}>
                     <Routes>
-                        <Route path='/' element={<Home />}></Route>
-                        <Route path='/manufacturados' element={<Manufacturados />} />
-                        <Route path='/insumos' element={<Insumos />} />
-                        <Route path='/promociones' element={<Promociones />} />
+                        <Route path='/' element={<Inicio />}></Route>
+                        <Route path='/:idEmpresa/sucursales/' element={<Sucursal />}></Route> {/*SUCURSALES */}
+                        <Route path='/sucursal' element={<Inicio />}></Route>
+                        <Route path='/:idEmpresa/sucursales/:idSucursales/home' element={<Home />}></Route>
+                        <Route path='/:idEmpresa/sucursales/:idSucursales/manufacturados' element={<Manufacturados />} />
+                        <Route path='/:idEmpresa/sucursales/:idSucursales/insumos' element={<Insumos />} />
+                        <Route path='/:idEmpresa/sucursales/:idSucursales/promociones' element={<Promociones />} />
+                        <Route path='/:idEmpresa/sucursales/:idSucursales/promociones/:idPromocion' element={<ProductosPorPromociones />} />
                         {/* <Route path='/empresa' element={<Empresa />} /> */}
-                        <Route path='/usuarios' element={<Usuario />} />
-                        <Route path="/usuarios/:id" element={<UsuariosPorRol />} />
-                        <Route path='/categorias' element={<Categorias />} />
-                        <Route path='/empresas' element={<EmpresaV2 />} />
-                        <Route path='/empresas/:id' element={<SucursalPorEmpresa />} />
-                        <Route path='/promociones/:id' element={<ProductosPorPromociones />} />
+                        <Route path='/:idEmpresa/sucursales/:idSucursales/usuarios' element={<Usuario />} />
+                        <Route path="/:idEmpresa/sucursales/:idSucursales/usuarios/:id" element={<UsuariosPorRol />} />
+                        <Route path='/:idEmpresa/sucursales/:idSucursales/categorias' element={<Categorias />} />
+                        <Route path='/:idEmpresa/sucursales/:idSucursales/empresa' element={<EmpresaV2 />} />
+                        <Route path='/:idEmpresa/sucursales/:idSucursales/empresas/:id' element={<SucursalPorEmpresa />} />
+                       
                     </Routes>
                 </div>
             </div>

@@ -4,6 +4,9 @@ import { fetchData } from '../../api/Fetch';
 import Example from '../../tremor/Example';
 import { TrackerServ } from '../../tremor/TrackerServ';
 import { GraficoBarra } from '../../tremor/GraficoBarra';
+import { useParams } from 'react-router-dom';
+import { useAppDispatch } from '../../../hooks/redux';
+import { setGlobalUrl } from '../../../redux/slices/globalUrl';
 
 const Home = () => {
 
@@ -11,6 +14,12 @@ const Home = () => {
 
     const [loading, setLoading] = useState<boolean>(false);
 
+    const {idEmpresa, idSucursales} = useParams();
+
+    const dispatch = useAppDispatch()
+
+    const url = `/${idEmpresa}/sucursales/${idSucursales}`
+    
     useEffect(() => {
         const fetchInsumo = async () => {
             const response = await fetchData("http://localhost:8080/articulosInsumos");
@@ -20,6 +29,11 @@ const Home = () => {
         fetchInsumo();
     }, [loading])
 
+
+    useEffect(() => {
+        dispatch(setGlobalUrl(url))
+    }, [])
+    
     return (
         <>
             <NavBar title='Inicio' />
