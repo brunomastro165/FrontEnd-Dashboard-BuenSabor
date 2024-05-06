@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react'
 import NavBar from '../../ui/NavBar/NavBar'
 import { fetchData } from '../../api/Fetch';
 import Example from '../../tremor/Example';
-import { GraficoArea } from '../../tremor/GraficoArea';
 import { TrackerServ } from '../../tremor/TrackerServ';
+import { GraficoBarra } from '../../tremor/GraficoBarra';
 import { useParams } from 'react-router-dom';
 import { useAppDispatch } from '../../../hooks/redux';
 import { setGlobalUrl } from '../../../redux/slices/globalUrl';
@@ -19,9 +19,7 @@ const Home = () => {
     const dispatch = useAppDispatch()
 
     const url = `/${idEmpresa}/sucursales/${idSucursales}`
-    console.log("toy cansao")
-    console.log(url)
-
+    
     useEffect(() => {
         const fetchInsumo = async () => {
             const response = await fetchData("http://localhost:8080/articulosInsumos");
@@ -41,7 +39,7 @@ const Home = () => {
             <NavBar title='Inicio' />
             <div className='my- h-1/2 flex justify-center items-center align-middle'>
                 <div className='p-5 rounded-md size-2/6'>
-                    <GraficoArea />
+                    <GraficoBarra />
                 </div>
 
             </div>
