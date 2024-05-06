@@ -112,7 +112,7 @@ const EmpresaForm: FC<IForm> = ({ open, setOpen }) => {
           {genericInput('nombre', "text", values.nombre, handleChange)} {/* Nombre */}
           {genericInput('razonSocial', 'text', values.razonSocial, handleChange)} {/* Razón Social */}
           {genericInput('cuil', 'number', values.cuil, handleChange)} {/* Cuil */}
-          {sucursalesInput()}
+          {/* {sucursalesInput()} No va a hacer falta*/}
 
         </div>
 

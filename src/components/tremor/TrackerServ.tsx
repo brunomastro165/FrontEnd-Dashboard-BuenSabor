@@ -5,7 +5,7 @@ interface Tracker {
   tooltip: string;
 }
 
-const data: Tracker[] = [
+const data: Tracker[] = [ // Colores del tracker
   { color: 'emerald', tooltip: 'Deployado' },
   { color: 'emerald', tooltip: 'Deployado' },
   { color: 'emerald', tooltip: 'Deployado' },

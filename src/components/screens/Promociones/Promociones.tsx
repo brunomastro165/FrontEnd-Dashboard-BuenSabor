@@ -34,7 +34,6 @@ const Promociones = () => {
         if (idEmpresa && idSucursales) {
             //Buscamos la empresa por el ID que nos traemos con useParams
             const idEmpresaString = idEmpresa.toString()
-            console.log(idEmpresaString)
             const response: IEmpresa = await backend.get("http://localhost:8080/empresas", idEmpresaString)
 
             //Una vez dentro de la empresa, buscamos la sucursal seleccionada con useParams

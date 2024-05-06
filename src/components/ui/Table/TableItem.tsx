@@ -15,7 +15,6 @@ const TableItem: FC<IItem> = ({ id, denominacion, param2, param3, param4, endpoi
         const response = await fetchData(`http://localhost:8080/${endpoint}/${id}`);
         setData(response);
         setOpen(true);
-        console.log(response)
     }
 
     return (

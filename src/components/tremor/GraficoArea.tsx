@@ -1,6 +1,6 @@
 import { AreaChart } from '@tremor/react';
 
-const chartdata = [
+const chartdata = [ // Datos del grafico
   {
     date: 'Jan 22',
     SemiAnalysis: 2890,

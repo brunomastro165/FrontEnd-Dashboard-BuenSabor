@@ -10,7 +10,6 @@ export abstract class BackendClient<T> extends AbstractBackendClient<T> {
       const response = await fetch(path, options);
       // Verifica si la respuesta es exitosa
       if (!response.ok) {
-        console.log(response.statusText);
         // Si no es exitosa, lanza un error con el mensaje de estado de la respuesta
         throw new Error(response.statusText);
       }

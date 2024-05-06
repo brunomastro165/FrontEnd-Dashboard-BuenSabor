@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { IArticuloInsumo } from '../../types/ArticuloInsumo';
 import { IPromos } from '../../types/Promos';
 import { IUsuario } from '../../types/Usuario';
+import { IEmpresa } from '../../types/Empresa';
 import { IArticuloManufacturado } from '../../types/ArticuloManufacturado';
 class GenericBackend extends BackendClient<T> { } //Métodos genéricos
 
@@ -20,6 +21,8 @@ export const GraficoBarra = () => {
   const [promos, setPromos] = useState<IPromos[]>([]);
   const [usuarios, setUsuarios] = useState<IUsuario[]>([]); 
   const [artManufacturados, setArtManu] = useState<IArticuloManufacturado[]>([]); 
+  const [empresa, setEmpresa] = useState<IEmpresa>();
+
 
   const getRoles = async () => {
     const res: IRol[] = await backend.getAll("http://localhost:8080/roles"); // Fetch de roles
@@ -54,6 +57,7 @@ export const GraficoBarra = () => {
     getArtManufacturado();
   }, [])
 
+  // Informacion dentro de Barras
   const data = [
      {
       name: 'Roles',

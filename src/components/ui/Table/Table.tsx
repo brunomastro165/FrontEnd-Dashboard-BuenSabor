@@ -25,7 +25,6 @@ const Table: FC<ITable> = ({ items, row1, row2, row3, row4, row5, endpoint }) =>
         // const response = await fetchData(`http://localhost:8080/${endpoint}`);
         // setData(response);
         setOpen(true);
-        // console.log(response[0])
     }
 
     return (

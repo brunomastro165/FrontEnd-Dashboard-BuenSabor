@@ -19,11 +19,8 @@ const EmpresaV2 = () => {
 
     const getEmpresa = async () => {
         if (idEmpresa) {
-            console.log("SETEMPRESA")
             const idEmpresaString = idEmpresa.toString()
             const response: IEmpresa = await backend.get("http://localhost:8080/empresas", idEmpresaString)
-
-            console.log(response)
             setEmpresa(response);
         }
     }

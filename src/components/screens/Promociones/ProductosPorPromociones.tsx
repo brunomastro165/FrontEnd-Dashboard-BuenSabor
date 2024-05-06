@@ -10,7 +10,6 @@ import { IArticuloManufacturado } from '../../../types/ArticuloManufacturado';
 
 const ProductosPorPromociones = () => {
 
-    console.log("entró")
     
     const [loading, setLoading] = useState<boolean>(false);
 

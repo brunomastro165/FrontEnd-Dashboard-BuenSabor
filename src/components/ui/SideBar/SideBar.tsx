@@ -25,14 +25,8 @@ const SideBar = () => {
     const url = useAppSelector((state) => state.globalUrl.url);
 
     useEffect(() => {
-        console.log("URL SIDEBAR")
-        console.log((url))
     }, [url])
 
-
-    console.log("SIDEBAR")
-    console.log(idEmpresa)
-    //console.log(`/${idEmpresa}/sucursales/${idSucursales}/home`)
 
     //Hice todo para que modificando este JSON se modifiquen directamente los botones de la sidebar con sus configuraciones 
     const Buttons: IButton[] = [

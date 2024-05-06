@@ -41,7 +41,6 @@ const UsuariosPorRol = () => {
 
     }, [loading])
 
-    console.log(usuarios)
     return (
         <>
             <BasePage

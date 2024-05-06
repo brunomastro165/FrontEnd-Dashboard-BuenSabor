@@ -18,6 +18,8 @@ const Inicio = () => {
 
     // JERARQUÍA DE DATOS
 
+    //HARDCODE PARA PROBAR FUNCIONALIDADES
+
     const [empresas, setEmpresas] = useState<IEmpresa[]>([]);
 
     const [empresaSeleccionada, setEmpresaSeleccionada] = useState<IEmpresa>();
@@ -50,8 +52,8 @@ const Inicio = () => {
         getEmpresas();
         getEmpresaById();
         getSucursalesPorEmpresa();
-    //    getCategoriasPorSucursal();
-    //  getPromocionesPorSucursal();
+        //    getCategoriasPorSucursal();
+        //  getPromocionesPorSucursal();
         setLoaded(true);
     }
 
@@ -61,27 +63,19 @@ const Inicio = () => {
     }
 
     const getSucursalesPorEmpresa = async () => {
-        console.log("dragón de comodo")
-        console.log(empresaSeleccionada)
 
         const res = empresaSeleccionada?.sucursales.find((sucursal) => sucursal.id === 1)
-        console.log("sucursal nashe")
-        console.log(res)
         setSucursales(res)
     }
 
     const getCategoriasPorSucursal = async () => {
         const res = sucursales?.categorias;
         setCategorias(res)
-        console.log("CATEGORÍAS")
-        console.log(res)
     }
 
     const getPromocionesPorSucursal = async () => {
         const res = sucursales?.promociones;
         setPromos(res);
-        console.log("PROMOS")
-        console.log(promos)
     }
 
     const getArticulosManufacturados = async () => {
@@ -113,20 +107,12 @@ const Inicio = () => {
 
     //     setTodosLosArticulos(articulos);
 
-    //     console.log("articuloides")
-    //     console.log(articulos)
     // }, [loaded]);
 
     useEffect(() => {
         traerGetters();
         setLoaded(false)
     }, [loaded])
-
-
-    console.log("empresaSeleccionada")
-    console.log(empresaSeleccionada)
-
-    console.log(sucursales)
 
 
     return (

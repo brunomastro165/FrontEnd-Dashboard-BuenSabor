@@ -15,7 +15,6 @@ const ContainerCategorias = () => {
     const getCategorias = async () => {
       const res: ICategoria[] = await backend.getAll("http://localhost:8080/categorias");
       setCategorias(res);
-      console.log(res)
     }
     getCategorias();
   }, [])

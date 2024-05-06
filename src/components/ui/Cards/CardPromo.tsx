@@ -11,8 +11,6 @@ const CardPromo: FC<IPromos> = ({ articulos, denominacion, descripcionDescuento,
     const { idEmpresa, idSucursales } = useParams();
 
     function pushCard(data: IArticuloManufacturado[]) {
-        console.log("AM")
-        console.log(data)
         if (data.length >= 1) {
             navigate(`/${idEmpresa}/sucursales/${idSucursales}/promociones/${id}`, { state: { data } })
         }
