@@ -58,10 +58,7 @@ const Home = () => {
     }
 
     useEffect(() => {
-        const fetchInsumo = async () => {
-            dispatch(setGlobalUrl(url))
-        }
-        fetchInsumo();
+        dispatch(setGlobalUrl(url))
     }, [loading])
 
 

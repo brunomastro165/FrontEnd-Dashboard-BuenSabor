@@ -12,6 +12,7 @@ import ButtonContainer from './Button/ButtonContainer';
 import { TbCategory2 } from "react-icons/tb";
 import { useParams } from 'react-router-dom';
 import { useAppSelector } from '../../../hooks/redux';
+import ResponsiveButton from './ResponsiveButton/ResponsiveButton';
 
 const SideBar = () => {
 
@@ -23,9 +24,6 @@ const SideBar = () => {
     //const {idEmpresa} = useParams()
 
     const url = useAppSelector((state) => state.globalUrl.url);
-
-    useEffect(() => {
-    }, [url])
 
 
     //Hice todo para que modificando este JSON se modifiquen directamente los botones de la sidebar con sus configuraciones 
@@ -47,21 +45,47 @@ const SideBar = () => {
 
     ];
 
+
+    const ResponsiveButtons: IButton[] = [
+        { Icon: MdOutlineShoppingBag, text: "Insumos", link: `${url}/insumos`, active: active, setActive: setActive, subButton: null, child: false },
+        { Icon: MdOutlineShoppingBag, text: "Manufacturados", link: `${url}/manufacturados`, active: active, setActive: setActive, subButton: null, child: false },
+        { Icon: TiTags, text: "Promociones", link: `${url}/promociones`, active: active, setActive: setActive, subButton: null, child: false },
+        { Icon: IoHomeOutline, text: "Inicio", link: `${url}/home`, active: active, setActive: setActive, subButton: null, child: false },
+        { Icon: GoFileDirectory, text: "Empresa", link: `${url}/empresa`, active: active, setActive: setActive, subButton: null, child: false },
+        { Icon: FaRegUser, text: "Usuarios", link: `${url}/usuarios`, active: active, setActive: setActive, subButton: null, child: false },
+        { Icon: TbCategory2, text: "Categorías", link: `${url}/categorias`, active: active, setActive: setActive, subButton: null, child: false },
+    ];
+
     return (
-        <div className=' hidden md:flex w-72 border-r h-screen  flex-col justify-around fixed z-50 bg-white '>
+        <>
+            <div className=' hidden md:flex w-72 border-r h-screen  flex-col justify-around fixed z-50 bg-white '>
 
-            <div className='space-y-0 md:space-y-4 top-20 fixed'>
-                <UserSection />
+                <div className='space-y-0 md:space-y-4 top-20 fixed'>
+                    <UserSection />
+                </div>
+
+                <div className='w-full'>
+                    {Buttons.map((button: IButton) => (
+                        <ButtonContainer Icon={button.Icon} text={button.text}
+                            link={button.link} active={button.active} setActive={button.setActive} subButton={button.subButton}
+                            child={button.child} />
+                    ))}
+                </div>
+
             </div>
 
-            <div className='w-full'>
-                {Buttons.map((button: IButton) => (
-                    <ButtonContainer Icon={button.Icon} text={button.text}
-                        link={button.link} active={button.active} setActive={button.setActive} subButton={button.subButton}
-                        child={button.child} />
-                ))}
+            <div className='md:hidden w-full  fixed bottom-0 inset-x-0 z-50 h-24 flex justify-end items-end '>
+
+                <div className='w-full bg-white  flex flex-row justify-center items-center overflow-x-scroll   shadow-black'>
+                    {ResponsiveButtons.map((button: IButton) => (
+                        <ResponsiveButton Icon={button.Icon} text={button.text}
+                            link={button.link} active={button.active} setActive={button.setActive} subButton={button.subButton}
+                            child={button.child} />
+                    ))}
+                </div>
+
             </div>
-        </div>
+        </>
     )
 }
 
