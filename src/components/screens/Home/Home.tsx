@@ -101,17 +101,17 @@ const Home = () => {
 
 
     return (
-        <>
+        <div className='overflow-hidden'>
             <NavBar title='Inicio' />
 
             <div className='flex flex-col'>
                 <div className=' m-5 rounded-btn mt-24 shadow-lg'>
                     <h1 className=' mx-auto font-Roboto text-2xl p-5  text-red-600 rounded-t'>Stock:</h1>
-                    <div className=' flex justify-center items-center align-middle '>
-                        <div className='p-5 rounded-md size-2/6'>
+                    <div className=' flex flex-col md:flex-row justify-center items-center align-middle '>
+                        <div className='p-5 rounded-md size-full md:size-2/6'>
                             <GraficoBarra />
                         </div>
-                        <div className='p-5 rounded-md size-3/6'>
+                        <div className='p-5 rounded-md size-full md:size-3/6'>
                             <BarListVisitas articulos={articulosManufacturados} />
                         </div>
                     </div>
@@ -120,7 +120,7 @@ const Home = () => {
 
                 <div className='border m-5 rounded-btn mt-24 shadow-lg'>
                     <h1 className=' mx-auto font-Roboto text-2xl p-5  text-red-600 rounded-t'>Ventas:</h1>
-                    <div className=' flex justify-center items-center align-middle '>
+                    <div className=' flex flex-col md:flex-row  justify-center items-center align-middle '>
                         <div className='p-5 rounded-md size-full'>
                             <Example />
                         </div>
@@ -138,7 +138,7 @@ const Home = () => {
 
                 <div className='border m-5 rounded-btn mt-24 shadow-lg'>
                     <h1 className=' mx-auto font-Roboto text-2xl p-5  text-red-600 rounded-t'>Servidor:</h1>
-                    <div className=' flex justify-center items-center align-middle '>
+                    <div className=' flex flex-col md:flex-row justify-center items-center align-middle '>
 
                         <div className='p-5 rounded-md size-full'>
                             <TrackerServ />
@@ -152,7 +152,7 @@ const Home = () => {
                     </div>
                 </div>
             </div>
-        </>
+        </div>
     )
 }
 

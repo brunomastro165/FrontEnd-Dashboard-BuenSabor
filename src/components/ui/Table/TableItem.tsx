@@ -4,6 +4,11 @@ import { MdOutlineDelete } from "react-icons/md";
 import { IItem } from '../../../types/Table/TableItem';
 import { fetchData } from '../../api/Fetch';
 import Form from '../Form/Form';
+import EmpresaForm from '../Form/EmpresaForm';
+import AManufacturadoForm from '../Form/AManufacturadoForm';
+import AInsumoForm from '../Form/AInsumoFormt';
+import UsuarioForm from '../Form/UsuarioForm';
+import SucursalForm from '../Form/SucursalForm';
 
 const TableItem: FC<IItem> = ({ id, denominacion, param2, param3, param4, endpoint }) => {
 
@@ -39,7 +44,11 @@ const TableItem: FC<IItem> = ({ id, denominacion, param2, param3, param4, endpoi
                         </div>
                         <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
                         <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle  w-full md:w-1/2">
-                            <Form data={data} open={open} setOpen={setOpen} />
+                            {endpoint === "empresas" && <EmpresaForm open={open} setOpen={setOpen} />}
+                            {endpoint === "articulosManufacturados" && <AManufacturadoForm open={open} setOpen={setOpen} />}
+                            {endpoint === "articulosInsumos" && <AInsumoForm open={open} setOpen={setOpen} />}
+                            {endpoint === "usuarios" && <UsuarioForm open={open} setOpen={setOpen} />}
+                            {endpoint === "sucursal" && <SucursalForm open={open} setOpen={setOpen} />}
                         </div>
                     </div>
                 </div>
