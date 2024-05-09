@@ -33,7 +33,7 @@ const UsuarioForm: FC<IForm> = ({ open, setOpen }) => {
     const [loaded, setLoaded] = useState<boolean>(false);
 
     const getRoles = async () => {
-        const res: IRol[] = await backend.getAll("http://localhost:8080/roles");
+        const res: IRol[] = await backend.getAll("https://backend-jsonserver-1.onrender.com/roles");
         setRoles(res);
         setLoaded(true);
     }

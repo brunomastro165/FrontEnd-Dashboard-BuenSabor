@@ -18,7 +18,7 @@ const TableItem: FC<IItem> = ({ id, denominacion, param2, param3, param4, endpoi
     const [open, setOpen] = useState<boolean>(false);
 
     const fetchIndividual = async () => {
-        const response = await fetchData(`http://localhost:8080/${endpoint}/${id}`);
+        const response = await fetchData(`https://backend-jsonserver-1.onrender.com/${endpoint}/${id}`);
         setData(response);
         setOpen(true);
     }

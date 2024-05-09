@@ -38,14 +38,14 @@ const CategoriaForm: FC<IForm> = ({ open, setOpen }) => {
     const getSucursales = async () => {
 
         //modificar el endpoint una vez con el backend funcional
-        const res: IArticuloManufacturado[] = await backend.getAll("http://localhost:8080/articulosManufacturados");
+        const res: IArticuloManufacturado[] = await backend.getAll("https://backend-jsonserver-1.onrender.com/articulosManufacturados");
         setArticulosManufacturados(res);
         setLoaded(true);
     }
 
     const postCategoria = async (data) => {
         try {
-            const res: ICategoria = await backend.post("http://localhost:8080/categorias", data);
+            const res: ICategoria = await backend.post("https://backend-jsonserver-1.onrender.com/categorias", data);
             console.log(res)
         } catch (error) {
             console.error(error)

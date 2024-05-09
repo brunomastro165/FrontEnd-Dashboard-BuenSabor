@@ -41,7 +41,7 @@ const SucursalForm: FC<IForm> = ({ open, setOpen }) => {
     const [loaded, setLoaded] = useState<boolean>(false);
 
     const getSucursales = async () => {
-        const res: ICategoria[] = await backend.getAll("http://localhost:8080/categorias");
+        const res: ICategoria[] = await backend.getAll("https://backend-jsonserver-1.onrender.com/categorias");
         setCategorias(res);
         setLoaded(true);
     }
@@ -51,7 +51,7 @@ const SucursalForm: FC<IForm> = ({ open, setOpen }) => {
         const idString = String(id);
 
         //Esta sería la forma REAL de hacer la petición
-        const res: ISucursal = await backend.post(`http://localhost:8080/empresas/${idString}/sucursales`, values);
+        const res: ISucursal = await backend.post(`https://backend-jsonserver-1.onrender.com/empresas/${idString}/sucursales`, values);
 
         try {
             //const res: ISucursal = await backend.post(`http://localhost:8080/empresas/${idString}/sucursales`, values);

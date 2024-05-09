@@ -70,7 +70,7 @@ const AManufacturadoForm: FC<IForm> = ({ open, setOpen }) => {
 
 
     const getUnidades = async () => {
-        const res: IUnidadMedida[] = await backend.getAll("http://localhost:8080/unidadesMedidas");
+        const res: IUnidadMedida[] = await backend.getAll("https://backend-jsonserver-1.onrender.com/unidadesMedidas");
         setUnidadesMedida(res);
         setLoaded(true);
     }
@@ -112,7 +112,7 @@ const AManufacturadoForm: FC<IForm> = ({ open, setOpen }) => {
     const [articuloSeleccionado, setArticuloSeleccionado] = useState<IArticuloInsumo>();
 
     const getInsumos = async () => {
-        const res: IArticuloInsumo[] = await backend.getAll("http://localhost:8080/articulosInsumos");
+        const res: IArticuloInsumo[] = await backend.getAll("https://backend-jsonserver-1.onrender.com/articulosInsumos");
         setArticulosInsumo(res);
         //setLoaded(true);
     }

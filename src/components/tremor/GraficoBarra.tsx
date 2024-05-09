@@ -26,27 +26,27 @@ export const GraficoBarra = () => {
 
 
   const getRoles = async () => {
-    const res: IRol[] = await backend.getAll("http://localhost:8080/roles"); // Fetch de roles
+    const res: IRol[] = await backend.getAll("https://backend-jsonserver-1.onrender.com/roles"); // Fetch de roles
     setRoles(res)
   }
 
   const getArtInsumo = async () => {
-    const res: IArticuloInsumo[] = await backend.getAll("http://localhost:8080/articulosInsumos"); // Fetch de articulo insumo
+    const res: IArticuloInsumo[] = await backend.getAll("https://backend-jsonserver-1.onrender.com/articulosInsumos"); // Fetch de articulo insumo
     setArtInsumo(res)
   }
 
   const getPromos = async () => {
-    const res: IPromos[] = await backend.getAll("http://localhost:8080/promociones"); // Fetch de promociones
+    const res: IPromos[] = await backend.getAll("https://backend-jsonserver-1.onrender.com/promociones"); // Fetch de promociones
     setPromos(res)
   }
 
   const getUsuarios = async () => {
-    const res: IUsuario[] = await backend.getAll("http://localhost:8080/usuarios"); // Fetch de usuarios
+    const res: IUsuario[] = await backend.getAll("https://backend-jsonserver-1.onrender.com/usuarios"); // Fetch de usuarios
     setUsuarios(res)
   }
 
   const getArtManufacturado = async () => {
-    const res: IArticuloManufacturado[] = await backend.getAll("http://localhost:8080/articulosManufacturados"); // Fetch de articulo manufacturado
+    const res: IArticuloManufacturado[] = await backend.getAll("https://backend-jsonserver-1.onrender.com/articulosManufacturados"); // Fetch de articulo manufacturado
     setArtManu(res)
   }
 

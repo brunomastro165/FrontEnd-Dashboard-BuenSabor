@@ -68,7 +68,7 @@ const AInsumoForm: FC<IForm> = ({ open, setOpen }) => {
 
 
     const getUnidades = async () => {
-        const res: IUnidadMedida[] = await backend.getAll("http://localhost:8080/unidadesMedidas");
+        const res: IUnidadMedida[] = await backend.getAll("https://backend-jsonserver-1.onrender.com/unidadesMedidas");
         setUnidadesMedida(res);
         setLoaded(true);
     }

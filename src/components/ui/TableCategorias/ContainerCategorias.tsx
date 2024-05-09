@@ -17,7 +17,7 @@ const ContainerCategorias = () => {
 
   useEffect(() => {
     const getCategorias = async () => {
-      const res: ICategoria[] = await backend.getAll("http://localhost:8080/categorias");
+      const res: ICategoria[] = await backend.getAll("https://backend-jsonserver-1.onrender.com/categorias");
       setCategorias(res);
     }
     getCategorias();

@@ -72,7 +72,7 @@ const PromoForm: FC<IForm> = ({ open, setOpen }) => {
     const [articulosSeleccionados, setArticulosSeleccionados] = useState<IArticuloManufacturado[] | undefined>([]);
 
     const getArticulos = async () => {
-        const res: IArticuloManufacturado[] = await backend.getAll("http://localhost:8080/articulosManufacturados");
+        const res: IArticuloManufacturado[] = await backend.getAll("https://backend-jsonserver-1.onrender.com/articulosManufacturados");
         setArticulosManufacturados(res);
         setLoaded(true);
     }

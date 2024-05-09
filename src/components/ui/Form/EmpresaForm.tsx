@@ -33,14 +33,14 @@ const EmpresaForm: FC<IForm> = ({ open, setOpen }) => {
   const [loaded, setLoaded] = useState<boolean>(false);
 
   const getSucursales = async () => {
-    const res: ISucursal[] = await backend.getAll("http://localhost:8080/sucursales");
+    const res: ISucursal[] = await backend.getAll("https://backend-jsonserver-1.onrender.com/sucursales");
     setSucursales(res);
     setLoaded(true);
   }
 
   const postEmpresa = async (data) => {
     try {
-      const res: IEmpresa = await backend.post("http://localhost:8080/empresas", data);
+      const res: IEmpresa = await backend.post("https://backend-jsonserver-1.onrender.com/empresas", data);
       console.log(res)
     } catch (error) {
       console.error(error)

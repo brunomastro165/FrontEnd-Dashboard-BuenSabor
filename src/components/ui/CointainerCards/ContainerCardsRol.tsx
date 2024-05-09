@@ -17,7 +17,7 @@ const ContainerCardsRol = () => {
     const [open, setOpen] = useState<boolean>(false);
 
     const getRol = async () => {
-        const res: IRol[] = await backend.getAll("http://localhost:8080/roles");
+        const res: IRol[] = await backend.getAll("https://backend-jsonserver-1.onrender.com/roles");
         setRoles(res);
     }
 

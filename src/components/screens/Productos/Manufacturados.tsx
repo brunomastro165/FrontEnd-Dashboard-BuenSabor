@@ -62,7 +62,7 @@ const Manufacturados = () => {
 
                 //Buscamos la empresa por el ID que nos traemos con useParams
                 const idEmpresaString = idEmpresa.toString()
-                const response: IEmpresa = await backend.get("http://localhost:8080/empresas", idEmpresaString)
+                const response: IEmpresa = await backend.get("https://backend-jsonserver-1.onrender.com/empresas", idEmpresaString)
 
                 //Una vez dentro de la empresa, buscamos la sucursal seleccionada con useParams
                 const idSucursalNumber = Number(idSucursales)

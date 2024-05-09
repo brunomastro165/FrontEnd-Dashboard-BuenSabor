@@ -29,7 +29,7 @@ const RolForm: FC<IForm> = ({ open, setOpen }) => {
 
     const postRol = async (data) => {
         try {
-            const res: IEmpresa = await backend.post("http://localhost:8080/roles", data);
+            const res: IEmpresa = await backend.post("https://backend-jsonserver-1.onrender.com/roles", data);
             console.log(res)
         } catch (error) {
             console.error(error)

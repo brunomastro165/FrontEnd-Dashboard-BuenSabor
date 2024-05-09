@@ -29,7 +29,7 @@ const Insumos = () => {
     // Uso de la función
     useEffect(() => {
         const fetchInsumo = async () => {
-            const response = await fetchData("http://localhost:8080/articulosInsumos");
+            const response = await fetchData("https://backend-jsonserver-1.onrender.com/articulosInsumos");
             const transformedData = transformData(response);
             setData(transformedData);
             setLoading(true);

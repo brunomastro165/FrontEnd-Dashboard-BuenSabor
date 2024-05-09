@@ -16,7 +16,7 @@ const Inicio = () => {
     const [empresas, setEmpresas] = useState<IEmpresa[]>([]);
 
     const getEmpresas = async () => {
-        const res: IEmpresa[] = await backend.getAll("http://localhost:8080/empresas");
+        const res: IEmpresa[] = await backend.getAll("https://backend-jsonserver-1.onrender.com/empresas");
         setEmpresas(res);
     }
 

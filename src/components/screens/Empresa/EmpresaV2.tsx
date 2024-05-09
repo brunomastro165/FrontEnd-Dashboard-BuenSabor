@@ -21,7 +21,7 @@ const EmpresaV2 = () => {
     const getEmpresa = async () => {
         if (idEmpresa) {
             const idEmpresaString = idEmpresa.toString()
-            const response: IEmpresa = await backend.get("http://localhost:8080/empresas", idEmpresaString)
+            const response: IEmpresa = await backend.get("https://backend-jsonserver-1.onrender.com/empresas", idEmpresaString)
             setEmpresa(response);
         }
     }
