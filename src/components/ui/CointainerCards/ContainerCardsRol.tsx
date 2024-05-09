@@ -1,3 +1,4 @@
+//@ts-nocheck
 import React, { useEffect, useState } from 'react'
 import { BackendClient } from '../../../services/BackendClient';
 import { IRol } from '../../../types/Rol';

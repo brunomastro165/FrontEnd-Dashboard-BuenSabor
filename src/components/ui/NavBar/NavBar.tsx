@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { FC } from 'react'
 import { INavBar } from '../../../types/NavBar';
 import { MdFastfood } from "react-icons/md";

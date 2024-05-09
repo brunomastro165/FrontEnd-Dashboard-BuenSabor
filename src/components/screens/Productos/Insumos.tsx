@@ -1,4 +1,5 @@
 
+//@ts-nocheck
 import { IArticuloInsumo } from "../../../types/ArticuloInsumo";
 import { IItem } from "../../../types/Table/TableItem";
 

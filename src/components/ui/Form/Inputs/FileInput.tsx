@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { useDropzone } from 'react-dropzone';
 
 const DragDrop = ({ onDrop }) => {

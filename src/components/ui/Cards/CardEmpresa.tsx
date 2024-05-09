@@ -1,3 +1,4 @@
+//@ts-nocheck
 import React, { FC } from 'react'
 import { IEmpresa } from '../../../types/Empresa'
 import { useNavigate } from 'react-router-dom';

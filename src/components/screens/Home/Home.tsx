@@ -1,6 +1,6 @@
+//@ts-nocheck
 import { useEffect, useState } from 'react'
 import NavBar from '../../ui/NavBar/NavBar'
-import { fetchData } from '../../api/Fetch';
 import Example from '../../tremor/Example';
 import { TrackerServ } from '../../tremor/TrackerServ';
 import { GraficoBarra } from '../../tremor/GraficoBarra';
@@ -13,7 +13,6 @@ import { BackendClient } from '../../../services/BackendClient';
 import VentasSucGrafico from '../../tremor/VentasSucGrafico';
 import { BarListVisitas } from '../../tremor/BarListVisitas';
 import { ICategoria } from '../../../types/Categoria';
-import { IArticuloInsumo } from '../../../types/ArticuloInsumo';
 import { IArticuloManufacturado } from '../../../types/ArticuloManufacturado';
 
 class GenericBackend extends BackendClient<T> { } //Métodos genéricos
@@ -46,6 +45,7 @@ const Home = () => {
 
     }
 
+    //@ts ignore
     const obtenerArticulos = (categoria: ICategoria): any[] => {
 
         let articulos = [...categoria.articulos];

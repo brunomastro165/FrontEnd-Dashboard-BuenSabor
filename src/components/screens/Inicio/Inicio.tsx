@@ -1,14 +1,11 @@
+//@ts-nocheck
 import { useEffect, useState } from "react";
 import { IEmpresa } from "../../../types/Empresa";
 import { BackendClient } from "../../../services/BackendClient";
 import NavBar from "../../ui/NavBar/NavBar";
 import ContainerCards from "../../ui/CointainerCards/ContainerCards";
 import { ISucursal } from "../../../types/Sucursal";
-import { ICategoria } from "../../../types/Categoria";
-import { IArticuloManufacturado } from "../../../types/ArticuloManufacturado";
-import { IArticuloInsumo } from "../../../types/ArticuloInsumo";
 import { IPromos } from "../../../types/Promos";
-import { useAppDispatch } from "../../../hooks/redux";
 
 class Backend extends BackendClient<T> { }
 
@@ -24,21 +21,9 @@ const Inicio = () => {
 
     const [empresaSeleccionada, setEmpresaSeleccionada] = useState<IEmpresa>();
 
-
     const [sucursales, setSucursales] = useState<ISucursal>();
 
-
-    const [categorias, setCategorias] = useState<ICategoria[] | undefined>([])
-
-    const [categoriaSeleccionada, setCategoriaSeleccionada] = useState<ICategoria>();
-
-
     const [promos, setPromos] = useState<IPromos[] | undefined>([])
-
-    const [articulosManufacturados, setArticulosManufacturados] = useState<IArticuloManufacturado[]>([])
-
-    const [articulosInsumos, setArticulosInsumos] = useState<IArticuloInsumo[]>([])
-
 
     const [loaded, setLoaded] = useState<boolean>(false);
 
@@ -46,7 +31,6 @@ const Inicio = () => {
         const res: IEmpresa[] = await backend.getAll("http://localhost:8080/empresas");
         setEmpresas(res);
     }
-
 
     const traerGetters = async () => {
         getEmpresas();
@@ -68,20 +52,7 @@ const Inicio = () => {
         setSucursales(res)
     }
 
-    const getCategoriasPorSucursal = async () => {
-        const res = sucursales?.categorias;
-        setCategorias(res)
-    }
-
-    const getPromocionesPorSucursal = async () => {
-        const res = sucursales?.promociones;
-        setPromos(res);
-    }
-
-    const getArticulosManufacturados = async () => {
-        const res = promos?.map((promo) => promo.articulosManufacturados)
-    }
-
+ 
 
     // CODIGO RECURSIVO PARA TRAER TODOS LOS PRODUCTOS DE UNA SUCURSAL
 

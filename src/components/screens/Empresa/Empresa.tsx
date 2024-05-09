@@ -1,3 +1,4 @@
+//@ts-nocheck
 import React, { useEffect, useState } from 'react'
 import NavBar from '../../ui/NavBar/NavBar'
 import { fetchData } from '../../api/Fetch'

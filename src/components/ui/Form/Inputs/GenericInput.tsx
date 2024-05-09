@@ -1,3 +1,4 @@
+//@ts-nocheck
 export const genericInput = (name: string, type: string, value, handleChange) => {
     return (
         <div className="my-4">

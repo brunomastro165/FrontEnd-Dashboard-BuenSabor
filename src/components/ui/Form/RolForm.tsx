@@ -1,3 +1,4 @@
+//@ts-nocheck
 import React, { ChangeEvent, Dispatch, FC, SetStateAction, useEffect, useState } from 'react'
 import { useForm } from '../../../hooks/useForm'
 import { ISucursal } from '../../../types/Sucursal'

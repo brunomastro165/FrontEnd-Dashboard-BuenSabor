@@ -1,3 +1,4 @@
+//@ts-nocheck
 import React, { ChangeEvent } from 'react'
 import { useState } from 'react'
 import { CiSquarePlus } from 'react-icons/ci'

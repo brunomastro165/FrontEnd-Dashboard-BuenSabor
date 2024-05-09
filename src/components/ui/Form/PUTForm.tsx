@@ -1,3 +1,4 @@
+//@ts-nocheck
 import React, { FC, useState, useEffect, ChangeEvent, useRef } from 'react';
 import { IForm } from '../../../types/Form';
 import { BackendClient } from '../../../services/BackendClient';

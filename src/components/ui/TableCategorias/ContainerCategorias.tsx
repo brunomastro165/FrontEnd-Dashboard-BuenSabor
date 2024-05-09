@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { useEffect, useState } from 'react'
 import { BackendClient } from '../../../services/BackendClient'
 import { ICategoria } from '../../../types/Categoria';

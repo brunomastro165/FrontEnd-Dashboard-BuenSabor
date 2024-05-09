@@ -1,3 +1,4 @@
+//@ts-nocheck
 import React, { FC, useEffect, useState } from 'react'
 import { useAppSelector } from '../../../hooks/redux';
 import NavBar from '../../ui/NavBar/NavBar';

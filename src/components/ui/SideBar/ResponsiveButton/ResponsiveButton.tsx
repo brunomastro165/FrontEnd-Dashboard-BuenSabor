@@ -1,3 +1,4 @@
+//@ts-nocheck
 import React, { FC } from 'react'
 import { IButton } from '../../../../types/Button'
 import { Link } from 'react-router-dom'

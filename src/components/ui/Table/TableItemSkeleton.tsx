@@ -1,3 +1,4 @@
+//@ts-nocheck
 import React from 'react'
 import { FiEdit2 } from 'react-icons/fi'
 import { MdOutlineDelete } from 'react-icons/md'

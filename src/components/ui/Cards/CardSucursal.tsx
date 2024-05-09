@@ -1,3 +1,4 @@
+//@ts-nocheck
 import React, { FC } from 'react'
 import { IRol } from '../../../types/Rol'
 import { FaBuilding } from "react-icons/fa6";

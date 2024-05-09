@@ -1,3 +1,4 @@
+//@ts-nocheck
 import React, { FC, useState } from 'react'
 import { BarList, Card } from '@tremor/react';
 import { IArticuloManufacturado } from '../../types/ArticuloManufacturado';

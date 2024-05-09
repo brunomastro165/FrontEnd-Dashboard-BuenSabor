@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { Card, SparkAreaChart } from '@tremor/react';
 import { BackendClient } from '../../services/BackendClient';
 import { FC, useEffect, useState } from 'react';

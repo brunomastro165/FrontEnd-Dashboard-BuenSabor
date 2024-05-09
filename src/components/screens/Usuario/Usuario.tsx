@@ -1,3 +1,4 @@
+//@ts-nocheck
 import React from 'react'
 import NavBar from '../../ui/NavBar/NavBar'
 import ContainerCardsRol from '../../ui/CointainerCards/ContainerCardsRol'

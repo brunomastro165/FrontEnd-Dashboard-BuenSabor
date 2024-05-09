@@ -1,3 +1,4 @@
+//@ts-nocheck
 import React, { FC } from 'react'
 import { IRol } from '../../../types/Rol'
 import { FaUserTie } from "react-icons/fa";

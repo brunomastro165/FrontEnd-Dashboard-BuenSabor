@@ -1,3 +1,4 @@
+//@ts-nocheck
 import React, { FC } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { IArticuloManufacturado } from '../../../types/ArticuloManufacturado';

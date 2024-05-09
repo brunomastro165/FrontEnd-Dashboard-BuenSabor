@@ -1,5 +1,4 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { FaLessThanEqual } from "react-icons/fa";
 
 interface InitialState {
   url: string;

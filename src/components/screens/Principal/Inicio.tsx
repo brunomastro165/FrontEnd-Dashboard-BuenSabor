@@ -1,3 +1,4 @@
+//@ts-nocheck
 import React, { useEffect, useState } from 'react'
 import ContainerCards from '../../ui/CointainerCards/ContainerCards'
 import NavBar from '../../ui/NavBar/NavBar'

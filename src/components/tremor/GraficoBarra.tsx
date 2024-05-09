@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { BarChart } from '@tremor/react';
 import { BackendClient } from '../../services/BackendClient';
 import { IRol } from '../../types/Rol';

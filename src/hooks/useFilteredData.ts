@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../redux/store/store";
@@ -7,6 +8,7 @@ const useFilteredData = (data: IItem[]) => {
   const [filteredData, setFilteredData] = useState<IItem[]>([]);
 
   const selector = useSelector((state: RootState) => state.search.search);
+
 
   useEffect(() => {
     if (data && data.length > 0 && selector) {

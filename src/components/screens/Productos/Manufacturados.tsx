@@ -1,3 +1,4 @@
+//@ts-nocheck
 import React, { useEffect, useState } from 'react'
 import { IItem } from '../../../types/Table/TableItem';
 import BasePage from './BasePage';

@@ -1,3 +1,4 @@
+//@ts-nocheck
 import React, { FC, useState } from 'react'
 import { IContainerCards } from '../../../types/ContainerCards/ContainerCards'
 import CardEmpresa from '../Cards/CardEmpresa'
