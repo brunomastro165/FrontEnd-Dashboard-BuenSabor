@@ -1,3 +1,5 @@
+import { IArticuloManufacturadoDetalle } from "./ArticuloManufacturadoDetalle";
+
 export interface IArticuloManufacturado {
   id: number;
   denominacion: string;
@@ -7,6 +9,6 @@ export interface IArticuloManufacturado {
   descripcion: string;
   tiempoEstimadoMinutos: number;
   preparacion: number;
-  articuloManufacturadoDetalles: [];
+  articuloManufacturadoDetalles: IArticuloManufacturadoDetalle[];
   stock: number;
 }

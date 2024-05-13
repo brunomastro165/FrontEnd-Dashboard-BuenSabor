@@ -80,9 +80,6 @@ const EmpresaForm: FC<IForm> = ({ open, setOpen }) => {
               name='sucursales'
               value={sucursal.nombre}
               onChange={(e) => handleSelect(e, sucursales, selectedSucursales, setSelectedSucursales, 'nombre', 'sucursales')}
-            //onClick={() => setSelected(unidad.denominacion)}
-            //className={`peer ${selected === unidad.denominacion ? 'p-12' : ''}`}
-            //checked={medidaSeleccionada?.denominacion === unidad.denominacion}
             />
             <label htmlFor={`sucursales${index}`} className="ml-2">
               {sucursal.nombre}
