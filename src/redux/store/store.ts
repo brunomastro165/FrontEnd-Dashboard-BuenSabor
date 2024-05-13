@@ -5,6 +5,7 @@ import GlobalLogged from "../slices/logged";
 import { persistStore, persistReducer } from "redux-persist";
 import storageSession from "redux-persist/es/storage/session"; // use sessionStorage for web
 import GlobalUrl from "../slices/globalUrl";
+import GlobalUpdated from "../slices/globalUpdate";
 
 const persistConfig = {
   key: "root",
@@ -20,6 +21,7 @@ export const store = configureStore({
     search: GlobalSearch.reducer,
     logged: persistedLogged,
     globalUrl: persistedURL,
+    GlobalUpdated: GlobalUpdated.reducer,
   },
 });
 

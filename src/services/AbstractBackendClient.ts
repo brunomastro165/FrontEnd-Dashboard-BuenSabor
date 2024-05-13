@@ -10,7 +10,7 @@ export abstract class AbstractBackendClient<T> {
     abstract post(url: string, data: T): Promise<T>;
   
     // Método abstracto para actualizar un elemento existente por su ID
-    abstract put(url: string, id: string, data: T): Promise<T>;
+    abstract put(url: string, data: T): Promise<T>;
   
     // Método abstracto para eliminar un elemento por su ID
     abstract delete(url: string, id: string): Promise<void>;

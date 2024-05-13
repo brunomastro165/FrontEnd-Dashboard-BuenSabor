@@ -1,14 +1,18 @@
-//@ts-nocheck
 import React, { ChangeEvent, Dispatch, FC, SetStateAction, useEffect, useState } from 'react'
 import { useForm } from '../../../hooks/useForm'
 import { ISucursal } from '../../../types/Sucursal'
 import { genericInput } from './Inputs/GenericInput';
 import { BackendClient } from '../../../services/BackendClient';
 import { IEmpresa } from '../../../types/Empresa';
+import { IEmpresaShort } from '../../../types/ShortDtos/EmpresaShort';
+import { useAppDispatch } from '../../../hooks/redux';
+import { setGlobalUpdated } from '../../../redux/slices/globalUpdate';
 
 interface IForm {
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
+  data: IEmpresaShort;
+  method: string
 }
 
 type FormState = {
@@ -17,80 +21,71 @@ type FormState = {
   nombre: string;
   razonSocial: string;
   cuil: number;
-  sucursales: ISucursal[] | null;
+  //sucursales: ISucursal[] | null;
 };
 
+//@ts-ignore
 class GenericBackend extends BackendClient<T> { } //Métodos genéricos 
 
-const EmpresaForm: FC<IForm> = ({ open, setOpen }) => {
+const EmpresaForm: FC<IForm> = ({ open, setOpen, data, method }) => {
 
   const backend = new GenericBackend(); //Objeto de BackendClient
 
-  const [sucursales, setSucursales] = useState<ISucursal[]>([]);
+  const dispatch = useAppDispatch();
 
-  const [sucursalSeleccionada, setSucursalSeleccionada] = useState<ISucursal | undefined>();
-
-  const [loaded, setLoaded] = useState<boolean>(false);
-
-  const getSucursales = async () => {
-    const res: ISucursal[] = await backend.getAll("https://backend-jsonserver-1.onrender.com/sucursales");
-    setSucursales(res);
-    setLoaded(true);
-  }
-
-  const postEmpresa = async (data) => {
-    try {
-      const res: IEmpresa = await backend.post("https://backend-jsonserver-1.onrender.com/empresas", data);
-      console.log(res)
-    } catch (error) {
-      console.error(error)
+  const { handleChange, values, resetForm } = useForm<FormState>(data);
+  console.log(data.id)
+  const postEmpresa = async (data: IEmpresaShort) => {
+    if (method === 'POST') {
+      try {
+        const res: IEmpresaShort = await backend.post("http://localhost:8081/empresa/short", data);
+        console.log(res)
+      } catch (error) {
+        console.error(error)
+      }
     }
+    else if (method === 'PUT') {
+      console.log("que")
+      try {
+        const res: IEmpresaShort = await backend.put(`http://localhost:8081/empresa/${data.id}/short`, data);
+        console.log(res)
+      } catch (error) {
+        console.error(error)
+      }
+    }
+
   }
-
-  useEffect(() => {
-    getSucursales();
-  }, [loaded])
-
-  const [selectedSucursales, setSelectedSucursales] = useState<ISucursal[] | undefined>([]);
-
-  const { handleChange, values, resetForm, setValues, handleSelect } = useForm<FormState>({
-    id: 0,
-    nombre: '',
-    razonSocial: '',
-    cuil: 0,
-    sucursales: null
-  })
 
   const handleSubmit = () => {
+    //@ts-ignore 
     postEmpresa(values)
+    dispatch(setGlobalUpdated(true));
     resetForm();
     setOpen(false)
   }
 
-  const sucursalesInput = () => {
-    return (
-      <>
-        <div className='font-Roboto text-xl'>Sucursales disponibles: </div>
-        {sucursales.map((sucursal, index) => (
-          <div key={index}>
-            <input
-              multiple
-              type="checkbox"
-              id={`sucursales${index}`}
-              name='sucursales'
-              value={sucursal.nombre}
-              onChange={(e) => handleSelect(e, sucursales, selectedSucursales, setSelectedSucursales, 'nombre', 'sucursales')}
-            />
-            <label htmlFor={`sucursales${index}`} className="ml-2">
-              {sucursal.nombre}
-            </label>
-          </div>
-        ))}
-      </>
-    )
-  }
-
-  console.log(values);
+  // const sucursalesInput = () => {
+  //   return (
+  //     <>
+  //       <div className='font-Roboto text-xl'>Sucursales disponibles: </div>
+  //       {sucursales.map((sucursal, index) => (
+  //         <div key={index}>
+  //           <input
+  //             multiple
+  //             type="checkbox"
+  //             id={`sucursales${index}`}
+  //             name='sucursales'
+  //             value={sucursal.nombre}
+  //             onChange={(e) => handleSelect(e, sucursales, selectedSucursales, setSelectedSucursales, 'nombre', 'sucursales')}
+  //           />
+  //           <label htmlFor={`sucursales${index}`} className="ml-2">
+  //             {sucursal.nombre}
+  //           </label>
+  //         </div>
+  //       ))}
+  //     </>
+  //   )
+  // }
 
   return (
     <div className='w-full flex flex-col items-center justify-center space-y-4 p-10 '

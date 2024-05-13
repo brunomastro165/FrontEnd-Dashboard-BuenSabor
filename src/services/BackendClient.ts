@@ -70,8 +70,8 @@ export abstract class BackendClient<T> extends AbstractBackendClient<T> {
   }
 
   // Método para actualizar un elemento existente por su ID
-  async put(url: string, id: string, data: T): Promise<T> {
-    const path = `${url}/${id}`;
+  async put(url: string, data: T): Promise<T> {
+    const path = `${url}`;
     const options: RequestInit = {
       method: "PUT",
       headers: {
@@ -84,8 +84,8 @@ export abstract class BackendClient<T> extends AbstractBackendClient<T> {
   }
 
   // Método para eliminar un elemento por su ID
-  async delete(url: string, id: string): Promise<void> {
-    const path = `${url}/${id}`;
+  async delete(url: string): Promise<void> {
+    const path = `${url}`;
     const options: RequestInit = {
       method: "DELETE",
       headers: {

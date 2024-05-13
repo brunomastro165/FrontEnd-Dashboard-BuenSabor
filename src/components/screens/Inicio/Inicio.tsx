@@ -1,4 +1,3 @@
-//@ts-nocheck
 import { useEffect, useState } from "react";
 import { IEmpresa } from "../../../types/Empresa";
 import { BackendClient } from "../../../services/BackendClient";
@@ -6,7 +5,10 @@ import NavBar from "../../ui/NavBar/NavBar";
 import ContainerCards from "../../ui/CointainerCards/ContainerCards";
 import { ISucursal } from "../../../types/Sucursal";
 import { IPromos } from "../../../types/Promos";
+import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
+import { setGlobalUpdated } from "../../../redux/slices/globalUpdate";
 
+//@ts-ignore
 class Backend extends BackendClient<T> { }
 
 const Inicio = () => {
@@ -19,40 +21,32 @@ const Inicio = () => {
 
     const [empresas, setEmpresas] = useState<IEmpresa[]>([]);
 
-    const [empresaSeleccionada, setEmpresaSeleccionada] = useState<IEmpresa>();
+    // const [empresaSeleccionada, setEmpresaSeleccionada] = useState<IEmpresa>();
 
-    const [sucursales, setSucursales] = useState<ISucursal>();
+    // const [sucursales, setSucursales] = useState<ISucursal>();
 
-    const [promos, setPromos] = useState<IPromos[] | undefined>([])
+    // const [promos, setPromos] = useState<IPromos[] | undefined>([])
 
     const [loaded, setLoaded] = useState<boolean>(false);
 
+    const updated = useAppSelector((state) => state.GlobalUpdated.updated);
+
+    const dispatch = useAppDispatch();
+
     const getEmpresas = async () => {
-        const res: IEmpresa[] = await backend.getAll("https://backend-jsonserver-1.onrender.com/empresas");
+        const res: IEmpresa[] = await backend.getAll("http://localhost:8081/empresa");
         setEmpresas(res);
     }
 
     const traerGetters = async () => {
         getEmpresas();
-        getEmpresaById();
-        getSucursalesPorEmpresa();
+        // getEmpresaById();
+        // getSucursalesPorEmpresa();
         //    getCategoriasPorSucursal();
         //  getPromocionesPorSucursal();
         setLoaded(true);
     }
 
-    const getEmpresaById = async () => {
-        const res = empresas.find((empresa) => empresa.id === "1")
-        setEmpresaSeleccionada(res)
-    }
-
-    const getSucursalesPorEmpresa = async () => {
-
-        const res = empresaSeleccionada?.sucursales.find((sucursal) => sucursal.id === 1)
-        setSucursales(res)
-    }
-
- 
 
     // CODIGO RECURSIVO PARA TRAER TODOS LOS PRODUCTOS DE UNA SUCURSAL
 
@@ -82,8 +76,10 @@ const Inicio = () => {
 
     useEffect(() => {
         traerGetters();
+        console.log("hostia joder hostia")
         setLoaded(false)
-    }, [loaded])
+        dispatch(setGlobalUpdated(false));
+    }, [loaded, updated])
 
 
     return (

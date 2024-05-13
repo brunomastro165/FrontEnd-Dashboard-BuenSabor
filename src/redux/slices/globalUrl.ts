@@ -5,7 +5,7 @@ interface InitialState {
 }
 
 const initialState: InitialState = {
-  url: '',
+  url: "",
 };
 
 const GlobalUrl = createSlice({
