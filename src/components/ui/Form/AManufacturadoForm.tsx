@@ -189,48 +189,57 @@ const AManufacturadoForm: FC<IForm> = ({ open, setOpen }) => {
         setFiltroDetalle(articulosInsumo.filter(articulo => articulo.denominacion.toLocaleLowerCase().includes(e.target.value)))
     }
 
-    console.log(filtroDetalle)
-
     const aMDetalle = () => {
         return (
             <div className='h-auto '>
-                <div className='font-Roboto text-xl '>Articulos disponibles: </div>
+                <div className='font-Roboto text-xl '>Insumos disponibles: </div>
                 <label className="input input-bordered flex items-center gap-2 mt-2 ">
                     <input type="text" className="grow border-none focus:ring-0" placeholder="Buscar insumo..."
                         onChange={(e) => handleSearch(e)} />
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" className="w-4 h-4 opacity-70"><path fillRule="evenodd" d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z" clipRule="evenodd" /></svg>
                 </label>
-                <div className='h-36 overflow-y-scroll mt-2 '>
-                    {filtroDetalle.map((articulo: IArticuloInsumo, index: number) => (
-                        <div key={index} className='  rounded p-1 flex justify-between items-center'>
-                            <div className='flex flex-row my-2 items-center'>
-                                <h1 className='w-24'>{articulo.denominacion}</h1>
-                                <input
-                                    className=' btn text-white bg-green-600 hover:bg-green-500 size-10'
-                                    value={'+'}
-                                    type="button"
-                                    id={`cantidad${index}`}
-                                    name='cantidad'
-                                    min="0"
-                                    onClick={() => handleQuantityChange(1, articulo.denominacion)}
-                                //onChange={(e) => handleQuantityChange(e, articulo.denominacion)}
-                                />
-                                <input
-                                    className=' btn size-10 ml-2'
-                                    value={'-'}
-                                    type="button"
-                                    id={`cantidad${index}`}
-                                    name='cantidad'
-                                    min="0"
-                                    //@ts-ignore
-                                    onClick={() => handleQuantityChange(0, articulo.denominacion)}
-                                />
-                            </div>
-                            {/*Por si no queda claro, esto me pone la cantidad actual de cada articulo */}
-                            <div className=''>
-                                <h1 className='ml-2 w-20'>{aMDetalles.find(e => e.articuloInsumo?.denominacion === articulo.denominacion)?.cantidad}</h1>
-                            </div>
-                        </div>
+                <div className='h-36 overflow-y-scroll mt-2 flex flex-row '>
+                    <div>
+                        {filtroDetalle
+                            .filter((articulo: IArticuloInsumo) => articulo.esParaElaborar)
+                            .map((articulo: IArticuloInsumo, index: number) => (
+                                <div key={index} className='  rounded p-1 flex justify-between items-center'>
+                                    <div className='flex flex-row my-2 items-center'>
+                                        <h1 className='w-24'>{articulo.denominacion}</h1>
+                                        <input
+                                            className=' btn text-white bg-green-600 hover:bg-green-500 size-10'
+                                            value={'+'}
+                                            type="button"
+                                            id={`cantidad${index}`}
+                                            name='cantidad'
+                                            min="0"
+                                            onClick={() => handleQuantityChange(1, articulo.denominacion)}
+                                        />
+                                        <input
+                                            className=' btn size-10 ml-2'
+                                            value={'-'}
+                                            type="button"
+                                            id={`cantidad${index}`}
+                                            name='cantidad'
+                                            min="0"
+                                            //@ts-ignore
+                                            onClick={() => handleQuantityChange(0, articulo.denominacion)}
+                                        />
+                                    </div>
+                                    {/*Por si no queda claro, esto me pone la cantidad actual de cada articulo */}
+                                    <div className=''>
+                                        <h1 className='ml-2 w-20'>{aMDetalles.find(e => e.articuloInsumo?.denominacion === articulo.denominacion)?.cantidad}</h1>
+                                    </div>
+                                </div>
+                            ))}
+                    </div>
+
+                </div>
+
+                <div className='flex flex-wrap my-2 h-auto '>
+                    {aMDetalles?.map((detalle) => (
+                        <div className='text-xl px-2 py-1 rounded mr-2 bg-green-400 w-max text-white '>{detalle.articuloInsumo?.denominacion}
+                            <span className='text-xs mx-2'>x</span>{detalle.cantidad}</div>
                     ))}
                 </div>
             </div>

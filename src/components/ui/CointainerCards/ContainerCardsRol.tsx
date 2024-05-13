@@ -1,4 +1,3 @@
-//@ts-nocheck
 import React, { useEffect, useState } from 'react'
 import { BackendClient } from '../../../services/BackendClient';
 import { IRol } from '../../../types/Rol';
@@ -6,6 +5,7 @@ import CardRol from '../Cards/CardRol';
 import EmpresaForm from '../Form/EmpresaForm';
 import RolForm from '../Form/RolForm';
 
+//@ts-ignore
 class Backend extends BackendClient<T> { }
 
 const ContainerCardsRol = () => {

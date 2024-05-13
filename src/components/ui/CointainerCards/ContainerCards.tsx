@@ -1,4 +1,3 @@
-//@ts-nocheck
 import React, { FC, useState } from 'react'
 import { IContainerCards } from '../../../types/ContainerCards/ContainerCards'
 import CardEmpresa from '../Cards/CardEmpresa'
@@ -12,10 +11,6 @@ const ContainerCards: FC<IContainerCards> = ({ data }) => {
 
     return (
         <>
-            <div className='w-full flex justify-center items-center'>
-                <button className='text-2xl font-Roboto btn btn-success bg-white text-green-600 hover:text-white  hover:bg-green-600'
-                    onClick={() => setOpen(true)}>Agregar empresa +</button>
-            </div>
 
             <div className='m-5 flex items-center justify-center  h-screen p-2'>
                 <div className='flex mb-24 flex-wrap items-center w-full justify-around'>
@@ -29,6 +24,16 @@ const ContainerCards: FC<IContainerCards> = ({ data }) => {
                             key={index}
                         />
                     ))}
+                    <>
+                        <div className=' rounded-xl shadow-xl w-full h-64 md:w-80 flex flex-col items-center justify-center  cursor-pointer
+        active:scale-95 transition-all hover:shadow-2xl m-5 group  border-dashed hover:border-red-600 border-gray-600 border-2 group'
+                            onClick={() => setOpen(true)}
+                        >
+                            <h1 className='font-Roboto text-gray-600 group-hover:text-red-600 text-2xl'>Agregar empresa</h1>
+                            <h2 className='text-6xl text-gray-600 group-hover:text-red-600'>+</h2>
+
+                        </div>
+                    </>
                 </div>
             </div>
 

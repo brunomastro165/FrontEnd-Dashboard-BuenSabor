@@ -1,4 +1,3 @@
-//@ts-nocheck
 import React, { FC, useState } from 'react'
 import { IContainerCards } from '../../../types/ContainerCards/ContainerCards'
 import CardEmpresa from '../Cards/CardEmpresa'
@@ -8,6 +7,8 @@ import { useNavigate } from 'react-router-dom';
 import CardSucursal from '../Cards/CardSucursal';
 import { ISucursal } from '../../../types/Sucursal';
 import SucursalForm from '../Form/SucursalForm';
+import { MdEdit } from 'react-icons/md';
+import { FaBuilding, FaTrashAlt } from 'react-icons/fa';
 
 interface IContainerCardSucursal {
     data: ISucursal[]
@@ -19,27 +20,36 @@ const ContainerCardSucursal: FC<IContainerCardSucursal> = ({ data }) => {
 
     return (
         <>
-            <div className='w-full flex justify-center items-center'>
-                <button className='text-2xl font-Roboto btn btn-success bg-white text-green-600 hover:text-white  hover:bg-green-600'
-                    onClick={() => setOpen(true)}>Agregar sucursal +</button>
-            </div>
-
             <div className='m-5 flex items-center justify-center  h-screen p-2'>
-                <div className='flex mb-24 flex-wrap items-center w-full justify-around'>
-                    {data.map((sucursal, index) => (
+                <div className='flex mb-24 flex-wrap items-center w-full justify-center'>
 
-                        <CardSucursal
-                            categorias={sucursal.categorias}
-                            domicilio={sucursal.domicilio}
-                            horarioApertura={sucursal.horarioApertura}
-                            horarioCierre={sucursal.horarioCierre}
-                            id={sucursal.id}
-                            nombre={sucursal.nombre}
-                            promociones={sucursal.promociones}
-                            imagen={sucursal.imagen}
-                            key={sucursal.id}
-                        />
-                    ))}
+                    {data.length >= 1 &&
+                        data.map((sucursal, index) => (
+                            <CardSucursal
+                                categorias={sucursal.categorias}
+                                domicilio={sucursal.domicilio}
+                                horarioApertura={sucursal.horarioApertura}
+                                horarioCierre={sucursal.horarioCierre}
+                                id={sucursal.id}
+                                nombre={sucursal.nombre}
+                                promociones={sucursal.promociones}
+                                imagen={sucursal.imagen}
+                                key={sucursal.id}
+                            />
+                        ))
+                    }
+
+                    <>
+                        <div className=' rounded-xl shadow-xl w-full h-96 md:w-80 flex flex-col items-center justify-center  cursor-pointer
+        active:scale-95 transition-all hover:shadow-2xl m-5 group border border-dashed hover:border-red-600 border-gray-600 border-2 group'
+                            onClick={() => setOpen(true)}
+                        >
+                            <h1 className='font-Roboto text-gray-600 group-hover:text-red-600 text-2xl'>Agregar sucursal</h1>
+                            <h2 className='text-6xl text-gray-600 group-hover:text-red-600'>+</h2>
+
+                        </div>
+                    </>
+
                 </div>
             </div>
 
