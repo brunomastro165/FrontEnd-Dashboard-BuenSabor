@@ -3,79 +3,73 @@ import React, { ChangeEvent, Dispatch, FC, SetStateAction, useEffect, useState }
 import { useForm } from '../../../hooks/useForm'
 import { ISucursal } from '../../../types/Sucursal'
 import { genericInput } from './Inputs/GenericInput';
+import { booleanInput } from './Inputs/GenericInput';
 import { BackendClient } from '../../../services/BackendClient';
 import { IEmpresa } from '../../../types/Empresa';
 import { ICategoria } from '../../../types/Categoria';
 import { useParams } from 'react-router-dom';
+import { ISucursalShort } from '../../../types/ShortDtos/SucursalShort';
+import { useAppDispatch } from '../../../hooks/redux';
+import { setGlobalUpdated } from '../../../redux/slices/globalUpdate';
 
 interface IForm {
     open: boolean;
     setOpen: Dispatch<SetStateAction<boolean>>;
+    data: ISucursalShort;
+    method: string
 }
+// id: number;
+// eliminado: boolean;
+// nombre: string;
+// horarioApertura: string;
+// horarioCierre: string;
+// casaMatriz: boolean;
 
 type FormState = {
     [key: string]: any;
     id: number;
+    eliminado: boolean;
     nombre: string;
     horarioApertura: string;
     horarioCierre: string;
-    domicilio: string; //FALTA TIPAR
-    categorias: ICategoria[] | null;
-    promociones: string; //FALTA TIPAR
+    casaMatriz: boolean;
+    idEmpresa: number;
 };
 
+//@ts-ignore
 class GenericBackend extends BackendClient<T> { } //Métodos genéricos 
 
-const SucursalForm: FC<IForm> = ({ open, setOpen }) => {
+const SucursalForm: FC<IForm> = ({ open, setOpen, data, method }) => {
+
+    const dispatch = useAppDispatch()
 
     const backend = new GenericBackend(); //Objeto de BackendClient
 
-    const { id } = useParams(); //Uso useParams para averiguar en qué empresa estamos parados
+    console.log(data.idEmpresa)
 
-    console.log(id);
-
-    const [categorias, setCategorias] = useState<ICategoria[]>([]);
-
-    const [categoriaSeleccionada, setCategoriaSeleccionada] = useState<ICategoria | undefined>();
-
-    const [loaded, setLoaded] = useState<boolean>(false);
-
-    const getSucursales = async () => {
-        const res: ICategoria[] = await backend.getAll("https://backend-jsonserver-1.onrender.com/categorias");
-        setCategorias(res);
-        setLoaded(true);
-    }
-
-    const postSucursal = async (data) => {
-
-        const idString = String(id);
-
-        //Esta sería la forma REAL de hacer la petición
-        const res: ISucursal = await backend.post(`https://backend-jsonserver-1.onrender.com/empresas/${idString}/sucursales`, values);
-
-        try {
-            //const res: ISucursal = await backend.post(`http://localhost:8080/empresas/${idString}/sucursales`, values);
-            console.log()
-        } catch (error) {
-            console.error(error)
+    const postSucursal = async (data: ISucursalShort) => {
+        if (method === 'POST') {
+            try {
+                //TODO CAMBIAR ENDPOINT
+                //const res: IEmpresaShort = await backend.post("http://localhost:8081/empresa/short", data);
+                const res: IEmpresaShort = await backend.post("http://localhost:8081/sucursal", data);
+                dispatch(setGlobalUpdated(true))
+            } catch (error) {
+                console.error(error)
+            }
+        }
+        else if (method === 'PUT') {
+            try {
+                //TODO CAMBIAR ENDPOINT
+                const res: IEmpresaShort = await backend.put(`http://localhost:8081/sucursal/${data.id}`, data);
+                dispatch(setGlobalUpdated(true))
+            } catch (error) {
+                console.error(error)
+            }
         }
     }
 
-    useEffect(() => {
-        getSucursales();
-    }, [loaded])
-
-    const [selectedCategorias, setSelecetedCategorias] = useState<ICategoria[] | undefined>([]);
-
-    const { handleChange, values, resetForm, setValues, handleSelect } = useForm<FormState>({
-        id: 0,
-        nombre: '',
-        horarioApertura: '',
-        horarioCierre: '',
-        domicilio: '', //FALTA TIPAR
-        categorias: null,
-        promociones: '', //FALTA TIPAR (No sabría cómo meter esto)
-    })
+    const { handleChange, values, resetForm, setValues, handleSelect } = useForm<FormState>(data)
 
     const handleSubmit = () => {
         postSucursal(values)
@@ -83,31 +77,31 @@ const SucursalForm: FC<IForm> = ({ open, setOpen }) => {
         setOpen(false)
     }
 
-    const categoriasInput = () => {
-        return (
-            <>
-                <div className='font-Roboto text-xl'>Categorias disponibles: </div>
-                {categorias.map((categoria, index) => (
-                    <div key={index}>
-                        <input
-                            multiple
-                            type="checkbox"
-                            id={`categoria${index}`}
-                            name='categorias'
-                            value={categoria.denominacion}
-                            onChange={(e) => handleSelect(e, categorias, selectedCategorias, setSelecetedCategorias, 'denominacion', 'categorias')}
-                        //onClick={() => setSelected(unidad.denominacion)}
-                        //className={`peer ${selected === unidad.denominacion ? 'p-12' : ''}`}
-                        //checked={medidaSeleccionada?.denominacion === unidad.denominacion}
-                        />
-                        <label htmlFor={`sucursales${index}`} className="ml-2">
-                            {categoria.denominacion}
-                        </label>
-                    </div>
-                ))}
-            </>
-        )
-    }
+    // const categoriasInput = () => {
+    //     return (
+    //         <>
+    //             <div className='font-Roboto text-xl'>Categorias disponibles: </div>
+    //             {categorias.map((categoria, index) => (
+    //                 <div key={index}>
+    //                     <input
+    //                         multiple
+    //                         type="checkbox"
+    //                         id={`categoria${index}`}
+    //                         name='categorias'
+    //                         value={categoria.denominacion}
+    //                         onChange={(e) => handleSelect(e, categorias, selectedCategorias, setSelecetedCategorias, 'denominacion', 'categorias')}
+    //                     //onClick={() => setSelected(unidad.denominacion)}
+    //                     //className={`peer ${selected === unidad.denominacion ? 'p-12' : ''}`}
+    //                     //checked={medidaSeleccionada?.denominacion === unidad.denominacion}
+    //                     />
+    //                     <label htmlFor={`sucursales${index}`} className="ml-2">
+    //                         {categoria.denominacion}
+    //                     </label>
+    //                 </div>
+    //             ))}
+    //         </>
+    //     )
+    // }
 
     console.log(values);
 
@@ -127,10 +121,9 @@ const SucursalForm: FC<IForm> = ({ open, setOpen }) => {
 
                 <div className="relative z-0 w-full mb-5 group">
                     {genericInput('nombre', "text", values.nombre, handleChange)} {/* Nombre */}
-                    {genericInput('domicilio', 'text', values.domicilio, handleChange)} {/* Razón Social */}
                     {genericInput('horarioApertura', 'time', values.horarioApertura, handleChange)}
                     {genericInput('horarioCierre', 'time', values.horarioCierre, handleChange)}
-                    {categoriasInput()}
+                    {booleanInput('casaMatriz', 'boolean', values.casaMatriz, handleChange, 'Es casa matriz', 'No es casa matriz')}
                 </div>
 
             </div>

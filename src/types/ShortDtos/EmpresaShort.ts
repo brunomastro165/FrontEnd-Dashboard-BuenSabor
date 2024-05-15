@@ -3,4 +3,5 @@ export interface IEmpresaShort {
   nombre: string;
   razonSocial: string;
   cuil: number;
+  eliminado: boolean;
 }

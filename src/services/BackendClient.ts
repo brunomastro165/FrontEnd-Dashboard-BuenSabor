@@ -95,3 +95,6 @@ export abstract class BackendClient<T> extends AbstractBackendClient<T> {
     await this.request(path, options);
   }
 }
+
+export class BackendMethods<T> extends BackendClient<T> {}
+

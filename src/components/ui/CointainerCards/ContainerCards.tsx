@@ -15,6 +15,7 @@ const ContainerCards: FC<IContainerCards> = ({ data }) => {
         nombre: '',
         razonSocial: '',
         cuil: 0,
+        eliminado: false,
     });
 
     return (

@@ -222,7 +222,6 @@ const AManufacturadoForm: FC<IForm> = ({ open, setOpen }) => {
                                             id={`cantidad${index}`}
                                             name='cantidad'
                                             min="0"
-                                            //@ts-ignore
                                             onClick={() => handleQuantityChange(0, articulo.denominacion)}
                                         />
                                     </div>

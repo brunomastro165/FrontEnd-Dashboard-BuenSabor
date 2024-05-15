@@ -76,7 +76,6 @@ const Inicio = () => {
 
     useEffect(() => {
         traerGetters();
-        console.log("hostia joder hostia")
         setLoaded(false)
         dispatch(setGlobalUpdated(false));
     }, [loaded, updated])

@@ -16,11 +16,9 @@ export const genericInput = (name: string, type: string, value, handleChange) =>
                 placeholder=""
                 className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-red-600 peer 
                 transition-colors" />
-
         </div>
     )
 }
-
 
 export const fileInput = (key: string, handleFileChange) => {
     return (
@@ -45,15 +43,15 @@ export const fileInput = (key: string, handleFileChange) => {
     )
 }
 
-export const booleanInput = (name: string, type: string, value, handleChange) => {
+export const booleanInput = (name: string, type: string, value, handleChange, text1: string, text2: string) => {
     return (
-        <div className="my-4">
+        <div className="">
             <label htmlFor={name} className="font-Roboto text-xl first-letter:uppercase">
                 <h1 className="first-letter:uppercase">{name}</h1>
             </label>
-            <div className="flex flex-col space-y-4">
+            <div className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:justify-around pt-4">
                 <label className={`btn font-Roboto text-lg ${document.getElementById(`${name}-true`)?.checked ? 'bg-green-500 text-white' : ''}`}>
-                    Si, es para elaborar
+                    <h1>{text1}</h1>
                     <input
                         className="hidden"
                         type="radio"
@@ -65,7 +63,7 @@ export const booleanInput = (name: string, type: string, value, handleChange) =>
                     />
                 </label>
                 <label className={`btn font-Roboto text-lg ${document.getElementById(`${name}-false`)?.checked ? 'bg-red-500 text-white' : ''}`}>
-                    No, no es para elaborar
+                    <h1>{text2}</h1>
                     <input
                         className="hidden"
                         type="radio"

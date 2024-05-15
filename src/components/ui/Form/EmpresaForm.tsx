@@ -24,8 +24,7 @@ type FormState = {
   //sucursales: ISucursal[] | null;
 };
 
-//@ts-ignore
-class GenericBackend extends BackendClient<T> { } //Métodos genéricos 
+class GenericBackend extends BackendClient<IEmpresaShort> { } //Métodos genéricos 
 
 const EmpresaForm: FC<IForm> = ({ open, setOpen, data, method }) => {
 
@@ -34,27 +33,33 @@ const EmpresaForm: FC<IForm> = ({ open, setOpen, data, method }) => {
   const dispatch = useAppDispatch();
 
   const { handleChange, values, resetForm } = useForm<FormState>(data);
-  console.log(data.id)
+
   const postEmpresa = async (data: IEmpresaShort) => {
     if (method === 'POST') {
       try {
-        const res: IEmpresaShort = await backend.post("http://localhost:8081/empresa/short", data);
-        console.log(res)
+        //const res: IEmpresaShort = await backend.post("http://localhost:8081/empresa/short", data);
+        const res: IEmpresaShort = await backend.post("http://localhost:8081/empresa", data);
+        setTimeout(() => {
+          dispatch(setGlobalUpdated(true))
+        }, 500);
+
+        console.log("QUE")
       } catch (error) {
         console.error(error)
       }
     }
     else if (method === 'PUT') {
-      console.log("que")
       try {
-        const res: IEmpresaShort = await backend.put(`http://localhost:8081/empresa/${data.id}/short`, data);
-        console.log(res)
+        //const res: IEmpresaShort = await backend.put(`http://localhost:8081/empresa/${data.id}/short`, data);
+        const res: IEmpresaShort = await backend.put(`http://localhost:8081/empresa/${data.id}`, data);
+        dispatch(setGlobalUpdated(true))
       } catch (error) {
         console.error(error)
       }
     }
-
   }
+
+  console.log(values)
 
   const handleSubmit = () => {
     //@ts-ignore 

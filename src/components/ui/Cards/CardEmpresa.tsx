@@ -12,8 +12,7 @@ import { setGlobalUpdated } from '../../../redux/slices/globalUpdate';
 import { useAppDispatch } from '../../../hooks/redux';
 import EmpresaForm from '../Form/EmpresaForm';
 
-//@ts-ignore
-class GenericBackend extends BackendClient<T> { } //Métodos genéricos 
+class GenericBackend extends BackendClient<IEmpresa> { } //Métodos genéricos 
 
 const CardEmpresa: FC<IEmpresa> = ({ cuil, id, nombre, razonSocial, sucursales }) => {
 
@@ -38,7 +37,7 @@ const CardEmpresa: FC<IEmpresa> = ({ cuil, id, nombre, razonSocial, sucursales }
 
     const deleteEmpresa = async () => {
         try {
-            const res: IEmpresaShort = await backend.delete(`http://localhost:8081/empresa/${id}/short`);
+            const res: IEmpresaShort = await backend.delete(`http://localhost:8081/empresa/${id}`);
             console.log(res)
         } catch (error) {
             console.error(error)
@@ -113,7 +112,6 @@ const CardEmpresa: FC<IEmpresa> = ({ cuil, id, nombre, razonSocial, sucursales }
             {modalEliminar && (confirmarEliminacion())}
 
             {modalEditar && open && (editarEmpresa())}
-
 
         </>
     )

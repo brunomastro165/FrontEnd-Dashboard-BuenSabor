@@ -128,7 +128,7 @@ const AInsumoForm: FC<IForm> = ({ open, setOpen }) => {
                     {genericInput('stockMaximo', 'number', values.stockMaximo, handleChange)}
                     {unidadInput()}
                     <DragDrop onDrop={handleFileDrop} />
-                    {booleanInput('esParaElaborar', 'boolean', values.esParaElaborar, handleChange)}
+                    {booleanInput('esParaElaborar', 'boolean', values.esParaElaborar, handleChange, 'Es para elaborar', 'No es para elaborar')}
                 </div>
 
             </div>
