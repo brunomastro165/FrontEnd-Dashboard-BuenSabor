@@ -184,7 +184,7 @@ const AManufacturadoForm: FC<IForm> = ({ open, setOpen, method }) => {
 
     const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
         console.log(e.target.value)
-        setFiltroDetalle(articulosInsumo.filter(articulo => articulo.denominacion.toLocaleLowerCase().includes(e.target.value)))
+        setFiltroDetalle(articulosInsumo.filter(articulo => articulo.denominacion.toLocaleLowerCase().includes(e.target.value.toLocaleLowerCase())))
     }
 
     const aMDetalle = () => {

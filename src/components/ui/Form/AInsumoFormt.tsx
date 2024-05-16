@@ -78,6 +78,8 @@ const AInsumoForm: FC<IForm> = ({ open, setOpen }) => {
                             id={`unidadMedida${index}`}
                             name='unidadMedida'
                             value={unidad.denominacion}
+
+                            //@ts-ignore
                             onChange={(e) => handleChoose(e, unidadesMedida, setUnidadSeleccionada, 'denominacion', 'unidadMedida')}
                         //onClick={() => setSelected(unidad.denominacion)}
                         //className={`peer ${selected === unidad.denominacion ? 'p-12' : ''}`}

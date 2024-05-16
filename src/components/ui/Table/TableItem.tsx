@@ -1,4 +1,3 @@
-//@ts-nocheck
 import React, { FC, useState } from 'react'
 import { FiEdit2 } from "react-icons/fi";
 import { MdOutlineDelete } from "react-icons/md";
@@ -10,6 +9,8 @@ import AManufacturadoForm from '../Form/AManufacturadoForm';
 import AInsumoForm from '../Form/AInsumoFormt';
 import UsuarioForm from '../Form/UsuarioForm';
 import SucursalForm from '../Form/SucursalForm';
+import { useAppDispatch } from '../../../hooks/redux';
+import { setGlobalInitialValues } from '../../../redux/slices/globalInitialValues';
 
 const TableItem: FC<IItem> = ({ id, denominacion, param2, param3, param4, endpoint }) => {
 
@@ -17,8 +18,13 @@ const TableItem: FC<IItem> = ({ id, denominacion, param2, param3, param4, endpoi
 
     const [open, setOpen] = useState<boolean>(false);
 
+    const dispatch = useAppDispatch();
+
     const fetchIndividual = async () => {
         const response = await fetchData(`https://backend-jsonserver-1.onrender.com/${endpoint}/${id}`);
+
+        //Le asignamos los valores iniciales al formulario con los obtenidos
+        dispatch(setGlobalInitialValues(response))
         setData(response);
         setOpen(true);
     }
@@ -45,11 +51,11 @@ const TableItem: FC<IItem> = ({ id, denominacion, param2, param3, param4, endpoi
                         </div>
                         <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
                         <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle  w-full md:w-1/2">
-                            {endpoint === "empresas" && <EmpresaForm open={open} setOpen={setOpen} />}
-                            {endpoint === "articulosManufacturados" && <AManufacturadoForm open={open} setOpen={setOpen} />}
-                            {endpoint === "articulosInsumos" && <AInsumoForm open={open} setOpen={setOpen} />}
+                            {/* {endpoint === "empresas" && <EmpresaForm open={open} setOpen={setOpen} />} */}
+                            {endpoint === "articulosManufacturados" && <AManufacturadoForm open={open} setOpen={setOpen} method='PUT' />}
+                            {endpoint === "articulosInsumos" && <AInsumoForm open={open} setOpen={setOpen} method='PUT' />}
                             {endpoint === "usuarios" && <UsuarioForm open={open} setOpen={setOpen} />}
-                            {endpoint === "sucursal" && <SucursalForm open={open} setOpen={setOpen} />}
+                            {/* {endpoint === "sucursal" && <SucursalForm open={open} setOpen={setOpen} />} */}
                         </div>
                     </div>
                 </div>

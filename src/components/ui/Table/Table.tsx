@@ -11,7 +11,8 @@ import AManufacturadoForm from '../Form/AManufacturadoForm'
 import AInsumoForm from '../Form/AInsumoFormt'
 import UsuarioForm from '../Form/UsuarioForm'
 import SucursalForm from '../Form/SucursalForm'
-import GlobalInitialValues from '../../../redux/slices/globalInitialValues'
+import GlobalInitialValues, { setGlobalInitialValues } from '../../../redux/slices/globalInitialValues'
+import { useAppDispatch } from '../../../hooks/redux'
 
 
 const Table: FC<ITable> = ({ items, row1, row2, row3, row4, row5, endpoint }) => {
@@ -25,10 +26,27 @@ const Table: FC<ITable> = ({ items, row1, row2, row3, row4, row5, endpoint }) =>
 
     const [initialValues, setInitialValues] = useState<any>();
 
+    const dispatch = useAppDispatch();
+
     const fetchForm = async () => {
         //Fetchea el primer ID del tipo de dato del endpocint
         //const response = await fetchData(`http://localhost:8080/${endpoint}`);
         // setData(response);
+        if (endpoint === "articulosManufacturados") {
+            dispatch(setGlobalInitialValues({
+                id: 0,
+                denominacion: '',
+                descripcion: '',
+                articuloManufacturadoDetalles: [],
+                imagenes: [], //Podría tiparse
+                precioVenta: 0,
+                preparacion: '',
+                tiempoEstimadoEnMinutos: 0,
+                stock: 0,
+                unidadMedida: {},
+            }))
+        }
+
         setOpen(true);
     }
 
@@ -89,8 +107,8 @@ const Table: FC<ITable> = ({ items, row1, row2, row3, row4, row5, endpoint }) =>
                         <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
                         <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle  w-full md:w-1/2">
                             {/* {endpoint === "empresas" && <EmpresaForm open={open} setOpen={setOpen} method='POST' />} */}
-                            {endpoint === "articulosManufacturados" && <AManufacturadoForm open={open} setOpen={setOpen} method='POST'/>}
-                            {endpoint === "articulosInsumos" && <AInsumoForm open={open} setOpen={setOpen} />}
+                            {endpoint === "articulosManufacturados" && <AManufacturadoForm open={open} setOpen={setOpen} method='POST' />}
+                            {endpoint === "articulosInsumos" && <AInsumoForm open={open} setOpen={setOpen} method='POST' />}
                             {endpoint === "usuarios" && <UsuarioForm open={open} setOpen={setOpen} />}
                             {/* {endpoint === "sucursal" && <SucursalForm open={open} setOpen={setOpen} method='POST' />} */}
                         </div>

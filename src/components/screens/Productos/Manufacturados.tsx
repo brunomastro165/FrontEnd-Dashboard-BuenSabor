@@ -29,7 +29,6 @@ const Manufacturados = () => {
 
     const dispatch = useAppDispatch();
 
-
     //const [categorias, setCategorias] = useState<ICategoria[]>([])
 
     //Esto es para normalizar los datos de IArticuloInsumo que traiga el Fetch, asi la tabla puede entender
@@ -48,34 +47,34 @@ const Manufacturados = () => {
 
     //CODIGO RECURSIVO PARA TRAER TODOS LOS PRODUCTOS DE UNA SUCURSAL
 
-    const obtenerArticulos = (categoria: ICategoria): any[] => {
+    // const obtenerArticulos = (categoria: ICategoria): any[] => {
 
-        let articulos = [...categoria.articulos];
+    //     let articulos = [...categoria.articulos];
 
-        categoria.subCategorias.forEach(subCategoria => {
-            articulos = [...articulos, ...obtenerArticulos(subCategoria)];
-        });
+    //     categoria.subCategorias.forEach(subCategoria => {
+    //         articulos = [...articulos, ...obtenerArticulos(subCategoria)];
+    //     });
 
-        return articulos;
-    }
+    //     return articulos;
+    // }
 
     useEffect(() => {
 
         //seteamos los valores iniciales que va a tener el formulario genérico
-        dispatch(setGlobalInitialValues(
-            {
-                id: 0,
-                denominacion: '',
-                descripcion: '',
-                articuloManufacturadoDetalles: [],
-                imagenes: [], //Podría tiparse
-                precioVenta: 0,
-                preparacion: '',
-                tiempoEstimadoEnMinutos: 0,
-                stock: 0,
-                unidadMedida: {},
-            }
-        ))
+        // dispatch(setGlobalInitialValues(
+        //     {
+        //         id: 0,
+        //         denominacion: '',
+        //         descripcion: '',
+        //         articuloManufacturadoDetalles: [],
+        //         imagenes: [], //Podría tiparse
+        //         precioVenta: 0,
+        //         preparacion: '',
+        //         tiempoEstimadoEnMinutos: 0,
+        //         stock: 0,
+        //         unidadMedida: {},
+        //     }
+        // ))
 
         const fetchManufacturado = async () => {
 
