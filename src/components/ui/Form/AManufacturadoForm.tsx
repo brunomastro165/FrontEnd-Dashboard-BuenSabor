@@ -6,10 +6,14 @@ import { IUnidadMedida } from '../../../types/UnidadMedida';
 import DragDrop from './Inputs/FileInput';
 import { IArticuloInsumo } from '../../../types/ArticuloInsumo';
 import { IArticuloManufacturadoDetalle } from '../../../types/ArticuloManufacturadoDetalle';
+import { IArticuloManufacturado } from '../../../types/ArticuloManufacturado';
+import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
+import { setGlobalUpdated } from '../../../redux/slices/globalUpdate';
 
 interface IForm {
     open: boolean;
     setOpen: Dispatch<SetStateAction<boolean>>;
+    method: string,
 }
 
 type FormState = {
@@ -20,7 +24,7 @@ type FormState = {
     imagenes: [] //Falta tipar
     unidadMedida: IUnidadMedida;
     descripcion: string,
-    tiempoEstimadoEnMinutos: number,
+    tiempoEstimadoMinutos: number,
     preparacion: string,
     articuloManufacturadoDetalles: IArticuloManufacturadoDetalle[] //Falta tipar
     stock: number,
@@ -29,52 +33,44 @@ type FormState = {
 //@ts-ignore
 class GenericBackend extends BackendClient<T> { } //Métodos genéricos 
 
-const AManufacturadoForm: FC<IForm> = ({ open, setOpen }) => {
+const AManufacturadoForm: FC<IForm> = ({ open, setOpen, method }) => {
 
     const backend = new GenericBackend(); //Objeto de BackendClient
 
     const [loaded, setLoaded] = useState<boolean>(false);
 
-    //const [selectedSucursales, setSelectedSucursales] = useState<ISucursal[] | undefined>([]);
+    //Traemos los initial values que van a ser pasados hacia el formulario 
+    const initialValues = useAppSelector((state) => state.GlobalInitialValues.data);
 
-    const { handleChange, values, resetForm, handleSelect, handleChoose, handleFileDrop, setValues } = useForm<FormState>({
-        id: 0,
-        denominacion: '',
-        descripcion: '',
-        articuloManufacturadoDetalles: [
-            {
-                id: 0,
-                cantidad: 0,
-                articuloInsumo: {
-                    denominacion: '',
-                    esParaElaborar: false,
-                    id: 0,
-                    imagenes: [],
-                    precioCompra: 0,
-                    precioVenta: 0,
-                    stockActual: 0,
-                    stockMaximo: 0,
-                    unidadMedida: {
-                        id: 0,
-                        denominacion: '',
-                    }
-                }
+    const dispatch = useAppDispatch(); //Handler de redux
+
+    const { handleChange, values, resetForm, handleSelect, handleChoose, handleFileDrop, setValues } = useForm<FormState>(initialValues) //Form genérico
+
+    const postArticulo = async (data: IArticuloManufacturado) => {
+        if (method === 'POST') {
+            try {
+                //TODO Cambiar el método para que coincida con el backend
+                const res: IArticuloManufacturado = await backend.post("http://localhost:8081/ArticuloManufacturado", data);
+                dispatch(setGlobalUpdated(true))
+            } catch (error) {
+                console.error(error)
             }
-        ],
-        imagenes: [], //Podría tiparse
-        precioVenta: 0,
-        preparacion: '',
-        tiempoEstimadoEnMinutos: 0,
-        stock: 0,
-        unidadMedida: {
-            id: 0,
-            denominacion: '',
         }
-    })
+        else if (method === 'PUT') {
+            try {
+                //const res: IEmpresaShort = await backend.put(`http://localhost:8081/empresa/${data.id}/short`, data);
+                const res: IArticuloManufacturado = await backend.put(`http://localhost:8081/empresa/${data.id}`, data);
+                dispatch(setGlobalUpdated(true))
+            } catch (error) {
+                console.error(error)
+            }
+        }
+    }
 
     const handleSubmit = () => {
         console.log("A")
         console.log(values);
+        //postArticulo(values);
         resetForm();
     }
 
@@ -129,6 +125,8 @@ const AManufacturadoForm: FC<IForm> = ({ open, setOpen }) => {
     const [articulosInsumo, setArticulosInsumo] = useState<IArticuloInsumo[]>([])
 
     const [articuloSeleccionado, setArticuloSeleccionado] = useState<IArticuloInsumo>();
+
+    //const [incrementalId,]
 
     const getInsumos = async () => {
         const res: IArticuloInsumo[] = await backend.getAll("https://backend-jsonserver-1.onrender.com/articulosInsumos");
@@ -263,8 +261,8 @@ const AManufacturadoForm: FC<IForm> = ({ open, setOpen }) => {
                     {genericInput('descripcion', 'text', values.descripcion, handleChange)}
                     {genericInput('precioVenta', 'number', values.precioVenta, handleChange)}
                     {genericInput('preparacion', 'text', values.preparacion, handleChange)}
-                    {genericInput('tiempoEstimadoEnMinutos', 'number', values.tiempoEstimadoEnMinutos, handleChange)}
-                    {genericInput('stock', 'number', values.tiempoEstimadoEnMinutos, handleChange)}
+                    {genericInput('tiempoEstimadoMinutos', 'number', values.tiempoEstimadoMinutos, handleChange)}
+                    {genericInput('stock', 'number', values.stock, handleChange)}
                     {unidadInput()}
                     <DragDrop onDrop={handleFileDrop} />
                     {aMDetalle()}

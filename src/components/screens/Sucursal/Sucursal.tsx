@@ -8,6 +8,8 @@ import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { IEmpresaShort } from '../../../types/ShortDtos/EmpresaShort';
 import { IEmpresa } from '../../../types/Empresa';
 import { setGlobalUpdated } from '../../../redux/slices/globalUpdate';
+import NavBar from '../../ui/NavBar/NavBar';
+
 const Sucursal = () => {
 
     const CRUD = new BackendMethods<IEmpresa>();
@@ -15,6 +17,12 @@ const Sucursal = () => {
     const { idEmpresa } = useParams();
 
     const [sucursales, setSucursales] = useState<ISucursalShort[]>([]);
+
+    const location = useLocation();
+
+    const nombreEmpresa = location.state.data as string;
+
+    console.log(nombreEmpresa)
 
     const dispatch = useAppDispatch();
 
@@ -47,10 +55,14 @@ const Sucursal = () => {
 
 
     return (
-        <div className='mt-24'>
-            <ContainerCardSucursal
-                data={sucursales} />
-        </div>
+        <>
+            <NavBar title={`Sucursales de ${nombreEmpresa}`} />
+            <div className='mt-24'>
+
+                <ContainerCardSucursal
+                    data={sucursales} />
+            </div>
+        </>
     )
 }
 

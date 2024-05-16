@@ -1,5 +1,5 @@
-
-//@ts-nocheck
+import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
+import { setGlobalInitialValues } from "../../../redux/slices/globalInitialValues";
 import { IArticuloInsumo } from "../../../types/ArticuloInsumo";
 import { IItem } from "../../../types/Table/TableItem";
 
@@ -16,7 +16,13 @@ const Insumos = () => {
     //Esto es para normalizar los datos de IArticuloInsumo que traiga el Fetch, asi la tabla puede entender
     //distintos tipos de datos.
 
+    const initialValues = useAppSelector((state) => state.GlobalInitialValues.data);
+
+    const dispatch = useAppDispatch();
+
+
     const transformData = (insumosData: IArticuloInsumo[]): IItem[] => {
+        //@ts-ignore
         return insumosData.map(insumo => ({
             id: insumo.id,
             denominacion: insumo.denominacion,
@@ -28,6 +34,26 @@ const Insumos = () => {
 
     // Uso de la función
     useEffect(() => {
+
+        //seteamos los valores iniciales que va a tener el formulario genérico
+        dispatch(setGlobalInitialValues(
+            {
+                id: 0,
+                denominacion: '',
+                precioVenta: 0,
+                precioCompra: 0,
+                imagenes: [],
+                stockActual: 0,
+                stockMaximo: 0,
+                esParaElaborar: true,
+                unidadMedida: {
+                    id: 0,
+                    denominacion: '',
+                },
+            }
+        ))
+
+
         const fetchInsumo = async () => {
             const response = await fetchData("https://backend-jsonserver-1.onrender.com/articulosInsumos");
             const transformedData = transformData(response);

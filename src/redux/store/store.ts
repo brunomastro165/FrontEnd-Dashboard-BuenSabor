@@ -6,15 +6,25 @@ import { persistStore, persistReducer } from "redux-persist";
 import storageSession from "redux-persist/es/storage/session"; // use sessionStorage for web
 import GlobalUrl from "../slices/globalUrl";
 import GlobalUpdated from "../slices/globalUpdate";
+import GlobalInitialValues from "../slices/globalInitialValues";
 
 const persistConfig = {
   key: "root",
   storage: storageSession,
 };
 
+//Esta sección sirve para poder persistir los datos entre sesiones, asi no hay problemas de pérdida de datos o errores
+
 const persistedLogged = persistReducer(persistConfig, GlobalLogged.reducer);
 
 const persistedURL = persistReducer(persistConfig, GlobalUrl.reducer);
+
+const persistedValues = persistReducer(
+  persistConfig,
+  GlobalInitialValues.reducer
+);
+
+//
 
 export const store = configureStore({
   reducer: {
@@ -22,6 +32,7 @@ export const store = configureStore({
     logged: persistedLogged,
     globalUrl: persistedURL,
     GlobalUpdated: GlobalUpdated.reducer,
+    GlobalInitialValues: persistedValues,
   },
 });
 

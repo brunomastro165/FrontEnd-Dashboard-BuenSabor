@@ -48,9 +48,9 @@ const CardEmpresa: FC<IEmpresa> = ({ cuil, id, nombre, razonSocial, sucursales }
 
     const navigate = useNavigate();
 
-    function pushCard(data: ISucursal[]) {
+    function pushCard(nombre: string) {
         const idEmpresa = id;
-        navigate(`/${idEmpresa}/sucursales`, { state: { data } })
+        navigate(`/${idEmpresa}/sucursales`, { state: { nombre } })
     }
 
     function confirmarEliminacion() {
@@ -103,7 +103,7 @@ const CardEmpresa: FC<IEmpresa> = ({ cuil, id, nombre, razonSocial, sucursales }
                     <h1 className="text-xl font-normal mt-5 mb-3">{nombre}</h1>
                     <h1 className="text-xl font-extralight mb-5">{razonSocial}</h1>
                     <h1 className='font-Roboto text-lg px-2 bg- rounded text-red-600 hover:text-white hover:bg-red-600 transition-all hover:scale-105'
-                        onClick={() => pushCard(sucursales)}>
+                        onClick={() => pushCard(nombre)}>
                         Ingresar
                     </h1>
                 </div>

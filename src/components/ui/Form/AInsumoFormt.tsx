@@ -1,4 +1,3 @@
-//@ts-nocheck
 import React, { ChangeEvent, Dispatch, FC, SetStateAction, useEffect, useState } from 'react'
 import { useForm } from '../../../hooks/useForm'
 import { ISucursal } from '../../../types/Sucursal'
@@ -8,10 +7,12 @@ import { IEmpresa } from '../../../types/Empresa';
 import { IUnidadMedida } from '../../../types/UnidadMedida';
 import DragDrop from './Inputs/FileInput';
 import { IArticuloInsumo } from '../../../types/ArticuloInsumo';
+import { useAppSelector } from '../../../hooks/redux';
 
 interface IForm {
     open: boolean;
     setOpen: Dispatch<SetStateAction<boolean>>;
+    method: string,
 }
 
 type FormState = {
@@ -27,38 +28,26 @@ type FormState = {
     esParaElaborar: boolean,
 };
 
+//@ts-ignore
 class GenericBackend extends BackendClient<T> { } //Métodos genéricos 
 
 const AInsumoForm: FC<IForm> = ({ open, setOpen }) => {
 
     const backend = new GenericBackend(); //Objeto de BackendClient
 
-
     const [loaded, setLoaded] = useState<boolean>(false);
 
     //const [selectedSucursales, setSelectedSucursales] = useState<ISucursal[] | undefined>([]);
 
-    const { handleChange, values, resetForm, handleChoose, handleFileDrop } = useForm<FormState>({
-        id: 0,
-        denominacion: '',
-        precioVenta: 0,
-        precioCompra: 0,
-        imagenes: [], //Falta tipar
-        stockActual: 0,
-        stockMaximo: 0,
-        esParaElaborar: true,
-        unidadMedida: {
-            id: 0,
-            denominacion: '',
-        },
-    })
+    const initialValues = useAppSelector((state) => state.GlobalInitialValues.data);
+
+    const { handleChange, values, resetForm, handleChoose, handleFileDrop } = useForm<FormState>(initialValues)
 
     const handleSubmit = () => {
         console.log("A")
         console.log(values);
         resetForm();
     }
-
 
     //Manejo del input UNIDAD MEDIDA
 
