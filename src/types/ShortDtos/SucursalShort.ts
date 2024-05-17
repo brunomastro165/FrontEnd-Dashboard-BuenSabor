@@ -6,7 +6,7 @@ export interface ISucursalShort {
   nombre: string;
   horarioApertura: string;
   horarioCierre: string;
-  casaMatriz: boolean;
+  esCasaMatriz: boolean;
   idEmpresa: number;
-  domicilio: IDomicilio | undefined;
+  domicilio: IDomicilio;
 }

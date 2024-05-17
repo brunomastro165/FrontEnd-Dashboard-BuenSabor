@@ -35,7 +35,7 @@ type FormState = {
     nombre: string;
     horarioApertura: string;
     horarioCierre: string;
-    casaMatriz: boolean;
+    esCasaMatriz: boolean;
     idEmpresa: number;
     domicilio: IDomicilio;
 };
@@ -245,19 +245,23 @@ const SucursalForm: FC<IForm> = ({ open, setOpen, data, method }) => {
     console.log(values)
 
     const handleChangeLocalidad = () => {
+
+        //@ts-ignore
         setValues(prevState => ({
             ...prevState,
             domicilio: {
                 ...prevState.domicilio,
-                localidad: 1,
+                idLocalidad: selectedLocalidad?.id,
             }
         }));
     };
 
     useEffect(() => {
         handleChangeLocalidad();
-    }, [])
+    }, [selectedLocalidad])
 
+    console.log("que")
+    console.log(selectedLocalidad?.id)
 
     return (
         <div className='w-full flex flex-col items-center justify-center space-y-4 p-10 '

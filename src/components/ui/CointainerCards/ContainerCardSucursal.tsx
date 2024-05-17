@@ -27,7 +27,7 @@ const ContainerCardSucursal: FC<IContainerCardSucursal> = ({ data }) => {
     const [initialValues, setInitialValues] = useState<ISucursalShort>({
         id: 0,
         nombre: '',
-        casaMatriz: false,
+        esCasaMatriz: false,
         horarioApertura: '',
         horarioCierre: '',
         eliminado: false,
@@ -41,8 +41,7 @@ const ContainerCardSucursal: FC<IContainerCardSucursal> = ({ data }) => {
             cp: 0,
             nroDpto: 0,
             piso: 0,
-            idLocalidad: 1
-
+            idLocalidad: 0
         }
     });
 
@@ -55,13 +54,13 @@ const ContainerCardSucursal: FC<IContainerCardSucursal> = ({ data }) => {
 
     return (
         <>
-            <div className='m-5 flex items-center justify-center  h-screen p-2'>
+            <div className='m-5 flex items-center justify-center min-h-screen h-auto p-2'>
                 <div className='flex mb-24 flex-wrap items-center w-full justify-center'>
 
                     {data.length >= 1 &&
                         data.map((sucursal, index) => (
                             <CardSucursal
-                                casaMatriz={sucursal.casaMatriz}
+                                esCasaMatriz={sucursal.esCasaMatriz}
                                 eliminado={sucursal.eliminado}
                                 horarioApertura={sucursal.horarioApertura}
                                 horarioCierre={sucursal.horarioCierre}
@@ -76,7 +75,7 @@ const ContainerCardSucursal: FC<IContainerCardSucursal> = ({ data }) => {
 
                     <>
                         <div className=' rounded-xl  w-full h-96 md:w-80 flex flex-col items-center justify-center  cursor-pointer
-        active:scale-95 transition-all hover:shadow-2xl m-5 group  border-dashed hover:border-red-600 border-gray-600 border-2 group'
+        active:scale-95 transition-all m-5 group  border-dashed hover:border-red-600 border-gray-600 border-2 group'
                             onClick={() => setOpen(true)}
                         >
                             <h1 className='font-Roboto text-gray-600 group-hover:text-red-600 text-2xl'>Agregar sucursal</h1>

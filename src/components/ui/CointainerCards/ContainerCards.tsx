@@ -21,7 +21,7 @@ const ContainerCards: FC<IContainerCards> = ({ data }) => {
     return (
         <>
 
-            <div className='m-5 flex items-center justify-center  h-screen p-2'>
+            <div className='m-5 flex items-center justify-center  h-auto min-h-screen p-2'>
                 <div className='flex mb-24 flex-wrap items-center w-full justify-around'>
                     {data.map((empresa, index) => (
                         <CardEmpresa

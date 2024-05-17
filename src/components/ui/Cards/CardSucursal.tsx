@@ -17,7 +17,7 @@ import SucursalForm from '../Form/SucursalForm';
 
 class GenericBackend extends BackendClient<ISucursalShort> { } //Métodos genéricos 
 
-const CardSucursal: FC<ISucursalShort> = ({ casaMatriz, eliminado, horarioApertura, horarioCierre, id, nombre }) => {
+const CardSucursal: FC<ISucursalShort> = ({ esCasaMatriz, eliminado, horarioApertura, horarioCierre, id, nombre, domicilio }) => {
 
     const CRUD = new GenericBackend();
 
@@ -34,11 +34,12 @@ const CardSucursal: FC<ISucursalShort> = ({ casaMatriz, eliminado, horarioApertu
     const [initialValues, setInitialValues] = useState<ISucursalShort>({
         id: id,
         nombre: nombre,
-        casaMatriz: casaMatriz,
+        esCasaMatriz: esCasaMatriz,
         horarioApertura: horarioApertura,
         horarioCierre: horarioCierre,
         eliminado: eliminado,
         idEmpresa: idEmpresaNumber,
+        domicilio: domicilio
     });
 
     useEffect(() => {
@@ -108,11 +109,19 @@ const CardSucursal: FC<ISucursalShort> = ({ casaMatriz, eliminado, horarioApertu
             <div className=' rounded-xl shadow-xl w-full md:h-auto md:w-80 flex flex-col items-center justify-start  cursor-pointer
         active:scale-95 transition-all hover:shadow-2xl m-5 group '
             >
-                <div className='flex justify-between m-4 w-full px-4  text-2xl'>
-                    <MdEdit className=' text-blue-500' onClick={() => setOpen(true)} />
-                    <FaTrashAlt className='text-red-600' onClick={() => setModalEliminar(true)} />
+                <div className='flex justify-between m-4 w-full px-4 py-4 items-center bg-gray-100 rounded-t text-2xl'>
+
+                    <button className='p-2 group' onClick={() => pushCard()}>
+                        <h1 className='text-lg'>Ingresar</h1>
+                        <div className='w-full bg-gray-500 h-0.5 group-hover:bg-red-600' />
+                    </button>
+
+                    <div className='flex'>
+                        <MdEdit className=' text-gray-500 hover:text-blue-600 transition-all mx-4 text-2xl' onClick={() => setOpen(true)} />
+                        <FaTrashAlt className='text-gray-500 hover:text-red-600 transition-all text-2xl' onClick={() => setModalEliminar(true)} />
+                    </div>
                 </div>
-                <div className='p-5 flex flex-col items-center justify-start rounded' onClick={() => pushCard()}>
+                <div className='p-5 flex flex-col items-center justify-start rounded'>
                     <FaBuilding className='group-hover:text-red-600 text-gray-600 p-1 transition-all text-5xl text-center' />
                     <h1 className='text-xl font-extralight mt-5 mb-3'>{nombre}</h1>
                 </div>

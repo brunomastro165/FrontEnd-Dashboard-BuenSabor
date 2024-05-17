@@ -32,18 +32,12 @@ const Sucursal = () => {
 
         const fetchSucursal = async () => { //Método para llamar a todas las sucursales por su empresa
             try {
-                // const res: ISucursalShort[] = await CRUD.getAll(`http://localhost:8081/empresa/${idEmpresa}/sucursales`)
-
-                //@ts-ignore
-                const res: IEmpresa = await CRUD.getAll(`http://localhost:8081/empresa/sucursales/${idEmpresa}`)
+                const res: IEmpresa = await CRUD.getById(`http://localhost:8081/empresa/sucursales/${idEmpresa}`)
                 const sucursales = res.sucursales;
-
                 dispatch(setGlobalUpdated(false))
 
-                //@ts-ignore TODO verificar bien esto
+                //@ts-ignore | esto es porque le estoy asignando una sucursal completa a una sucursal short
                 setSucursales(sucursales);
-
-                console.log(res)
             } catch (error) {
                 console.error(error)
             }
@@ -58,7 +52,6 @@ const Sucursal = () => {
         <>
             <NavBar title={`Sucursales de ${nombreEmpresa}`} />
             <div className='mt-24'>
-
                 <ContainerCardSucursal
                     data={sucursales} />
             </div>
