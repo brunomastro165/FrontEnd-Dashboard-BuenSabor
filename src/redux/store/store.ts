@@ -36,7 +36,7 @@ export const store = configureStore({
   },
 });
 
-let persistor = persistStore(store);
+persistStore(store); //Llamamos a persistStore y le pasamos nuestra store, de esta manera la persistimos en sessionstorage
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState>;

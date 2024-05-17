@@ -154,7 +154,7 @@ const SucursalForm: FC<IForm> = ({ open, setOpen, data, method }) => {
             <div className='w-full'>
                 <div className='font-Roboto text-xl mt-2 w-full '>Provincias disponibles: </div>
                 <select
-                    className='border-red-600 border rounded-md w-full'
+                    className=' border rounded-md w-full'
                     id="provincia"
                     name="provincia"
                     value={selectedProvincia?.nombre || ''}
@@ -165,7 +165,7 @@ const SucursalForm: FC<IForm> = ({ open, setOpen, data, method }) => {
                     }}
                 >
                     {provincias.map((provincia, index) => (
-                        <option key={index} value={provincia.nombre} className=''>
+                        <option key={index} value={provincia.nombre} className='rounded-full hover:bg-red-600'>
                             {provincia.nombre}
                         </option>
                     ))}
@@ -179,7 +179,7 @@ const SucursalForm: FC<IForm> = ({ open, setOpen, data, method }) => {
             <div className='w-full'>
                 <div className='font-Roboto text-xl mt-2 w-full'>Localidades disponibles: </div>
                 <select
-                    className='border-red-600 border rounded-md w-full'
+                    className=' border rounded-md w-full'
                     id="localidad"
                     name="localidad"
                     value={selectedLocalidad?.nombre || ''}
@@ -200,32 +200,6 @@ const SucursalForm: FC<IForm> = ({ open, setOpen, data, method }) => {
             </div>
         )
     }
-
-    const domicilioInput = () => {
-        return (
-            <div className='w-full'>
-                <div className='font-Roboto text-xl mt-2 w-full '>Provincias disponibles: </div>
-                <select
-                    className='border-red-600 border rounded-md w-full'
-                    id="provincia"
-                    name="provincia"
-                    value={selectedProvincia?.nombre || ''}
-                    onChange={(e) => {
-                        const selectedValue = e.target.value;
-                        const selectedProvincia = provincias.find((provincia) => provincia.nombre === selectedValue);
-                        setSelectedProvincia(selectedProvincia);
-                    }}
-                >
-                    {provincias.map((provincia, index) => (
-                        <option key={index} value={provincia.nombre} className=''>
-                            {provincia.nombre}
-                        </option>
-                    ))}
-                </select>
-            </div>
-        )
-    }
-
 
     const [seccionDomicilio, setSeccionDomicilio] = useState<boolean>(false);
 
@@ -260,9 +234,6 @@ const SucursalForm: FC<IForm> = ({ open, setOpen, data, method }) => {
         handleChangeLocalidad();
     }, [selectedLocalidad])
 
-    console.log("que")
-    console.log(selectedLocalidad?.id)
-
     return (
         <div className='w-full flex flex-col items-center justify-center space-y-4 p-10 '
             onSubmit={handleSubmit}
@@ -275,23 +246,27 @@ const SucursalForm: FC<IForm> = ({ open, setOpen, data, method }) => {
             <h2 className='text-3xl font-Roboto'>Agrega tu sucursal</h2>
             {/*Mapeo los objetos que traigo al formulario, dependiendo de cada objeto, genero un input distinto */}
 
-            <div className={`w-full ${seccionDomicilio && 'hidden'}`}>
+            <div className={`w-full ${seccionDomicilio && 'hidden'}`}
+                style={{ height: '50vh' }}>
 
                 <div className="relative z-0 w-full mb-5 group">
-
-                    {genericInput('nombre', "text", values.nombre, handleChange)} {/* Nombre */}
+                    <div className='w-full flex'>
+                        {genericInput('nombre', "text", values.nombre, handleChange)} {/* Nombre */}
+                    </div>
                     <div className='flex justify-center w-full'>
                         {genericInput('horarioApertura', 'time', values.horarioApertura, handleChange)}
                         {genericInput('horarioCierre', 'time', values.horarioCierre, handleChange)}
                     </div>
 
-                    {booleanInput('casaMatriz', 'boolean', values.casaMatriz, handleChange, 'Es casa matriz', 'No es casa matriz')}
+                    <div className='w-full flex justify-center '>
+                        {booleanInput('casaMatriz', 'boolean', values.casaMatriz, handleChange, 'Es casa matriz', 'No es casa matriz')}
+                    </div>
+
                 </div>
-
-
             </div>
 
-            <div className={`${seccionDomicilio || 'hidden'}`}>
+            <div className={`${seccionDomicilio || 'hidden'}`}
+                style={{ height: '50vh' }}>
                 <div className={`flex justify-center w-full space-x-5 mt-4`}>
                     {provinciaInput()}
                     {selectedProvincia && localidadInput()}
@@ -310,7 +285,7 @@ const SucursalForm: FC<IForm> = ({ open, setOpen, data, method }) => {
                         </div>
 
                         <div className='flex justify-center w-full'>
-                            {genericInput('nombre', 'string', values.domicilio?.nombre, handleChangeDomicilio)}
+                            {genericInput('nombre', 'text', values.domicilio?.nombre, handleChangeDomicilio)}
                             {genericInput('piso', 'number', values.domicilio?.piso, handleChangeDomicilio)}
                         </div>
                     </>
@@ -318,13 +293,17 @@ const SucursalForm: FC<IForm> = ({ open, setOpen, data, method }) => {
 
             </div>
 
+            <div className='py-4'></div>
+            <button onClick={() => setSeccionDomicilio(!seccionDomicilio)} className='bg-red-600 p-2  rounded btn text-white font-Roboto'>
+                {seccionDomicilio ? 'Volver' : 'Agregar domicilio'}
+            </button>
 
+            {values.domicilio &&
+                <button className='bg-red-600 text-white px-4 py-2 rounded-md active:scale-95 transition-all'
+                    onClick={handleSubmit}>
+                    Enviar
+                </button>}
 
-
-            <button onClick={() => setSeccionDomicilio(!seccionDomicilio)}>Agregar domicilio</button>
-
-            <button className='bg-red-600 text-white px-4 py-2 rounded-md active:scale-95 transition-all'
-                onClick={handleSubmit}>Enviar</button>
         </div>
     )
 }

@@ -37,7 +37,7 @@ const ContainerCardSucursal: FC<IContainerCardSucursal> = ({ data }) => {
             calle: '',
             numero: 0,
             eliminado: false,
-            nombre: 'string',
+            nombre: '',
             cp: 0,
             nroDpto: 0,
             piso: 0,

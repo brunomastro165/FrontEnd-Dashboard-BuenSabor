@@ -107,8 +107,10 @@ const EmpresaForm: FC<IForm> = ({ open, setOpen, data, method }) => {
       <div className='w-full'>
 
         <div className="relative z-0 w-full mb-5 group">
-          {genericInput('nombre', "text", values.nombre, handleChange)} {/* Nombre */}
-          {genericInput('razonSocial', 'text', values.razonSocial, handleChange)} {/* Razón Social */}
+          <div className='flex w-full md:space-x-4'>
+            {genericInput('nombre', "text", values.nombre, handleChange)} {/* Nombre */}
+            {genericInput('razonSocial', 'text', values.razonSocial, handleChange)} {/* Razón Social */}
+          </div>
           {genericInput('cuil', 'number', values.cuil, handleChange)} {/* Cuil */}
           {/* {sucursalesInput()} No va a hacer falta*/}
 
