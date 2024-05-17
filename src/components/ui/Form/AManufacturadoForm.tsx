@@ -28,6 +28,7 @@ type FormState = {
     preparacion: string,
     articuloManufacturadoDetalles: IArticuloManufacturadoDetalle[] //Falta tipar
     stock: number,
+    eliminado: boolean,
 };
 
 //@ts-ignore
@@ -46,12 +47,14 @@ const AManufacturadoForm: FC<IForm> = ({ open, setOpen, method }) => {
 
     const { handleChange, values, resetForm, handleSelect, handleChoose, handleFileDrop, setValues } = useForm<FormState>(initialValues) //Form genérico
 
-    const postArticulo = async (data: IArticuloManufacturado) => {
+    const postArticulo = async (data: any) => {
         if (method === 'POST') {
             try {
                 //TODO Cambiar el método para que coincida con el backend
                 const res: IArticuloManufacturado = await backend.post("http://localhost:8081/ArticuloManufacturado", data);
                 dispatch(setGlobalUpdated(true))
+                setOpen(false);
+                console.log(res)
             } catch (error) {
                 console.error(error)
             }
@@ -59,8 +62,9 @@ const AManufacturadoForm: FC<IForm> = ({ open, setOpen, method }) => {
         else if (method === 'PUT') {
             try {
                 //const res: IEmpresaShort = await backend.put(`http://localhost:8081/empresa/${data.id}/short`, data);
-                const res: IArticuloManufacturado = await backend.put(`http://localhost:8081/empresa/${data.id}`, data);
+                const res: IArticuloManufacturado = await backend.put(`http://localhost:8081/ArticuloManufacturado/${data.id}`, data);
                 dispatch(setGlobalUpdated(true))
+                setOpen(false);
             } catch (error) {
                 console.error(error)
             }
@@ -70,7 +74,7 @@ const AManufacturadoForm: FC<IForm> = ({ open, setOpen, method }) => {
     const handleSubmit = () => {
         console.log("A")
         console.log(values);
-        //postArticulo(values);
+        postArticulo(values);
         resetForm();
     }
 
@@ -84,7 +88,7 @@ const AManufacturadoForm: FC<IForm> = ({ open, setOpen, method }) => {
 
 
     const getUnidades = async () => {
-        const res: IUnidadMedida[] = await backend.getAll("https://backend-jsonserver-1.onrender.com/unidadesMedidas");
+        const res: IUnidadMedida[] = await backend.getAll("http://localhost:8081/UnidadMedida");
         setUnidadesMedida(res);
         setLoaded(true);
     }
@@ -129,7 +133,7 @@ const AManufacturadoForm: FC<IForm> = ({ open, setOpen, method }) => {
     //const [incrementalId,]
 
     const getInsumos = async () => {
-        const res: IArticuloInsumo[] = await backend.getAll("https://backend-jsonserver-1.onrender.com/articulosInsumos");
+        const res: IArticuloInsumo[] = await backend.getAll("http://localhost:8081/ArticuloInsumo");
         setArticulosInsumo(res);
         setFiltroDetalle(res);
         //setLoaded(true);

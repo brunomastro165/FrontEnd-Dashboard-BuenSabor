@@ -1,11 +1,11 @@
-//@ts-nocheck
 import React, { FC, useEffect, useState } from 'react'
-import { useAppSelector } from '../../../hooks/redux';
+import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import NavBar from '../../ui/NavBar/NavBar';
 import SearchBar from '../../ui/SearchBar/SearchBar';
 import Table from '../../ui/Table/Table';
 import { IBasePage } from '../../../types/BasePage';
 import { IItem } from '../../../types/Table/TableItem';
+import { setGlobalUpdated } from '../../../redux/slices/globalUpdate';
 
 
 const ITEMS_PER_PAGE = 15;
@@ -18,11 +18,16 @@ const BasePage: FC<IBasePage> = ({ data, title, loading, row1, row2, row3, row4,
 
     const selector = useAppSelector((state) => state.search.search);
 
+    const update = useAppSelector((state) => state.GlobalUpdated.updated)
+
+    const dispatch = useAppDispatch()
+
     useEffect(() => {
         setCurrentPage(1);
         const filteredInsumosData = data.filter(d => d.denominacion.toLowerCase().includes(selector.toLowerCase()));
         setFilteredData(filteredInsumosData);
-    }, [selector, loading]);
+        dispatch(setGlobalUpdated(false))
+    }, [selector, loading, data]);
 
     //Lógica de la paginación
 

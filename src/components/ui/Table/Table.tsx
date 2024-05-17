@@ -44,6 +44,7 @@ const Table: FC<ITable> = ({ items, row1, row2, row3, row4, row5, endpoint }) =>
                 tiempoEstimadoEnMinutos: 0,
                 stock: 0,
                 unidadMedida: {},
+                eliminado: false,
             }))
         }
 

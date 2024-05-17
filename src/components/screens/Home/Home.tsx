@@ -1,11 +1,10 @@
-//@ts-nocheck
 import { useEffect, useState } from 'react'
 import NavBar from '../../ui/NavBar/NavBar'
 import Example from '../../tremor/Example';
 import { TrackerServ } from '../../tremor/TrackerServ';
 import { GraficoBarra } from '../../tremor/GraficoBarra';
 import { useParams } from 'react-router-dom';
-import { useAppDispatch } from '../../../hooks/redux';
+import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { setGlobalUrl } from '../../../redux/slices/globalUrl';
 import { ISucursal } from '../../../types/Sucursal';
 import { IEmpresa } from '../../../types/Empresa';
@@ -14,7 +13,10 @@ import VentasSucGrafico from '../../tremor/VentasSucGrafico';
 import { BarListVisitas } from '../../tremor/BarListVisitas';
 import { ICategoria } from '../../../types/Categoria';
 import { IArticuloManufacturado } from '../../../types/ArticuloManufacturado';
+import GlobalLogged, { setLogged } from '../../../redux/slices/logged';
 
+
+//@ts-ignore
 class GenericBackend extends BackendClient<T> { } //Métodos genéricos
 
 const backend = new GenericBackend();
@@ -56,9 +58,12 @@ const Home = () => {
 
         return articulos;
     }
+    const logged = useAppSelector((state) => state.logged.logged)
 
+    console.log(logged)
     useEffect(() => {
-        dispatch(setGlobalUrl(url))
+
+        dispatch(setGlobalUrl(url), setLogged(true))
     }, [loading])
 
 

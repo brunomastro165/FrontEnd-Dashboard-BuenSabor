@@ -11,8 +11,17 @@ import UsuarioForm from '../Form/UsuarioForm';
 import SucursalForm from '../Form/SucursalForm';
 import { useAppDispatch } from '../../../hooks/redux';
 import { setGlobalInitialValues } from '../../../redux/slices/globalInitialValues';
+import { BackendClient } from '../../../services/BackendClient';
+import { setGlobalUpdated } from '../../../redux/slices/globalUpdate';
+import { IArticuloManufacturado } from '../../../types/ArticuloManufacturado';
+
+
+//@ts-ignore
+class GenericBackend extends BackendClient<T> { } //Métodos genéricos 
 
 const TableItem: FC<IItem> = ({ id, denominacion, param2, param3, param4, endpoint }) => {
+
+    const CRUD = new GenericBackend();
 
     const [data, setData] = useState([]);
 
@@ -21,12 +30,23 @@ const TableItem: FC<IItem> = ({ id, denominacion, param2, param3, param4, endpoi
     const dispatch = useAppDispatch();
 
     const fetchIndividual = async () => {
-        const response = await fetchData(`https://backend-jsonserver-1.onrender.com/${endpoint}/${id}`);
+        const response: IArticuloManufacturado = await fetchData(`http://localhost:8081/ArticuloManufacturado/${id}`);
 
         //Le asignamos los valores iniciales al formulario con los obtenidos
         dispatch(setGlobalInitialValues(response))
-        setData(response);
+        //setData(response);
         setOpen(true);
+    }
+
+    const deleteLogico = async () => {
+
+        dispatch(setGlobalUpdated(true))
+        const response = await CRUD.delete(`http://localhost:8081/ArticuloManufacturado/${id}`)
+        //Le asignamos los valores iniciales al formulario con los obtenidos
+
+        console.log("hola")
+        setOpen(true);
+        console.log(response)
     }
 
     return (
@@ -39,7 +59,7 @@ const TableItem: FC<IItem> = ({ id, denominacion, param2, param3, param4, endpoi
                 <td className='w-72'>{param4}</td>
                 <td className='w-48 text-2xl '>
                     <button className='hover:text-blue-600 rounded  p-1' onClick={fetchIndividual}><FiEdit2 /></button>
-                    <button className='hover:text-red-600 ml-5 p-1'><MdOutlineDelete /></button>
+                    <button className='hover:text-red-600 ml-5 p-1' onClick={deleteLogico}><MdOutlineDelete /></button>
                 </td>
             </tr>
 

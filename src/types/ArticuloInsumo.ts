@@ -10,4 +10,5 @@ export interface IArticuloInsumo {
   stockActual: number;
   stockMaximo: number;
   esParaElaborar: boolean;
+  eliminado: boolean;
 }

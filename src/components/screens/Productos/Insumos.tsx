@@ -55,7 +55,7 @@ const Insumos = () => {
 
 
         const fetchInsumo = async () => {
-            const response = await fetchData("https://backend-jsonserver-1.onrender.com/articulosInsumos");
+            const response = await fetchData("http://localhost:8081/ArticuloInsumo");
             const transformedData = transformData(response);
             setData(transformedData);
             setLoading(true);

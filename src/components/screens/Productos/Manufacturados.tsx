@@ -10,6 +10,7 @@ import { ICategoria } from '../../../types/Categoria';
 import { useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { setGlobalInitialValues } from '../../../redux/slices/globalInitialValues';
+import { setGlobalUpdated } from '../../../redux/slices/globalUpdate';
 
 class Backend extends BackendClient<IArticuloManufacturado> { }
 
@@ -27,6 +28,8 @@ const Manufacturados = () => {
 
     const initialValues = useAppSelector((state) => state.GlobalInitialValues.data);
 
+    const updated = useAppSelector((state) => state.GlobalUpdated.updated);
+
     const dispatch = useAppDispatch();
 
     //const [categorias, setCategorias] = useState<ICategoria[]>([])
@@ -41,7 +44,7 @@ const Manufacturados = () => {
             denominacion: manufacturado.denominacion,
             param2: manufacturado.descripcion,
             param3: manufacturado.precioVenta,
-            param4: manufacturado.tiempoEstimadoMinutos // CAMBIAR
+            param4: manufacturado.stock // CAMBIAR
         }));
     }
 
@@ -59,66 +62,16 @@ const Manufacturados = () => {
     // }
 
     useEffect(() => {
-
-        //seteamos los valores iniciales que va a tener el formulario genérico
-        // dispatch(setGlobalInitialValues(
-        //     {
-        //         id: 0,
-        //         denominacion: '',
-        //         descripcion: '',
-        //         articuloManufacturadoDetalles: [],
-        //         imagenes: [], //Podría tiparse
-        //         precioVenta: 0,
-        //         preparacion: '',
-        //         tiempoEstimadoEnMinutos: 0,
-        //         stock: 0,
-        //         unidadMedida: {},
-        //     }
-        // ))
-
         const fetchManufacturado = async () => {
-
-            //Esto está hecho de maneria precaria debido a las limitaciones de JSON SERVER,
-            // con un backend funcional se hará el endpoint correspondiente
-
-            // if (idEmpresa && idSucursales) {
-
-            //     //Buscamos la empresa por el ID que nos traemos con useParams
-            //     const idEmpresaString = idEmpresa.toString()
-            //     const response: IEmpresa = await backend.get("https://backend-jsonserver-1.onrender.com/empresas", idEmpresaString)
-
-            //     //Una vez dentro de la empresa, buscamos la sucursal seleccionada con useParams
-            //     const idSucursalNumber = Number(idSucursales)
-            //     const sucursal: ISucursal | undefined = response.sucursales.find((sucursal: ISucursal) => sucursal.id === idSucursalNumber)
-
-            //     //Ahora buscamos las categorías dentro de la sucursal que fué seleccionada
-            //     const categorias: ICategoria[] | undefined = sucursal?.categorias
-
-            //     //Llamada a la función obtener articulos, la cual nos retorna todos los articulosManufacturados dentro de todas las categorías
-            //     const arCategorias: ICategoria[] | undefined = categorias;
-            //     let articulos: IArticuloManufacturado[] = [];
-
-            //     arCategorias?.forEach(categoria => {
-            //         articulos = [...articulos, ...obtenerArticulos(categoria)];
-            //     });
-
-            //     //Llamada a la función transformData, la cual nos retorna los datos de articuloManufacturado en un tipo de dato
-            //     //compatible con la el componente Table
-            //     const transformedData = transformData(articulos);
-            //     setData(transformedData);
-
-            //     setLoading(true);
-            // }
-
-            const response: IArticuloManufacturado[] = await backend.getAll("https://backend-jsonserver-1.onrender.com/articulosManufacturados")
+            const response: IArticuloManufacturado[] = await backend.getAll("http://localhost:8081/ArticuloManufacturado")
             const transformedData = transformData(response);
             setData(transformedData);
-
             setLoading(true);
+            dispatch(setGlobalUpdated(false))
         }
 
         fetchManufacturado();
-    }, [loading])
+    }, [loading, updated])
 
     return (
         <>

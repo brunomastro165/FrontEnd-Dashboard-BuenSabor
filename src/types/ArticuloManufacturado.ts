@@ -12,4 +12,5 @@ export interface IArticuloManufacturado {
   preparacion: string;
   articuloManufacturadoDetalles: IArticuloManufacturadoDetalle[];
   stock: number;
+  eliminado: boolean;
 }
