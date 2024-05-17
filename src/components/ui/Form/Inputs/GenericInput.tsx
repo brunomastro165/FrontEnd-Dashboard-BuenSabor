@@ -1,7 +1,7 @@
 //@ts-nocheck
 export const genericInput = (name: string, type: string, value, handleChange) => {
     return (
-        <div className="my-4">
+        <div className="my-4 w-full mx-2">
             {/* <h1 className='font-Roboto text-xl first-letter:uppercase'>{name}</h1> */}
             <label htmlFor={name} className="font-Roboto text-xl first-letter:uppercase" >
                 <h1 className="first-letter:uppercase">{name}</h1>

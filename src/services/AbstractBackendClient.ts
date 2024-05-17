@@ -2,6 +2,8 @@
 export abstract class AbstractBackendClient<T> {
     // Método abstracto para obtener un elemento por su ID
     abstract get(url: string, id: string): Promise<T>;
+
+    abstract getById(url: string): Promise<T>;
   
     // Método abstracto para obtener todos los elementos
     abstract getAll(url: string): Promise<T[]>;

@@ -32,6 +32,18 @@ const ContainerCardSucursal: FC<IContainerCardSucursal> = ({ data }) => {
         horarioCierre: '',
         eliminado: false,
         idEmpresa: 0,
+        domicilio: {
+            id: 0,
+            calle: '',
+            numero: 0,
+            eliminado: false,
+            nombre: 'string',
+            cp: 0,
+            nroDpto: 0,
+            piso: 0,
+            idLocalidad: 1
+
+        }
     });
 
     useEffect(() => {
@@ -57,6 +69,7 @@ const ContainerCardSucursal: FC<IContainerCardSucursal> = ({ data }) => {
                                 nombre={sucursal.nombre}
                                 idEmpresa={sucursal.idEmpresa}
                                 key={sucursal.id}
+                                domicilio={sucursal.domicilio}
                             />
                         ))
                     }

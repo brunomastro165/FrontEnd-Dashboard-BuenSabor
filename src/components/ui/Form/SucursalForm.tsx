@@ -1,4 +1,3 @@
-//@ts-nocheck
 import React, { ChangeEvent, Dispatch, FC, SetStateAction, useEffect, useState } from 'react'
 import { useForm } from '../../../hooks/useForm'
 import { ISucursal } from '../../../types/Sucursal'
@@ -11,6 +10,10 @@ import { useParams } from 'react-router-dom';
 import { ISucursalShort } from '../../../types/ShortDtos/SucursalShort';
 import { useAppDispatch } from '../../../hooks/redux';
 import { setGlobalUpdated } from '../../../redux/slices/globalUpdate';
+import { IDomicilio } from '../../../types/Domicilio/Domicilio';
+import { IProvincia } from '../../../types/Domicilio/Provincia';
+import { IEmpresaShort } from '../../../types/ShortDtos/EmpresaShort';
+import { ILocalidad } from '../../../types/Domicilio/Localidad';
 
 interface IForm {
     open: boolean;
@@ -34,6 +37,7 @@ type FormState = {
     horarioCierre: string;
     casaMatriz: boolean;
     idEmpresa: number;
+    domicilio: IDomicilio;
 };
 
 //@ts-ignore
@@ -45,14 +49,13 @@ const SucursalForm: FC<IForm> = ({ open, setOpen, data, method }) => {
 
     const backend = new GenericBackend(); //Objeto de BackendClient
 
-    console.log(data.idEmpresa)
-
     const postSucursal = async (data: ISucursalShort) => {
         if (method === 'POST') {
             try {
                 //TODO CAMBIAR ENDPOINT
                 //const res: IEmpresaShort = await backend.post("http://localhost:8081/empresa/short", data);
                 const res: IEmpresaShort = await backend.post("http://localhost:8081/sucursal", data);
+                console.log(res)
                 dispatch(setGlobalUpdated(true))
             } catch (error) {
                 console.error(error)
@@ -76,6 +79,49 @@ const SucursalForm: FC<IForm> = ({ open, setOpen, data, method }) => {
         resetForm();
         setOpen(false)
     }
+
+
+    //States para manejar las provincias
+    const [provincias, setProvincias] = useState<IProvincia[]>([])
+
+    const [selectedProvincia, setSelectedProvincia] = useState<IProvincia>();
+
+    //States para manejar las localidades
+    const [localidades, setLocalidades] = useState<ILocalidad[]>([]);
+
+    const [selectedLocalidad, setSelectedLocalidad] = useState<ILocalidad>();
+
+    //Effect para traer las provincias de Argentina
+    useEffect(() => {
+        const provincias = async () => {
+            try {
+                const res: IProvincia[] = await backend.getAll("http://localhost:8081/provincia")
+                setProvincias(res);
+                console.log(res)
+            } catch (error) {
+                console.error(error)
+            }
+        }
+        provincias();
+    }, [])
+
+    //Effect para traer las localidades de la provincia seleccionada
+    useEffect(() => {
+
+        const localidades = async () => {
+            try {
+                const res: ILocalidad[] = await backend.getAll(`http://localhost:8081/localidad/findByProvincia/${selectedProvincia?.id}`)
+                setLocalidades(res);
+                console.log(res)
+            } catch (error) {
+                console.error(error)
+            }
+        }
+        localidades();
+
+    }, [selectedProvincia])
+
+
 
     // const categoriasInput = () => {
     //     return (
@@ -103,7 +149,115 @@ const SucursalForm: FC<IForm> = ({ open, setOpen, data, method }) => {
     //     )
     // }
 
-    console.log(values);
+    const provinciaInput = () => {
+        return (
+            <div className='w-full'>
+                <div className='font-Roboto text-xl mt-2 w-full '>Provincias disponibles: </div>
+                <select
+                    className='border-red-600 border rounded-md w-full'
+                    id="provincia"
+                    name="provincia"
+                    value={selectedProvincia?.nombre || ''}
+                    onChange={(e) => {
+                        const selectedValue = e.target.value;
+                        const selectedProvincia = provincias.find((provincia) => provincia.nombre === selectedValue);
+                        setSelectedProvincia(selectedProvincia);
+                    }}
+                >
+                    {provincias.map((provincia, index) => (
+                        <option key={index} value={provincia.nombre} className=''>
+                            {provincia.nombre}
+                        </option>
+                    ))}
+                </select>
+            </div>
+        )
+    }
+
+    const localidadInput = () => {
+        return (
+            <div className='w-full'>
+                <div className='font-Roboto text-xl mt-2 w-full'>Localidades disponibles: </div>
+                <select
+                    className='border-red-600 border rounded-md w-full'
+                    id="localidad"
+                    name="localidad"
+                    value={selectedLocalidad?.nombre || ''}
+                    onChange={(e) => {
+                        {
+                            const selectedValue = e.target.value;
+                            const selectedLocalidad = localidades.find((localidad) => localidad.nombre === selectedValue);
+                            setSelectedLocalidad(selectedLocalidad);
+                        }
+                    }}
+                >
+                    {localidades.map((localidad, index) => (
+                        <option key={index} value={localidad.nombre} className=''>
+                            {localidad.nombre}
+                        </option>
+                    ))}
+                </select>
+            </div>
+        )
+    }
+
+    const domicilioInput = () => {
+        return (
+            <div className='w-full'>
+                <div className='font-Roboto text-xl mt-2 w-full '>Provincias disponibles: </div>
+                <select
+                    className='border-red-600 border rounded-md w-full'
+                    id="provincia"
+                    name="provincia"
+                    value={selectedProvincia?.nombre || ''}
+                    onChange={(e) => {
+                        const selectedValue = e.target.value;
+                        const selectedProvincia = provincias.find((provincia) => provincia.nombre === selectedValue);
+                        setSelectedProvincia(selectedProvincia);
+                    }}
+                >
+                    {provincias.map((provincia, index) => (
+                        <option key={index} value={provincia.nombre} className=''>
+                            {provincia.nombre}
+                        </option>
+                    ))}
+                </select>
+            </div>
+        )
+    }
+
+
+    const [seccionDomicilio, setSeccionDomicilio] = useState<boolean>(false);
+
+    const handleChangeDomicilio = (e: ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+
+        //@ts-ignore
+        setValues(prevState => ({
+            ...prevState,
+            domicilio: {
+                ...prevState.domicilio,
+                [name]: value,
+            }
+        }));
+    };
+
+    console.log(values)
+
+    const handleChangeLocalidad = () => {
+        setValues(prevState => ({
+            ...prevState,
+            domicilio: {
+                ...prevState.domicilio,
+                localidad: 1,
+            }
+        }));
+    };
+
+    useEffect(() => {
+        handleChangeLocalidad();
+    }, [])
+
 
     return (
         <div className='w-full flex flex-col items-center justify-center space-y-4 p-10 '
@@ -117,16 +271,53 @@ const SucursalForm: FC<IForm> = ({ open, setOpen, data, method }) => {
             <h2 className='text-3xl font-Roboto'>Agrega tu sucursal</h2>
             {/*Mapeo los objetos que traigo al formulario, dependiendo de cada objeto, genero un input distinto */}
 
-            <div className='w-full'>
+            <div className={`w-full ${seccionDomicilio && 'hidden'}`}>
 
                 <div className="relative z-0 w-full mb-5 group">
+
                     {genericInput('nombre', "text", values.nombre, handleChange)} {/* Nombre */}
-                    {genericInput('horarioApertura', 'time', values.horarioApertura, handleChange)}
-                    {genericInput('horarioCierre', 'time', values.horarioCierre, handleChange)}
+                    <div className='flex justify-center w-full'>
+                        {genericInput('horarioApertura', 'time', values.horarioApertura, handleChange)}
+                        {genericInput('horarioCierre', 'time', values.horarioCierre, handleChange)}
+                    </div>
+
                     {booleanInput('casaMatriz', 'boolean', values.casaMatriz, handleChange, 'Es casa matriz', 'No es casa matriz')}
                 </div>
 
+
             </div>
+
+            <div className={`${seccionDomicilio || 'hidden'}`}>
+                <div className={`flex justify-center w-full space-x-5 mt-4`}>
+                    {provinciaInput()}
+                    {selectedProvincia && localidadInput()}
+
+                </div>
+                {selectedLocalidad && (
+                    <>
+                        <div className='flex justify-center w-full'>
+                            {genericInput('calle', 'text', values.domicilio?.calle, handleChangeDomicilio)}
+                            {genericInput('numero', 'number', values.domicilio?.numero, handleChangeDomicilio)}
+                        </div>
+
+                        <div className='flex justify-center w-full'>
+                            {genericInput('cp', 'number', values.domicilio?.cp, handleChangeDomicilio)}
+                            {genericInput('nroDpto', 'number', values.domicilio?.nroDpto, handleChangeDomicilio)}
+                        </div>
+
+                        <div className='flex justify-center w-full'>
+                            {genericInput('nombre', 'string', values.domicilio?.nombre, handleChangeDomicilio)}
+                            {genericInput('piso', 'number', values.domicilio?.piso, handleChangeDomicilio)}
+                        </div>
+                    </>
+                )}
+
+            </div>
+
+
+
+
+            <button onClick={() => setSeccionDomicilio(!seccionDomicilio)}>Agregar domicilio</button>
 
             <button className='bg-red-600 text-white px-4 py-2 rounded-md active:scale-95 transition-all'
                 onClick={handleSubmit}>Enviar</button>
