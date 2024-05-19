@@ -37,9 +37,13 @@ const TableItem: FC<IItem> = ({ id, denominacion, param2, param3, param4, endpoi
     }
 
     const deleteLogico = async () => {
-        dispatch(setGlobalUpdated(true))
-        const response = await CRUD.delete(`http://localhost:8081/${endpoint}/${id}`)
-        dispatch(setGlobalUpdated(true))
+        try {
+            const response = await CRUD.delete(`http://localhost:8081/${endpoint}/${id}`)
+            dispatch(setGlobalUpdated(true))
+        } catch (error) {
+            dispatch(setGlobalUpdated(true))
+        }
+
         setOpen(true);
     }
 

@@ -244,7 +244,6 @@ const SucursalForm: FC<IForm> = ({ open, setOpen, data, method }) => {
             </div>
 
             <h2 className='text-3xl font-Roboto'>Agrega tu sucursal</h2>
-            {/*Mapeo los objetos que traigo al formulario, dependiendo de cada objeto, genero un input distinto */}
 
             <div className={`w-full ${seccionDomicilio && 'hidden'}`}
                 style={{ height: '50vh' }}>

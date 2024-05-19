@@ -77,7 +77,7 @@ const AInsumoForm: FC<IForm> = ({ open, setOpen, method }) => {
     }
 
     console.log(values);
-    
+
     const handleSubmit = () => {
         console.log("A")
         console.log(values);
@@ -103,24 +103,39 @@ const AInsumoForm: FC<IForm> = ({ open, setOpen, method }) => {
             <h2 className='text-3xl font-Roboto'>Agrega tu articulo</h2>
             {/*Mapeo los objetos que traigo al formulario, dependiendo de cada objeto, genero un input distinto */}
 
-            <div className='w-full'>
-
+            <div className={`w-full h-auto`}>
                 <div className="relative z-0 w-full mb-5 group">
-                    {genericInput('denominacion', "text", values.denominacion, handleChange)}
-                    {genericInput('descripcion', 'text', values.descripcion, handleChange)}
-                    {genericInput('precioVenta', 'number', values.precioVenta, handleChange)}
-                    {genericInput('precioCompra', 'number', values.precioCompra, handleChange)}
-                    {genericInput('stockActual', 'number', values.stockActual, handleChange)}
-                    {genericInput('stockMaximo', 'number', values.stockMaximo, handleChange)}
-                    {genericInput('stockMinimo', 'number', values.stockMinimo, handleChange)}
-                    <UnidadMedidaInput loaded={loaded} openUnidad={openUnidad}
-                        setLoaded={setLoaded} setOpenUnidad={setOpenUnidad} setUnidadSeleccionada={setUnidadSeleccionada}
-                        handleChoose={handleChoose}
-                        key={1} />
-                    <DragDrop onDrop={handleFileDrop} />
-                    {booleanInput('esParaElaborar', 'boolean', values.esParaElaborar, handleChange, 'Es para elaborar', 'No es para elaborar')}
-                </div>
+                    <div className='w-full flex'>
+                        {genericInput('denominacion', "text", values.denominacion, handleChange)}
+                        {genericInput('descripcion', 'text', values.descripcion, handleChange)}
+                    </div>
 
+                    <div className='flex justify-center w-full'>
+                        {genericInput('precioVenta', 'number', values.precioVenta, handleChange)}
+                        {genericInput('precioCompra', 'number', values.precioCompra, handleChange)}
+                    </div>
+
+                    <div className='flex justify-center w-full'>
+                        {genericInput('stockActual', 'number', values.stockActual, handleChange)}
+                        {genericInput('stockMaximo', 'number', values.stockMaximo, handleChange)}
+                        {genericInput('stockMinimo', 'number', values.stockMinimo, handleChange)}
+                    </div>
+
+
+                    <div className='w-full flex flex-col justify-center '>
+                        <div className='w-full'>
+                            <UnidadMedidaInput loaded={loaded} openUnidad={openUnidad}
+                                setLoaded={setLoaded} setOpenUnidad={setOpenUnidad} setUnidadSeleccionada={setUnidadSeleccionada}
+                                handleChoose={handleChoose}
+                                key={1} />
+                        </div>
+                    </div>
+                    <div className='w-full flex justify-center flex-col '>
+                        <DragDrop onDrop={handleFileDrop} />
+                        {booleanInput('esParaElaborar', 'boolean', values.esParaElaborar, handleChange, 'Es para elaborar', 'No es para elaborar')}
+                    </div>
+
+                </div>
             </div>
 
             <button className='bg-red-600 text-white px-4 py-2 rounded-md active:scale-95 transition-all'

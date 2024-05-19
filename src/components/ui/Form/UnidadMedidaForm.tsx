@@ -85,6 +85,7 @@ const UnidadMedidaForm: FC<IForm> = ({ open, setOpen, method }) => {
 
             {/*Mapeo los objetos que traigo al formulario, dependiendo de cada objeto, genero un input distinto */}
 
+            <h1 className='font-Roboto text-xl'>Agrega una unidad de medida</h1>
             <div className='w-full'>
 
                 <div className="relative z-0 w-full mb-5 group">
