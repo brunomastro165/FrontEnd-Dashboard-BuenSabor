@@ -67,7 +67,7 @@ const Promociones = () => {
             <div className='mt-32'>
                 <SearchBar />
                 <div className=''>
-                    <CPromos data={filteredPromos} />
+                    {/* <CPromos data={filteredPromos} /> */}
                 </div>
 
             </div>

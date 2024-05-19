@@ -7,6 +7,7 @@ import storageSession from "redux-persist/es/storage/session"; // use sessionSto
 import GlobalUrl from "../slices/globalUrl";
 import GlobalUpdated from "../slices/globalUpdate";
 import GlobalInitialValues from "../slices/globalInitialValues";
+import UnidadesMedida from "../slices/unidadMedida";
 
 const persistConfig = {
   key: "root",
@@ -33,6 +34,7 @@ export const store = configureStore({
     globalUrl: persistedURL,
     GlobalUpdated: GlobalUpdated.reducer,
     GlobalInitialValues: persistedValues,
+    UnidadesMedida: UnidadesMedida.reducer,
   },
 });
 

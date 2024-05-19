@@ -14,6 +14,7 @@ import { setGlobalInitialValues } from '../../../redux/slices/globalInitialValue
 import { BackendClient } from '../../../services/BackendClient';
 import { setGlobalUpdated } from '../../../redux/slices/globalUpdate';
 import { IArticuloManufacturado } from '../../../types/ArticuloManufacturado';
+import { IArticuloInsumo } from '../../../types/ArticuloInsumo';
 
 
 //@ts-ignore
@@ -30,23 +31,16 @@ const TableItem: FC<IItem> = ({ id, denominacion, param2, param3, param4, endpoi
     const dispatch = useAppDispatch();
 
     const fetchIndividual = async () => {
-        const response: IArticuloManufacturado = await fetchData(`http://localhost:8081/ArticuloManufacturado/${id}`);
-
-        //Le asignamos los valores iniciales al formulario con los obtenidos
+        const response: any = await fetchData(`http://localhost:8081/${endpoint}/${id}`)
         dispatch(setGlobalInitialValues(response))
-        //setData(response);
         setOpen(true);
     }
 
     const deleteLogico = async () => {
-
         dispatch(setGlobalUpdated(true))
-        const response = await CRUD.delete(`http://localhost:8081/ArticuloManufacturado/${id}`)
-        //Le asignamos los valores iniciales al formulario con los obtenidos
-
-        console.log("hola")
+        const response = await CRUD.delete(`http://localhost:8081/${endpoint}/${id}`)
+        dispatch(setGlobalUpdated(true))
         setOpen(true);
-        console.log(response)
     }
 
     return (
@@ -72,8 +66,8 @@ const TableItem: FC<IItem> = ({ id, denominacion, param2, param3, param4, endpoi
                         <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
                         <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle  w-full md:w-1/2">
                             {/* {endpoint === "empresas" && <EmpresaForm open={open} setOpen={setOpen} />} */}
-                            {endpoint === "articulosManufacturados" && <AManufacturadoForm open={open} setOpen={setOpen} method='PUT' />}
-                            {endpoint === "articulosInsumos" && <AInsumoForm open={open} setOpen={setOpen} method='PUT' />}
+                            {endpoint === "ArticuloManufacturado" && <AManufacturadoForm open={open} setOpen={setOpen} method='PUT' />}
+                            {endpoint === "ArticuloInsumo" && <AInsumoForm open={open} setOpen={setOpen} method='PUT' />}
                             {endpoint === "usuarios" && <UsuarioForm open={open} setOpen={setOpen} />}
                             {/* {endpoint === "sucursal" && <SucursalForm open={open} setOpen={setOpen} />} */}
                         </div>

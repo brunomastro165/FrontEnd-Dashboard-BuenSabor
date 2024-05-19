@@ -9,6 +9,9 @@ import { IArticuloManufacturadoDetalle } from '../../../types/ArticuloManufactur
 import { IArticuloManufacturado } from '../../../types/ArticuloManufacturado';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { setGlobalUpdated } from '../../../redux/slices/globalUpdate';
+import UnidadMedidaForm from './UnidadMedidaForm';
+import { setUnidades } from '../../../redux/slices/unidadMedida';
+import UnidadMedidaInput from './Inputs/UnidadMedidaInput';
 
 interface IForm {
     open: boolean;
@@ -40,14 +43,21 @@ const AManufacturadoForm: FC<IForm> = ({ open, setOpen, method }) => {
 
     const [loaded, setLoaded] = useState<boolean>(false);
 
-    //Traemos los initial values que van a ser pasados hacia el formulario 
+    //REDUX
+
     const initialValues = useAppSelector((state) => state.GlobalInitialValues.data);
 
-    const dispatch = useAppDispatch(); //Handler de redux
+    const unidades = useAppSelector((state) => state.UnidadesMedida.UnidadesMedida)
+
+    const updated = useAppSelector((state) => state.GlobalUpdated.updated)
+
+    const dispatch = useAppDispatch();
+
+    //USE FORM
 
     const { handleChange, values, resetForm, handleSelect, handleChoose, handleFileDrop, setValues } = useForm<FormState>(initialValues) //Form genérico
 
-    const postArticulo = async (data: any) => {
+    const postArticulo = async (data: FormState) => {
         if (method === 'POST') {
             try {
                 //TODO Cambiar el método para que coincida con el backend
@@ -82,42 +92,66 @@ const AManufacturadoForm: FC<IForm> = ({ open, setOpen, method }) => {
 
     //Manejo del input UNIDAD MEDIDA
 
-    const [unidadesMedida, setUnidadesMedida] = useState<IUnidadMedida[]>([]);
-
-    const [unidadSeleccionada, setUnidadSeleccionada] = useState<IUnidadMedida | undefined>();
-
+    //const [unidadesMedida, setUnidadesMedida] = useState<IUnidadMedida[]>([]);
 
     const getUnidades = async () => {
         const res: IUnidadMedida[] = await backend.getAll("http://localhost:8081/UnidadMedida");
-        setUnidadesMedida(res);
+        dispatch(setUnidades(res))
         setLoaded(true);
     }
 
     useEffect(() => {
         getUnidades();
-    }, [loaded])
+    }, [loaded, updated])
 
+    const [openUnidad, setOpenUnidad] = useState<boolean>(false);
+
+    const [unidadSeleccionada, setUnidadSeleccionada] = useState<IUnidadMedida | undefined>();
 
     const unidadInput = () => {
         return (
             <>
                 <div className='font-Roboto text-xl'>Unidades de medida: </div>
-                {unidadesMedida.map((unidad, index) => (
-                    <div key={index}>
-                        <input
-                            type="radio"
-                            id={`sucursales${index}`}
-                            name='sucursales'
-                            value={unidad.denominacion}
+                {unidades.map((unidad, index) => (
+                    <>
+                        <div key={index}>
+                            <input
+                                type="radio"
+                                id={`unidadMedida${index}`}
+                                name='unidadMedida'
+                                value={unidad.denominacion}
 
-                            //@ts-ignore
-                            onChange={(e) => handleChoose(e, unidadesMedida, setUnidadSeleccionada, 'denominacion', 'unidadMedida')}
-                        />
-                        <label htmlFor={`sucursales${index}`} className="ml-2">
-                            {unidad.denominacion}
-                        </label>
-                    </div>
+                                //@ts-ignore
+                                onChange={(e) => handleChoose(e, unidades, setUnidadSeleccionada, 'denominacion', 'unidadMedida')}
+                            //onClick={() => setSelected(unidad.denominacion)}
+                            //className={`peer ${selected === unidad.denominacion ? 'p-12' : ''}`}
+                            //checked={medidaSeleccionada?.denominacion === unidad.denominacion}
+                            />
+                            <label htmlFor={`unidadMedida${index}`} className="ml-2">
+                                {unidad.denominacion}
+                            </label>
+                        </div>
+
+                        {openUnidad && (
+                            <div className="fixed z-50 inset-0  w-full">
+                                <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0 m-14">
+                                    <div className="fixed inset-0 transition-opacity" aria-hidden="true">
+                                        <div className="absolute inset-0 top-0 bg-gray-500 opacity-15"></div>
+                                    </div>
+                                    <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+                                    <div className="inline-block top-0 translate-y-96 bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle  w-full md:w-1/2">
+                                        <UnidadMedidaForm method='POST' open={openUnidad} setOpen={setOpenUnidad} />
+                                    </div>
+                                </div>
+                            </div>)}
+                    </>
                 ))}
+
+                <div>
+                    <button className='btn bg-green-500 text-white mt-2'
+                        onClick={() => setOpenUnidad(true)}>Agregar unidad</button>
+                </div>
+
             </>
         )
     }
@@ -261,21 +295,27 @@ const AManufacturadoForm: FC<IForm> = ({ open, setOpen, method }) => {
 
             <div className='w-full'>
                 <div className="relative z-0 w-full mb-5 group">
-                    {genericInput('denominacion', "text", values.denominacion, handleChange)}
-                    {genericInput('descripcion', 'text', values.descripcion, handleChange)}
-                    {genericInput('precioVenta', 'number', values.precioVenta, handleChange)}
-                    {genericInput('preparacion', 'text', values.preparacion, handleChange)}
-                    {genericInput('tiempoEstimadoMinutos', 'number', values.tiempoEstimadoMinutos, handleChange)}
-                    {genericInput('stock', 'number', values.stock, handleChange)}
-                    {unidadInput()}
-                    <DragDrop onDrop={handleFileDrop} />
-                    {aMDetalle()}
+                    <>
+                        {genericInput('denominacion', "text", values.denominacion, handleChange)}
+                        {genericInput('descripcion', 'text', values.descripcion, handleChange)}
+                        {genericInput('precioVenta', 'number', values.precioVenta, handleChange)}
+                        {genericInput('preparacion', 'text', values.preparacion, handleChange)}
+                        {genericInput('tiempoEstimadoMinutos', 'number', values.tiempoEstimadoMinutos, handleChange)}
+                        {genericInput('stock', 'number', values.stock, handleChange)}
+                        {/* {unidadInput()} */}
+                        <UnidadMedidaInput loaded={loaded} openUnidad={openUnidad}
+                            setLoaded={setLoaded} setOpenUnidad={setOpenUnidad} setUnidadSeleccionada={setUnidadSeleccionada}
+                            handleChoose={handleChoose}
+                            key={1} />
+                        <DragDrop onDrop={handleFileDrop} />
+                        {aMDetalle()}
+                    </>
                 </div>
             </div>
 
             <button className='bg-red-600 text-white px-4 py-2 rounded-md active:scale-95 transition-all'
                 onClick={handleSubmit}>Enviar</button>
-        </div>
+        </div >
     )
 }
 

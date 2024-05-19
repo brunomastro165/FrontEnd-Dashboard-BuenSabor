@@ -18,8 +18,9 @@ const Insumos = () => {
 
     const initialValues = useAppSelector((state) => state.GlobalInitialValues.data);
 
-    const dispatch = useAppDispatch();
+    const updated = useAppSelector((state) => state.GlobalUpdated.updated)
 
+    const dispatch = useAppDispatch();
 
     const transformData = (insumosData: IArticuloInsumo[]): IItem[] => {
         //@ts-ignore
@@ -27,33 +28,13 @@ const Insumos = () => {
             id: insumo.id,
             denominacion: insumo.denominacion,
             param2: insumo.precioVenta,
-            param3: insumo.precioCompra,
+            param3: insumo.unidadMedida.denominacion,
             param4: insumo.stockActual,
         }));
     }
 
     // Uso de la función
     useEffect(() => {
-
-        //seteamos los valores iniciales que va a tener el formulario genérico
-        dispatch(setGlobalInitialValues(
-            {
-                id: 0,
-                denominacion: '',
-                precioVenta: 0,
-                precioCompra: 0,
-                imagenes: [],
-                stockActual: 0,
-                stockMaximo: 0,
-                esParaElaborar: true,
-                unidadMedida: {
-                    id: 0,
-                    denominacion: '',
-                },
-            }
-        ))
-
-
         const fetchInsumo = async () => {
             const response = await fetchData("http://localhost:8081/ArticuloInsumo");
             const transformedData = transformData(response);
@@ -61,7 +42,7 @@ const Insumos = () => {
             setLoading(true);
         }
         fetchInsumo();
-    }, [loading])
+    }, [loading, updated])
 
     return (
         <>
@@ -72,9 +53,9 @@ const Insumos = () => {
                 row1="ID"
                 row2="Denominación"
                 row3="Precio venta"
-                row4="Precio compra"
+                row4="Unidad de medida"
                 row5="Stock"
-                endpoint="articulosInsumos"
+                endpoint="ArticuloInsumo"
             />
         </>
     )

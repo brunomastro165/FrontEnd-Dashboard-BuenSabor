@@ -8,7 +8,7 @@ import { IItem } from '../../../types/Table/TableItem';
 import { setGlobalUpdated } from '../../../redux/slices/globalUpdate';
 
 
-const ITEMS_PER_PAGE = 15;
+const ITEMS_PER_PAGE = 7;
 
 const BasePage: FC<IBasePage> = ({ data, title, loading, row1, row2, row3, row4, row5, endpoint }) => {
 

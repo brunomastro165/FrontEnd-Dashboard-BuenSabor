@@ -32,7 +32,7 @@ const Table: FC<ITable> = ({ items, row1, row2, row3, row4, row5, endpoint }) =>
         //Fetchea el primer ID del tipo de dato del endpocint
         //const response = await fetchData(`http://localhost:8080/${endpoint}`);
         // setData(response);
-        if (endpoint === "articulosManufacturados") {
+        if (endpoint === "ArticuloManufacturado") {
             dispatch(setGlobalInitialValues({
                 id: 0,
                 denominacion: '',
@@ -46,6 +46,26 @@ const Table: FC<ITable> = ({ items, row1, row2, row3, row4, row5, endpoint }) =>
                 unidadMedida: {},
                 eliminado: false,
             }))
+        }
+
+        else if (endpoint === "ArticuloInsumo") {
+            dispatch(setGlobalInitialValues(
+                {
+                    id: 0,
+                    denominacion: '',
+                    precioVenta: 0,
+                    precioCompra: 0,
+                    imagenes: [],
+                    stockActual: 0,
+                    stockMaximo: 0,
+                    stockMinimo: 0,
+                    esParaElaborar: true,
+                    unidadMedida: {
+                        id: 0,
+                        denominacion: '',
+                    },
+                }
+            ))
         }
 
         setOpen(true);
@@ -64,7 +84,7 @@ const Table: FC<ITable> = ({ items, row1, row2, row3, row4, row5, endpoint }) =>
             </div>
 
             <div className='w-full'>
-                <div className="overflow-x-auto flex rounded-md border h-auto">
+                <div className="overflow-x-auto flex rounded-md border">
                     <table className="table-sm md:table ">
                         {/* head */}
                         <thead className=''>
@@ -108,8 +128,8 @@ const Table: FC<ITable> = ({ items, row1, row2, row3, row4, row5, endpoint }) =>
                         <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
                         <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle  w-full md:w-1/2">
                             {/* {endpoint === "empresas" && <EmpresaForm open={open} setOpen={setOpen} method='POST' />} */}
-                            {endpoint === "articulosManufacturados" && <AManufacturadoForm open={open} setOpen={setOpen} method='POST' />}
-                            {endpoint === "articulosInsumos" && <AInsumoForm open={open} setOpen={setOpen} method='POST' />}
+                            {endpoint === "ArticuloManufacturado" && <AManufacturadoForm open={open} setOpen={setOpen} method='POST' />}
+                            {endpoint === "ArticuloInsumo" && <AInsumoForm open={open} setOpen={setOpen} method='POST' />}
                             {endpoint === "usuarios" && <UsuarioForm open={open} setOpen={setOpen} />}
                             {/* {endpoint === "sucursal" && <SucursalForm open={open} setOpen={setOpen} method='POST' />} */}
                         </div>

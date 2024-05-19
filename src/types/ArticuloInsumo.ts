@@ -9,6 +9,7 @@ export interface IArticuloInsumo {
   precioCompra: number;
   stockActual: number;
   stockMaximo: number;
+  stockMinimo: number;
   esParaElaborar: boolean;
   eliminado: boolean;
 }

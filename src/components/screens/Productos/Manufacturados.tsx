@@ -42,9 +42,9 @@ const Manufacturados = () => {
         return manufacturadosData.map(manufacturado => ({
             id: manufacturado.id,
             denominacion: manufacturado.denominacion,
-            param2: manufacturado.descripcion,
+            param2: manufacturado.unidadMedida.denominacion,
             param3: manufacturado.precioVenta,
-            param4: manufacturado.stock // CAMBIAR
+            param4: manufacturado.stock 
         }));
     }
 
@@ -81,10 +81,10 @@ const Manufacturados = () => {
                 loading={loading}
                 row1="ID"
                 row2="Denominación"
-                row3="Descripción"
+                row3="Unidad de medida"
                 row4="Precio venta"
                 row5="Stock"
-                endpoint="articulosManufacturados"
+                endpoint="ArticuloManufacturado"
             />
         </>
     )
