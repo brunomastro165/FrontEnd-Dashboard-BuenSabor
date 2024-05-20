@@ -14,6 +14,8 @@ import { IDomicilio } from '../../../types/Domicilio/Domicilio';
 import { IProvincia } from '../../../types/Domicilio/Provincia';
 import { IEmpresaShort } from '../../../types/ShortDtos/EmpresaShort';
 import { ILocalidad } from '../../../types/Domicilio/Localidad';
+import * as Yup from 'yup'
+import { TbH1 } from 'react-icons/tb';
 
 interface IForm {
     open: boolean;
@@ -49,6 +51,35 @@ const SucursalForm: FC<IForm> = ({ open, setOpen, data, method }) => {
 
     const backend = new GenericBackend(); //Objeto de BackendClient
 
+    const [errors, setErrors] = useState<any>({});
+
+    const validationSchema = Yup.object().shape({
+        nombre: Yup.string()
+            .required('El nombre es requerido'),
+        horarioApertura: Yup.string()
+            .required('El horario de apertura es requerido'),
+        horarioCierre: Yup.string()
+            .required('El horario de cierre es requerido'),
+        casaMatriz: Yup.boolean()
+            .required('Este campo es requerido'),
+        domicilio: Yup.object().shape({
+            calle: Yup.string()
+                .required('La calle es requerida'),
+            numero: Yup.number()
+                .typeError('El número debe ser un valor numérico')
+                .required('El número es requerido'),
+            cp: Yup.number()
+                .typeError('El código postal debe ser un valor numérico')
+                .required('El CP es requerido'),
+            nroDpto: Yup.number()
+                .typeError('El número de departamento debe ser un valor numérico'),
+            nombre: Yup.string()
+                .required('El nombre es requerido'),
+            piso: Yup.number()
+                .typeError('El piso debe ser un valor numérico')
+        })
+    });
+
     const postSucursal = async (data: ISucursalShort) => {
         if (method === 'POST') {
             try {
@@ -74,12 +105,52 @@ const SucursalForm: FC<IForm> = ({ open, setOpen, data, method }) => {
 
     const { handleChange, values, resetForm, setValues, handleSelect } = useForm<FormState>(data)
 
-    const handleSubmit = () => {
-        postSucursal(values)
-        resetForm();
-        setOpen(false)
-    }
+    const handleSubmit = async () => {
+        try {
 
+            await validationSchema.validate(values, { abortEarly: false });
+            //@ts-ignore
+            postSucursal(values)
+            dispatch(setGlobalUpdated(true));
+            resetForm();
+            setOpen(false);
+            setErrors({}); // limpia los errores
+
+        } catch (error) {
+            if (error instanceof Yup.ValidationError) {
+                let err = {};
+
+                error.inner.forEach((validationError) => {
+                    if (validationError.path) {
+                        const path = validationError.path.split('.');
+                        if (path.length > 1) {
+                            // Acceso a errores anidados, p.ej. 'domicilio.calle'
+                            const [parent, child] = path;
+
+                            //@ts-ignore
+                            if (!err[parent]) {
+
+                                //@ts-ignore
+                                err[parent] = {};
+                            }
+
+                            //@ts-ignore
+                            err[parent][child] = validationError.message;
+                        } else {
+
+                            //@ts-ignore
+                            err[validationError.path] = validationError.message;
+                        }
+                    }
+                });
+                setErrors(err);
+            } else {
+                console.error(error);
+            }
+        }
+    };
+
+    console.log(errors)
 
     //States para manejar las provincias
     const [provincias, setProvincias] = useState<IProvincia[]>([])
@@ -120,34 +191,6 @@ const SucursalForm: FC<IForm> = ({ open, setOpen, data, method }) => {
         localidades();
 
     }, [selectedProvincia])
-
-
-
-    // const categoriasInput = () => {
-    //     return (
-    //         <>
-    //             <div className='font-Roboto text-xl'>Categorias disponibles: </div>
-    //             {categorias.map((categoria, index) => (
-    //                 <div key={index}>
-    //                     <input
-    //                         multiple
-    //                         type="checkbox"
-    //                         id={`categoria${index}`}
-    //                         name='categorias'
-    //                         value={categoria.denominacion}
-    //                         onChange={(e) => handleSelect(e, categorias, selectedCategorias, setSelecetedCategorias, 'denominacion', 'categorias')}
-    //                     //onClick={() => setSelected(unidad.denominacion)}
-    //                     //className={`peer ${selected === unidad.denominacion ? 'p-12' : ''}`}
-    //                     //checked={medidaSeleccionada?.denominacion === unidad.denominacion}
-    //                     />
-    //                     <label htmlFor={`sucursales${index}`} className="ml-2">
-    //                         {categoria.denominacion}
-    //                     </label>
-    //                 </div>
-    //             ))}
-    //         </>
-    //     )
-    // }
 
     const provinciaInput = () => {
         return (
@@ -234,6 +277,10 @@ const SucursalForm: FC<IForm> = ({ open, setOpen, data, method }) => {
         handleChangeLocalidad();
     }, [selectedLocalidad])
 
+
+    console.log("acá")
+
+    console.log(errors)
     return (
         <div className='w-full flex flex-col items-center justify-center space-y-4 p-10 '
             onSubmit={handleSubmit}
@@ -249,16 +296,25 @@ const SucursalForm: FC<IForm> = ({ open, setOpen, data, method }) => {
                 style={{ height: '50vh' }}>
 
                 <div className="relative z-0 w-full mb-5 group">
-                    <div className='w-full flex'>
+                    <div className='w-full flex flex-col'>
                         {genericInput('nombre', "text", values.nombre, handleChange)} {/* Nombre */}
+                        <p className='text-red-600 font-Roboto'>{errors?.nombre}</p>
                     </div>
                     <div className='flex justify-center w-full'>
-                        {genericInput('horarioApertura', 'time', values.horarioApertura, handleChange)}
-                        {genericInput('horarioCierre', 'time', values.horarioCierre, handleChange)}
+                        <div className='w-full flex flex-col'>
+                            {genericInput('horarioApertura', 'time', values.horarioApertura, handleChange)}
+                            <p className='text-red-600 font-Roboto'>{errors?.horarioApertura}</p>
+                        </div>
+
+                        <div className='w-full flex flex-col'>
+                            {genericInput('horarioCierre', 'time', values.horarioCierre, handleChange)}
+                            <p className='text-red-600 font-Roboto'>{errors?.horarioCierre}</p>
+                        </div>
                     </div>
 
-                    <div className='w-full flex justify-center '>
+                    <div className='w-full justify-center flex flex-col mt-4 '>
                         {booleanInput('casaMatriz', 'boolean', values.casaMatriz, handleChange, 'Es casa matriz', 'No es casa matriz')}
+                        <p className='text-red-600 font-Roboto mt-4'>{errors?.casaMatriz}</p>
                     </div>
 
                 </div>
@@ -291,6 +347,8 @@ const SucursalForm: FC<IForm> = ({ open, setOpen, data, method }) => {
                 )}
 
             </div>
+
+            {errors.domicilio && <h1 className='text-red-600 font-Roboto'>Se requiere asignar un domicilio</h1>}
 
             <div className='py-4'></div>
             <button onClick={() => setSeccionDomicilio(!seccionDomicilio)} className='bg-red-600 p-2  rounded btn text-white font-Roboto'>

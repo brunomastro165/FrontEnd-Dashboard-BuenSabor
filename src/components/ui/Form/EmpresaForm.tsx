@@ -7,6 +7,7 @@ import { IEmpresa } from '../../../types/Empresa';
 import { IEmpresaShort } from '../../../types/ShortDtos/EmpresaShort';
 import { useAppDispatch } from '../../../hooks/redux';
 import { setGlobalUpdated } from '../../../redux/slices/globalUpdate';
+import * as Yup from 'yup'
 
 interface IForm {
   open: boolean;
@@ -34,6 +35,27 @@ const EmpresaForm: FC<IForm> = ({ open, setOpen, data, method }) => {
 
   const { handleChange, values, resetForm } = useForm<FormState>(data);
 
+  //Esquema de validación con YUP
+
+  const [errors, setErrors] = useState<any>({});
+
+  const validationSchema = Yup.object().shape({
+    nombre: Yup.string()
+      .required('El nombre es requerido'),
+    razonSocial: Yup.string()
+      .required('La razón social es requerida'),
+    cuil: Yup.number()
+      .required('El CUIL es requerido')
+      .positive('El CUIL debe ser un número positivo')
+      .integer('El CUIL debe ser un número entero')
+      .test('len', 'El CUIL debe tener exactamente 11 dígitos', val => {
+        if (val) {
+          return val.toString().length === 11
+        }
+        return false;
+      }),
+  });
+
   const postEmpresa = async (data: IEmpresaShort) => {
     if (method === 'POST') {
       try {
@@ -43,7 +65,6 @@ const EmpresaForm: FC<IForm> = ({ open, setOpen, data, method }) => {
           dispatch(setGlobalUpdated(true))
         }, 500);
 
-        console.log("QUE")
       } catch (error) {
         console.error(error)
       }
@@ -61,36 +82,34 @@ const EmpresaForm: FC<IForm> = ({ open, setOpen, data, method }) => {
 
   console.log(values)
 
-  const handleSubmit = () => {
-    //@ts-ignore 
-    postEmpresa(values)
-    dispatch(setGlobalUpdated(true));
-    resetForm();
-    setOpen(false)
-  }
+  const handleSubmit = async () => {
+    try {
 
-  // const sucursalesInput = () => {
-  //   return (
-  //     <>
-  //       <div className='font-Roboto text-xl'>Sucursales disponibles: </div>
-  //       {sucursales.map((sucursal, index) => (
-  //         <div key={index}>
-  //           <input
-  //             multiple
-  //             type="checkbox"
-  //             id={`sucursales${index}`}
-  //             name='sucursales'
-  //             value={sucursal.nombre}
-  //             onChange={(e) => handleSelect(e, sucursales, selectedSucursales, setSelectedSucursales, 'nombre', 'sucursales')}
-  //           />
-  //           <label htmlFor={`sucursales${index}`} className="ml-2">
-  //             {sucursal.nombre}
-  //           </label>
-  //         </div>
-  //       ))}
-  //     </>
-  //   )
-  // }
+      await validationSchema.validate(values, { abortEarly: false });
+      //@ts-ignore
+      postEmpresa(values);
+      dispatch(setGlobalUpdated(true));
+      resetForm();
+      setOpen(false);
+      setErrors({}); // limpia los errores
+
+    } catch (error) {
+
+      if (error instanceof Yup.ValidationError) {
+        let err = {};
+        error.inner.forEach((validationError) => {
+          if (validationError.path) {
+            //@ts-ignore
+            err[validationError.path] = validationError.message;
+          }
+        });
+        setErrors(err);
+      } else {
+        console.error(error);
+      }
+
+    }
+  };
 
   return (
     <div className='w-full flex flex-col items-center justify-center space-y-4 p-10 '
@@ -108,14 +127,20 @@ const EmpresaForm: FC<IForm> = ({ open, setOpen, data, method }) => {
 
         <div className="relative z-0 w-full mb-5 group">
           <div className='flex w-full md:space-x-4'>
-            {genericInput('nombre', "text", values.nombre, handleChange)} {/* Nombre */}
-            {genericInput('razonSocial', 'text', values.razonSocial, handleChange)} {/* Razón Social */}
+            <div className='w-full'>
+              {genericInput('nombre', "text", values.nombre, handleChange)} {/* Nombre */}
+              <p className='text-red-600 font-Roboto'>{errors?.nombre}</p>
+            </div>
+
+            <div className='w-full'>
+              {genericInput('razonSocial', 'text', values.razonSocial, handleChange)} {/* Razón Social */}
+              <p className='text-red-600 font-Roboto'>{errors?.razonSocial}</p>
+            </div>
           </div>
+
           {genericInput('cuil', 'number', values.cuil, handleChange)} {/* Cuil */}
-          {/* {sucursalesInput()} No va a hacer falta*/}
-
+          <p className='text-red-600 font-Roboto'>{errors?.cuil}</p>
         </div>
-
       </div>
 
       <button className='bg-red-600 text-white px-4 py-2 rounded-md active:scale-95 transition-all'

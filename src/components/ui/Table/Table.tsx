@@ -59,7 +59,7 @@ const Table: FC<ITable> = ({ items, row1, row2, row3, row4, row5, endpoint }) =>
                     stockActual: 0,
                     stockMaximo: 0,
                     stockMinimo: 0,
-                    esParaElaborar: true,
+                    esParaElaborar: null,
                     unidadMedida: {
                         id: 0,
                         denominacion: '',

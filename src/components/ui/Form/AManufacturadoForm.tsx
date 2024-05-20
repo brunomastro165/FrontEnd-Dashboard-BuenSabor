@@ -12,6 +12,7 @@ import { setGlobalUpdated } from '../../../redux/slices/globalUpdate';
 import UnidadMedidaForm from './UnidadMedidaForm';
 import { setUnidades } from '../../../redux/slices/unidadMedida';
 import UnidadMedidaInput from './Inputs/UnidadMedidaInput';
+import * as Yup from 'yup'
 
 interface IForm {
     open: boolean;
@@ -42,6 +43,21 @@ const AManufacturadoForm: FC<IForm> = ({ open, setOpen, method }) => {
     const backend = new GenericBackend(); //Objeto de BackendClient
 
     const [loaded, setLoaded] = useState<boolean>(false);
+
+    const [errors, setErrors] = useState<any>({});
+
+    const validationSchema = Yup.object().shape({
+        denominacion: Yup.string().required('La denominación es requerida'),
+        descripcion: Yup.string().required('La descripción es requerida'),
+        precioVenta: Yup.number().required('El precio de venta es requerido').min(0, 'El precio de venta debe ser mayor o igual a 0'),
+        preparacion: Yup.string().required('La preparación es requerida'),
+        tiempoEstimadoMinutos: Yup.number().required('El tiempo estimado en minutos es requerido').min(1, 'El tiempo estimado debe ser mayor a 0'),
+        stock: Yup.number().required('El stock es requerido').min(0, 'El stock debe ser mayor o igual a 0'),
+        unidadMedida: Yup.object().shape({
+            denominacion: Yup.string().required('Debe seleccionar una unidad de medida'),
+            id: Yup.number().required('Debe seleccionar una unidad de medida')
+        }).required('Debe seleccionar una unidad de medida')
+    });
 
     //REDUX
 
@@ -81,14 +97,48 @@ const AManufacturadoForm: FC<IForm> = ({ open, setOpen, method }) => {
         }
     }
 
-    const handleSubmit = () => {
-        console.log("A")
-        console.log(values);
-        postArticulo(values);
-        resetForm();
-    }
+    const handleSubmit = async () => {
+        try {
+            await validationSchema.validate(values, { abortEarly: false });
+            postArticulo(values);
+            dispatch(setGlobalUpdated(true));
+            resetForm();
+            setOpen(false);
+            setErrors({}); // limpia los errores
+        } catch (error) {
+
+            if (error instanceof Yup.ValidationError) {
+                let err = {};
+                error.inner.forEach((validationError) => {
+                    if (validationError.path) {
+                        const path = validationError.path.split('.');
+                        if (path.length > 1) {
+                            const [parent, child] = path;
+                            //@ts-ignore
+                            if (!err[parent]) {
+                                //@ts-ignore
+                                err[parent] = {};
+                            }
+                            //@ts-ignore
+                            err[parent][child] = validationError.message;
+                        } else {
+                            //@ts-ignore
+                            err[validationError.path] = validationError.message;
+                        }
+                    }
+                });
+                setErrors(err);
+            } else {
+                console.error(error);
+            }
+        }
+    };
 
     console.log(values)
+
+
+    console.log("A")
+    console.log(errors)
 
     //Manejo del input UNIDAD MEDIDA
 
