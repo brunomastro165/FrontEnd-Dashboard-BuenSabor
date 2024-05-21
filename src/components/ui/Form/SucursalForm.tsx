@@ -83,8 +83,6 @@ const SucursalForm: FC<IForm> = ({ open, setOpen, data, method }) => {
     const postSucursal = async (data: ISucursalShort) => {
         if (method === 'POST') {
             try {
-                //TODO CAMBIAR ENDPOINT
-                //const res: IEmpresaShort = await backend.post("http://localhost:8081/empresa/short", data);
                 const res: IEmpresaShort = await backend.post("http://localhost:8081/sucursal", data);
                 console.log(res)
                 dispatch(setGlobalUpdated(true))
@@ -94,7 +92,6 @@ const SucursalForm: FC<IForm> = ({ open, setOpen, data, method }) => {
         }
         else if (method === 'PUT') {
             try {
-                //TODO CAMBIAR ENDPOINT
                 const res: IEmpresaShort = await backend.put(`http://localhost:8081/sucursal/${data.id}`, data);
                 dispatch(setGlobalUpdated(true))
             } catch (error) {

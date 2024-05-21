@@ -137,7 +137,6 @@ const AManufacturadoForm: FC<IForm> = ({ open, setOpen, method }) => {
     console.log(values)
 
 
-    console.log("A")
     console.log(errors)
 
     //Manejo del input UNIDAD MEDIDA
@@ -157,54 +156,6 @@ const AManufacturadoForm: FC<IForm> = ({ open, setOpen, method }) => {
     const [openUnidad, setOpenUnidad] = useState<boolean>(false);
 
     const [unidadSeleccionada, setUnidadSeleccionada] = useState<IUnidadMedida | undefined>();
-
-    const unidadInput = () => {
-        return (
-            <>
-                <div className='font-Roboto text-xl'>Unidades de medida: </div>
-                {unidades.map((unidad, index) => (
-                    <>
-                        <div key={index}>
-                            <input
-                                type="radio"
-                                id={`unidadMedida${index}`}
-                                name='unidadMedida'
-                                value={unidad.denominacion}
-
-                                //@ts-ignore
-                                onChange={(e) => handleChoose(e, unidades, setUnidadSeleccionada, 'denominacion', 'unidadMedida')}
-                            //onClick={() => setSelected(unidad.denominacion)}
-                            //className={`peer ${selected === unidad.denominacion ? 'p-12' : ''}`}
-                            //checked={medidaSeleccionada?.denominacion === unidad.denominacion}
-                            />
-                            <label htmlFor={`unidadMedida${index}`} className="ml-2">
-                                {unidad.denominacion}
-                            </label>
-                        </div>
-
-                        {openUnidad && (
-                            <div className="fixed z-50 inset-0  w-full">
-                                <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0 m-14">
-                                    <div className="fixed inset-0 transition-opacity" aria-hidden="true">
-                                        <div className="absolute inset-0 top-0 bg-gray-500 opacity-15"></div>
-                                    </div>
-                                    <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-                                    <div className="inline-block top-0 translate-y-96 bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle  w-full md:w-1/2">
-                                        <UnidadMedidaForm method='POST' open={openUnidad} setOpen={setOpenUnidad} />
-                                    </div>
-                                </div>
-                            </div>)}
-                    </>
-                ))}
-
-                <div>
-                    <button className='btn bg-green-500 text-white mt-2'
-                        onClick={() => setOpenUnidad(true)}>Agregar unidad</button>
-                </div>
-
-            </>
-        )
-    }
 
     //SECCIÓN PARA MANEJAR LOS AMDETALLES
 
@@ -345,31 +296,64 @@ const AManufacturadoForm: FC<IForm> = ({ open, setOpen, method }) => {
 
             <div className={`w-full h-auto`}>
                 <div className="relative z-0 w-full mb-5 group">
-                    <div className='w-full flex'>
-                        {genericInput('denominacion', "text", values.denominacion, handleChange)}
-                        {genericInput('descripcion', 'text', values.descripcion, handleChange)}
+
+                    <div className='w-full flex flex-col md:flex-row space-x-0 md:space-x-4'>
+
+                        <div className='flex flex-col w-full'>
+                            {genericInput('denominacion', "text", values.denominacion, handleChange)}
+                            {errors.denominacion && <h1 className='font-Roboto text-red-600'>{errors.denominacion}</h1>}
+                        </div>
+
+                        <div className='flex flex-col w-full'>
+                            {genericInput('descripcion', 'text', values.descripcion, handleChange)}
+                            {errors.descripcion && <h1 className='font-Roboto text-red-600'>{errors.descripcion}</h1>}
+                        </div>
+
                     </div>
 
-                    <div className='flex justify-center w-full'>
-                        {genericInput('precioVenta', 'number', values.precioVenta, handleChange)}
-                        {genericInput('preparacion', 'text', values.preparacion, handleChange)}
+                    <div className='w-full flex flex-col md:flex-row space-x-0 md:space-x-4'>
+
+                        <div className='flex flex-col w-full'>
+                            {genericInput('precioVenta', 'number', values.precioVenta, handleChange)}
+                            {errors.precioVenta && <h1 className='font-Roboto text-red-600'>{errors.precioVenta}</h1>}
+                        </div>
+
+
+                        <div className='flex flex-col w-full'>
+                            {genericInput('preparacion', 'text', values.preparacion, handleChange)}
+                            {errors.preparacion && <h1 className='font-Roboto text-red-600'>{errors.preparacion}</h1>}
+                        </div>
+
                     </div>
 
-                    <div className='flex justify-center w-full'>
-                        {genericInput('tiempoEstimadoMinutos', 'number', values.tiempoEstimadoMinutos, handleChange)}
-                        {genericInput('stock', 'number', values.stock, handleChange)}
+                    <div className='w-full flex flex-col md:flex-row space-x-0 md:space-x-4'>
+
+                        <div className='flex flex-col w-full'>
+                            {genericInput('tiempoEstimadoMinutos', 'number', values.tiempoEstimadoMinutos, handleChange)}
+                            {errors.tiempoEstimadoMinutos && <h1 className='font-Roboto text-red-600'>{errors.tiempoEstimadoMinutos}</h1>}
+                        </div>
+
+                        <div className='flex flex-col w-full'>
+                            {genericInput('stock', 'number', values.stock, handleChange)}
+                            {errors.stock && <h1 className='font-Roboto text-red-600'>{errors.stock}</h1>}
+                        </div>
+
                     </div>
 
 
-                    <div className='w-full flex flex-col justify-center '>
+                    <div className='w-full flex flex-col space-x-0 '>
                         <div className='w-full'>
-                            <UnidadMedidaInput loaded={loaded} openUnidad={openUnidad}
-                                setLoaded={setLoaded} setOpenUnidad={setOpenUnidad} setUnidadSeleccionada={setUnidadSeleccionada}
-                                handleChoose={handleChoose}
-                                key={1} />
+
+                            <div className='flex flex-col w-full'>
+                                <UnidadMedidaInput loaded={loaded} openUnidad={openUnidad}
+                                    setLoaded={setLoaded} setOpenUnidad={setOpenUnidad} setUnidadSeleccionada={setUnidadSeleccionada}
+                                    handleChoose={handleChoose}
+                                    key={1} />
+                                {errors.unidadMedida?.denominacion && <h1 className='font-Roboto text-red-600'>{errors.unidadMedida.denominacion}</h1>}
+                            </div>
+
                         </div>
                         <div>{aMDetalle()}</div>
-
 
                     </div>
                     <div className='w-full flex justify-center '>

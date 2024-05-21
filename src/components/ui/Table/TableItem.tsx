@@ -55,7 +55,7 @@ const TableItem: FC<IItem> = ({ id, denominacion, param2, param3, param4, endpoi
                 <td className='w-72'>{param2}</td>
                 <td className='w-72'>{param3}</td>
                 <td className='w-72'>{param4}</td>
-                <td className='w-48 text-2xl '>
+                <td className='w-48 text-2xl flex justify-center items-center '>
                     <button className='hover:text-blue-600 rounded  p-1' onClick={fetchIndividual}><FiEdit2 /></button>
                     <button className='hover:text-red-600 ml-5 p-1' onClick={deleteLogico}><MdOutlineDelete /></button>
                 </td>
