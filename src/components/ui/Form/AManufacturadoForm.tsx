@@ -33,6 +33,7 @@ type FormState = {
     articuloManufacturadoDetalles: IArticuloManufacturadoDetalle[] //Falta tipar
     stock: number,
     eliminado: boolean,
+    idCategoria: number,
 };
 
 //@ts-ignore
@@ -100,10 +101,10 @@ const AManufacturadoForm: FC<IForm> = ({ open, setOpen, method }) => {
     const handleSubmit = async () => {
         try {
             await validationSchema.validate(values, { abortEarly: false });
-            postArticulo(values);
+            //postArticulo(values);
             dispatch(setGlobalUpdated(true));
             resetForm();
-            setOpen(false);
+            //setOpen(false);
             setErrors({}); // limpia los errores
         } catch (error) {
 
@@ -134,10 +135,6 @@ const AManufacturadoForm: FC<IForm> = ({ open, setOpen, method }) => {
         }
     };
 
-    console.log(values)
-
-
-    console.log(errors)
 
     //Manejo del input UNIDAD MEDIDA
 

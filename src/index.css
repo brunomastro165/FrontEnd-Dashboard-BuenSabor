@@ -7,3 +7,24 @@
     font-weight: 600;
     font-style: normal;
   }
+
+  /* Esto aplica a todo el documento */
+::-webkit-scrollbar {
+  width: 8px; /* Ancho de la barra de desplazamiento */
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: transparent /* Color de fondo del track */
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #e36a6a; /* Color de fondo del handle */
+  border-radius: 10px; /* Redondeo de las esquinas del handle */
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555; /* Color de fondo del handle al hacer hover */
+}

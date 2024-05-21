@@ -12,4 +12,5 @@ export interface IArticuloInsumo {
   stockMinimo: number;
   esParaElaborar: boolean;
   eliminado: boolean;
+  idCategorias: number;
 }

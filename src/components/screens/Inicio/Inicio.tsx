@@ -34,16 +34,12 @@ const Inicio = () => {
     const dispatch = useAppDispatch();
 
     const getEmpresas = async () => {
-        const res: IEmpresa[] = await backend.getAll("http://localhost:8081/empresa");
+        const res: IEmpresa[] = await backend.getAll("http://localhost:8081/empresa/noEliminados");
         setEmpresas(res);
     }
 
     const traerGetters = async () => {
         getEmpresas();
-        // getEmpresaById();
-        // getSucursalesPorEmpresa();
-        //    getCategoriasPorSucursal();
-        //  getPromocionesPorSucursal();
         setLoaded(true);
     }
 

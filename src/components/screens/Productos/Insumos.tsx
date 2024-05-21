@@ -16,6 +16,8 @@ const Insumos = () => {
     //Esto es para normalizar los datos de IArticuloInsumo que traiga el Fetch, asi la tabla puede entender
     //distintos tipos de datos.
 
+    const categoriaSeleccionada = useAppSelector((state) => state.GlobalCategory.selected)
+
     const initialValues = useAppSelector((state) => state.GlobalInitialValues.data);
 
     const updated = useAppSelector((state) => state.GlobalUpdated.updated)
@@ -42,7 +44,7 @@ const Insumos = () => {
             setLoading(true);
         }
         fetchInsumo();
-    }, [loading, updated])
+    }, [loading, updated, categoriaSeleccionada])
 
     return (
         <>

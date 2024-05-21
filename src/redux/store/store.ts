@@ -8,6 +8,7 @@ import GlobalUrl from "../slices/globalUrl";
 import GlobalUpdated from "../slices/globalUpdate";
 import GlobalInitialValues from "../slices/globalInitialValues";
 import UnidadesMedida from "../slices/unidadMedida";
+import GlobalCategory from "../slices/globalCategory";
 
 const persistConfig = {
   key: "root",
@@ -35,6 +36,7 @@ export const store = configureStore({
     GlobalUpdated: GlobalUpdated.reducer,
     GlobalInitialValues: persistedValues,
     UnidadesMedida: UnidadesMedida.reducer,
+    GlobalCategory: GlobalCategory.reducer,
   },
 });
 

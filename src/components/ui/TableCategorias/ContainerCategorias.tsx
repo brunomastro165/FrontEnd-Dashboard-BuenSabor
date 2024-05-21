@@ -4,6 +4,9 @@ import { BackendClient } from '../../../services/BackendClient'
 import { ICategoria } from '../../../types/Categoria';
 import CategoriaButton from './Buttons/CategoriaButton';
 import CategoriaForm from '../Form/CategoriaForm';
+import { useParams } from 'react-router-dom';
+import { useAppDispatch } from '../../../hooks/redux';
+import { setGlobalInitialValues } from '../../../redux/slices/globalInitialValues';
 
 class CRUDMetods extends BackendClient<any> { }
 
@@ -13,14 +16,27 @@ const ContainerCategorias = () => {
 
   const [categorias, setCategorias] = useState<ICategoria[]>([]);
 
+  const { idSucursales } = useParams();
+
   const [open, setOpen] = useState<boolean>(false);
+
+  const dispatch = useAppDispatch();
+
+
 
   useEffect(() => {
     const getCategorias = async () => {
-      const res: ICategoria[] = await backend.getAll("https://backend-jsonserver-1.onrender.com/categorias");
+      const res: ICategoria[] = await backend.getAll(`http://localhost:8081/sucursal/getCategorias/${idSucursales}`);
       setCategorias(res);
     }
     getCategorias();
+
+    dispatch(setGlobalInitialValues({
+      id: 0,
+      denominacion: '',
+      idSucursales: [],
+      eliminado: false,
+    }))
   }, [])
 
 
@@ -54,7 +70,7 @@ const ContainerCategorias = () => {
             </div>
             <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
             <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle  w-full md:w-1/2">
-              {<CategoriaForm open={open} setOpen={setOpen} />}
+              {<CategoriaForm open={open} setOpen={setOpen} method='POST' />}
             </div>
           </div>
         </div>

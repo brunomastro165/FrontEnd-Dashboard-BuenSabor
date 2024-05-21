@@ -13,4 +13,5 @@ export interface IArticuloManufacturado {
   articuloManufacturadoDetalles: IArticuloManufacturadoDetalle[];
   stock: number;
   eliminado: boolean;
+  idCategoria: number;
 }
