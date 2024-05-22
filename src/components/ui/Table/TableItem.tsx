@@ -14,6 +14,7 @@ import { setGlobalInitialValues } from '../../../redux/slices/globalInitialValue
 import { BackendClient } from '../../../services/BackendClient';
 import { setGlobalUpdated } from '../../../redux/slices/globalUpdate';
 import { IArticuloManufacturado } from '../../../types/ArticuloManufacturado';
+
 import { IArticuloInsumo } from '../../../types/ArticuloInsumo';
 
 

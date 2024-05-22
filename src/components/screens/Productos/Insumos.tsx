@@ -38,7 +38,7 @@ const Insumos = () => {
     // Uso de la función
     useEffect(() => {
         const fetchInsumo = async () => {
-            const response = await fetchData("http://localhost:8081/ArticuloInsumo");
+            const response = await fetchData("http://localhost:8081/ArticuloInsumo/noEliminados");
             const transformedData = transformData(response);
             setData(transformedData);
             setLoading(true);

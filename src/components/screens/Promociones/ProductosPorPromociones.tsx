@@ -7,7 +7,7 @@ import { Table, Title } from '@tremor/react';
 import BasePage from '../Productos/BasePage';
 import { IItem } from '../../../types/Table/TableItem';
 import { IPromos } from '../../../types/Promos';
-import { IArticuloManufacturado } from '../../../types/ArticuloManufacturado';
+import { IArticuloManufacturado } from '../../../types/SpecialDtos';
 
 const ProductosPorPromociones = () => {
 

@@ -8,7 +8,7 @@ import { IEmpresa } from '../../../types/Empresa';
 import { IUnidadMedida } from '../../../types/UnidadMedida';
 import DragDrop from './Inputs/FileInput';
 import { IArticuloInsumo } from '../../../types/ArticuloInsumo';
-import { IArticuloManufacturado } from '../../../types/ArticuloManufacturado';
+import { IArticuloManufacturado } from '../../../types/SpecialDtos';
 import { IImagen } from '../../../types/Imagen';
 
 interface IForm {

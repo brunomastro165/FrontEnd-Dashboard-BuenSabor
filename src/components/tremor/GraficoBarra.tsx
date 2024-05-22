@@ -7,7 +7,7 @@ import { IArticuloInsumo } from '../../types/ArticuloInsumo';
 import { IPromos } from '../../types/Promos';
 import { IUsuario } from '../../types/Usuario';
 import { IEmpresa } from '../../types/Empresa';
-import { IArticuloManufacturado } from '../../types/ArticuloManufacturado';
+import { IArticuloManufacturado } from '../../types/SpecialDtos';
 class GenericBackend extends BackendClient<T> { } //Métodos genéricos
 
 const dataFormatter = (number: number) =>

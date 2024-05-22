@@ -5,6 +5,7 @@ import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { IoIosArrowDown } from "react-icons/io";
 import { setGlobalUpdated } from '../../../redux/slices/globalUpdate';
 import { setCategory } from '../../../redux/slices/globalCategory';
+import { ICategoriaShort } from '../../../types/ShortDtos/CategoriaShort';
 
 const CategoriaSelector = () => {
 
@@ -21,11 +22,11 @@ const CategoriaSelector = () => {
 
     console.log(categoriaSeleccionada);
 
-    const [items, setItems] = useState<IArticuloInsumo[]>([]);
+    const [items, setItems] = useState<ICategoriaShort[]>([]);
 
     useEffect(() => {
         const getAll = async () => {
-            const res: IArticuloInsumo[] = await back.getAll('http://localhost:8081/ArticuloInsumo') as IArticuloInsumo[]
+            const res: ICategoriaShort[] = await back.getAll('http://localhost:8081/categoria') as ICategoriaShort[]
             setItems(res);
         }
         getAll();
@@ -37,7 +38,7 @@ const CategoriaSelector = () => {
             <details className="dropdown w-full ">
                 <summary className="m-1  btn bg-white w-full text-red-600 shadow-lg z-50 flex items-center">{categoriaSeleccionada} <IoIosArrowDown /></summary>
                 <ul className="p-5 shadow  border dropdown-content flex flex-col space-y-4 bg-base-100 rounded-box w-52 z-50 overflow-y-scroll max-h-48">
-                    {items.map((item: IArticuloInsumo) => (
+                    {items.map((item: ICategoriaShort) => (
                         <li className='btn bg-white text-red-600 border-none shadow-none'
                             onClick={() => dispatch(setCategory(item.denominacion))}><a>{item.denominacion}</a></li>
                     ))}

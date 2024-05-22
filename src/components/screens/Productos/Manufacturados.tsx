@@ -11,8 +11,9 @@ import { useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { setGlobalInitialValues } from '../../../redux/slices/globalInitialValues';
 import { setGlobalUpdated } from '../../../redux/slices/globalUpdate';
+import { IArticuloManufacturadoCategoria } from '../../../types/SpecialDtos/ArticuloManufacturadoCategoria';
 
-class Backend extends BackendClient<IArticuloManufacturado> { }
+class Backend extends BackendClient<IArticuloManufacturadoCategoria> { }
 
 const Manufacturados = () => {
 
@@ -26,6 +27,11 @@ const Manufacturados = () => {
 
     const [todosLosArticulos, setTodosLosArticulos] = useState<any[]>([]);
 
+
+    //REDUX
+
+    const selectedCategory = useAppSelector((state) => state.GlobalCategory.selected)
+
     const initialValues = useAppSelector((state) => state.GlobalInitialValues.data);
 
     const updated = useAppSelector((state) => state.GlobalUpdated.updated);
@@ -37,7 +43,7 @@ const Manufacturados = () => {
     //Esto es para normalizar los datos de IArticuloInsumo que traiga el Fetch, asi la tabla puede entender
     //distintos tipos de datos.
 
-    const transformData = (manufacturadosData: IArticuloManufacturado[]): IItem[] => {
+    const transformData = (manufacturadosData: IArticuloManufacturadoCategoria[]): IItem[] => {
         //@ts-ignore
         return manufacturadosData.map(manufacturado => ({
             id: manufacturado.id,
@@ -63,8 +69,15 @@ const Manufacturados = () => {
 
     useEffect(() => {
         const fetchManufacturado = async () => {
-            const response: IArticuloManufacturado[] = await backend.getAll("http://localhost:8081/ArticuloManufacturado")
-            const transformedData = transformData(response);
+
+            const response: IArticuloManufacturadoCategoria[] = await backend.getAll("http://localhost:8081/ArticuloManufacturado/noEliminados");
+
+
+            const filteredByCategoria = response.filter((articulo) => articulo.categoria.denominacion === selectedCategory)
+
+            console.log(filteredByCategoria)
+
+            const transformedData = transformData(filteredByCategoria);
             setData(transformedData);
             setLoading(true);
             dispatch(setGlobalUpdated(false))

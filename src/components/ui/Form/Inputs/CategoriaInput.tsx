@@ -8,6 +8,7 @@ import { setUnidades } from "../../../../redux/slices/unidadMedida";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { BackendMethods } from "../../../../services/BackendClient";
 import { setGlobalUpdated } from "../../../../redux/slices/globalUpdate";
+import { ICategoriaShort } from "../../../../types/ShortDtos/CategoriaShort";
 
 
 interface CategoriaInput {
@@ -24,12 +25,12 @@ const CategoriaInput: FC<CategoriaInput> = ({ setLoaded, setIdCategoria, handleC
 
     const dispatch = useAppDispatch()
 
-    const [categorias, setCategorias] = useState<IUnidadMedida[]>([]);
+    const [categorias, setCategorias] = useState<ICategoriaShort[]>([]);
 
     const updated = useAppSelector((state) => state.GlobalUpdated.updated)
 
     const getUnidades = async () => {
-        const res: IUnidadMedida[] = await backend.getAll("http://localhost:8081/UnidadMedida") as IUnidadMedida[];
+        const res: ICategoriaShort[] = await backend.getAll("http://localhost:8081/categoria") as ICategoriaShort[];
         setCategorias(res)
         setLoaded(true);
     }

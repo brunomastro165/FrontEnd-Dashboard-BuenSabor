@@ -1,7 +1,7 @@
 //@ts-nocheck
 import React, { FC, useState } from 'react'
 import { BarList, Card } from '@tremor/react';
-import { IArticuloManufacturado } from '../../types/ArticuloManufacturado';
+import { IArticuloManufacturado } from '../../types/SpecialDtos';
 import { BiFoodMenu } from "react-icons/bi";
 
 interface IBarList {

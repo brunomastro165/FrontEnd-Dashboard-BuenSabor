@@ -1,7 +1,7 @@
 //@ts-nocheck
 import React, { FC } from 'react'
 import { useNavigate } from 'react-router-dom';
-import { IArticuloManufacturado } from '../../../types/ArticuloManufacturado';
+import { IArticuloManufacturado } from '../../../types/SpecialDtos';
 import { IPromos } from '../../../types/Promos';
 import { useParams } from 'react-router-dom';
 
