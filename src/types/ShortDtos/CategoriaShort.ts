@@ -3,5 +3,6 @@ export interface ICategoriaShort {
   denominacion: string;
   idSucursal: number;
   eliminado: boolean;
+  esInsumo: boolean;
   // subCategorias: ICategoria[];
 }

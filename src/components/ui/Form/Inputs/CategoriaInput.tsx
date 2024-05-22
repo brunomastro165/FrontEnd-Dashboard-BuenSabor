@@ -9,6 +9,7 @@ import { FaRegTrashAlt } from "react-icons/fa";
 import { BackendMethods } from "../../../../services/BackendClient";
 import { setGlobalUpdated } from "../../../../redux/slices/globalUpdate";
 import { ICategoriaShort } from "../../../../types/ShortDtos/CategoriaShort";
+import { useParams } from "react-router-dom";
 
 
 interface CategoriaInput {
@@ -25,12 +26,14 @@ const CategoriaInput: FC<CategoriaInput> = ({ setLoaded, setIdCategoria, handleC
 
     const dispatch = useAppDispatch()
 
+    const { idSucursales } = useParams();
+
     const [categorias, setCategorias] = useState<ICategoriaShort[]>([]);
 
     const updated = useAppSelector((state) => state.GlobalUpdated.updated)
 
     const getUnidades = async () => {
-        const res: ICategoriaShort[] = await backend.getAll("http://localhost:8081/categoria") as ICategoriaShort[];
+        const res: ICategoriaShort[] = await backend.getAll(`http://localhost:8081/sucursal/getCategorias/${idSucursales}`) as ICategoriaShort[];
         setCategorias(res)
         setLoaded(true);
     }

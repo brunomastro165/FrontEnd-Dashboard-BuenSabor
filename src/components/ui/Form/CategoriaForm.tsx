@@ -9,6 +9,7 @@ import { IArticuloManufacturado } from '../../../types/ArticuloManufacturado';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { ICategoriaShort } from '../../../types/ShortDtos/CategoriaShort';
 import { useParams } from 'react-router-dom';
+import { setGlobalUpdated } from '../../../redux/slices/globalUpdate';
 
 interface IForm {
     open: boolean;
@@ -56,22 +57,6 @@ const CategoriaForm: FC<IForm> = ({ open, setOpen, method }) => {
 
     const { idSucursales } = useParams();
 
-    const [articulosManufacturados, setArticulosManufacturados] = useState<IArticuloManufacturado[]>([]);
-
-    const [articuloMSeleccionado, setArticuloMSeleccionado] = useState<IArticuloManufacturado | undefined>();
-
-    const [articulosMSeleccionados, setArticulosMSeleccionados] = useState<IArticuloManufacturado[] | undefined>([]);
-
-    const [loaded, setLoaded] = useState<boolean>(false);
-
-    // const getSucursales = async () => {
-
-    //     //modificar el endpoint una vez con el backend funcional
-    //     const res: IArticuloManufacturado[] = await backend.getAll("https://backend-jsonserver-1.onrender.com/articulosManufacturados");
-    //     setArticulosManufacturados(res);
-    //     setLoaded(true);
-    // }
-
     const postCategoria = async (data: FormState) => {
         console.log(data)
         try {
@@ -79,6 +64,27 @@ const CategoriaForm: FC<IForm> = ({ open, setOpen, method }) => {
             console.log(res)
         } catch (error) {
             console.error(error)
+        }
+    }
+
+    const postArticulo = async (data: FormState) => {
+        if (method === 'POST') {
+            try {
+                const res: FormState = await backend.post("http://localhost:8081/categoria", data);
+                dispatch(setGlobalUpdated(true))
+                setOpen(false);
+            } catch (error) {
+                console.error(error)
+            }
+        }
+        else if (method === 'PUT') {
+            try {
+                const res: FormState = await backend.post(`http://localhost:8081/categoria/${data.id}`, data);
+                dispatch(setGlobalUpdated(true))
+                setOpen(false);
+            } catch (error) {
+                console.error(error)
+            }
         }
     }
 

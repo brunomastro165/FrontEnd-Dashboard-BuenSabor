@@ -6,11 +6,13 @@ import { IoIosArrowDown } from "react-icons/io";
 import { setGlobalUpdated } from '../../../redux/slices/globalUpdate';
 import { setCategory } from '../../../redux/slices/globalCategory';
 import { ICategoriaShort } from '../../../types/ShortDtos/CategoriaShort';
+import { useParams } from 'react-router-dom';
 
 const CategoriaSelector = () => {
 
     const back = new BackendMethods();
 
+    const { idSucursales } = useParams();
 
     //REDUX
 
@@ -26,7 +28,7 @@ const CategoriaSelector = () => {
 
     useEffect(() => {
         const getAll = async () => {
-            const res: ICategoriaShort[] = await back.getAll('http://localhost:8081/categoria') as ICategoriaShort[]
+            const res: ICategoriaShort[] = await back.getAll(`http://localhost:8081/sucursal/getCategorias/${idSucursales}`) as ICategoriaShort[]
             setItems(res);
         }
         getAll();
