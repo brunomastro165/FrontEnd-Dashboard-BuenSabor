@@ -45,6 +45,7 @@ const Table: FC<ITable> = ({ items, row1, row2, row3, row4, row5, endpoint }) =>
                 stock: 0,
                 unidadMedida: {},
                 eliminado: false,
+                idCategoria: 0,
             }))
         }
 
@@ -64,6 +65,7 @@ const Table: FC<ITable> = ({ items, row1, row2, row3, row4, row5, endpoint }) =>
                         id: 0,
                         denominacion: '',
                     },
+                    idCategoria: 0,
                 }
             ))
         }

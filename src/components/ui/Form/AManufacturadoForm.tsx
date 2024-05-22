@@ -13,6 +13,7 @@ import UnidadMedidaForm from './UnidadMedidaForm';
 import { setUnidades } from '../../../redux/slices/unidadMedida';
 import UnidadMedidaInput from './Inputs/UnidadMedidaInput';
 import * as Yup from 'yup'
+import CategoriaInput from './Inputs/CategoriaInput';
 
 interface IForm {
     open: boolean;
@@ -101,10 +102,10 @@ const AManufacturadoForm: FC<IForm> = ({ open, setOpen, method }) => {
     const handleSubmit = async () => {
         try {
             await validationSchema.validate(values, { abortEarly: false });
-            //postArticulo(values);
+            postArticulo(values);
             dispatch(setGlobalUpdated(true));
             resetForm();
-            //setOpen(false);
+            setOpen(false);
             setErrors({}); // limpia los errores
         } catch (error) {
 
@@ -161,6 +162,8 @@ const AManufacturadoForm: FC<IForm> = ({ open, setOpen, method }) => {
     const [articulosInsumo, setArticulosInsumo] = useState<IArticuloInsumo[]>([])
 
     const [articuloSeleccionado, setArticuloSeleccionado] = useState<IArticuloInsumo>();
+
+    const [idCategoria, setIdCategoria] = useState<number>(0);
 
     //const [incrementalId,]
 
@@ -347,6 +350,11 @@ const AManufacturadoForm: FC<IForm> = ({ open, setOpen, method }) => {
                                     handleChoose={handleChoose}
                                     key={1} />
                                 {errors.unidadMedida?.denominacion && <h1 className='font-Roboto text-red-600'>{errors.unidadMedida.denominacion}</h1>}
+                            </div>
+
+                            <div className='flex flex-col justify-center'>
+                                <CategoriaInput handleChange={handleChange} setLoaded={setLoaded} setIdCategoria={setIdCategoria}
+                                    key={1} value={values.idCategoria} />
                             </div>
 
                         </div>

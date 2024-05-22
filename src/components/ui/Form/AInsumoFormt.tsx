@@ -12,6 +12,7 @@ import { setGlobalUpdated } from '../../../redux/slices/globalUpdate';
 import UnidadMedidaForm from './UnidadMedidaForm';
 import UnidadMedidaInput from './Inputs/UnidadMedidaInput';
 import * as Yup from 'yup'
+import CategoriaInput from './Inputs/CategoriaInput';
 
 interface IForm {
     open: boolean;
@@ -31,6 +32,8 @@ type FormState = {
     stockMaximo: number,
     stockMinimo: number,
     esParaElaborar: boolean,
+    idCategoria: number,
+
 };
 
 //@ts-ignore
@@ -144,11 +147,16 @@ const AInsumoForm: FC<IForm> = ({ open, setOpen, method }) => {
         }
     };
 
+
+
     //Manejo del input UNIDAD MEDIDA
 
     const [unidadSeleccionada, setUnidadSeleccionada] = useState<IUnidadMedida | undefined>();
 
     const [openUnidad, setOpenUnidad] = useState<boolean>(false);
+
+
+    const [idCategoria, setIdCategoria] = useState<number>(0);
 
     return (
         <div className='w-full flex flex-col items-center justify-center space-y-4 p-10 '
@@ -214,6 +222,11 @@ const AInsumoForm: FC<IForm> = ({ open, setOpen, method }) => {
                                     handleChoose={handleChoose}
                                     key={1} />
                                 {errors.unidadMedida?.denominacion && <h1 className='font-Roboto text-red-600 text-sm'>{errors.unidadMedida?.denominacion}</h1>}
+                            </div>
+
+                            <div className='flex flex-col justify-center'>
+                                <CategoriaInput handleChange={handleChange} setLoaded={setLoaded} setIdCategoria={setIdCategoria}
+                                    key={1} value={values.idCategoria} />
                             </div>
                         </div>
                     </div>
