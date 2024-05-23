@@ -3,7 +3,6 @@ import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import { setGlobalInitialValues } from "../../../redux/slices/globalInitialValues";
 import { IArticuloInsumo } from "../../../types/ArticuloInsumo";
 import { IItem } from "../../../types/Table/TableItem";
-
 import { fetchData } from "../../api/Fetch";
 import BasePage from "./BasePage";
 import { useEffect, useState } from "react";
@@ -89,15 +88,8 @@ const Insumos = () => {
             //Filtramos la categoria que está seleccionada en el selector (con redux)
             const categoriaFiltrada: ICategoria | undefined = responseCategoria.find((categoria) => categoria.denominacion === selectedCategory)
 
-
-            console.log("vamo")
-            console.log(categoriaFiltrada)
-
             //Usamos una función recursiva para traernos todos los articulos dentro de la categoria que seleccionamos
             const insumos: IArticuloInsumoCategoria[] = obtenerArticulos(categoriaFiltrada);
-
-            console.log("articulo")
-            console.log(insumos)
 
             //Filtramos por articulos eliminados
             const insumosHabilitados: IArticuloInsumoCategoria[] = insumos.filter((articulo) => articulo.eliminado === false)
@@ -116,15 +108,15 @@ const Insumos = () => {
     }, [loading, updated, selectedCategory])
 
     // Uso de la función
-    useEffect(() => {
-        const fetchInsumo = async () => {
-            const response = await fetchData("http://localhost:8081/ArticuloInsumo/noEliminados");
-            const transformedData = transformData(response);
-            setData(transformedData);
-            setLoading(true);
-        }
-        fetchInsumo();
-    }, [loading, updated, categoriaSeleccionada])
+    // useEffect(() => {
+    //     const fetchInsumo = async () => {
+    //         const response = await fetchData("http://localhost:8081/ArticuloInsumo/noEliminados");
+    //         const transformedData = transformData(response);
+    //         setData(transformedData);
+    //         setLoading(true);
+    //     }
+    //     fetchInsumo();
+    // }, [loading, updated, categoriaSeleccionada])
 
 
     useEffect(() => {

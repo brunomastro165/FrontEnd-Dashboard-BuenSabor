@@ -33,7 +33,8 @@ const UnidadMedidaInput: FC<UnidadInput> = ({ loaded, openUnidad, setLoaded, set
 
     const getUnidades = async () => {
         const res: IUnidadMedida[] = await fetchData("http://localhost:8081/UnidadMedida");
-        dispatch(setUnidades(res))
+        const unidadesHabilitadas = res.filter((unidad) => !unidad.eliminado)
+        dispatch(setUnidades(unidadesHabilitadas))
         setLoaded(true);
     }
 
@@ -79,7 +80,7 @@ const UnidadMedidaInput: FC<UnidadInput> = ({ loaded, openUnidad, setLoaded, set
                             {editar &&
                                 <h1 className="mr-5"
                                     onClick={() => deleteLogico(unidad.id)}>
-                                    <FaRegTrashAlt className="bg-red-600 text-white text-3xl p-1 rounded" />
+                                    <FaRegTrashAlt className="bg-red-600 text-white text-3xl p-1 rounded cursor-pointer hover:scale-105" />
                                 </h1>
                             }
                         </div>

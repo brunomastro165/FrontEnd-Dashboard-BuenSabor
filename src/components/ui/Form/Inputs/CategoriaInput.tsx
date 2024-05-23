@@ -24,7 +24,11 @@ const CategoriaInput: FC<CategoriaInput> = ({ setLoaded, setIdCategoria, handleC
 
     const backend = new BackendMethods();
 
+    //REDUX
+
     const dispatch = useAppDispatch()
+
+    const esInsumo = useAppSelector((state) => state.GlobalEsInsumo.esInsumo)
 
     const { idSucursales } = useParams();
 
@@ -34,7 +38,9 @@ const CategoriaInput: FC<CategoriaInput> = ({ setLoaded, setIdCategoria, handleC
 
     const getUnidades = async () => {
         const res: ICategoriaShort[] = await backend.getAll(`http://localhost:8081/sucursal/getCategorias/${idSucursales}`) as ICategoriaShort[];
-        setCategorias(res)
+        const categoriaExistente = res.filter((categoria) => categoria.eliminado === false)
+        const categoriaFiltrada = categoriaExistente.filter((categoria) => categoria.esInsumo === esInsumo)
+        setCategorias(categoriaFiltrada)
         setLoaded(true);
     }
 

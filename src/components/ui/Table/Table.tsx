@@ -13,6 +13,7 @@ import UsuarioForm from '../Form/UsuarioForm'
 import SucursalForm from '../Form/SucursalForm'
 import GlobalInitialValues, { setGlobalInitialValues } from '../../../redux/slices/globalInitialValues'
 import { useAppDispatch } from '../../../hooks/redux'
+import GenericWaiter from '../Waiters/GenericWaiter'
 
 
 const Table: FC<ITable> = ({ items, row1, row2, row3, row4, row5, endpoint }) => {
@@ -85,41 +86,45 @@ const Table: FC<ITable> = ({ items, row1, row2, row3, row4, row5, endpoint }) =>
                     </button> */}
             </div>
 
-            <div className='w-full'>
-                <div className="overflow-x-auto flex rounded-md border">
-                    <table className="table-sm md:table ">
-                        {/* head */}
-                        <thead className=''>
-                            <tr className='text-lg'>
-                                <th>{row1}</th>
-                                <th>{row2}</th>
-                                <th>{row3}</th>
-                                <th>{row4}</th>
-                                <th>{row5}</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody className=''>
-                            {
-                                items.length > 0 ?
-                                    (items.map((item) =>
-                                    (<TableItem
-                                        id={item.id}
-                                        denominacion={item.denominacion}
-                                        param2={item.param2}
-                                        param3={item.param3}
-                                        param4={item.param4}
-                                        endpoint={endpoint}
-                                    />))
+            {items.length >= 1 ? (
+                <div className='w-full'>
+                    <div className="overflow-x-auto flex rounded-md border">
+                        <table className="table-sm md:table ">
+                            {/* head */}
+                            <thead className=''>
+                                <tr className='text-lg'>
+                                    <th>{row1}</th>
+                                    <th>{row2}</th>
+                                    <th>{row3}</th>
+                                    <th>{row4}</th>
+                                    <th>{row5}</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody className=''>
+                                {
+                                    items.length > 0 ?
+                                        (items.map((item) =>
+                                        (<TableItem
+                                            id={item.id}
+                                            denominacion={item.denominacion}
+                                            param2={item.param2}
+                                            param3={item.param3}
+                                            param4={item.param4}
+                                            endpoint={endpoint}
+                                        />))
 
-                                    ) : (
-                                        <TableItemSkeleton />
-                                    )
-                            }
-                        </tbody>
-                    </table>
+                                        ) : (
+                                            <TableItemSkeleton />
+                                        )
+                                }
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-            </div>
+            ) : (
+                <GenericWaiter text='Parece que no has agregado nada...' url='articulos.svg' />
+            )}
 
             {open && (
                 <div className="fixed z-50 inset-0 overflow-y-auto w-full">

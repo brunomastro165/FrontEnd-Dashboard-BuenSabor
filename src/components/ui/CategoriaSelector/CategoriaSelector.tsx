@@ -24,8 +24,6 @@ const CategoriaSelector = () => {
 
     const dispatch = useAppDispatch();
 
-
-
     // console.log("esInsumo")
     // console.log(globalEsInsumo);
 
@@ -38,7 +36,8 @@ const CategoriaSelector = () => {
 
             const categorias: ICategoriaShort[] = res.filter((categoria) => categoria.esInsumo === globalEsInsumo)
 
-            setItems(categorias);
+            const categoriasExistentes: ICategoriaShort[] = categorias.filter((categoria) => !categoria.eliminado)
+            setItems(categoriasExistentes);
         }
         getAll();
     }, [updated, globalEsInsumo])
