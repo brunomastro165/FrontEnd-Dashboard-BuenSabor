@@ -23,6 +23,7 @@ type FormState = {
     denominacion: string;
     idSucursales: number[];
     esInsumo: boolean;
+    esPadre: boolean;
     //articulosManufacturados: IArticuloManufacturado[] | null;
     //subCategorias: ICategoria[];
 };
@@ -57,22 +58,24 @@ const CategoriaForm: FC<IForm> = ({ open, setOpen, method }) => {
 
     const { idSucursales } = useParams();
 
-    const postCategoria = async (data: FormState) => {
-        console.log(data)
-        try {
-            const res: FormState = await backend.post("http://localhost:8081/categoria", data);
-            console.log(res)
-        } catch (error) {
-            console.error(error)
-        }
-    }
+    // const postCategoria = async (data: FormState) => {
+    //     console.log(data)
+    //     try {
+    //         const res: FormState = await backend.post("http://localhost:8081/categoria", data);
+    //         console.log(res)
+    //     } catch (error) {
+    //         console.error(error)
+    //     }
+    // }
 
-    const postArticulo = async (data: FormState) => {
+    const postCategoria = async (data: FormState) => {
         if (method === 'POST') {
             try {
                 const res: FormState = await backend.post("http://localhost:8081/categoria", data);
                 dispatch(setGlobalUpdated(true))
+                console.log(res)
                 setOpen(false);
+
             } catch (error) {
                 console.error(error)
             }
@@ -80,6 +83,15 @@ const CategoriaForm: FC<IForm> = ({ open, setOpen, method }) => {
         else if (method === 'PUT') {
             try {
                 const res: FormState = await backend.post(`http://localhost:8081/categoria/${data.id}`, data);
+                dispatch(setGlobalUpdated(true))
+                setOpen(false);
+            } catch (error) {
+                console.error(error)
+            }
+        }
+        else if (method === 'SUBPUT') {
+            try {
+                const res: FormState = await backend.put(`http://localhost:8081/categoria/addSubCategoria/${data.id}`, data);
                 dispatch(setGlobalUpdated(true))
                 setOpen(false);
             } catch (error) {

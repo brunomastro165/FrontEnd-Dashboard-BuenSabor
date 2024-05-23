@@ -5,8 +5,9 @@ import { ICategoria } from '../../../types/Categoria';
 import CategoriaButton from './Buttons/CategoriaButton';
 import CategoriaForm from '../Form/CategoriaForm';
 import { useParams } from 'react-router-dom';
-import { useAppDispatch } from '../../../hooks/redux';
+import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { setGlobalInitialValues } from '../../../redux/slices/globalInitialValues';
+import { setGlobalUpdated } from '../../../redux/slices/globalUpdate';
 
 class CRUDMetods extends BackendClient<any> { }
 
@@ -20,6 +21,11 @@ const ContainerCategorias = () => {
 
   const [open, setOpen] = useState<boolean>(false);
 
+
+  //REDUX 
+
+  const updated = useAppSelector((state) => state.GlobalUpdated.updated)
+
   const dispatch = useAppDispatch();
 
 
@@ -27,7 +33,12 @@ const ContainerCategorias = () => {
   useEffect(() => {
     const getCategorias = async () => {
       const res: ICategoria[] = await backend.getAll(`http://localhost:8081/sucursal/getCategorias/${idSucursales}`);
-      setCategorias(res);
+
+      const categoriasPadre: ICategoria[] = res.filter((categoria) => categoria.esPadre === true)
+
+      const categoriasExistentes: ICategoria[] = categoriasPadre.filter((categoria) => categoria.eliminado === false)
+
+      setCategorias(categoriasExistentes);
     }
     getCategorias();
 
@@ -36,25 +47,27 @@ const ContainerCategorias = () => {
       denominacion: '',
       idSucursales: [],
       eliminado: false,
+      esPadre: true,
     }))
-  }, [])
+
+    dispatch(setGlobalUpdated(false))
+  }, [updated])
 
 
   return (
     <>
 
-      <div className=' mx-auto w-1/2'>
+      <div className=' mx-auto w-full'>
 
-        <div className='w-full  flex justify-center  my-4'>
-          <button className='text-2xl font-Roboto btn btn-success bg-white text-green-600 hover:text-white  hover:bg-green-600'
+        <div className='w-full  flex justify-end   '>
+          <button className='text-2xl font-Roboto btn btn-success my-4 bg-white text-green-600 hover:text-white mr-10 hover:bg-green-600'
             onClick={() => setOpen(true)}
           >Agregar +</button>
         </div>
 
         {categorias.map((categoria) => (
           <>
-            <h1 className='font-Roboto text-xl'>{categoria.denominacion}</h1>
-            <div className='border rounded  p-5 m-5'>
+            <div className='shadow-md rounded-xl   p-5 m-5'>
               <CategoriaButton categoria={categoria} />
             </div>
           </>

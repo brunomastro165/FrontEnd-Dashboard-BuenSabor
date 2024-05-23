@@ -82,18 +82,25 @@ const AManufacturadoForm: FC<IForm> = ({ open, setOpen, method }) => {
                 const res: IArticuloManufacturado = await backend.post("http://localhost:8081/ArticuloManufacturado", data);
                 dispatch(setGlobalUpdated(true))
                 setOpen(false);
+                console.log("post")
                 console.log(res)
             } catch (error) {
+                console.log("post")
                 console.error(error)
             }
         }
         else if (method === 'PUT') {
             try {
+                console.log(data)
                 //const res: IEmpresaShort = await backend.put(`http://localhost:8081/empresa/${data.id}/short`, data);
                 const res: IArticuloManufacturado = await backend.put(`http://localhost:8081/ArticuloManufacturado/${data.id}`, data);
                 dispatch(setGlobalUpdated(true))
-                setOpen(false);
+                console.log("put")
+                //console.log(res)
+                console.log("put")
+                // setOpen(false);
             } catch (error) {
+                console.log("put")
                 console.error(error)
             }
         }

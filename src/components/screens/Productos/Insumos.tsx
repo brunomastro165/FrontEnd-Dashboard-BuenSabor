@@ -11,6 +11,7 @@ import { ICategoria } from "../../../types/Categoria";
 import { BackendMethods } from "../../../services/BackendClient";
 import { IArticuloInsumoCategoria } from "../../../types/SpecialDtos/ArticuloInsumoCategoria";
 import { setGlobalUpdated } from "../../../redux/slices/globalUpdate";
+import { setEsInsumo } from "../../../redux/slices/esInsumo";
 
 const Insumos = () => {
 
@@ -28,6 +29,8 @@ const Insumos = () => {
 
     const dispatch = useAppDispatch();
 
+    const esInsumo = useAppSelector((state) => state.GlobalEsInsumo.esInsumo)
+
 
     const [loading, setLoading] = useState<boolean>(false);
 
@@ -42,37 +45,39 @@ const Insumos = () => {
 
 
     const transformData = (insumosData: IArticuloInsumoCategoria[]): IItem[] => {
-        //@ts-ignore
+
         return insumosData.map(insumo => ({
             id: insumo.id,
             denominacion: insumo.denominacion,
             param2: insumo.precioVenta,
             param3: insumo.unidadMedida.denominacion,
             param4: insumo.stockActual,
+            endpoint: ''
         }));
+
     }
 
-
-
     const obtenerArticulos = (categoria: ICategoria | undefined): any[] => {
-
         if (categoria) {
-            let articulos = [...categoria.insumos];
+            let articulos = Array.isArray(categoria?.insumos) ? [...categoria.insumos] : [];
 
             categoria.subCategorias.forEach(subCategoria => {
-                articulos = [...articulos, ...obtenerArticulos(subCategoria)];
+                const subCategoriaArticulos = obtenerArticulos(subCategoria);
+                if (Array.isArray(subCategoriaArticulos)) {
+                    articulos = [...articulos, ...subCategoriaArticulos];
+                }
             });
 
+            console.log(articulos)
             return articulos;
         }
         else {
             return [];
         }
-
     }
 
     useEffect(() => {
-        const fetchManufacturado = async () => {
+        const fetchInsumo = async () => {
 
             // const response: IArticuloManufacturadoCategoria[] = await backend.getAll("http://localhost:8081/ArticuloManufacturado/noEliminados") as IArticuloManufacturadoCategoria[];
 
@@ -84,9 +89,14 @@ const Insumos = () => {
             //Filtramos la categoria que está seleccionada en el selector (con redux)
             const categoriaFiltrada: ICategoria | undefined = responseCategoria.find((categoria) => categoria.denominacion === selectedCategory)
 
+
+            console.log("vamo")
+            console.log(categoriaFiltrada)
+
             //Usamos una función recursiva para traernos todos los articulos dentro de la categoria que seleccionamos
             const insumos: IArticuloInsumoCategoria[] = obtenerArticulos(categoriaFiltrada);
 
+            console.log("articulo")
             console.log(insumos)
 
             //Filtramos por articulos eliminados
@@ -98,10 +108,11 @@ const Insumos = () => {
 
             setData(transformedData);
             setLoading(true);
-            dispatch(setGlobalUpdated(false))
+            dispatch((setGlobalUpdated(false), setEsInsumo(true)))
+
         }
 
-        fetchManufacturado();
+        fetchInsumo();
     }, [loading, updated, selectedCategory])
 
     // Uso de la función
@@ -114,6 +125,21 @@ const Insumos = () => {
         }
         fetchInsumo();
     }, [loading, updated, categoriaSeleccionada])
+
+
+    useEffect(() => {
+
+        const handleFocus = () => {
+
+        };
+
+        window.addEventListener('DOMContentLoaded', handleFocus);
+
+        // Limpiar el evento al desmontar el componente
+        return () => {
+            window.removeEventListener('DOMContentLoaded', handleFocus);
+        };
+    }, [esInsumo]);
 
     return (
         <>

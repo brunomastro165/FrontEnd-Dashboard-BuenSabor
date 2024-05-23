@@ -4,5 +4,6 @@ export interface ICategoriaShort {
   idSucursal: number;
   eliminado: boolean;
   esInsumo: boolean;
+  esPadre: boolean;
   // subCategorias: ICategoria[];
 }

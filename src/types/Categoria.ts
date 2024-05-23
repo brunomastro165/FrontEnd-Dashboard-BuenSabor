@@ -13,4 +13,5 @@ export interface ICategoria {
   sucursales: ISucursalShort[];
   insumos: IArticuloInsumo[];
   articulosManufacturados: IArticuloManufacturado[];
+  esPadre: boolean;
 }

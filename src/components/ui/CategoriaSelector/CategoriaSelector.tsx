@@ -20,19 +20,28 @@ const CategoriaSelector = () => {
 
     const categoriaSeleccionada = useAppSelector((state) => state.GlobalCategory.selected)
 
+    const globalEsInsumo = useAppSelector((state) => state.GlobalEsInsumo.esInsumo)
+
     const dispatch = useAppDispatch();
 
-    console.log(categoriaSeleccionada);
+
+
+    // console.log("esInsumo")
+    // console.log(globalEsInsumo);
 
     const [items, setItems] = useState<ICategoriaShort[]>([]);
 
     useEffect(() => {
         const getAll = async () => {
             const res: ICategoriaShort[] = await back.getAll(`http://localhost:8081/sucursal/getCategorias/${idSucursales}`) as ICategoriaShort[]
-            setItems(res);
+
+
+            const categorias: ICategoriaShort[] = res.filter((categoria) => categoria.esInsumo === globalEsInsumo)
+
+            setItems(categorias);
         }
         getAll();
-    }, [updated])
+    }, [updated, globalEsInsumo])
 
 
     return (

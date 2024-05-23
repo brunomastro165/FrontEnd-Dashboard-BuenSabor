@@ -9,6 +9,7 @@ import GlobalUpdated from "../slices/globalUpdate";
 import GlobalInitialValues from "../slices/globalInitialValues";
 import UnidadesMedida from "../slices/unidadMedida";
 import GlobalCategory from "../slices/globalCategory";
+import GlobalEsInsumo from "../slices/esInsumo";
 
 const persistConfig = {
   key: "root",
@@ -37,6 +38,7 @@ export const store = configureStore({
     GlobalInitialValues: persistedValues,
     UnidadesMedida: UnidadesMedida.reducer,
     GlobalCategory: GlobalCategory.reducer,
+    GlobalEsInsumo: GlobalEsInsumo.reducer,
   },
 });
 

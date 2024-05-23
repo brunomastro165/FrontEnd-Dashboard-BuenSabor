@@ -12,6 +12,7 @@ import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { setGlobalInitialValues } from '../../../redux/slices/globalInitialValues';
 import { setGlobalUpdated } from '../../../redux/slices/globalUpdate';
 import { IArticuloManufacturadoCategoria } from '../../../types/SpecialDtos/ArticuloManufacturadoCategoria';
+import GlobalEsInsumo, { setEsInsumo } from '../../../redux/slices/esInsumo';
 
 //class Backend extends BackendClient<IArticuloManufacturadoCategoria> { }
 
@@ -30,6 +31,8 @@ const Manufacturados = () => {
     const initialValues = useAppSelector((state) => state.GlobalInitialValues.data);
 
     const updated = useAppSelector((state) => state.GlobalUpdated.updated);
+
+    const esInsumo = useAppSelector((state) => state.GlobalEsInsumo.esInsumo)
 
     const dispatch = useAppDispatch();
 
@@ -63,20 +66,23 @@ const Manufacturados = () => {
     //CODIGO RECURSIVO PARA TRAER TODOS LOS PRODUCTOS DE UNA SUCURSAL
 
     const obtenerArticulos = (categoria: ICategoria | undefined): any[] => {
-
+        console.log("hola")
         if (categoria) {
-            let articulos = [...categoria.articulosManufacturados];
+            let articulos = Array.isArray(categoria?.articulosManufacturados) ? [...categoria.articulosManufacturados] : [];
 
             categoria.subCategorias.forEach(subCategoria => {
-                articulos = [...articulos, ...obtenerArticulos(subCategoria)];
+                const subCategoriaArticulos = obtenerArticulos(subCategoria);
+                if (Array.isArray(subCategoriaArticulos)) {
+                    articulos = [...articulos, ...subCategoriaArticulos];
+                }
             });
 
+            console.log(articulos)
             return articulos;
         }
         else {
             return [];
         }
-
     }
 
     useEffect(() => {
@@ -92,10 +98,12 @@ const Manufacturados = () => {
             //Filtramos la categoria que está seleccionada en el selector (con redux)
             const categoriaFiltrada: ICategoria | undefined = responseCategoria.find((categoria) => categoria.denominacion === selectedCategory)
 
+
+            console.log("aasdkaslkññlasjjdaklasj")
+            console.log(categoriaFiltrada);
+
             //Usamos una función recursiva para traernos todos los articulos dentro de la categoria que seleccionamos
             const manufacturados: IArticuloManufacturadoCategoria[] = obtenerArticulos(categoriaFiltrada);
-
-            console.log(manufacturados)
 
             //Filtramos por articulos eliminados
             const manufacturadosHabilitados: IArticuloManufacturadoCategoria[] = manufacturados.filter((articulo) => articulo.eliminado === false)
@@ -104,15 +112,17 @@ const Manufacturados = () => {
 
             const transformedData = transformData(filteredByCategoria);
 
-
             setData(transformedData);
+
             setLoading(true);
-            dispatch(setGlobalUpdated(false))
+
+            dispatch((setGlobalUpdated(false), setEsInsumo(false)))
+            console.log(esInsumo)
         }
 
+        console.log("sex?")
         fetchManufacturado();
     }, [loading, updated, selectedCategory])
-
 
     return (
         <>

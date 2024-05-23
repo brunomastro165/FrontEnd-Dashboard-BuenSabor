@@ -30,7 +30,7 @@ const SideBar = () => {
     //Hice todo para que modificando este JSON se modifiquen directamente los botones de la sidebar con sus configuraciones 
     const Buttons: IButton[] = [
         { Icon: IoHomeOutline, text: "Inicio", link: `${url}/home`, active: active, setActive: setActive, subButton: null, child: false },
-
+        { Icon: TbCategory2, text: "Categorías", link: `${url}/categorias`, active: active, setActive: setActive, subButton: null, child: false },
         //El ícono de productos va a tener otros dos dentro
         {
             Icon: MdOutlineShoppingBag, text: "Productos", link: "", active: active, setActive: setActive,
@@ -42,8 +42,6 @@ const SideBar = () => {
         { Icon: TiTags, text: "Promociones", link: `${url}/promociones`, active: active, setActive: setActive, subButton: null, child: false },
         { Icon: GoFileDirectory, text: "Empresa", link: `${url}/empresa`, active: active, setActive: setActive, subButton: null, child: false },
         { Icon: FaRegUser, text: "Usuarios", link: `${url}/usuarios`, active: active, setActive: setActive, subButton: null, child: false },
-        { Icon: TbCategory2, text: "Categorías", link: `${url}/categorias`, active: active, setActive: setActive, subButton: null, child: false },
-
     ];
 
 
