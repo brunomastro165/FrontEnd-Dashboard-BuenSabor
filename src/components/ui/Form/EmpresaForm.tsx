@@ -60,7 +60,7 @@ const EmpresaForm: FC<IForm> = ({ open, setOpen, data, method }) => {
     if (method === 'POST') {
       try {
         //const res: IEmpresaShort = await backend.post("http://localhost:8081/empresa/short", data);
-        const res: IEmpresaShort = await backend.post("http://localhost:8081/empresa", data);
+        const res: IEmpresaShort = await backend.post(`${import.meta.env.VITE_LOCAL}empresa`, data);
         setTimeout(() => {
           dispatch(setGlobalUpdated(true))
         }, 500);
@@ -72,7 +72,7 @@ const EmpresaForm: FC<IForm> = ({ open, setOpen, data, method }) => {
     else if (method === 'PUT') {
       try {
         //const res: IEmpresaShort = await backend.put(`http://localhost:8081/empresa/${data.id}/short`, data);
-        const res: IEmpresaShort = await backend.put(`http://localhost:8081/empresa/${data.id}`, data);
+        const res: IEmpresaShort = await backend.put(`${import.meta.env.VITE_LOCAL}empresa/${data.id}`, data);
         dispatch(setGlobalUpdated(true))
       } catch (error) {
         console.error(error)

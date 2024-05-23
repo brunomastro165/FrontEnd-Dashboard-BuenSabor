@@ -83,7 +83,7 @@ const SucursalForm: FC<IForm> = ({ open, setOpen, data, method }) => {
     const postSucursal = async (data: ISucursalShort) => {
         if (method === 'POST') {
             try {
-                const res: IEmpresaShort = await backend.post("http://localhost:8081/sucursal", data);
+                const res: IEmpresaShort = await backend.post(`${import.meta.env.VITE_LOCAL}sucursal`, data);
                 console.log(res)
                 dispatch(setGlobalUpdated(true))
             } catch (error) {
@@ -92,7 +92,7 @@ const SucursalForm: FC<IForm> = ({ open, setOpen, data, method }) => {
         }
         else if (method === 'PUT') {
             try {
-                const res: IEmpresaShort = await backend.put(`http://localhost:8081/sucursal/${data.id}`, data);
+                const res: IEmpresaShort = await backend.put(`${import.meta.env.VITE_LOCAL}sucursal/${data.id}`, data);
                 dispatch(setGlobalUpdated(true))
             } catch (error) {
                 console.error(error)
@@ -163,7 +163,7 @@ const SucursalForm: FC<IForm> = ({ open, setOpen, data, method }) => {
     useEffect(() => {
         const provincias = async () => {
             try {
-                const res: IProvincia[] = await backend.getAll("http://localhost:8081/provincia")
+                const res: IProvincia[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}provincia`)
                 setProvincias(res);
                 console.log(res)
             } catch (error) {
@@ -178,7 +178,7 @@ const SucursalForm: FC<IForm> = ({ open, setOpen, data, method }) => {
 
         const localidades = async () => {
             try {
-                const res: ILocalidad[] = await backend.getAll(`http://localhost:8081/localidad/findByProvincia/${selectedProvincia?.id}`)
+                const res: ILocalidad[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}localidad/findByProvincia/${selectedProvincia?.id}`)
                 setLocalidades(res);
                 console.log(res)
             } catch (error) {
@@ -321,10 +321,10 @@ const SucursalForm: FC<IForm> = ({ open, setOpen, data, method }) => {
                 style={{ height: '50vh' }}>
                 <div className={`flex justify-center w-full space-x-5 mt-4`}>
                     {provinciaInput()}
-                    {selectedProvincia && localidadInput()}
+                    {localidadInput()}
 
                 </div>
-                {selectedLocalidad && (
+                {(
                     <>
                         <div className='flex justify-center w-full'>
                             {genericInput('calle', 'text', values.domicilio?.calle, handleChangeDomicilio)}

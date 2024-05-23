@@ -93,7 +93,7 @@ const Manufacturados = () => {
             //Esto está hecho precariamente en el front, en realidad debería ser un endpoint que cumpla estas condiciones, pero por lo pronto, funciona
 
             //Traemos las categorias de una sucursal
-            const responseCategoria: ICategoria[] = await backend.getAll(`http://localhost:8081/sucursal/getCategorias/${idSucursales}`) as ICategoria[];
+            const responseCategoria: ICategoria[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}sucursal/getCategorias/${idSucursales}`) as ICategoria[];
 
             //Filtramos la categoria que está seleccionada en el selector (con redux)
             const categoriaFiltrada: ICategoria | undefined = responseCategoria.find((categoria) => categoria.denominacion === selectedCategory)
@@ -120,7 +120,6 @@ const Manufacturados = () => {
             console.log(esInsumo)
         }
 
-        console.log("sex?")
         fetchManufacturado();
     }, [loading, updated, selectedCategory])
 

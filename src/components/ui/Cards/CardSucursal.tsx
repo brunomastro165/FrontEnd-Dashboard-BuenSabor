@@ -57,7 +57,7 @@ const CardSucursal: FC<ISucursalShort> = ({ esCasaMatriz, eliminado, horarioAper
 
     const deleteSucursal = async () => {
         try {
-            const res = await CRUD.delete(`http://localhost:8081/sucursal/${id}`);
+            const res = await CRUD.delete(`${import.meta.env.VITE_LOCAL}/sucursal/${id}`);
             console.log(res)
         } catch (error) {
             console.error(error)

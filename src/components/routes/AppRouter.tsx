@@ -28,7 +28,7 @@ const AppRouter = () => {
     const selector = useAppSelector((state) => state.logged.logged);
 
     const baseUrl = "/:idEmpresa/sucursales/:idSucursales"
-    
+
     return (
         <>
             <div className='flex flex-row'>
@@ -47,9 +47,8 @@ const AppRouter = () => {
                         <Route path='/:idEmpresa/sucursales/:idSucursales/usuarios' element={<Usuario />} />
                         <Route path="/:idEmpresa/sucursales/:idSucursales/usuarios/:id" element={<UsuariosPorRol />} />
                         <Route path='/:idEmpresa/sucursales/:idSucursales/categorias' element={<Categorias />} />
-                        <Route path='/:idEmpresa/sucursales/:idSucursales/empresa' element={<EmpresaV2 />} />
+                        <Route path='/:idEmpresa/sucursales/todas' element={<EmpresaV2 />} />
                         <Route path='/:idEmpresa/sucursales/:idSucursales/empresas/:id' element={<SucursalPorEmpresa />} />
-                       
                     </Routes>
                 </div>
             </div>

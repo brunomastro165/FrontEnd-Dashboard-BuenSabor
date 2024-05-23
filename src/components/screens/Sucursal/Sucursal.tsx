@@ -32,7 +32,7 @@ const Sucursal = () => {
 
         const fetchSucursal = async () => { //Método para llamar a todas las sucursales por su empresa
             try {
-                const res: IEmpresa = await CRUD.getById(`http://localhost:8081/empresa/sucursales/${idEmpresa}`)
+                const res: IEmpresa = await CRUD.getById(`${import.meta.env.VITE_LOCAL}empresa/sucursales/${idEmpresa}`)
                 const sucursales = res.sucursales;
                 dispatch(setGlobalUpdated(false))
 

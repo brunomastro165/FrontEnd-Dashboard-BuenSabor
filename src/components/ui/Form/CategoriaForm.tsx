@@ -82,7 +82,7 @@ const CategoriaForm: FC<IForm> = ({ open, setOpen, method }) => {
         }
         else if (method === 'PUT') {
             try {
-                const res: FormState = await backend.post(`http://localhost:8081/categoria/${data.id}`, data);
+                const res: FormState = await backend.post(`${import.meta.env.VITE_LOCAL}categoria/${data.id}`, data);
                 dispatch(setGlobalUpdated(true))
                 setOpen(false);
             } catch (error) {
@@ -91,7 +91,7 @@ const CategoriaForm: FC<IForm> = ({ open, setOpen, method }) => {
         }
         else if (method === 'SUBPUT') {
             try {
-                const res: FormState = await backend.put(`http://localhost:8081/categoria/addSubCategoria/${data.id}`, data);
+                const res: FormState = await backend.put(`${import.meta.env.VITE_LOCAL}categoria/addSubCategoria/${data.id}`, data);
                 dispatch(setGlobalUpdated(true))
                 setOpen(false);
             } catch (error) {

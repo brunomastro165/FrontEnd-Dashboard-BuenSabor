@@ -36,7 +36,7 @@ const ContainerCategorias = () => {
 
   useEffect(() => {
     const getCategorias = async () => {
-      const res: ICategoria[] = await backend.getAll(`http://localhost:8081/sucursal/getCategorias/${idSucursales}`);
+      const res: ICategoria[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}sucursal/getCategorias/${idSucursales}`);
 
       const categoriasPadre: ICategoria[] = res.filter((categoria) => categoria.esPadre === true)
 

@@ -53,7 +53,6 @@ export abstract class BackendClient<T> extends AbstractBackendClient<T> {
     return this.request(path, options);
   }
 
-
   // Método para obtener todos los elementos
   async getAll(url: string): Promise<T[]> {
     const path = url;
@@ -105,5 +104,4 @@ export abstract class BackendClient<T> extends AbstractBackendClient<T> {
   }
 }
 
-export class BackendMethods<T> extends BackendClient<T> { }
-
+export class BackendMethods<T> extends BackendClient<T> {}

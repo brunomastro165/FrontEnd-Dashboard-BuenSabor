@@ -14,6 +14,7 @@ import { setUnidades } from '../../../redux/slices/unidadMedida';
 import UnidadMedidaInput from './Inputs/UnidadMedidaInput';
 import * as Yup from 'yup'
 import CategoriaInput from './Inputs/CategoriaInput';
+import { subirImagenes } from './Inputs/ImageFunction';
 
 interface IForm {
     open: boolean;
@@ -79,13 +80,12 @@ const AManufacturadoForm: FC<IForm> = ({ open, setOpen, method }) => {
         if (method === 'POST') {
             try {
                 //TODO Cambiar el método para que coincida con el backend
-                const res: IArticuloManufacturado = await backend.post("http://localhost:8081/ArticuloManufacturado", data);
+                const res: IArticuloManufacturado = await backend.post(`${import.meta.env.VITE_LOCAL}ArticuloManufacturado`, data);
+
+                const subirImagen = await subirImagenes(res.id, values.imagenes)
                 dispatch(setGlobalUpdated(true))
                 setOpen(false);
-                console.log("post")
-                console.log(res)
             } catch (error) {
-                console.log("post")
                 console.error(error)
             }
         }
@@ -93,12 +93,13 @@ const AManufacturadoForm: FC<IForm> = ({ open, setOpen, method }) => {
             try {
                 console.log(data)
                 //const res: IEmpresaShort = await backend.put(`http://localhost:8081/empresa/${data.id}/short`, data);
-                const res: IArticuloManufacturado = await backend.put(`http://localhost:8081/ArticuloManufacturado/${data.id}`, data);
+                const res: IArticuloManufacturado = await backend.put(`${import.meta.env.VITE_LOCAL}ArticuloManufacturado/${data.id}`, data);
+
+                const subirImagen = await subirImagenes(res.id, values.imagenes)
+
+                setOpen(false);
+
                 dispatch(setGlobalUpdated(true))
-                console.log("put")
-                //console.log(res)
-                console.log("put")
-                // setOpen(false);
             } catch (error) {
                 console.log("put")
                 console.error(error)
@@ -149,7 +150,7 @@ const AManufacturadoForm: FC<IForm> = ({ open, setOpen, method }) => {
     //const [unidadesMedida, setUnidadesMedida] = useState<IUnidadMedida[]>([]);
 
     const getUnidades = async () => {
-        const res: IUnidadMedida[] = await backend.getAll("http://localhost:8081/UnidadMedida");
+        const res: IUnidadMedida[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}UnidadMedida`);
         dispatch(setUnidades(res))
         setLoaded(true);
     }
@@ -175,9 +176,9 @@ const AManufacturadoForm: FC<IForm> = ({ open, setOpen, method }) => {
     //const [incrementalId,]
 
     const getInsumos = async () => {
-        const res: IArticuloInsumo[] = await backend.getAll("http://localhost:8081/ArticuloInsumo");
-        setArticulosInsumo(res);
-        setFiltroDetalle(res);
+        const res: IArticuloInsumo[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}ArticuloInsumo`);
+        //setArticulosInsumo(res);
+        //setFiltroDetalle(res);
         //setLoaded(true);
     }
 
@@ -186,6 +187,8 @@ const AManufacturadoForm: FC<IForm> = ({ open, setOpen, method }) => {
     }, [])
 
     const [aMDetalles, setAmDetalles] = useState<IArticuloManufacturadoDetalle[]>([])
+
+    const [popUp, setPopUp] = useState<boolean>(false);
 
     //En esta función pedimos el valor del número ingresado por el usuario y el valor de la denominación del articulo insumo
     const handleQuantityChange = (cantidad: number, denominacion: string) => {
@@ -218,6 +221,15 @@ const AManufacturadoForm: FC<IForm> = ({ open, setOpen, method }) => {
         //Eliminamos los artículos con cantidad 0
         newDetalles = newDetalles.filter(detalle => detalle.cantidad !== 0);
 
+
+        //Esto es para almacenar temporalmene los insumos (de esta forma no tengo que traer de más)
+        const insumos: IArticuloInsumo[] | undefined = [];
+
+        const insumosGuardados = newDetalles.map((detalle) => detalle.articuloInsumo && insumos.push(detalle.articuloInsumo))
+
+        //const insumosFinales = insumosGuardados.map((insumo) => insumo.articuloInsumo && insumos.push(insumo.articuloInsumo))
+
+        setArticulosInsumo(insumos)
         setAmDetalles(newDetalles);
     }
 
@@ -228,9 +240,40 @@ const AManufacturadoForm: FC<IForm> = ({ open, setOpen, method }) => {
         }));
     }, [aMDetalles]);
 
+    const filtroPorBusqueda = async (busqueda: string) => {
+
+        if (busqueda === "") {
+            setFiltroDetalle([]);
+            return 'no hay búsqueda';
+        }
+        else {
+            const res: IArticuloInsumo[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}ArticuloInsumo/buscar/${busqueda}`)
+            setFiltroDetalle(res);
+            setArticulosInsumo(res);
+            return res;
+        }
+    }
+
+    console.log(values)
+
     const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
         console.log(e.target.value)
-        setFiltroDetalle(articulosInsumo.filter(articulo => articulo.denominacion.toLocaleLowerCase().includes(e.target.value.toLocaleLowerCase())))
+        const search = e.target.value.toString();
+
+        setTimeout(async () => {
+            const res = await filtroPorBusqueda(search)
+
+            if (res.length === 0) {
+                setPopUp(true)
+            } else if (res === "no hay búsqueda") {
+                setPopUp(false)
+            }
+            else {
+                setPopUp(false);
+            }
+
+        }, 1000);
+
     }
 
     const aMDetalle = () => {
@@ -276,8 +319,10 @@ const AManufacturadoForm: FC<IForm> = ({ open, setOpen, method }) => {
                                 </div>
                             ))}
                     </div>
-
+                    {popUp && <h1 className='flex mt-4 justify-center w-full'>No se encontraron insumos... </h1>}
                 </div>
+
+
 
                 <div className='flex flex-wrap my-2 h-auto '>
                     {aMDetalles?.map((detalle) => (
@@ -374,8 +419,6 @@ const AManufacturadoForm: FC<IForm> = ({ open, setOpen, method }) => {
 
                 </div>
             </div>
-
-
 
             <button className='bg-red-600 text-white px-4 py-2 rounded-md active:scale-95 transition-all'
                 onClick={handleSubmit}>Enviar</button>

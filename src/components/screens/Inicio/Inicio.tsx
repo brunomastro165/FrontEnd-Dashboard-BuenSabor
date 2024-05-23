@@ -8,6 +8,7 @@ import { IPromos } from "../../../types/Promos";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import { setGlobalUpdated } from "../../../redux/slices/globalUpdate";
 
+
 //@ts-ignore
 class Backend extends BackendClient<T> { }
 
@@ -34,7 +35,7 @@ const Inicio = () => {
     const dispatch = useAppDispatch();
 
     const getEmpresas = async () => {
-        const res: IEmpresa[] = await backend.getAll("http://localhost:8081/empresa/noEliminados");
+        const res: IEmpresa[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}empresa/noEliminados`);
         setEmpresas(res);
     }
 

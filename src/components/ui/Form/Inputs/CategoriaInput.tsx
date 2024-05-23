@@ -37,7 +37,7 @@ const CategoriaInput: FC<CategoriaInput> = ({ setLoaded, setIdCategoria, handleC
     const updated = useAppSelector((state) => state.GlobalUpdated.updated)
 
     const getUnidades = async () => {
-        const res: ICategoriaShort[] = await backend.getAll(`http://localhost:8081/sucursal/getCategorias/${idSucursales}`) as ICategoriaShort[];
+        const res: ICategoriaShort[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}sucursal/getCategorias/${idSucursales}`) as ICategoriaShort[];
         const categoriaExistente = res.filter((categoria) => categoria.eliminado === false)
         const categoriaFiltrada = categoriaExistente.filter((categoria) => categoria.esInsumo === esInsumo)
         setCategorias(categoriaFiltrada)

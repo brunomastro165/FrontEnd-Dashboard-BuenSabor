@@ -32,7 +32,7 @@ const UnidadMedidaInput: FC<UnidadInput> = ({ loaded, openUnidad, setLoaded, set
     const updated = useAppSelector((state) => state.GlobalUpdated.updated)
 
     const getUnidades = async () => {
-        const res: IUnidadMedida[] = await fetchData("http://localhost:8081/UnidadMedida");
+        const res: IUnidadMedida[] = await fetchData(`${import.meta.env.VITE_LOCAL}UnidadMedida`);
         const unidadesHabilitadas = res.filter((unidad) => !unidad.eliminado)
         dispatch(setUnidades(unidadesHabilitadas))
         setLoaded(true);
@@ -40,7 +40,7 @@ const UnidadMedidaInput: FC<UnidadInput> = ({ loaded, openUnidad, setLoaded, set
 
     const deleteLogico = async (id: number) => {
         dispatch(setGlobalUpdated(true))
-        const res = await backend.delete(`http://localhost:8081/UnidadMedida/${id}`)
+        const res = await backend.delete(`${import.meta.env.VITE_LOCAL}UnidadMedida/${id}`)
         dispatch(setGlobalUpdated(true))
     }
 

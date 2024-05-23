@@ -47,7 +47,7 @@ const UnidadMedidaForm: FC<IForm> = ({ open, setOpen, method }) => {
         if (method === 'POST') {
             try {
                 //TODO Cambiar el método para que coincida con el backend
-                const res: IUnidadMedida = await backend.post("http://localhost:8081/UnidadMedida", data);
+                const res: IUnidadMedida = await backend.post(`${import.meta.env.VITE_LOCAL}UnidadMedida`, data);
                 dispatch(setGlobalUpdated(true))
                 setOpen(false);
                 console.log(res)
@@ -58,7 +58,7 @@ const UnidadMedidaForm: FC<IForm> = ({ open, setOpen, method }) => {
         else if (method === 'PUT') {
             try {
                 //const res: IEmpresaShort = await backend.put(`http://localhost:8081/empresa/${data.id}/short`, data);
-                const res: IUnidadMedida = await backend.put(`http://localhost:8081/UnidadMedida/${data.id}`, data);
+                const res: IUnidadMedida = await backend.put(`${import.meta.env.VITE_LOCAL}UnidadMedida/${data.id}`, data);
                 dispatch(setGlobalUpdated(true))
                 setOpen(false);
             } catch (error) {

@@ -32,14 +32,14 @@ const TableItem: FC<IItem> = ({ id, denominacion, param2, param3, param4, endpoi
     const dispatch = useAppDispatch();
 
     const fetchIndividual = async () => {
-        const response: any = await fetchData(`http://localhost:8081/${endpoint}/${id}`)
+        const response: any = await fetchData(`${import.meta.env.VITE_LOCAL}${endpoint}/${id}`)
         dispatch(setGlobalInitialValues(response))
         setOpen(true);
     }
 
     const deleteLogico = async () => {
         try {
-            const response = await CRUD.delete(`http://localhost:8081/${endpoint}/${id}`)
+            const response = await CRUD.delete(`${import.meta.env.VITE_LOCAL}${endpoint}/${id}`)
             dispatch(setGlobalUpdated(true))
         } catch (error) {
             dispatch(setGlobalUpdated(true))

@@ -31,7 +31,7 @@ const CategoriaSelector = () => {
 
     useEffect(() => {
         const getAll = async () => {
-            const res: ICategoriaShort[] = await back.getAll(`http://localhost:8081/sucursal/getCategorias/${idSucursales}`) as ICategoriaShort[]
+            const res: ICategoriaShort[] = await back.getAll(`${import.meta.env.VITE_LOCAL}sucursal/getCategorias/${idSucursales}`) as ICategoriaShort[]
 
 
             const categorias: ICategoriaShort[] = res.filter((categoria) => categoria.esInsumo === globalEsInsumo)

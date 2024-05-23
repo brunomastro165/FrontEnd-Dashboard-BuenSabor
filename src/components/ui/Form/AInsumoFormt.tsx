@@ -13,6 +13,7 @@ import UnidadMedidaForm from './UnidadMedidaForm';
 import UnidadMedidaInput from './Inputs/UnidadMedidaInput';
 import * as Yup from 'yup'
 import CategoriaInput from './Inputs/CategoriaInput';
+import { subirImagenes } from './Inputs/ImageFunction';
 
 interface IForm {
     open: boolean;
@@ -87,7 +88,10 @@ const AInsumoForm: FC<IForm> = ({ open, setOpen, method }) => {
         if (method === 'POST') {
             try {
                 //TODO Cambiar el método para que coincida con el backend
-                const res: IArticuloInsumo = await backend.post("http://localhost:8081/ArticuloInsumo", data);
+                const res: IArticuloInsumo = await backend.post(`${import.meta.env.VITE_LOCAL}ArticuloInsumo`, data);
+
+                const subirImagen = await subirImagenes(res.id, values.imagenes)
+
                 dispatch(setGlobalUpdated(true))
                 setOpen(false);
                 console.log(res)
@@ -98,7 +102,10 @@ const AInsumoForm: FC<IForm> = ({ open, setOpen, method }) => {
         else if (method === 'PUT') {
             try {
                 //const res: IEmpresaShort = await backend.put(`http://localhost:8081/empresa/${data.id}/short`, data);
-                const res: IArticuloInsumo = await backend.put(`http://localhost:8081/ArticuloInsumo/${data.id}`, data);
+                const res: IArticuloInsumo = await backend.put(`${import.meta.env.VITE_LOCAL}ArticuloInsumo/${data.id}`, data);
+
+                const subirImagen = await subirImagenes(res.id, values.imagenes)
+
                 dispatch(setGlobalUpdated(true))
                 setOpen(false);
             } catch (error) {
