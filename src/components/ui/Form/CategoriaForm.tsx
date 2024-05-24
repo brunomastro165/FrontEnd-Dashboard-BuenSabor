@@ -71,7 +71,10 @@ const CategoriaForm: FC<IForm> = ({ open, setOpen, method }) => {
     const postCategoria = async (data: FormState) => {
         if (method === 'POST') {
             try {
-                const res: FormState = await backend.post("http://localhost:8081/categoria", data);
+
+                console.log(data)
+
+                const res: FormState = await backend.post(`${import.meta.env.VITE_LOCAL}categoria`, data);
                 dispatch(setGlobalUpdated(true))
                 console.log(res)
                 setOpen(false);

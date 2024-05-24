@@ -55,7 +55,7 @@ const ContainerCategorias = () => {
       denominacion: '',
       idSucursales: [],
       eliminado: false,
-      esPadre: true,
+      esPadre: 'true',
     }))
 
     dispatch(setGlobalUpdated(false))

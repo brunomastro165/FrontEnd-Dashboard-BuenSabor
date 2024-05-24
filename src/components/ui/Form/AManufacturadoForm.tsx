@@ -15,6 +15,7 @@ import UnidadMedidaInput from './Inputs/UnidadMedidaInput';
 import * as Yup from 'yup'
 import CategoriaInput from './Inputs/CategoriaInput';
 import { subirImagenes } from './Inputs/ImageFunction';
+import { useParams } from 'react-router-dom';
 
 interface IForm {
     open: boolean;
@@ -42,6 +43,8 @@ type FormState = {
 class GenericBackend extends BackendClient<T> { } //Métodos genéricos 
 
 const AManufacturadoForm: FC<IForm> = ({ open, setOpen, method }) => {
+
+    const { idSucursales } = useParams();
 
     const backend = new GenericBackend(); //Objeto de BackendClient
 
@@ -82,7 +85,7 @@ const AManufacturadoForm: FC<IForm> = ({ open, setOpen, method }) => {
                 //TODO Cambiar el método para que coincida con el backend
                 const res: IArticuloManufacturado = await backend.post(`${import.meta.env.VITE_LOCAL}ArticuloManufacturado`, data);
 
-                const subirImagen = await subirImagenes(res.id, values.imagenes)
+                // const subirImagen = await subirImagenes(res.id, values.imagenes)
                 dispatch(setGlobalUpdated(true))
                 setOpen(false);
             } catch (error) {
@@ -95,7 +98,7 @@ const AManufacturadoForm: FC<IForm> = ({ open, setOpen, method }) => {
                 //const res: IEmpresaShort = await backend.put(`http://localhost:8081/empresa/${data.id}/short`, data);
                 const res: IArticuloManufacturado = await backend.put(`${import.meta.env.VITE_LOCAL}ArticuloManufacturado/${data.id}`, data);
 
-                const subirImagen = await subirImagenes(res.id, values.imagenes)
+                //  const subirImagen = await subirImagenes(res.id, values.imagenes)
 
                 setOpen(false);
 
@@ -106,6 +109,8 @@ const AManufacturadoForm: FC<IForm> = ({ open, setOpen, method }) => {
             }
         }
     }
+
+
 
     const handleSubmit = async () => {
         try {
@@ -176,7 +181,7 @@ const AManufacturadoForm: FC<IForm> = ({ open, setOpen, method }) => {
     //const [incrementalId,]
 
     const getInsumos = async () => {
-        const res: IArticuloInsumo[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}ArticuloInsumo`);
+        //const res: IArticuloInsumo[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}ArticuloInsumo`);
         //setArticulosInsumo(res);
         //setFiltroDetalle(res);
         //setLoaded(true);
@@ -247,7 +252,7 @@ const AManufacturadoForm: FC<IForm> = ({ open, setOpen, method }) => {
             return 'no hay búsqueda';
         }
         else {
-            const res: IArticuloInsumo[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}ArticuloInsumo/buscar/${busqueda}`)
+            const res: IArticuloInsumo[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}ArticuloInsumo/buscar/${busqueda}/${idSucursales}`)
             setFiltroDetalle(res);
             setArticulosInsumo(res);
             return res;
