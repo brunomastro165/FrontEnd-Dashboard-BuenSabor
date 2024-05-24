@@ -12,18 +12,21 @@ import AInsumoForm from '../Form/AInsumoFormt'
 import UsuarioForm from '../Form/UsuarioForm'
 import SucursalForm from '../Form/SucursalForm'
 import GlobalInitialValues, { setGlobalInitialValues } from '../../../redux/slices/globalInitialValues'
-import { useAppDispatch } from '../../../hooks/redux'
+import { useAppDispatch, useAppSelector } from '../../../hooks/redux'
 import GenericWaiter from '../Waiters/GenericWaiter'
+import { setBorrado } from '../../../redux/slices/borradosLogicamente'
 
 
 const Table: FC<ITable> = ({ items, row1, row2, row3, row4, row5, endpoint }) => {
 
 
-    const useAppSelector = GlobalInitialValues.actions
+    // const useAppSelector = GlobalInitialValues.actions
 
     const [data, setData] = useState([]);
 
     const [open, setOpen] = useState<boolean>(false);
+
+    const borrados = useAppSelector((state) => state.GlobalBorrados.borrado);
 
     const [initialValues, setInitialValues] = useState<any>();
 
@@ -76,10 +79,20 @@ const Table: FC<ITable> = ({ items, row1, row2, row3, row4, row5, endpoint }) =>
 
     return (
         <>
-            <div className='w-full  flex justify-end  my-4'>
+            <div className='w-full  flex justify-end space-x-4 my-4'>
 
-                <button className='text-2xl font-Roboto btn btn-success bg-white text-green-600 hover:text-white  hover:bg-green-600'
-                    onClick={() => { fetchForm() }}>Agregar +</button>
+                {borrados ||
+                    <button className='text-2xl font-Roboto btn btn-success bg-white text-green-600 hover:text-white  hover:bg-green-600'
+                        onClick={() => { fetchForm() }}>
+                        Agregar +
+                    </button>
+                }
+
+                <button className='text-2xl font-Roboto btn btn-error bg-white text-red-600 hover:text-white  hover:bg-red-600'
+                    onClick={() => { dispatch(setBorrado(!borrados)) }}>
+                    {borrados ? 'Ver activos' : 'Ver inactivos'}
+                </button>
+
                 {/*Este botón debería ir vinculado con el PUT de producto */}
                 {/* <button className='text-white text-5xl ml-4 rounded-md bg-green-600  shadow-lg justify-end'>
                         <CiSquarePlus className='hover:-rotate-90 transition-all' />
@@ -98,7 +111,7 @@ const Table: FC<ITable> = ({ items, row1, row2, row3, row4, row5, endpoint }) =>
                                     <th>{row3}</th>
                                     <th>{row4}</th>
                                     <th>{row5}</th>
-                                    <th>Acciones</th>
+                                    {borrados || <th>Acciones</th>}
                                 </tr>
                             </thead>
                             <tbody className=''>

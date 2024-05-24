@@ -34,6 +34,8 @@ const Manufacturados = () => {
 
     const esInsumo = useAppSelector((state) => state.GlobalEsInsumo.esInsumo)
 
+    const borrados = useAppSelector((state) => state.GlobalBorrados.borrado)
+
     const dispatch = useAppDispatch();
 
 
@@ -106,7 +108,7 @@ const Manufacturados = () => {
             const manufacturados: IArticuloManufacturadoCategoria[] = obtenerArticulos(categoriaFiltrada);
 
             //Filtramos por articulos eliminados
-            const manufacturadosHabilitados: IArticuloManufacturadoCategoria[] = manufacturados.filter((articulo) => articulo.eliminado === false)
+            const manufacturadosHabilitados: IArticuloManufacturadoCategoria[] = manufacturados.filter((articulo) => articulo.eliminado === borrados)
 
             const filteredByCategoria = manufacturadosHabilitados.filter((articulo) => articulo.categoria?.denominacion === selectedCategory)
 
@@ -121,7 +123,7 @@ const Manufacturados = () => {
         }
 
         fetchManufacturado();
-    }, [loading, updated, selectedCategory])
+    }, [loading, updated, selectedCategory, borrados])
 
     return (
         <>

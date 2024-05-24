@@ -30,6 +30,7 @@ const Insumos = () => {
 
     const esInsumo = useAppSelector((state) => state.GlobalEsInsumo.esInsumo)
 
+    const borrados = useAppSelector((state) => state.GlobalBorrados.borrado)
 
     const [loading, setLoading] = useState<boolean>(false);
 
@@ -75,6 +76,8 @@ const Insumos = () => {
         }
     }
 
+    console.log(borrados)
+
     useEffect(() => {
         const fetchInsumo = async () => {
 
@@ -91,8 +94,8 @@ const Insumos = () => {
             //Usamos una función recursiva para traernos todos los articulos dentro de la categoria que seleccionamos
             const insumos: IArticuloInsumoCategoria[] = obtenerArticulos(categoriaFiltrada);
 
-            //Filtramos por articulos eliminados
-            const insumosHabilitados: IArticuloInsumoCategoria[] = insumos.filter((articulo) => articulo.eliminado === false)
+            //Filtramos por articulos eliminados (si lo igualamos a borrados, vamos a poder invertir la vista de los articulos eliminados)
+            const insumosHabilitados: IArticuloInsumoCategoria[] = insumos.filter((articulo) => articulo.eliminado === borrados)
 
             const filteredByCategoria = insumosHabilitados.filter((articulo) => articulo.categoria?.denominacion === selectedCategory)
 
@@ -105,7 +108,7 @@ const Insumos = () => {
         }
 
         fetchInsumo();
-    }, [loading, updated, selectedCategory])
+    }, [loading, updated, selectedCategory, borrados])
 
     // Uso de la función
     // useEffect(() => {
