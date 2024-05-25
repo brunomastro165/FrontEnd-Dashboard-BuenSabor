@@ -8,6 +8,7 @@ import { IEmpresaShort } from '../../../types/ShortDtos/EmpresaShort';
 import { useAppDispatch } from '../../../hooks/redux';
 import { setGlobalUpdated } from '../../../redux/slices/globalUpdate';
 import * as Yup from 'yup'
+import Swal from 'sweetalert2'
 
 interface IForm {
   open: boolean;
@@ -39,6 +40,10 @@ const EmpresaForm: FC<IForm> = ({ open, setOpen, data, method }) => {
 
   const [errors, setErrors] = useState<any>({});
 
+  const mostrarAlerta = () => {
+    Swal.fire('Se agregó correctamente la empresa', `${values.nombre}`, 'success');
+  }
+
   const validationSchema = Yup.object().shape({
     nombre: Yup.string()
       .required('El nombre es requerido'),
@@ -61,9 +66,10 @@ const EmpresaForm: FC<IForm> = ({ open, setOpen, data, method }) => {
       try {
         //const res: IEmpresaShort = await backend.post("http://localhost:8081/empresa/short", data);
         const res: IEmpresaShort = await backend.post(`${import.meta.env.VITE_LOCAL}empresa`, data);
-        setTimeout(() => {
-          dispatch(setGlobalUpdated(true))
-        }, 500);
+
+        dispatch(setGlobalUpdated(true))
+        mostrarAlerta()
+
 
       } catch (error) {
         console.error(error)

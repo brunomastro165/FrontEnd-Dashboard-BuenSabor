@@ -14,6 +14,8 @@ const SearchBar = () => {
 
     const dispatch = useAppDispatch()
 
+    const mostrarSelector = useAppSelector((state) => state.MostrarCategoriaSelector.mostrar)
+
     function handleChange(e: ChangeEvent<HTMLInputElement>) {
         setLocalSearch(e.target.value);
         dispatch(setSearch(e.target.value))
@@ -24,7 +26,7 @@ const SearchBar = () => {
 
             <div className='flex items-center'>
                 <div className='z-50 w-1/12 fixed'>
-                    <CategoriaSelector />
+                    {mostrarSelector && <CategoriaSelector />}
                 </div>
                 <div className='w-full  flex items-center justify-center  '>
                     <div className='flex items-center justify-center fixed w-full z-0 outline-none border-red-600 '>

@@ -14,6 +14,9 @@ import { TbCategory2 } from "react-icons/tb";
 import { useParams } from 'react-router-dom';
 import { useAppSelector } from '../../../hooks/redux';
 import ResponsiveButton from './ResponsiveButton/ResponsiveButton';
+import { LiaBalanceScaleRightSolid } from "react-icons/lia";
+
+
 
 const SideBar = () => {
 
@@ -42,6 +45,7 @@ const SideBar = () => {
         { Icon: TiTags, text: "Promociones", link: `${url}/promociones`, active: active, setActive: setActive, subButton: null, child: false },
         { Icon: GoFileDirectory, text: "Empresa", link: `${url}/empresa`, active: active, setActive: setActive, subButton: null, child: false },
         { Icon: FaRegUser, text: "Usuarios", link: `${url}/usuarios`, active: active, setActive: setActive, subButton: null, child: false },
+        { Icon: LiaBalanceScaleRightSolid, text: "Unidades de medida", link: `${url}/unidadesDeMedida`, active: active, setActive: setActive, subButton: null, child: false },
     ];
 
 

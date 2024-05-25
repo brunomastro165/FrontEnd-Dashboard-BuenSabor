@@ -21,6 +21,7 @@ import ProductosPorPromociones from '../screens/Promociones/ProductosPorPromocio
 import Inicio from '../screens/Inicio/Inicio'
 import Sucursal from '../screens/Sucursal/Sucursal'
 import { useAppSelector } from '../../hooks/redux'
+import UnidadesMedida from '../screens/UnidadesDeMedida/UnidadesDeMedida'
 
 const AppRouter = () => {
 
@@ -49,6 +50,7 @@ const AppRouter = () => {
                         <Route path='/:idEmpresa/sucursales/:idSucursales/categorias' element={<Categorias />} />
                         <Route path='/:idEmpresa/sucursales/todas' element={<EmpresaV2 />} />
                         <Route path='/:idEmpresa/sucursales/:idSucursales/empresas/:id' element={<SucursalPorEmpresa />} />
+                        <Route path='/:idEmpresa/sucursales/:idSucursales/unidadesDeMedida' element={<UnidadesMedida />} />
                     </Routes>
                 </div>
             </div>

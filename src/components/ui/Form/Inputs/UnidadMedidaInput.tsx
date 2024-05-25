@@ -22,10 +22,11 @@ interface UnidadInput {
 
 const UnidadMedidaInput: FC<UnidadInput> = ({ loaded, openUnidad, setLoaded, setOpenUnidad, setUnidadSeleccionada, handleChoose }) => {
 
-
     const backend = new BackendMethods();
 
     const dispatch = useAppDispatch()
+
+    const [unidadesValidas, setUnidadesValidas] = useState<IUnidadMedida[]>([])
 
     const unidades = useAppSelector((state) => state.UnidadesMedida.UnidadesMedida)
 
@@ -34,19 +35,19 @@ const UnidadMedidaInput: FC<UnidadInput> = ({ loaded, openUnidad, setLoaded, set
     const getUnidades = async () => {
         const res: IUnidadMedida[] = await fetchData(`${import.meta.env.VITE_LOCAL}UnidadMedida`);
         const unidadesHabilitadas = res.filter((unidad) => !unidad.eliminado)
-        dispatch(setUnidades(unidadesHabilitadas))
+        setUnidadesValidas(unidadesHabilitadas)
         setLoaded(true);
     }
 
-    const deleteLogico = async (id: number) => {
-        dispatch(setGlobalUpdated(true))
-        const res = await backend.delete(`${import.meta.env.VITE_LOCAL}UnidadMedida/${id}`)
-        dispatch(setGlobalUpdated(true))
-    }
+    // const deleteLogico = async (id: number) => {
+    //     dispatch(setGlobalUpdated(true))
+    //     const res = await backend.delete(`${import.meta.env.VITE_LOCAL}UnidadMedida/${id}`)
+    //     dispatch(setGlobalUpdated(true))
+    // }
 
     useEffect(() => {
         getUnidades();
-    }, [updated])
+    }, [])
 
 
     const [editar, setEditar] = useState<boolean>(false);
@@ -56,7 +57,7 @@ const UnidadMedidaInput: FC<UnidadInput> = ({ loaded, openUnidad, setLoaded, set
             <div className='font-Roboto text-xl'>Unidades de medida: </div>
 
             <div className="overflow-y-scroll max-h-52 ">
-                {unidades.map((unidad, index) => (
+                {unidadesValidas.map((unidad, index) => (
                     <>
                         <div key={index} className="flex flex-row items-center justify-between">
 
@@ -77,16 +78,16 @@ const UnidadMedidaInput: FC<UnidadInput> = ({ loaded, openUnidad, setLoaded, set
                                 </label>
                             </div>
 
-                            {editar &&
+                            {/* {editar &&
                                 <h1 className="mr-5"
                                     onClick={() => deleteLogico(unidad.id)}>
                                     <FaRegTrashAlt className="bg-red-600 text-white text-3xl p-1 rounded cursor-pointer hover:scale-105" />
                                 </h1>
-                            }
+                            } */}
                         </div>
                     </>
                 ))}
-
+                {/* 
                 {openUnidad && (
                     <div className="fixed z-50 inset-0  w-full">
                         <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0 m-14">
@@ -99,11 +100,11 @@ const UnidadMedidaInput: FC<UnidadInput> = ({ loaded, openUnidad, setLoaded, set
                             </div>
                         </div>
                     </div>
-                )}
+                )} */}
 
             </div>
 
-            <div className="flex flex-row justify-center items-center space-x-4 mb-4">
+            {/* <div className="flex flex-row justify-center items-center space-x-4 mb-4">
                 <div className="flex justify-center items-center mt-2">
                     <button className='btn bg-green-500 text-center text-white mt-2'
                         onClick={() => setOpenUnidad(true)}>Agregar unidad</button>
@@ -113,7 +114,7 @@ const UnidadMedidaInput: FC<UnidadInput> = ({ loaded, openUnidad, setLoaded, set
                     <button className='btn bg-blue-500 text-center text-white mt-2'
                         onClick={() => setEditar(!editar)}>Editar unidades</button>
                 </div>
-            </div>
+            </div> */}
 
         </>
     )

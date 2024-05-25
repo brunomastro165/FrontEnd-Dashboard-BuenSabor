@@ -7,6 +7,7 @@ import { IBasePage } from '../../../types/BasePage';
 import { IItem } from '../../../types/Table/TableItem';
 import { setGlobalUpdated } from '../../../redux/slices/globalUpdate';
 import CategoriaSelector from '../../ui/CategoriaSelector/CategoriaSelector';
+import { setCategoriaSelector } from '../../../redux/slices/mostrarCategoriaSelector';
 
 
 const ITEMS_PER_PAGE = 7;
@@ -29,6 +30,10 @@ const BasePage: FC<IBasePage> = ({ data, title, loading, row1, row2, row3, row4,
         setFilteredData(filteredInsumosData);
         dispatch(setGlobalUpdated(false))
     }, [selector, loading, data]);
+
+    useEffect(() => {
+        dispatch(setCategoriaSelector(true))
+    }, [])
 
     //Lógica de la paginación
 

@@ -10,6 +10,7 @@ import UnidadesMedida from "../slices/unidadMedida";
 import GlobalCategory from "../slices/globalCategory";
 import GlobalEsInsumo from "../slices/esInsumo";
 import GlobalBorrados from "../slices/borradosLogicamente";
+import MostrarCategoriaSelector from "../slices/mostrarCategoriaSelector";
 
 const persistConfig = {
   key: "root",
@@ -49,6 +50,7 @@ export const store = configureStore({
     GlobalCategory: GlobalCategory.reducer,
     GlobalEsInsumo: GlobalEsInsumo.reducer,
     GlobalBorrados: GlobalBorrados.reducer,
+    MostrarCategoriaSelector: MostrarCategoriaSelector.reducer,
   },
 });
 
