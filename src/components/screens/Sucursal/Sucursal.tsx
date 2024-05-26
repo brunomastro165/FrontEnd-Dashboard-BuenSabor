@@ -20,7 +20,7 @@ const Sucursal = () => {
 
     const location = useLocation();
 
-    const nombreEmpresa = location.state.nombre;
+    const nombreEmpresa = location?.state?.nombre;
 
     console.log(nombreEmpresa)
 

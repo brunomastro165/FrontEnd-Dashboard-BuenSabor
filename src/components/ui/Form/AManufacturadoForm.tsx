@@ -16,6 +16,7 @@ import * as Yup from 'yup'
 import CategoriaInput from './Inputs/CategoriaInput';
 import { subirImagenes } from './Inputs/ImageFunction';
 import { useParams } from 'react-router-dom';
+import DetalleInput from './Inputs/DetalleInput';
 
 interface IForm {
     open: boolean;
@@ -85,6 +86,8 @@ const AManufacturadoForm: FC<IForm> = ({ open, setOpen, method }) => {
                 //TODO Cambiar el método para que coincida con el backend
                 const res: IArticuloManufacturado = await backend.post(`${import.meta.env.VITE_LOCAL}ArticuloManufacturado`, data);
 
+                console.log("response")
+                console.log(res)
                 // const subirImagen = await subirImagenes(res.id, values.imagenes)
                 dispatch(setGlobalUpdated(true))
                 setOpen(false);
@@ -415,7 +418,10 @@ const AManufacturadoForm: FC<IForm> = ({ open, setOpen, method }) => {
                             </div>
 
                         </div>
-                        <div>{aMDetalle()}</div>
+                        <div>
+                            <DetalleInput setValues={setValues} values={values} idSucursales={idSucursales} />
+                            {/* {aMDetalle()} */}
+                        </div>
 
                     </div>
                     <div className='w-full flex justify-center '>

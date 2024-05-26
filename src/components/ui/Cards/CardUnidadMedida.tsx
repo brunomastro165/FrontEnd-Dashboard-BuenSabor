@@ -41,8 +41,8 @@ const CardUnidadMedida: FC<ICardUnidad> = ({ denominacion, id }) => {
                     <RiDeleteBinLine className='text-3xl transition-all cursor-pointer hover:text-red-600' onClick={() => deleteLogico(id)} />
                 </h1>
                 <div className="card-body flex justify-center items-center">
-                    <h1 className='font-Roboto'>Denominación:</h1>
-                    <h2 className="card-title font-Roboto group-hover:text-red-600 transition-all ">{denominacion}</h2>
+                    <h1 className='font-Roboto '>Denominación:</h1>
+                    <h2 className="card-title font-Roboto group-hover:text-red-600 transition-all bg-blue-600 p-2 rounded-xl text-white">{denominacion}</h2>
                 </div>
                 {/* <figure><RiWeightLine /></figure> */}
             </div>

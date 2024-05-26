@@ -14,6 +14,7 @@ import { BarListVisitas } from '../../tremor/BarListVisitas';
 import { ICategoria } from '../../../types/Categoria';
 import { IArticuloManufacturado } from '../../../types/ArticuloManufacturado';
 import GlobalLogged, { setLogged } from '../../../redux/slices/logged';
+import { setIdEmpresa } from '../../../redux/slices/idEmpresa';
 
 
 //@ts-ignore
@@ -32,8 +33,13 @@ const Home = () => {
 
     const dispatch = useAppDispatch()
 
+    const id = useAppSelector((state) => state.GlobalIdEmpresa.idEmpresa)
+
     const url = `/${idEmpresa}/sucursales/${idSucursales}`
 
+
+    console.log("sex")
+    console.log(id)
     const [sucursales, setSucursales] = useState<ISucursal[]>([]);
 
     // const getSucursales = async () => {
@@ -65,6 +71,11 @@ const Home = () => {
     useEffect(() => {
         dispatch(setGlobalUrl(url), setLogged(true))
     }, [logged])
+
+    useEffect(() => {
+        dispatch(setIdEmpresa(idEmpresa))
+    }, [])
+
 
 
     // useEffect(() => {
