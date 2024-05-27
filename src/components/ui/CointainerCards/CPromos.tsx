@@ -37,15 +37,14 @@ const CPromos = () => {
     const hanlderOpen = () => {
         dispatch(setGlobalInitialValues(
             {
+                id: 0,
                 denominacion: '',
                 eliminado: false,
                 fechaDesde: '',
                 fechaHasta: '',
                 horaDesde: null,
                 horaHasta: null,
-                descripcionDescuento: '',
                 precioPromocional: 0,
-                tipoPromocion: '',
                 detalles: [],
                 idSucursales: [],
             }
@@ -53,9 +52,9 @@ const CPromos = () => {
         setOpen(true)
     }
 
-
     const getPromos = async () => {
-        const res: IPromos[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}promocion`) as IPromos[];
+        const res: IPromos[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}sucursal/getPromociones/1`) as IPromos[];
+        console.log(res)
         const promosHabilitadas = res.filter((promo) => !promo.eliminado)
         setPromos(promosHabilitadas)
         dispatch(setGlobalUpdated(false))

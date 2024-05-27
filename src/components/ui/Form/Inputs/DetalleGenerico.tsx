@@ -58,12 +58,15 @@ const DetalleGenerico: FC<IDetalleInput> = ({ values, setValues, idSucursales })
         });
 
         //Si el insumo no existe y e es 1, lo añadimos a la lista con cantidad 1
+
+        console.log(articulosGenericos)
         if (!existe && cantidad === 1) {
-            const selectedArticulo: IArticuloInsumo | undefined = articulosInsumo?.find((a) => a.id === id)
+            const selectedArticulo: IArticuloGenerico | undefined = articulosGenericos?.find((a) => a.id === id)
             newDetalles.push({
                 id: 0,
                 cantidad: 1,
-                idArticulo: selectedArticulo?.id
+                idArticulo: selectedArticulo?.id,
+                eliminado: false,
             });
         }
 
@@ -80,12 +83,13 @@ const DetalleGenerico: FC<IDetalleInput> = ({ values, setValues, idSucursales })
         setAmDetalles(newDetalles);
     }
 
+    console.log(aMDetalles)
     useEffect(() => {
 
         //@ts-ignore
         setValues(prevValues => ({
             ...prevValues,
-            articuloManufacturadoDetalles: aMDetalles
+            detalles: aMDetalles
         }));
     }, [aMDetalles]);
 
@@ -168,13 +172,19 @@ const DetalleGenerico: FC<IDetalleInput> = ({ values, setValues, idSucursales })
                 {popUp && <h1 className='flex mt-4 justify-center w-full'>No se encontraron insumos... </h1>}
             </div>
 
-
-
             <div className='flex flex-wrap my-2 h-auto '>
-                {/* {aMDetalles?.map((detalle) => (
-                    <div className='text-xl px-2 py-1 rounded mr-2 bg-green-400 w-max text-white '>{detalle.articuloInsumo?.denominacion}
-                        <span className='text-xs mx-2'>x</span>{detalle.cantidad}</div>
-                ))} */}
+                {aMDetalles?.map((detalle) => (
+                    <div className='text-xl px-2 py-1 rounded mr-2 bg-green-400 w-max text-white '>
+                        <>
+                            {articulosGenericos
+                                .filter((articulo) => articulo.id === detalle.idArticulo)
+                                .map((articuloFiltrado) => (
+                                    // Aquí puedes renderizar el componente o la información que desees mostrar
+                                    <p>{articuloFiltrado.denominacion} <span className='text-xs mx-2'>x</span> {detalle.cantidad}</p> // Suponiendo que tu objeto articulo tiene una propiedad nombre
+                                ))}
+                        </>
+                    </div>
+                ))}
             </div>
         </div>
     )

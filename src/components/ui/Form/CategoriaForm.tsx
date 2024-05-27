@@ -10,6 +10,7 @@ import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { ICategoriaShort } from '../../../types/ShortDtos/CategoriaShort';
 import { useParams } from 'react-router-dom';
 import { setGlobalUpdated } from '../../../redux/slices/globalUpdate';
+import SucursalesInput from './Inputs/SucursalesInput';
 
 interface IForm {
     open: boolean;
@@ -56,7 +57,7 @@ const CategoriaForm: FC<IForm> = ({ open, setOpen, method }) => {
 
     //ROUTER DOM
 
-    const { idSucursales } = useParams();
+    const { idSucursales, idEmpresa } = useParams();
 
     // const postCategoria = async (data: FormState) => {
     //     console.log(data)
@@ -113,20 +114,6 @@ const CategoriaForm: FC<IForm> = ({ open, setOpen, method }) => {
         setOpen(false)
     }
 
-    useEffect(() => {
-        const asignarSucursal = () => {
-            setValues({
-                ...values,
-                idSucursales: [
-                    ...values.idSucursales.slice(0, 0),
-                    Number(idSucursales),
-                    ...values.idSucursales.slice(0 + 1),
-                ],
-            });
-        }
-        asignarSucursal();
-    }, [])
-
     console.log(values)
 
 
@@ -172,10 +159,10 @@ const CategoriaForm: FC<IForm> = ({ open, setOpen, method }) => {
 
             <div className='w-full'>
 
-                <div className="relative z-0 w-full mb-5 group">
+                <div className="relative z-0 w-full mb-5 group space-y-4">
                     {genericInput('denominacion', "text", values.denominacion, handleChange)} {/* Nombre */}
                     {booleanInput('esInsumo', 'boolean', values.esInsumo, handleChange, 'Es insumo', 'No es insumo')}
-                    {/* {articulosInput()} */}
+                    <SucursalesInput idEmpresa={idEmpresa} setValues={setValues} values={values} />
                 </div>
 
             </div>

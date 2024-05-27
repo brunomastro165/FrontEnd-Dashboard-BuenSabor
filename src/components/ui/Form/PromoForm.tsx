@@ -15,6 +15,9 @@ import ImageInput from './Inputs/ImageInput';
 import { IDetallePromo } from '../../../types/DetallePromo';
 import DetalleInput from './Inputs/DetalleInput';
 import DetalleGenerico from './Inputs/DetalleGenerico';
+import { ISucursalShort } from '../../../types/ShortDtos/SucursalShort';
+import { useParams } from 'react-router-dom';
+import SucursalesInput from './Inputs/SucursalesInput';
 
 interface IForm {
     open: boolean;
@@ -43,6 +46,8 @@ const PromoForm: FC<IForm> = ({ open, setOpen, method }) => {
 
     const backend = new BackendMethods(); //Objeto de BackendClient
 
+    const { idEmpresa } = useParams()
+
     const [loaded, setLoaded] = useState<boolean>(false);
 
     const initialValues = useAppSelector((state) => state.GlobalInitialValues.data)
@@ -56,6 +61,8 @@ const PromoForm: FC<IForm> = ({ open, setOpen, method }) => {
     const postPromo = async (data: FormState) => {
         if (method === 'POST') {
             try {
+                console.log("datos enviados al backend")
+                console.log(data)
                 //TODO Cambiar el método para que coincida con el backend
                 const res: IPromos = await backend.postConImagen(`${import.meta.env.VITE_LOCAL}promocion/save`, data, files);
                 console.log("response")
@@ -88,13 +95,8 @@ const PromoForm: FC<IForm> = ({ open, setOpen, method }) => {
 
     const handleSubmit = () => {
         postPromo(values)
-        console.log(values);
-        resetForm();
+        //resetForm();
     }
-
-
-    console.log(values)
-    //Manejo de imagenes
 
     const [files, setFiles] = useState<File[]>([]);
 
@@ -122,12 +124,10 @@ const PromoForm: FC<IForm> = ({ open, setOpen, method }) => {
                         </div>
 
                         <div className='flex flex-col w-full'>
-                            {genericInput('tipoPromocion', 'text', values.tipoPromocion, handleChange)}
-
+                            {/* {genericInput('tipoPromocion', 'text', values.tipoPromocion, handleChange)} */}
                         </div>
 
                     </div>
-
 
                     <div className='w-full flex flex-col md:flex-row space-x-0 md:space-x-4'>
 
@@ -160,8 +160,8 @@ const PromoForm: FC<IForm> = ({ open, setOpen, method }) => {
                     <div className='w-full flex flex-col md:flex-row space-x-0 md:space-x-4'>
 
                         <div className='flex flex-col w-full'>
-                            {genericInput('descripcionDescuento', 'text', values.descripcionDescuento, handleChange)}
-                            {/* YUP */}
+                            {/* {genericInput('descripcionDescuento', 'text', values.descripcionDescuento, handleChange)} */}
+
                         </div>
 
                         <div className='flex flex-col w-full'>
@@ -169,6 +169,8 @@ const PromoForm: FC<IForm> = ({ open, setOpen, method }) => {
                         </div>
 
                     </div>
+
+                    <SucursalesInput key={1} setValues={setValues} values={values} idEmpresa={idEmpresa} />
 
                     {/* <DetalleInput idSucursales='1' setValues={setValues} values={values} /> */}
                     <DetalleGenerico setValues={setValues} idSucursales='1' values={values} />
