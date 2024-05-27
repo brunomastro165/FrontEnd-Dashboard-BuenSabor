@@ -42,7 +42,7 @@ const CardUnidadMedida: FC<ICardUnidad> = ({ denominacion, id }) => {
                 </h1>
                 <div className="card-body flex justify-center items-center">
                     <h1 className='font-Roboto '>Denominación:</h1>
-                    <h2 className="card-title font-Roboto group-hover:text-red-600 transition-all bg-blue-600 p-2 rounded-xl text-white">{denominacion}</h2>
+                    <h2 className="card-title font-Roboto  transition-all bg-blue-600 p-2 rounded-xl text-white">{denominacion}</h2>
                 </div>
                 {/* <figure><RiWeightLine /></figure> */}
             </div>

@@ -17,8 +17,9 @@ const SearchBar = () => {
     const mostrarSelector = useAppSelector((state) => state.MostrarCategoriaSelector.mostrar)
 
     function handleChange(e: ChangeEvent<HTMLInputElement>) {
-        setLocalSearch(e.target.value);
-        dispatch(setSearch(e.target.value))
+        const string = e.target.value.toLowerCase()
+        setLocalSearch(string);
+        dispatch(setSearch(string))
     }
 
     return (
@@ -28,7 +29,7 @@ const SearchBar = () => {
                 <div className='z-50 w-1/12 fixed'>
                     {mostrarSelector && <CategoriaSelector />}
                 </div>
-                <div className='w-full  flex items-center justify-center  '>
+                <div className='w-full  flex items-center justify-center  z-40'>
                     <div className='flex items-center justify-center fixed w-full z-0 outline-none border-red-600 '>
                         <label className=" flex bg-white items-center gap-2 w-1/2 shadow-lg  z-50 border-none outline-none border-red-600 p-4 rounded-lg">
                             <input type="text" className="grow bg-white z-50 outline-none border-none focus:outline-none p-2 focus:ring-0" placeholder="Buscar productos..."

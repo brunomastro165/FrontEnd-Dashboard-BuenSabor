@@ -29,6 +29,11 @@ const persistedValues = persistReducer(
   GlobalInitialValues.reducer
 );
 
+const persistedIdEmpresa = persistReducer(
+  persistConfig,
+  GlobalIdEmpresa.reducer
+);
+
 export const store = configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
@@ -52,7 +57,7 @@ export const store = configureStore({
     GlobalEsInsumo: GlobalEsInsumo.reducer,
     GlobalBorrados: GlobalBorrados.reducer,
     MostrarCategoriaSelector: MostrarCategoriaSelector.reducer,
-    GlobalIdEmpresa: GlobalIdEmpresa.reducer,
+    GlobalIdEmpresa: persistedIdEmpresa,
   },
 });
 

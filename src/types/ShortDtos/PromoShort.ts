@@ -1,8 +1,7 @@
-import { IArticuloManufacturado } from "./ArticuloManufacturado";
-import { IDetallePromo } from "./DetallePromo";
-import { IImagen } from "./Imagen";
+import { IDetallePromo } from "../DetallePromo";
+import { IImagen } from "../Imagen";
 
-export interface IPromos {
+export interface IPromosShort {
   id: number;
   eliminado: boolean;
   denominacion: string;
@@ -14,6 +13,5 @@ export interface IPromos {
   precioPromocional: number;
   tipoPromocion: string;
   detalles: IDetallePromo[];
-  imagenes: [];
-  sucursales: [];
+  imagenes: IImagen[];
 }

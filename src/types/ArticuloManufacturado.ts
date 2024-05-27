@@ -5,7 +5,7 @@ export interface IArticuloManufacturado {
   id: number;
   denominacion: string;
   precioVenta: number;
-  imagenes: [];
+  imagenes: FileList;
   unidadMedida: IUnidadMedida;
   descripcion: string;
   tiempoEstimadoMinutos: number;

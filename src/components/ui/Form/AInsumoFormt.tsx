@@ -14,6 +14,7 @@ import UnidadMedidaInput from './Inputs/UnidadMedidaInput';
 import * as Yup from 'yup'
 import CategoriaInput from './Inputs/CategoriaInput';
 import { subirImagenes } from './Inputs/ImageFunction';
+import ImageInput from './Inputs/ImageInput';
 
 interface IForm {
     open: boolean;
@@ -27,15 +28,15 @@ type FormState = {
     denominacion: string,
     precioVenta: number,
     precioCompra: number,
-    imagenes: [] //Falta tipar
     unidadMedida: IUnidadMedida;
     stockActual: number,
     stockMaximo: number,
     stockMinimo: number,
     esParaElaborar: boolean,
     idCategoria: number,
-
 };
+
+
 
 //@ts-ignore
 class GenericBackend extends BackendClient<T> { } //Métodos genéricos 
@@ -88,9 +89,9 @@ const AInsumoForm: FC<IForm> = ({ open, setOpen, method }) => {
         if (method === 'POST') {
             try {
                 //TODO Cambiar el método para que coincida con el backend
-                const res: IArticuloInsumo = await backend.post(`${import.meta.env.VITE_LOCAL}ArticuloInsumo`, data);
+                const res: IArticuloInsumo = await backend.postConImagen(`${import.meta.env.VITE_LOCAL}ArticuloInsumo/save`, data, files);
 
-                const subirImagen = await subirImagenes(res.id, values.imagenes)
+                // const subirImagen = await subirImagenes(res.id, values.imagenes)
 
                 dispatch(setGlobalUpdated(true))
                 setOpen(false);
@@ -155,6 +156,11 @@ const AInsumoForm: FC<IForm> = ({ open, setOpen, method }) => {
     };
 
 
+    //Manejo de las imagenes
+
+    const [files, setFiles] = useState<File[]>([]);
+
+    console.log(files);
 
     //Manejo del input UNIDAD MEDIDA
 
@@ -240,7 +246,7 @@ const AInsumoForm: FC<IForm> = ({ open, setOpen, method }) => {
                     <div className='w-full flex justify-center flex-col '>
 
                         <div className='flex flex-col'>
-                            <DragDrop onDrop={handleFileDrop} />
+                            <ImageInput files={files} setFiles={setFiles} />
                             {booleanInput('esParaElaborar', 'boolean', values.esParaElaborar, handleChange, 'Es para elaborar', 'No es para elaborar')}
                             {errors.esParaElaborar && <h1 className='font-Roboto text-red-600 text-sm mt-2'>{errors.esParaElaborar}</h1>}
                         </div>

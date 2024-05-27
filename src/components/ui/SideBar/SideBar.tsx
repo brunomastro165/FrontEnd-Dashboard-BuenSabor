@@ -11,11 +11,12 @@ import { IButton } from '../../../types/Button';
 import ButtonContainer from './Button/ButtonContainer';
 import { TbCategory2 } from "react-icons/tb";
 import { useParams } from 'react-router-dom';
-import { useAppSelector } from '../../../hooks/redux';
+import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import ResponsiveButton from './ResponsiveButton/ResponsiveButton';
 import { LiaBalanceScaleRightSolid } from "react-icons/lia";
 import { FaRegBuilding } from "react-icons/fa6";
 import { TbSquarePercentage } from "react-icons/tb";
+import { setIdEmpresa } from '../../../redux/slices/idEmpresa';
 
 
 
@@ -32,10 +33,8 @@ const SideBar = () => {
 
     const idEmpresa = useAppSelector((state) => state.GlobalIdEmpresa.idEmpresa);
 
-    console.log(idEmpresa)
-
-    console.log(url)
-
+    const dispatch = useAppDispatch()
+    
     //Hice todo para que modificando este JSON se modifiquen directamente los botones de la sidebar con sus configuraciones 
     const Buttons: IButton[] = [
         { Icon: IoHomeOutline, text: "Inicio", link: `${url}/home`, active: active, setActive: setActive, subButton: null, child: false },

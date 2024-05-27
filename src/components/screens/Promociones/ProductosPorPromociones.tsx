@@ -11,7 +11,7 @@ import { IArticuloManufacturado } from '../../../types/SpecialDtos';
 
 const ProductosPorPromociones = () => {
 
-    
+
     const [loading, setLoading] = useState<boolean>(false);
 
     const [title, setTitle] = useState<string>('');

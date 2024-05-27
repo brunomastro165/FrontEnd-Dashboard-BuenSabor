@@ -1,19 +1,23 @@
-//@ts-nocheck
 import React, { ChangeEvent, Dispatch, FC, SetStateAction, useEffect, useState } from 'react'
 import { useForm } from '../../../hooks/useForm'
 import { ISucursal } from '../../../types/Sucursal'
 import { genericInput } from './Inputs/GenericInput';
-import { BackendClient } from '../../../services/BackendClient';
+import { BackendClient, BackendMethods } from '../../../services/BackendClient';
 import { IEmpresa } from '../../../types/Empresa';
 import { IUnidadMedida } from '../../../types/UnidadMedida';
 import DragDrop from './Inputs/FileInput';
 import { IArticuloInsumo } from '../../../types/ArticuloInsumo';
-import { IArticuloManufacturado } from '../../../types/SpecialDtos';
 import { IImagen } from '../../../types/Imagen';
+import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
+import { IPromos } from '../../../types/Promos';
+import { setGlobalUpdated } from '../../../redux/slices/globalUpdate';
+import ImageInput from './Inputs/ImageInput';
+import { IDetallePromo } from '../../../types/DetallePromo';
 
 interface IForm {
     open: boolean;
     setOpen: Dispatch<SetStateAction<boolean>>;
+    method: string,
 }
 
 type FormState = {
@@ -22,93 +26,75 @@ type FormState = {
     denominacion: string,
     fechaDesde: string,
     fechaHasta: string,
-    horaDesde: string,
-    horaHasta: string,
+    horaDesde: null,
+    horaHasta: null,
     descripcionDescuento: string,
     precioPromocional: number,
     tipoPromocion: string,
-    articulosManufacturados: IArticuloManufacturado[] | null,
-    imagen: IImagen | null
+    detalles: IDetallePromo[] | null,
+    imagen: []
 };
 
-class GenericBackend extends BackendClient<T> { } //Métodos genéricos 
 
-const PromoForm: FC<IForm> = ({ open, setOpen }) => {
 
-    const backend = new GenericBackend(); //Objeto de BackendClient
+const PromoForm: FC<IForm> = ({ open, setOpen, method }) => {
+
+    const backend = new BackendMethods(); //Objeto de BackendClient
 
     const [loaded, setLoaded] = useState<boolean>(false);
 
+    const initialValues = useAppSelector((state) => state.GlobalInitialValues.data)
+
+    const dispatch = useAppDispatch()
 
     //const [selectedSucursales, setSelectedSucursales] = useState<ISucursal[] | undefined>([]);
 
-    const { handleChange, values, resetForm, handleSelect, handleChoose, handleFileDrop } = useForm<FormState>({
-        id: 0,
-        denominacion: '',
-        fechaDesde: '',
-        fechaHasta: '',
-        horaDesde: '',
-        horaHasta: '',
-        descripcionDescuento: '',
-        precioPromocional: 0,
-        tipoPromocion: '',
-        articulosManufacturados: null,
-        imagen: null,
-    })
+    const { handleChange, values, resetForm, handleSelect, handleChoose, handleFileDrop } = useForm<FormState>(initialValues)
+
+    const postPromo = async (data: FormState) => {
+        if (method === 'POST') {
+            try {
+                //TODO Cambiar el método para que coincida con el backend
+                const res: IPromos = await backend.postConImagen(`${import.meta.env.VITE_LOCAL}promocion/save`, data, files);
+                console.log("response")
+                console.log(res)
+                // const subirImagen = await subirImagenes(res.id, values.imagenes)
+                dispatch(setGlobalUpdated(true))
+                setOpen(false);
+            } catch (error) {
+                console.error(error)
+            }
+        }
+        else if (method === 'PUT') {
+            try {
+                console.log(data)
+                //const res: IEmpresaShort = await backend.put(`http://localhost:8081/empresa/${data.id}/short`, data);
+                const res: IPromos = await backend.put(`${import.meta.env.VITE_LOCAL}ArticuloManufacturado/${data.id}`, data) as IPromos;
+
+                console.log(res)
+                //  const subirImagen = await subirImagenes(res.id, values.imagenes)
+
+                setOpen(false);
+
+                dispatch(setGlobalUpdated(true))
+            } catch (error) {
+                console.log("put")
+                console.error(error)
+            }
+        }
+    }
 
     const handleSubmit = () => {
-        console.log("A")
+        postPromo(values)
         console.log(values);
         resetForm();
     }
 
 
-    //Manejo del input UNIDAD MEDIDA
+    console.log(values)
+    //Manejo de imagenes
 
-    const [articulosManufacturados, setArticulosManufacturados] = useState<IArticuloManufacturado[]>([]);
-
-    const [articuloSeleccionado, setArticuloSeleccionado] = useState<IArticuloManufacturado | undefined>();
-
-    const [articulosSeleccionados, setArticulosSeleccionados] = useState<IArticuloManufacturado[] | undefined>([]);
-
-    const getArticulos = async () => {
-        const res: IArticuloManufacturado[] = await backend.getAll("https://backend-jsonserver-1.onrender.com/articulosManufacturados");
-        setArticulosManufacturados(res);
-        setLoaded(true);
-    }
-
-    useEffect(() => {
-        getArticulos();
-    }, [loaded])
-
-
-    const articulosInput = () => {
-        return (
-            <>
-                <div className='font-Roboto text-xl'>Agrega articulos a la promoción: </div>
-                {articulosManufacturados.map((articulo, index) => (
-                    <div key={index}>
-                        <input
-                            multiple
-                            type="checkbox"
-                            id={`sucursales${index}`}
-                            name='sucursales'
-                            value={articulo.denominacion}
-                            onChange={(e) => handleSelect(e, articulosManufacturados, articulosSeleccionados, setArticulosSeleccionados, 'denominacion', 'articulosManufacturados')}
-                        //onClick={() => setSelected(unidad.denominacion)}
-                        //className={`peer ${selected === unidad.denominacion ? 'p-12' : ''}`}
-                        //checked={medidaSeleccionada?.denominacion === unidad.denominacion}
-                        />
-                        <label htmlFor={`sucursales${index}`} className="ml-2">
-                            {articulo.denominacion}
-                        </label>
-                    </div>
-                ))}
-            </>
-        )
-    }
-
-
+    const [files, setFiles] = useState<File[]>([]);
 
     return (
         <div className='w-full flex flex-col items-center justify-center space-y-4 p-10 '
@@ -124,16 +110,67 @@ const PromoForm: FC<IForm> = ({ open, setOpen }) => {
 
             <div className='w-full'>
                 <div className="relative z-0 w-full mb-5 group">
-                    {genericInput('denominacion', "text", values.denominacion, handleChange)}
-                    {genericInput('fechaDesde', 'date', values.fechaDesde, handleChange)}
-                    {genericInput('fechaHasta', 'date', values.fechaHasta, handleChange)}
-                    {genericInput('horaDesde', 'time', values.horaDesde, handleChange)}
-                    {genericInput('horaHasta', 'time', values.horaHasta, handleChange)}
-                    {genericInput('descripcionDescuento', 'text', values.descripcionDescuento, handleChange)}
-                    {genericInput('precioPromocional', 'number', values.precioPromocional, handleChange)}
-                    {genericInput('tipoPromocion', 'text', values.tipoPromocion, handleChange)}
-                    {articulosInput()}
-                    <DragDrop onDrop={handleFileDrop} />
+
+
+                    <div className='w-full flex flex-col md:flex-row space-x-0 md:space-x-4'>
+
+                        <div className='flex flex-col w-full'>
+                            {genericInput('denominacion', "text", values.denominacion, handleChange)}
+
+                        </div>
+
+                        <div className='flex flex-col w-full'>
+                            {genericInput('tipoPromocion', 'text', values.tipoPromocion, handleChange)}
+
+                        </div>
+
+                    </div>
+
+
+                    <div className='w-full flex flex-col md:flex-row space-x-0 md:space-x-4'>
+
+                        <div className='flex flex-col w-full'>
+                            {genericInput('fechaDesde', 'date', values.fechaDesde, handleChange)}
+                            {/* YUP */}
+                        </div>
+
+                        <div className='flex flex-col w-full'>
+                            {genericInput('fechaHasta', 'date', values.fechaHasta, handleChange)}
+
+                        </div>
+
+                    </div>
+
+                    <div className='w-full flex flex-col md:flex-row space-x-0 md:space-x-4'>
+
+                        <div className='flex flex-col w-full'>
+                            {genericInput('horaDesde', 'time', values.horaDesde, handleChange)}
+                            {/* YUP */}
+                        </div>
+
+                        <div className='flex flex-col w-full'>
+                            {genericInput('horaHasta', 'time', values.horaHasta, handleChange)}
+
+                        </div>
+
+                    </div>
+
+                    <div className='w-full flex flex-col md:flex-row space-x-0 md:space-x-4'>
+
+                        <div className='flex flex-col w-full'>
+                            {genericInput('descripcionDescuento', 'text', values.descripcionDescuento, handleChange)}
+                            {/* YUP */}
+                        </div>
+
+                        <div className='flex flex-col w-full'>
+                            {genericInput('precioPromocional', 'number', values.precioPromocional, handleChange)}
+                        </div>
+
+                    </div>
+
+
+                    {/* {articulosInput()} */}
+                    <ImageInput files={files} setFiles={setFiles} key={1} />
                 </div>
             </div>
 

@@ -1,4 +1,5 @@
 // Importación de la clase abstracta AbstractBackendClient
+import { IArticuloManufacturado } from "../types/ArticuloManufacturado";
 import { AbstractBackendClient } from "./AbstractBackendClient";
 
 // Clase abstracta que proporciona métodos genéricos para interactuar con una API
@@ -75,6 +76,35 @@ export abstract class BackendClient<T> extends AbstractBackendClient<T> {
     };
 
     return this.request(path, options);
+  }
+
+  async postConImagen(url: string, entity: T, files: File[]) {
+    const formData = new FormData();
+    const blob = new Blob([JSON.stringify(entity)], {
+      type: "application/json",
+    });
+    formData.append("entity", blob);
+
+    Array.from(files).forEach((file) => {
+      formData.append("files", file);
+    });
+
+    try {
+      const response = await fetch(url, {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      console.log(data);
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   // Método para actualizar un elemento existente por su ID

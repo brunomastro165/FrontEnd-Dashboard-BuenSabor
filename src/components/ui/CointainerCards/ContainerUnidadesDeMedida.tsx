@@ -55,17 +55,17 @@ const ContainerUnidadesDeMedida = () => {
 
     return (
         <>
-            <div className='z-10 pt-8'>
+            <div className=' p-10'>
                 <SearchBar />
             </div>
 
-            <div className='flex justify-end '>
+            <div className='flex justify-end fixed right-0'>
                 <button className='text-2xl z-50 font-Roboto btn btn-success my-4 bg-white text-green-600 hover:text-white mr-10 hover:bg-green-600'
                     onClick={() => hanlderOpen()}
                 >Agregar +</button>
             </div>
 
-            <div className='flex flex-wrap justify-center items-center  m-5'>
+            <div className='flex flex-wrap justify-center items-center  m-5 mt-10'>
                 {filtro.map((unidad) => (
                     <CardUnidadMedida
                         denominacion={unidad.denominacion}
