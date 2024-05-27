@@ -4,6 +4,8 @@ import { IArticuloManufacturadoDetalle } from '../../../../types/ArticuloManufac
 import { IArticuloInsumo } from '../../../../types/ArticuloInsumo';
 import { Dispatch } from '@reduxjs/toolkit';
 import { BackendMethods } from '../../../../services/BackendClient';
+import { IDetallePromo } from '../../../../types/DetallePromo';
+import { IDetallePromoCreate } from '../../../../types/CreateDtos/DetallePromoCreate';
 
 
 interface IDetalleInput {
@@ -13,26 +15,38 @@ interface IDetalleInput {
 }
 
 
-const DetalleInput: FC<IDetalleInput> = ({ values, setValues, idSucursales }) => {
+interface IArticuloGenerico {
+    id: number,
+    denominacion: string,
+
+}
+
+
+const DetalleGenerico: FC<IDetalleInput> = ({ values, setValues, idSucursales }) => {
 
     const backend = new BackendMethods()
 
-    const [aMDetalles, setAmDetalles] = useState<IArticuloManufacturadoDetalle[]>([])
+    const [aMDetalles, setAmDetalles] = useState<IDetallePromoCreate[]>([])
 
     const [filtroDetalle, setFiltroDetalle] = useState<IArticuloInsumo[]>([]);
 
     const [articulosInsumo, setArticulosInsumo] = useState<IArticuloInsumo[]>([])
 
+    const [articulosGenericos, setArticulosGenericos] = useState<IArticuloGenerico[]>([])
+
+    const [filtroGenerico, setFiltroGenerico] = useState<IArticuloGenerico[]>([]);
+
+
     const [popUp, setPopUp] = useState<boolean>(false);
 
     //En esta función pedimos el valor del número ingresado por el usuario y el valor de la denominación del articulo insumo
-    const handleQuantityChange = (cantidad: number, denominacion: string) => {
+    const handleQuantityChange = (cantidad: number, id: number) => {
 
         let existe: boolean = false;
 
         let newDetalles = aMDetalles.map(detalle => {
             //Si el insumo ya existe dentro de la lista de detalles, solo actualizamos su cantidad
-            if (detalle.articuloInsumo?.denominacion === denominacion) {
+            if (detalle.idArticulo === id) {
                 existe = true;
                 return {
                     ...detalle,
@@ -45,22 +59,21 @@ const DetalleInput: FC<IDetalleInput> = ({ values, setValues, idSucursales }) =>
 
         //Si el insumo no existe y e es 1, lo añadimos a la lista con cantidad 1
         if (!existe && cantidad === 1) {
-            const selectedArticulo: IArticuloInsumo | undefined = articulosInsumo?.find((a) => a.denominacion === denominacion)
+            const selectedArticulo: IArticuloInsumo | undefined = articulosInsumo?.find((a) => a.id === id)
             newDetalles.push({
                 id: 0,
                 cantidad: 1,
-                articuloInsumo: selectedArticulo
+                idArticulo: selectedArticulo?.id
             });
         }
 
         //Eliminamos los artículos con cantidad 0
         newDetalles = newDetalles.filter(detalle => detalle.cantidad !== 0);
 
-
         //Esto es para almacenar temporalmene los insumos (de esta forma no tengo que traer de más)
         const insumos: IArticuloInsumo[] | undefined = [];
 
-        const insumosGuardados = newDetalles.map((detalle) => detalle.articuloInsumo && insumos.push(detalle.articuloInsumo))
+        //const insumosGuardados = newDetalles.map((detalle) => detalle.idArticulo && insumos.push(detalle.idArticulo))
 
         //const insumosFinales = insumosGuardados.map((insumo) => insumo.articuloInsumo && insumos.push(insumo.articuloInsumo))
 
@@ -79,13 +92,13 @@ const DetalleInput: FC<IDetalleInput> = ({ values, setValues, idSucursales }) =>
     const filtroPorBusqueda = async (busqueda: string) => {
 
         if (busqueda === "") {
-            setFiltroDetalle([]);
+            setFiltroGenerico([]);
             return 'no hay búsqueda';
         }
         else {
-            const res: IArticuloInsumo[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}ArticuloInsumo/buscar/${busqueda}/${idSucursales}`) as IArticuloInsumo[]
-            setFiltroDetalle(res);
-            setArticulosInsumo(res);
+            const res: IArticuloGenerico[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}ArticuloInsumo/getArticulos`) as IArticuloGenerico[]
+            setFiltroGenerico(res);
+            setArticulosGenericos(res);
             return res;
         }
     }
@@ -93,7 +106,6 @@ const DetalleInput: FC<IDetalleInput> = ({ values, setValues, idSucursales }) =>
     // console.log(values)
 
     const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
-        console.log(e.target.value)
         const search = e.target.value.toString();
 
         setTimeout(async () => {
@@ -122,9 +134,8 @@ const DetalleInput: FC<IDetalleInput> = ({ values, setValues, idSucursales }) =>
             </label>
             <div className='h-36 overflow-y-scroll mt-2 flex flex-row '>
                 <div>
-                    {filtroDetalle
-                        .filter((articulo: IArticuloInsumo) => articulo.esParaElaborar)
-                        .map((articulo: IArticuloInsumo, index: number) => (
+                    {filtroGenerico
+                        .map((articulo: IArticuloGenerico, index: number) => (
                             <div key={index} className='  rounded p-1 flex justify-between items-center'>
                                 <div className='flex flex-row my-2 items-center'>
                                     <h1 className='w-24'>{articulo.denominacion}</h1>
@@ -135,7 +146,7 @@ const DetalleInput: FC<IDetalleInput> = ({ values, setValues, idSucursales }) =>
                                         id={`cantidad${index}`}
                                         name='cantidad'
                                         min="0"
-                                        onClick={() => handleQuantityChange(1, articulo.denominacion)}
+                                        onClick={() => handleQuantityChange(1, articulo.id)}
                                     />
                                     <input
                                         className=' btn size-10 ml-2'
@@ -144,12 +155,12 @@ const DetalleInput: FC<IDetalleInput> = ({ values, setValues, idSucursales }) =>
                                         id={`cantidad${index}`}
                                         name='cantidad'
                                         min="0"
-                                        onClick={() => handleQuantityChange(0, articulo.denominacion)}
+                                        onClick={() => handleQuantityChange(0, articulo.id)}
                                     />
                                 </div>
                                 {/*Por si no queda claro, esto me pone la cantidad actual de cada articulo */}
                                 <div className=''>
-                                    <h1 className='ml-2 w-20'>{aMDetalles.find(e => e.articuloInsumo?.denominacion === articulo.denominacion)?.cantidad}</h1>
+                                    <h1 className='ml-2 w-20'>{aMDetalles.find(e => e.idArticulo === articulo.id)?.cantidad}</h1>
                                 </div>
                             </div>
                         ))}
@@ -160,10 +171,10 @@ const DetalleInput: FC<IDetalleInput> = ({ values, setValues, idSucursales }) =>
 
 
             <div className='flex flex-wrap my-2 h-auto '>
-                {aMDetalles?.map((detalle) => (
+                {/* {aMDetalles?.map((detalle) => (
                     <div className='text-xl px-2 py-1 rounded mr-2 bg-green-400 w-max text-white '>{detalle.articuloInsumo?.denominacion}
                         <span className='text-xs mx-2'>x</span>{detalle.cantidad}</div>
-                ))}
+                ))} */}
             </div>
         </div>
     )
@@ -171,4 +182,4 @@ const DetalleInput: FC<IDetalleInput> = ({ values, setValues, idSucursales }) =>
 
 }
 
-export default DetalleInput
+export default DetalleGenerico

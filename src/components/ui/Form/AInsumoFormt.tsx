@@ -82,15 +82,16 @@ const AInsumoForm: FC<IForm> = ({ open, setOpen, method }) => {
 
     //USE FORM
 
-    const { handleChange, values, resetForm, handleChoose, handleFileDrop } = useForm<FormState>(initialValues)
+    const { handleChange, values, resetForm, handleChoose, handleFileDrop, setValues } = useForm<FormState>(initialValues)
 
     const postArticulo = async (data: FormState) => {
 
         if (method === 'POST') {
             try {
+                console.log("ssdaasddsads")
                 //TODO Cambiar el método para que coincida con el backend
                 const res: IArticuloInsumo = await backend.postConImagen(`${import.meta.env.VITE_LOCAL}ArticuloInsumo/save`, data, files);
-
+                console.log(res)
                 // const subirImagen = await subirImagenes(res.id, values.imagenes)
 
                 dispatch(setGlobalUpdated(true))
@@ -115,11 +116,9 @@ const AInsumoForm: FC<IForm> = ({ open, setOpen, method }) => {
         }
     }
 
-    console.log(values);
-
-
     const handleSubmit = async () => {
         try {
+            console.log("asddsdsdkljsd")
             await validationSchema.validate(values, { abortEarly: false });
             postArticulo(values);
             dispatch(setGlobalUpdated(true));
@@ -155,6 +154,7 @@ const AInsumoForm: FC<IForm> = ({ open, setOpen, method }) => {
         }
     };
 
+    console.log(values)
 
     //Manejo de las imagenes
 
@@ -167,7 +167,6 @@ const AInsumoForm: FC<IForm> = ({ open, setOpen, method }) => {
     const [unidadSeleccionada, setUnidadSeleccionada] = useState<IUnidadMedida | undefined>();
 
     const [openUnidad, setOpenUnidad] = useState<boolean>(false);
-
 
     const [idCategoria, setIdCategoria] = useState<number>(0);
 

@@ -13,6 +13,8 @@ import { IPromos } from '../../../types/Promos';
 import { setGlobalUpdated } from '../../../redux/slices/globalUpdate';
 import ImageInput from './Inputs/ImageInput';
 import { IDetallePromo } from '../../../types/DetallePromo';
+import DetalleInput from './Inputs/DetalleInput';
+import DetalleGenerico from './Inputs/DetalleGenerico';
 
 interface IForm {
     open: boolean;
@@ -49,7 +51,7 @@ const PromoForm: FC<IForm> = ({ open, setOpen, method }) => {
 
     //const [selectedSucursales, setSelectedSucursales] = useState<ISucursal[] | undefined>([]);
 
-    const { handleChange, values, resetForm, handleSelect, handleChoose, handleFileDrop } = useForm<FormState>(initialValues)
+    const { handleChange, values, resetForm, handleSelect, handleChoose, handleFileDrop, setValues } = useForm<FormState>(initialValues)
 
     const postPromo = async (data: FormState) => {
         if (method === 'POST') {
@@ -167,6 +169,9 @@ const PromoForm: FC<IForm> = ({ open, setOpen, method }) => {
                         </div>
 
                     </div>
+
+                    {/* <DetalleInput idSucursales='1' setValues={setValues} values={values} /> */}
+                    <DetalleGenerico setValues={setValues} idSucursales='1' values={values} />
 
 
                     {/* {articulosInput()} */}

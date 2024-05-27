@@ -45,6 +45,9 @@ const UnidadMedidaInput: FC<UnidadInput> = ({ loaded, openUnidad, setLoaded, set
     //     dispatch(setGlobalUpdated(true))
     // }
 
+
+    console.log(unidadesValidas)
+
     useEffect(() => {
         getUnidades();
     }, [])
@@ -70,7 +73,7 @@ const UnidadMedidaInput: FC<UnidadInput> = ({ loaded, openUnidad, setLoaded, set
                                     className="ml-5 text-green-600 rounded-none b border-dashed"
 
                                     //@ts-ignore
-                                    onChange={(e) => handleChoose(e, unidades, setUnidadSeleccionada, 'denominacion', 'unidadMedida')}
+                                    onChange={(e) => handleChoose(e, unidadesValidas, setUnidadSeleccionada, 'denominacion', 'unidadMedida')}
                                 />
 
                                 <label htmlFor={`unidadMedida${index}`} className="ml-2">
