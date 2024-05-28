@@ -53,7 +53,7 @@ const CPromos = () => {
     }
 
     const getPromos = async () => {
-        const res: IPromos[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}sucursal/getPromociones/1`) as IPromos[];
+        const res: IPromos[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}sucursal/getPromociones/${idSucursales}`) as IPromos[];
         console.log(res)
         const promosHabilitadas = res.filter((promo) => !promo.eliminado)
         setPromos(promosHabilitadas)

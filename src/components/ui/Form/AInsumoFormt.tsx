@@ -15,6 +15,7 @@ import * as Yup from 'yup'
 import CategoriaInput from './Inputs/CategoriaInput';
 import { subirImagenes } from './Inputs/ImageFunction';
 import ImageInput from './Inputs/ImageInput';
+import { validationInsumo } from './Validaciones/AInsumoValidacion';
 
 interface IForm {
     open: boolean;
@@ -49,30 +50,31 @@ const AInsumoForm: FC<IForm> = ({ open, setOpen, method }) => {
 
     const [errors, setErrors] = useState<any>({});
 
-    const validationSchema = Yup.object().shape({
-        denominacion: Yup.string().required('La denominación es requerida'),
-        descripcion: Yup.string().required('La descripción es requerida'),
-        precioVenta: Yup.number()
-            .typeError('El precio de venta debe ser un número')
-            .required('El precio de venta es requerido'),
-        precioCompra: Yup.number()
-            .typeError('El precio de compra debe ser un número')
-            .required('El precio de compra es requerido'),
-        stockActual: Yup.number()
-            .typeError('El stock actual debe ser un número')
-            .required('El stock actual es requerido'),
-        stockMaximo: Yup.number()
-            .typeError('El stock máximo debe ser un número')
-            .required('El stock máximo es requerido'),
-        stockMinimo: Yup.number()
-            .typeError('El stock mínimo debe ser un número')
-            .required('El stock mínimo es requerido'),
-        esParaElaborar: Yup.boolean().required('Este campo es requerido'),
-        unidadMedida: Yup.object().shape({
-            denominacion: Yup.string().required('Debe seleccionar una unidad de medida'),
-            id: Yup.number().required('Debe seleccionar una unidad de medida')
-        }).required('Debe seleccionar una unidad de medida')
-    });
+    // const validationSchema = Yup.object().shape({
+    //     denominacion: Yup.string().required('La denominación es requerida'),
+    //     descripcion: Yup.string().required('La descripción es requerida'),
+    //     precioVenta: Yup.number()
+    //         .typeError('El precio de venta debe ser un número')
+    //         .required('El precio de venta es requerido'),
+    //     precioCompra: Yup.number()
+    //         .typeError('El precio de compra debe ser un número')
+    //         .required('El precio de compra es requerido'),
+    //     stockActual: Yup.number()
+    //         .typeError('El stock actual debe ser un número')
+    //         .required('El stock actual es requerido'),
+    //     stockMaximo: Yup.number()
+    //         .typeError('El stock máximo debe ser un número')
+    //         .required('El stock máximo es requerido'),
+    //     stockMinimo: Yup.number()
+    //         .typeError('El stock mínimo debe ser un número')
+    //         .required('El stock mínimo es requerido'),
+    //     esParaElaborar: Yup.boolean().required('Este campo es requerido'),
+    //     unidadMedida: Yup.object().shape({
+    //         denominacion: Yup.string().required('Debe seleccionar una unidad de medida'),
+    //         id: Yup.number().required('Debe seleccionar una unidad de medida')
+    //     }).required('Debe seleccionar una unidad de medida'),
+    //     idCategoria: Yup.number().required('Debe seleccionar una categoría').moreThan(0, 'Debe seleccionar una categoría')
+    // });
 
     //REDUX 
 
@@ -118,9 +120,8 @@ const AInsumoForm: FC<IForm> = ({ open, setOpen, method }) => {
 
     const handleSubmit = async () => {
         try {
-            console.log("asddsdsdkljsd")
-            await validationSchema.validate(values, { abortEarly: false });
-            postArticulo(values);
+            await validationInsumo.validate(values, { abortEarly: false });
+            await postArticulo(values);
             dispatch(setGlobalUpdated(true));
             resetForm();
             setOpen(false);
@@ -162,6 +163,8 @@ const AInsumoForm: FC<IForm> = ({ open, setOpen, method }) => {
 
     console.log(files);
 
+    console.log(errors)
+
     //Manejo del input UNIDAD MEDIDA
 
     const [unidadSeleccionada, setUnidadSeleccionada] = useState<IUnidadMedida | undefined>();
@@ -179,50 +182,25 @@ const AInsumoForm: FC<IForm> = ({ open, setOpen, method }) => {
                     onClick={() => { setOpen(false), resetForm() }}>X</h1>
             </div>
 
-            <h2 className='text-3xl font-Roboto'>Agrega tu articulo</h2>
+            <h2 className='text-3xl font-Roboto'>Agrega tu insumo</h2>
             {/*Mapeo los objetos que traigo al formulario, dependiendo de cada objeto, genero un input distinto */}
 
             <div className={`w-full h-auto`}>
                 <div className="relative z-0 w-full mb-5 group">
-                    <div className='w-full flex md:space-x-5'>
-                        <div className='flex flex-col w-full '>
-                            {genericInput('denominacion', "text", values.denominacion, handleChange)}
-                            {errors.denominacion && <h1 className='font-Roboto text-red-600'>{errors.denominacion}</h1>}
-                        </div>
-
-                        <div className='flex flex-col w-full'>
-                            {genericInput('descripcion', 'text', values.descripcion, handleChange)}
-                            {errors.descripcion && <h1 className='font-Roboto text-red-600'>{errors.descripcion}</h1>}
-                        </div>
+                    <div className='w-full flex flex-row md:space-x-5'>
+                        {genericInput('denominacion', "text", values.denominacion, handleChange, errors)}
+                        {genericInput('descripcion', 'text', values.descripcion, handleChange, errors)}
                     </div>
 
                     <div className='flex justify-center w-full md:space-x-5'>
-                        <div className='flex flex-col w-full '>
-                            {genericInput('precioVenta', 'number', values.precioVenta, handleChange)}
-                            {errors.precioVenta && <h1 className='font-Roboto text-red-600'>{errors.precioVenta}</h1>}
-                        </div>
-
-                        <div className='flex flex-col w-full'>
-                            {genericInput('precioCompra', 'number', values.precioCompra, handleChange)}
-                            {errors.precioCompra && <h1 className='font-Roboto text-red-600'>{errors.precioCompra}</h1>}
-                        </div>
+                        {genericInput('precioVenta', 'number', values.precioVenta, handleChange, errors)}
+                        {genericInput('precioCompra', 'number', values.precioCompra, handleChange, errors)}
                     </div>
 
                     <div className='flex justify-center w-full space-x-4'>
-                        <div className='flex flex-col w-full '>
-                            {genericInput('stockActual', 'number', values.stockActual, handleChange)}
-                            {errors.stockActual && <h1 className='font-Roboto text-red-600 text-sm'>{errors.stockActual}</h1>}
-                        </div>
-
-                        <div className='flex flex-col w-full '>
-                            {genericInput('stockMaximo', 'number', values.stockMaximo, handleChange)}
-                            {errors.stockMaximo && <h1 className='font-Roboto text-red-600 text-sm'>{errors.stockMaximo}</h1>}
-                        </div>
-
-                        <div className='flex flex-col w-full '>
-                            {genericInput('stockMinimo', 'number', values.stockMinimo, handleChange)}
-                            {errors.stockMaximo && <h1 className='font-Roboto text-red-600 text-sm'>{errors.stockMaximo}</h1>}
-                        </div>
+                        {genericInput('stockActual', 'number', values.stockActual, handleChange, errors)}
+                        {genericInput('stockMaximo', 'number', values.stockMaximo, handleChange, errors)}
+                        {genericInput('stockMinimo', 'number', values.stockMinimo, handleChange, errors)}
                     </div>
 
                     <div className='w-full flex flex-col justify-center '>
@@ -239,6 +217,7 @@ const AInsumoForm: FC<IForm> = ({ open, setOpen, method }) => {
                             <div className='flex flex-col justify-center'>
                                 <CategoriaInput handleChange={handleChange} setLoaded={setLoaded} setIdCategoria={setIdCategoria}
                                     key={1} value={values.idCategoria} />
+                                {errors.idCategoria && <h1 className='font-Roboto text-red-600'>{errors.idCategoria}</h1>}
                             </div>
                         </div>
                     </div>
@@ -246,8 +225,7 @@ const AInsumoForm: FC<IForm> = ({ open, setOpen, method }) => {
 
                         <div className='flex flex-col'>
                             <ImageInput files={files} setFiles={setFiles} />
-                            {booleanInput('esParaElaborar', 'boolean', values.esParaElaborar, handleChange, 'Es para elaborar', 'No es para elaborar')}
-                            {errors.esParaElaborar && <h1 className='font-Roboto text-red-600 text-sm mt-2'>{errors.esParaElaborar}</h1>}
+                            {booleanInput('esParaElaborar', 'boolean', values.esParaElaborar, handleChange, 'Es para elaborar', 'No es para elaborar', errors)}
                         </div>
                     </div>
 

@@ -18,6 +18,8 @@ import DetalleGenerico from './Inputs/DetalleGenerico';
 import { ISucursalShort } from '../../../types/ShortDtos/SucursalShort';
 import { useParams } from 'react-router-dom';
 import SucursalesInput from './Inputs/SucursalesInput';
+import { validationPromo } from './Validaciones/PromoValidacion';
+import * as Yup from 'yup'
 
 interface IForm {
     open: boolean;
@@ -54,6 +56,9 @@ const PromoForm: FC<IForm> = ({ open, setOpen, method }) => {
 
     const dispatch = useAppDispatch()
 
+
+    const [errors, setErrors] = useState<any>();
+
     //const [selectedSucursales, setSelectedSucursales] = useState<ISucursal[] | undefined>([]);
 
     const { handleChange, values, resetForm, handleSelect, handleChoose, handleFileDrop, setValues } = useForm<FormState>(initialValues)
@@ -69,7 +74,6 @@ const PromoForm: FC<IForm> = ({ open, setOpen, method }) => {
                 console.log(res)
                 // const subirImagen = await subirImagenes(res.id, values.imagenes)
                 dispatch(setGlobalUpdated(true))
-                setOpen(false);
             } catch (error) {
                 console.error(error)
             }
@@ -93,11 +97,46 @@ const PromoForm: FC<IForm> = ({ open, setOpen, method }) => {
         }
     }
 
-    const handleSubmit = () => {
-        postPromo(values)
-        //resetForm();
+    const handleSubmit = async () => {
+        try {
+            await validationPromo.validate(values, { abortEarly: false })
+            await postPromo(values)
+            dispatch(setGlobalUpdated(true));
+            setOpen(false);
+            resetForm();
+            setErrors({});
+        }
+        catch (error) {
+            if (error instanceof Yup.ValidationError) {
+                let err = {};
+                error.inner.forEach((validationError) => {
+                    if (validationError.path) {
+                        const path = validationError.path.split('.');
+                        if (path.length > 1) {
+                            const [parent, child] = path;
+                            //@ts-ignore
+                            if (!err[parent]) {
+                                //@ts-ignore
+                                err[parent] = {};
+                            }
+                            //@ts-ignore
+                            err[parent][child] = validationError.message;
+                        } else {
+                            //@ts-ignore
+                            err[validationError.path] = validationError.message;
+                        }
+                    }
+                });
+                setErrors(err);
+            } else {
+                console.error(error);
+            }
+        }
     }
 
+
+    console.log(values)
+    console.log(errors)
     const [files, setFiles] = useState<File[]>([]);
 
     return (
@@ -114,67 +153,33 @@ const PromoForm: FC<IForm> = ({ open, setOpen, method }) => {
 
             <div className='w-full'>
                 <div className="relative z-0 w-full mb-5 group">
-
-
                     <div className='w-full flex flex-col md:flex-row space-x-0 md:space-x-4'>
-
-                        <div className='flex flex-col w-full'>
-                            {genericInput('denominacion', "text", values.denominacion, handleChange)}
-
-                        </div>
-
-                        <div className='flex flex-col w-full'>
-                            {/* {genericInput('tipoPromocion', 'text', values.tipoPromocion, handleChange)} */}
-                        </div>
-
+                        {genericInput('denominacion', "text", values.denominacion, handleChange, errors)}
+                        {/* {genericInput('tipoPromocion', 'text', values.tipoPromocion, handleChange)} */}
                     </div>
 
                     <div className='w-full flex flex-col md:flex-row space-x-0 md:space-x-4'>
-
-                        <div className='flex flex-col w-full'>
-                            {genericInput('fechaDesde', 'date', values.fechaDesde, handleChange)}
-                            {/* YUP */}
-                        </div>
-
-                        <div className='flex flex-col w-full'>
-                            {genericInput('fechaHasta', 'date', values.fechaHasta, handleChange)}
-
-                        </div>
-
+                        {genericInput('fechaDesde', 'date', values.fechaDesde, handleChange, errors)}
+                        {genericInput('fechaHasta', 'date', values.fechaHasta, handleChange, errors)}
                     </div>
 
                     <div className='w-full flex flex-col md:flex-row space-x-0 md:space-x-4'>
-
-                        <div className='flex flex-col w-full'>
-                            {genericInput('horaDesde', 'time', values.horaDesde, handleChange)}
-                            {/* YUP */}
-                        </div>
-
-                        <div className='flex flex-col w-full'>
-                            {genericInput('horaHasta', 'time', values.horaHasta, handleChange)}
-
-                        </div>
-
+                        {genericInput('horaDesde', 'time', values.horaDesde, handleChange, errors)}
+                        {genericInput('horaHasta', 'time', values.horaHasta, handleChange, errors)}
                     </div>
 
                     <div className='w-full flex flex-col md:flex-row space-x-0 md:space-x-4'>
-
-                        <div className='flex flex-col w-full'>
-                            {/* {genericInput('descripcionDescuento', 'text', values.descripcionDescuento, handleChange)} */}
-
-                        </div>
-
-                        <div className='flex flex-col w-full'>
-                            {genericInput('precioPromocional', 'number', values.precioPromocional, handleChange)}
-                        </div>
-
+                        {/* {genericInput('descripcionDescuento', 'text', values.descripcionDescuento, handleChange)} */}
+                        {genericInput('precioPromocional', 'number', values.precioPromocional, handleChange, errors)}
                     </div>
 
-                    <SucursalesInput key={1} setValues={setValues} values={values} idEmpresa={idEmpresa} />
+                    <div className='flex w-full flex-col'>
+                        <SucursalesInput key={1} setValues={setValues} values={values} idEmpresa={idEmpresa} />
+                        <h1 className={`font-Roboto h-5 mb-4  flex text-start justify-start text-red-600 transition-all duration-500 ${errors?.idSucursales || 'opacity-0'}`}>{errors?.idSucursales}</h1>
+                    </div>
 
-                    {/* <DetalleInput idSucursales='1' setValues={setValues} values={values} /> */}
+                    {/* TODO cambiar el idSucursales cuando tengamos una */}
                     <DetalleGenerico setValues={setValues} idSucursales='1' values={values} />
-
 
                     {/* {articulosInput()} */}
                     <ImageInput files={files} setFiles={setFiles} key={1} />

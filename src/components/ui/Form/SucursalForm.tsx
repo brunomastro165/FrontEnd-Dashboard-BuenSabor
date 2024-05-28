@@ -16,6 +16,7 @@ import { IEmpresaShort } from '../../../types/ShortDtos/EmpresaShort';
 import { ILocalidad } from '../../../types/Domicilio/Localidad';
 import * as Yup from 'yup'
 import { TbH1 } from 'react-icons/tb';
+import { validationSucursal } from './Validaciones/SucursalValidacion';
 
 interface IForm {
     open: boolean;
@@ -53,34 +54,34 @@ const SucursalForm: FC<IForm> = ({ open, setOpen, data, method }) => {
 
     const [errors, setErrors] = useState<any>({});
 
-    const validationSchema = Yup.object().shape({
-        nombre: Yup.string()
-            .required('El nombre es requerido'),
-        horarioApertura: Yup.string()
-            .required('El horario de apertura es requerido'),
-        horarioCierre: Yup.string()
-            .required('El horario de cierre es requerido'),
-        casaMatriz: Yup.boolean()
-            .required('Este campo es requerido'),
-        domicilio: Yup.object().shape({
-            calle: Yup.string()
-                .required('La calle es requerida'),
-            numero: Yup.number()
-                .typeError('El número debe ser un valor numérico')
-                .required('El número es requerido'),
-            cp: Yup.number()
-                .typeError('El código postal debe ser un valor numérico')
-                .required('El CP es requerido'),
-            nroDpto: Yup.number()
-                .typeError('El número de departamento debe ser un valor numérico'),
-            nombre: Yup.string()
-                .required('El nombre es requerido'),
-            piso: Yup.number()
-                .typeError('El piso debe ser un valor numérico')
-        })
-    });
+    // const validationSchema = Yup.object().shape({
+    //     nombre: Yup.string()
+    //         .required('El nombre es requerido'),
+    //     horarioApertura: Yup.string()
+    //         .required('El horario de apertura es requerido'),
+    //     horarioCierre: Yup.string()
+    //         .required('El horario de cierre es requerido'),
+    //     casaMatriz: Yup.boolean()
+    //         .required('Este campo es requerido'),
+    //     domicilio: Yup.object().shape({
+    //         calle: Yup.string()
+    //             .required('La calle es requerida'),
+    //         numero: Yup.number()
+    //             .typeError('El número debe ser un valor numérico')
+    //             .required('El número es requerido'),
+    //         cp: Yup.number()
+    //             .typeError('El código postal debe ser un valor numérico')
+    //             .required('El CP es requerido'),
+    //         nroDpto: Yup.number()
+    //             .typeError('El número de departamento debe ser un valor numérico'),
+    //         nombre: Yup.string()
+    //             .required('El nombre es requerido'),
+    //         piso: Yup.number()
+    //             .typeError('El piso debe ser un valor numérico')
+    //     })
+    // });
 
-    const postSucursal = async (data: ISucursalShort) => {
+    const postSucursal = async (data: FormState) => {
         if (method === 'POST') {
             try {
                 const res: IEmpresaShort = await backend.post(`${import.meta.env.VITE_LOCAL}sucursal`, data);
@@ -105,8 +106,7 @@ const SucursalForm: FC<IForm> = ({ open, setOpen, data, method }) => {
     const handleSubmit = async () => {
         try {
 
-            await validationSchema.validate(values, { abortEarly: false });
-            //@ts-ignore
+            await validationSucursal.validate(values, { abortEarly: false });
             postSucursal(values)
             dispatch(setGlobalUpdated(true));
             resetForm();
@@ -293,26 +293,17 @@ const SucursalForm: FC<IForm> = ({ open, setOpen, data, method }) => {
                 style={{ height: '50vh' }}>
 
                 <div className="relative z-0 w-full mb-5 group">
-                    <div className='w-full flex flex-col'>
-                        {genericInput('nombre', "text", values.nombre, handleChange)} {/* Nombre */}
-                        <p className='text-red-600 font-Roboto'>{errors?.nombre}</p>
-                    </div>
+                    {genericInput('nombre', "text", values.nombre, handleChange, errors)} {/* Nombre */}
                     <div className='flex justify-center w-full'>
-                        <div className='w-full flex flex-col'>
-                            {genericInput('horarioApertura', 'time', values.horarioApertura, handleChange)}
-                            <p className='text-red-600 font-Roboto'>{errors?.horarioApertura}</p>
-                        </div>
 
-                        <div className='w-full flex flex-col'>
-                            {genericInput('horarioCierre', 'time', values.horarioCierre, handleChange)}
-                            <p className='text-red-600 font-Roboto'>{errors?.horarioCierre}</p>
-                        </div>
-                    </div>
+                        {genericInput('horarioApertura', 'time', values.horarioApertura, handleChange, errors)}
+                        {genericInput('horarioCierre', 'time', values.horarioCierre, handleChange, errors)}
 
-                    <div className='w-full justify-center flex flex-col mt-4 '>
-                        {booleanInput('casaMatriz', 'boolean', values.casaMatriz, handleChange, 'Es casa matriz', 'No es casa matriz')}
-                        <p className='text-red-600 font-Roboto mt-4'>{errors?.casaMatriz}</p>
+
                     </div>
+                    {booleanInput('casaMatriz', 'boolean', values.casaMatriz, handleChange, 'Es casa matriz', 'No es casa matriz', errors)}
+
+
 
                 </div>
             </div>
@@ -327,18 +318,18 @@ const SucursalForm: FC<IForm> = ({ open, setOpen, data, method }) => {
                 {(
                     <>
                         <div className='flex justify-center w-full'>
-                            {genericInput('calle', 'text', values.domicilio?.calle, handleChangeDomicilio)}
-                            {genericInput('numero', 'number', values.domicilio?.numero, handleChangeDomicilio)}
+                            {genericInput('calle', 'text', values.domicilio?.calle, handleChangeDomicilio, errors)}
+                            {genericInput('numero', 'number', values.domicilio?.numero, handleChangeDomicilio, errors)}
                         </div>
 
                         <div className='flex justify-center w-full'>
-                            {genericInput('cp', 'number', values.domicilio?.cp, handleChangeDomicilio)}
-                            {genericInput('nroDpto', 'number', values.domicilio?.nroDpto, handleChangeDomicilio)}
+                            {genericInput('cp', 'number', values.domicilio?.cp, handleChangeDomicilio, errors)}
+                            {genericInput('nroDpto', 'number', values.domicilio?.nroDpto, handleChangeDomicilio, errors)}
                         </div>
 
                         <div className='flex justify-center w-full'>
-                            {genericInput('nombre', 'text', values.domicilio?.nombre, handleChangeDomicilio)}
-                            {genericInput('piso', 'number', values.domicilio?.piso, handleChangeDomicilio)}
+                            {genericInput('nombre', 'text', values.domicilio?.nombre, handleChangeDomicilio, errors)}
+                            {genericInput('piso', 'number', values.domicilio?.piso, handleChangeDomicilio, errors)}
                         </div>
                     </>
                 )}

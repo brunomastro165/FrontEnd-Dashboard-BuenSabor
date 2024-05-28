@@ -9,6 +9,7 @@ import { useAppDispatch } from '../../../hooks/redux';
 import { setGlobalUpdated } from '../../../redux/slices/globalUpdate';
 import * as Yup from 'yup'
 import Swal from 'sweetalert2'
+import { validationEmpresa } from './Validaciones/EmpresaValidacion';
 
 interface IForm {
   open: boolean;
@@ -44,22 +45,22 @@ const EmpresaForm: FC<IForm> = ({ open, setOpen, data, method }) => {
     Swal.fire('Se agregó correctamente la empresa', `${values.nombre}`, 'success');
   }
 
-  const validationSchema = Yup.object().shape({
-    nombre: Yup.string()
-      .required('El nombre es requerido'),
-    razonSocial: Yup.string()
-      .required('La razón social es requerida'),
-    cuil: Yup.number()
-      .required('El CUIL es requerido')
-      .positive('El CUIL debe ser un número positivo')
-      .integer('El CUIL debe ser un número entero')
-      .test('len', 'El CUIL debe tener exactamente 11 dígitos', val => {
-        if (val) {
-          return val.toString().length === 11
-        }
-        return false;
-      }),
-  });
+  // const validationSchema = Yup.object().shape({
+  //   nombre: Yup.string()
+  //     .required('El nombre es requerido'),
+  //   razonSocial: Yup.string()
+  //     .required('La razón social es requerida'),
+  //   cuil: Yup.number()
+  //     .required('El CUIL es requerido')
+  //     .positive('El CUIL debe ser un número positivo')
+  //     .integer('El CUIL debe ser un número entero')
+  //     .test('len', 'El CUIL debe tener exactamente 11 dígitos', val => {
+  //       if (val) {
+  //         return val.toString().length === 11
+  //       }
+  //       return false;
+  //     }),
+  // });
 
   const postEmpresa = async (data: IEmpresaShort) => {
     if (method === 'POST') {
@@ -91,7 +92,7 @@ const EmpresaForm: FC<IForm> = ({ open, setOpen, data, method }) => {
   const handleSubmit = async () => {
     try {
 
-      await validationSchema.validate(values, { abortEarly: false });
+      await validationEmpresa.validate(values, { abortEarly: false });
       //@ts-ignore
       postEmpresa(values);
       dispatch(setGlobalUpdated(true));
@@ -133,19 +134,14 @@ const EmpresaForm: FC<IForm> = ({ open, setOpen, data, method }) => {
 
         <div className="relative z-0 w-full mb-5 group">
           <div className='flex w-full md:space-x-4'>
-            <div className='w-full'>
-              {genericInput('nombre', "text", values.nombre, handleChange)} {/* Nombre */}
-              <p className='text-red-600 font-Roboto'>{errors?.nombre}</p>
-            </div>
 
-            <div className='w-full'>
-              {genericInput('razonSocial', 'text', values.razonSocial, handleChange)} {/* Razón Social */}
-              <p className='text-red-600 font-Roboto'>{errors?.razonSocial}</p>
-            </div>
+            {genericInput('nombre', "text", values.nombre, handleChange, errors)} {/* Nombre */}
+            {genericInput('razonSocial', 'text', values.razonSocial, handleChange, errors)} {/* Razón Social */}
+
           </div>
 
-          {genericInput('cuil', 'number', values.cuil, handleChange)} {/* Cuil */}
-          <p className='text-red-600 font-Roboto'>{errors?.cuil}</p>
+          {genericInput('cuil', 'number', values.cuil, handleChange, errors)} {/* Cuil */}
+
         </div>
       </div>
 

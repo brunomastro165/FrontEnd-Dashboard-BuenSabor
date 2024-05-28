@@ -1,4 +1,4 @@
-import { FC, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { ICategoria } from '../../../../types/Categoria'
 import CategoriaForm from '../../Form/CategoriaForm';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/redux';
@@ -22,12 +22,26 @@ const CategoriaButton: FC<ICategoriaButton> = ({ categoria, edicion }) => {
 
     const backend = new BackendMethods()
 
+    const [idSucursalesC, setIdSucursales] = useState<number[]>([])
+
+    useEffect(() => {
+        async function extraerIdSucursal(categoria: ICategoria) {
+            const res: ICategoria = await backend.getById(`${import.meta.env.VITE_LOCAL}categoria/${categoria.id}`) as ICategoria;
+            const id = res.sucursales.map((sucursal) => sucursal.id)
+            setIdSucursales(id)
+        }
+        extraerIdSucursal(categoria)
+    }, [])
+
+    console.log("idsucursas")
+    console.log(idSucursalesC)
+
     const transformData = (categoria: ICategoria): ICategoriaShort => {
         //@ts-ignore
         return {
             id: categoria.id,
             //@ts-ignore
-            idSucursales: [],
+            idSucursales: idSucursalesC,
             eliminado: false,
             esInsumo: categoria.esInsumo,
             esPadre: false,
@@ -96,7 +110,10 @@ const CategoriaButton: FC<ICategoriaButton> = ({ categoria, edicion }) => {
                                 </>) : (
                                 <>
                                     <button className='text-sm size-13 font-Roboto btn btn-success'
-                                        onClick={() => { setOpen(true), dispatch(setGlobalInitialValues(transformData(categoria))) }}
+                                        onClick={() => {
+                                            dispatch(setGlobalInitialValues(transformData(categoria))),
+                                                setOpen(true)
+                                        }}
                                     >
                                         <span className='text-2xl text-white'>+</span>
                                     </button>

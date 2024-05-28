@@ -11,6 +11,8 @@ import { ICategoriaShort } from '../../../types/ShortDtos/CategoriaShort';
 import { useParams } from 'react-router-dom';
 import { setGlobalUpdated } from '../../../redux/slices/globalUpdate';
 import SucursalesInput from './Inputs/SucursalesInput';
+import * as Yup from 'yup'
+import { validationCategoria } from './Validaciones/CategoriaValidacion';
 
 interface IForm {
     open: boolean;
@@ -47,8 +49,6 @@ const CategoriaForm: FC<IForm> = ({ open, setOpen, method }) => {
 
     const initialValues = useAppSelector((state) => state.GlobalInitialValues.data);
 
-    //console.log(initialValues);
-
     const unidades = useAppSelector((state) => state.UnidadesMedida.UnidadesMedida)
 
     const updated = useAppSelector((state) => state.GlobalUpdated.updated)
@@ -59,15 +59,9 @@ const CategoriaForm: FC<IForm> = ({ open, setOpen, method }) => {
 
     const { idSucursales, idEmpresa } = useParams();
 
-    // const postCategoria = async (data: FormState) => {
-    //     console.log(data)
-    //     try {
-    //         const res: FormState = await backend.post("http://localhost:8081/categoria", data);
-    //         console.log(res)
-    //     } catch (error) {
-    //         console.error(error)
-    //     }
-    // }
+    //Handler de errores
+
+    const [errors, setErrors] = useState<any>({})
 
     const postCategoria = async (data: FormState) => {
         if (method === 'POST') {
@@ -77,6 +71,7 @@ const CategoriaForm: FC<IForm> = ({ open, setOpen, method }) => {
 
                 const res: FormState = await backend.post(`${import.meta.env.VITE_LOCAL}categoria`, data);
                 dispatch(setGlobalUpdated(true))
+                console.log("response desde el backend")
                 console.log(res)
                 setOpen(false);
 
@@ -97,6 +92,8 @@ const CategoriaForm: FC<IForm> = ({ open, setOpen, method }) => {
             try {
                 const res: FormState = await backend.put(`${import.meta.env.VITE_LOCAL}categoria/addSubCategoria/${data.id}`, data);
                 dispatch(setGlobalUpdated(true))
+                console.log("response desde el backend")
+                console.log(res)
                 setOpen(false);
             } catch (error) {
                 console.error(error)
@@ -108,10 +105,42 @@ const CategoriaForm: FC<IForm> = ({ open, setOpen, method }) => {
 
     const { handleChange, values, resetForm, setValues, handleSelect } = useForm<FormState>(initialValues)
 
-    const handleSubmit = () => {
-        postCategoria(values)
-        resetForm();
-        setOpen(false)
+    const handleSubmit = async () => {
+
+        try {
+            await validationCategoria.validate(values, { abortEarly: false })
+            await postCategoria(values)
+            dispatch(setGlobalUpdated(true));
+            resetForm();
+            setOpen(false);
+            setErrors({}); // limpia los errores
+        } catch (error) {
+            if (error instanceof Yup.ValidationError) {
+                let err = {};
+                error.inner.forEach((validationError) => {
+                    if (validationError.path) {
+                        const path = validationError.path.split('.');
+                        if (path.length > 1) {
+                            const [parent, child] = path;
+                            //@ts-ignore
+                            if (!err[parent]) {
+                                //@ts-ignore
+                                err[parent] = {};
+                            }
+                            //@ts-ignore
+                            err[parent][child] = validationError.message;
+                        } else {
+                            //@ts-ignore
+                            err[validationError.path] = validationError.message;
+                        }
+                    }
+                });
+                setErrors(err);
+            } else {
+                console.error(error);
+            }
+        }
+
     }
 
     console.log(values)
@@ -160,10 +189,15 @@ const CategoriaForm: FC<IForm> = ({ open, setOpen, method }) => {
             <div className='w-full'>
 
                 <div className="relative z-0 w-full mb-5 group space-y-4">
-                    {genericInput('denominacion', "text", values.denominacion, handleChange)} {/* Nombre */}
-                    {booleanInput('esInsumo', 'boolean', values.esInsumo, handleChange, 'Es insumo', 'No es insumo')}
-                    <SucursalesInput idEmpresa={idEmpresa} setValues={setValues} values={values} />
+                    {genericInput('denominacion', "text", values.denominacion, handleChange, errors)} {/* Nombre */}
+                    {method === 'POST' && booleanInput('esInsumo', 'boolean', values.esInsumo, handleChange, 'Es insumo', 'No es insumo', errors)}
+
+                    <div className='w-full flex flex-col'>
+                        {method === 'POST' && <SucursalesInput idEmpresa={idEmpresa} setValues={setValues} values={values} />}
+                        <h1 className={`font-Roboto h-5 mb-4  flex text-start justify-start text-red-600 transition-all duration-500 ${errors?.idSucursales || 'opacity-0'}`}>{errors?.idSucursales}</h1>
+                    </div>
                 </div>
+
 
             </div>
 

@@ -13,7 +13,6 @@ import { useParams } from "react-router-dom";
 
 
 interface CategoriaInput {
-    //por ahora es unidad porque no puedo cargar categorías jajas
     setIdCategoria: Dispatch<SetStateAction<number>>;
     setLoaded: Dispatch<SetStateAction<boolean>>;
     handleChange: any;
