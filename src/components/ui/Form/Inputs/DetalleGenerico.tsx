@@ -6,6 +6,7 @@ import { Dispatch } from '@reduxjs/toolkit';
 import { BackendMethods } from '../../../../services/BackendClient';
 import { IDetallePromo } from '../../../../types/DetallePromo';
 import { IDetallePromoCreate } from '../../../../types/CreateDtos/DetallePromoCreate';
+import { useParams } from 'react-router-dom';
 
 
 interface IDetalleInput {
@@ -34,6 +35,8 @@ const DetalleGenerico: FC<IDetalleInput> = ({ values, setValues, idSucursales })
 
     const [articulosGenericos, setArticulosGenericos] = useState<IArticuloGenerico[]>([])
 
+    const [articulosGuardados, setArticulosGuardados] = useState<IArticuloGenerico[]>([])
+
     const [filtroGenerico, setFiltroGenerico] = useState<IArticuloGenerico[]>([]);
 
 
@@ -59,7 +62,7 @@ const DetalleGenerico: FC<IDetalleInput> = ({ values, setValues, idSucursales })
 
         //Si el insumo no existe y e es 1, lo añadimos a la lista con cantidad 1
 
-        console.log(articulosGenericos)
+
         if (!existe && cantidad === 1) {
             const selectedArticulo: IArticuloGenerico | undefined = articulosGenericos?.find((a) => a.id === id)
             newDetalles.push({
@@ -83,6 +86,9 @@ const DetalleGenerico: FC<IDetalleInput> = ({ values, setValues, idSucursales })
         setAmDetalles(newDetalles);
     }
 
+    console.log("guardados")
+    console.log(articulosGuardados)
+    //console.log(articulosGenericos)
     console.log(aMDetalles)
     useEffect(() => {
 
@@ -93,6 +99,21 @@ const DetalleGenerico: FC<IDetalleInput> = ({ values, setValues, idSucursales })
         }));
     }, [aMDetalles]);
 
+    useEffect(() => {
+
+        const articulosFiltrados = aMDetalles.map((detalle) =>
+            articulosGenericos.filter((articulo) => articulo.id === detalle.idArticulo)
+        ) as any[][];
+
+        setArticulosGuardados(prevArticulos => {
+            const nuevosArticulos = articulosFiltrados.flat();
+            const idsPrevios = prevArticulos.map(articulo => articulo.id);
+            const articulosUnicos = nuevosArticulos.filter((articulo) => !idsPrevios.includes(articulo.id));
+            return [...prevArticulos, ...articulosUnicos];
+        });
+
+    }, [articulosGenericos, aMDetalles]);
+
     const filtroPorBusqueda = async (busqueda: string) => {
 
         if (busqueda === "") {
@@ -100,7 +121,7 @@ const DetalleGenerico: FC<IDetalleInput> = ({ values, setValues, idSucursales })
             return 'no hay búsqueda';
         }
         else {
-            const res: IArticuloGenerico[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}ArticuloInsumo/getArticulos`) as IArticuloGenerico[]
+            const res: IArticuloGenerico[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}ArticuloInsumo/getArticulos/${busqueda}/${idSucursales}`) as IArticuloGenerico[]
             setFiltroGenerico(res);
             setArticulosGenericos(res);
             return res;
@@ -110,6 +131,7 @@ const DetalleGenerico: FC<IDetalleInput> = ({ values, setValues, idSucursales })
     // console.log(values)
 
     const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
+
         const search = e.target.value.toString();
 
         setTimeout(async () => {
@@ -176,7 +198,7 @@ const DetalleGenerico: FC<IDetalleInput> = ({ values, setValues, idSucursales })
                 {aMDetalles?.map((detalle) => (
                     <div className='text-xl px-2 py-1 rounded mr-2 bg-green-400 w-max text-white '>
                         <>
-                            {articulosGenericos
+                            {articulosGuardados
                                 .filter((articulo) => articulo.id === detalle.idArticulo)
                                 .map((articuloFiltrado) => (
                                     // Aquí puedes renderizar el componente o la información que desees mostrar

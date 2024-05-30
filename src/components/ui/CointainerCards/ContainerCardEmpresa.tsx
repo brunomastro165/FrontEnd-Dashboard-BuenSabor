@@ -1,9 +1,8 @@
-//@ts-nocheck
 import React, { FC, useState } from 'react'
 import CardEmpresa from '../Cards/CardEmpresa'
 import { IEmpresa } from '../../../types/Empresa';
 
-const ContainerCardEmpresa: FC<IEmpresa> = ({ cuil, id, nombre, razonSocial, sucursales }) => {
+const ContainerCardEmpresa: FC<IEmpresa> = ({ cuil, id, nombre, razonSocial, sucursales, imagenes }) => {
 
     const [open, setOpen] = useState<boolean>(false);
 
@@ -23,6 +22,7 @@ const ContainerCardEmpresa: FC<IEmpresa> = ({ cuil, id, nombre, razonSocial, suc
                         razonSocial={razonSocial}
                         sucursales={sucursales}
                         key={id}
+                        imagenes={imagenes}
                     />
 
                 </div>

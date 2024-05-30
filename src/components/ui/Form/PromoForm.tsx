@@ -43,12 +43,13 @@ type FormState = {
 };
 
 
+type FileWithPreview = File & { preview: string };
 
 const PromoForm: FC<IForm> = ({ open, setOpen, method }) => {
 
     const backend = new BackendMethods(); //Objeto de BackendClient
 
-    const { idEmpresa } = useParams()
+    const { idEmpresa, idSucursales } = useParams()
 
     const [loaded, setLoaded] = useState<boolean>(false);
 
@@ -137,7 +138,7 @@ const PromoForm: FC<IForm> = ({ open, setOpen, method }) => {
 
     console.log(values)
     console.log(errors)
-    const [files, setFiles] = useState<File[]>([]);
+    const [files, setFiles] = useState<FileWithPreview[]>([]);
 
     return (
         <div className='w-full flex flex-col items-center justify-center space-y-4 p-10 '
@@ -179,7 +180,7 @@ const PromoForm: FC<IForm> = ({ open, setOpen, method }) => {
                     </div>
 
                     {/* TODO cambiar el idSucursales cuando tengamos una */}
-                    <DetalleGenerico setValues={setValues} idSucursales='1' values={values} />
+                    <DetalleGenerico setValues={setValues} idSucursales={idSucursales} values={values} />
 
                     {/* {articulosInput()} */}
                     <ImageInput files={files} setFiles={setFiles} key={1} />

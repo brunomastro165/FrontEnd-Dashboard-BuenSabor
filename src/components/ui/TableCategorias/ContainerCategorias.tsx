@@ -70,9 +70,9 @@ const ContainerCategorias = () => {
           onClick={() => setOpen(true)}
         >Agregar +</button>
 
-        <button className='text-2xl font-Roboto btn bg-white border-blue-600 my-4 bg-blue text-blue-600 hover:text-white mr-10 hover:bg-blue-600'
+        {/* <button className='text-2xl font-Roboto btn bg-white border-blue-600 my-4 bg-blue text-blue-600 hover:text-white mr-10 hover:bg-blue-600'
           onClick={() => setEdicion(!edicion)}
-        >Editar <BsPencil /></button>
+        >Editar <BsPencil /></button> */}
       </div>
 
       {categorias.length >= 1 ? (

@@ -12,7 +12,7 @@ import NavBar from '../../ui/NavBar/NavBar';
 
 const Sucursal = () => {
 
-    const CRUD = new BackendMethods<IEmpresa>();
+    const CRUD = new BackendMethods<IEmpresaShort>();
 
     const { idEmpresa } = useParams();
 
@@ -32,14 +32,13 @@ const Sucursal = () => {
 
         const fetchSucursal = async () => { //Método para llamar a todas las sucursales por su empresa
             try {
-                const res: IEmpresa = await CRUD.getById(`${import.meta.env.VITE_LOCAL}empresa/sucursales/${idEmpresa}`)
-                const sucursales = res.sucursales;
+                const res: IEmpresaShort = await CRUD.getById(`${import.meta.env.VITE_LOCAL}empresa/sucursales/${idEmpresa}`)
+                const sucursales: ISucursalShort[] = res.sucursales;
+                console.log(sucursales)
                 dispatch(setGlobalUpdated(false))
-
-                //@ts-ignore | esto es porque le estoy asignando una sucursal completa a una sucursal short
                 setSucursales(sucursales);
             } catch (error) {
-                console.error(error)
+                console.log(error)
             }
         }
 

@@ -16,6 +16,8 @@ const ContainerCards: FC<IContainerCards> = ({ data }) => {
         razonSocial: '',
         cuil: 0,
         eliminado: false,
+        imagenes: [],
+        sucursales: []
     });
 
     return (
@@ -31,6 +33,7 @@ const ContainerCards: FC<IContainerCards> = ({ data }) => {
                             razonSocial={empresa.razonSocial}
                             sucursales={empresa.sucursales}
                             key={index}
+                            imagenes={empresa.imagenes}
                         />
                     ))}
                     <>

@@ -17,6 +17,7 @@ import { ILocalidad } from '../../../types/Domicilio/Localidad';
 import * as Yup from 'yup'
 import { TbH1 } from 'react-icons/tb';
 import { validationSucursal } from './Validaciones/SucursalValidacion';
+import ImageInput from './Inputs/ImageInput';
 
 interface IForm {
     open: boolean;
@@ -45,6 +46,8 @@ type FormState = {
 
 //@ts-ignore
 class GenericBackend extends BackendClient<T> { } //Métodos genéricos 
+
+type FileWithPreview = File & { preview: string };
 
 const SucursalForm: FC<IForm> = ({ open, setOpen, data, method }) => {
 
@@ -84,7 +87,8 @@ const SucursalForm: FC<IForm> = ({ open, setOpen, data, method }) => {
     const postSucursal = async (data: FormState) => {
         if (method === 'POST') {
             try {
-                const res: IEmpresaShort = await backend.post(`${import.meta.env.VITE_LOCAL}sucursal`, data);
+                // const res: IEmpresaShort = await backend.post(`${import.meta.env.VITE_LOCAL}sucursal`, data);
+                const res: ISucursalShort = await backend.postConImagen(`${import.meta.env.VITE_LOCAL}sucursal/save`, data, files)
                 console.log(res)
                 dispatch(setGlobalUpdated(true))
             } catch (error) {
@@ -107,7 +111,7 @@ const SucursalForm: FC<IForm> = ({ open, setOpen, data, method }) => {
         try {
 
             await validationSucursal.validate(values, { abortEarly: false });
-            postSucursal(values)
+            await postSucursal(values)
             dispatch(setGlobalUpdated(true));
             resetForm();
             setOpen(false);
@@ -275,9 +279,9 @@ const SucursalForm: FC<IForm> = ({ open, setOpen, data, method }) => {
     }, [selectedLocalidad])
 
 
-    console.log("acá")
 
-    console.log(errors)
+    const [files, setFiles] = useState<FileWithPreview[]>([]);
+
     return (
         <div className='w-full flex flex-col items-center justify-center space-y-4 p-10 '
             onSubmit={handleSubmit}
@@ -290,26 +294,22 @@ const SucursalForm: FC<IForm> = ({ open, setOpen, data, method }) => {
             <h2 className='text-3xl font-Roboto'>Agrega tu sucursal</h2>
 
             <div className={`w-full ${seccionDomicilio && 'hidden'}`}
-                style={{ height: '50vh' }}>
-
+                style={{ minHeight: '70vh' }}>
                 <div className="relative z-0 w-full mb-5 group">
                     {genericInput('nombre', "text", values.nombre, handleChange, errors)} {/* Nombre */}
                     <div className='flex justify-center w-full'>
-
                         {genericInput('horarioApertura', 'time', values.horarioApertura, handleChange, errors)}
                         {genericInput('horarioCierre', 'time', values.horarioCierre, handleChange, errors)}
-
-
                     </div>
                     {booleanInput('casaMatriz', 'boolean', values.casaMatriz, handleChange, 'Es casa matriz', 'No es casa matriz', errors)}
 
-
+                    <ImageInput files={files} setFiles={setFiles} />
 
                 </div>
             </div>
 
             <div className={`${seccionDomicilio || 'hidden'}`}
-                style={{ height: '50vh' }}>
+                style={{ minHeight: '70vh' }}>
                 <div className={`flex justify-center w-full space-x-5 mt-4`}>
                     {provinciaInput()}
                     {localidadInput()}

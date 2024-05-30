@@ -24,6 +24,7 @@ const ContainerCardSucursal: FC<IContainerCardSucursal> = ({ data }) => {
 
     const idEmpresaNumber = Number(idEmpresa);
 
+    console.log(data)
     const [initialValues, setInitialValues] = useState<ISucursalShort>({
         id: 0,
         nombre: '',
@@ -42,7 +43,8 @@ const ContainerCardSucursal: FC<IContainerCardSucursal> = ({ data }) => {
             nroDpto: 0,
             piso: 0,
             idLocalidad: 0
-        }
+        },
+        imagenes: []
     });
 
     useEffect(() => {
@@ -69,6 +71,7 @@ const ContainerCardSucursal: FC<IContainerCardSucursal> = ({ data }) => {
                                 idEmpresa={sucursal.idEmpresa}
                                 key={sucursal.id}
                                 domicilio={sucursal.domicilio}
+                                imagenes={sucursal.imagenes}
                             />
                         ))
                     }

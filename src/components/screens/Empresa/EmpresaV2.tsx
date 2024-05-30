@@ -40,7 +40,8 @@ const EmpresaV2 = () => {
                     nombre={empresa?.nombre}
                     razonSocial={empresa?.razonSocial}
                     sucursales={empresa?.sucursales}
-                    key={empresa?.id} />
+                    key={empresa?.id} 
+                    imagenes={empresa?.imagenes}/>
             </div>
         </>
     )

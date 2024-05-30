@@ -45,6 +45,8 @@ type FormState = {
 //@ts-ignore
 class GenericBackend extends BackendClient<T> { } //Métodos genéricos 
 
+type FileWithPreview = File & { preview: string };
+
 const AManufacturadoForm: FC<IForm> = ({ open, setOpen, method }) => {
 
     const { idSucursales } = useParams();
@@ -347,7 +349,7 @@ const AManufacturadoForm: FC<IForm> = ({ open, setOpen, method }) => {
 
     console.log(errors)
 
-    const [files, setFiles] = useState<File[]>([]);
+    const [files, setFiles] = useState<FileWithPreview[]>([]);
 
     return (
         <div className='w-full flex flex-col items-center justify-center space-y-4 p-10 '

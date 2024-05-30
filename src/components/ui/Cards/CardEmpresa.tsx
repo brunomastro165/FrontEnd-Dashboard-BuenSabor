@@ -14,7 +14,7 @@ import EmpresaForm from '../Form/EmpresaForm';
 
 class GenericBackend extends BackendClient<IEmpresa> { } //Métodos genéricos 
 
-const CardEmpresa: FC<IEmpresa> = ({ cuil, id, nombre, razonSocial, sucursales }) => {
+const CardEmpresa: FC<IEmpresa> = ({ cuil, id, nombre, razonSocial, sucursales, imagenes }) => {
 
     const backend = new GenericBackend(); //Objeto de BackendClient
 
@@ -37,7 +37,7 @@ const CardEmpresa: FC<IEmpresa> = ({ cuil, id, nombre, razonSocial, sucursales }
 
     const deleteEmpresa = async () => {
         try {
-            const res: IEmpresaShort = await backend.delete(`http://localhost:8081/empresa/${id}`);
+            const res: IEmpresaShort = await backend.delete(`${import.meta.env.VITE_LOCAL}/empresa/${id}`);
             console.log(res)
         } catch (error) {
             console.error(error)
@@ -53,6 +53,7 @@ const CardEmpresa: FC<IEmpresa> = ({ cuil, id, nombre, razonSocial, sucursales }
         navigate(`/${idEmpresa}/sucursales`, { state: { nombre } })
     }
 
+    console.log(imagenes)
     function confirmarEliminacion() {
         return <>
             <div className='inset-0 fixed z-50 bg-black bg-opacity-35 h-screen w-full flex flex-col justify-center items-center'>
@@ -94,12 +95,11 @@ const CardEmpresa: FC<IEmpresa> = ({ cuil, id, nombre, razonSocial, sucursales }
         active:scale-95 transition-all hover:shadow-2xl m-5 group "
 
             >
-                <div className="flex justify-between m-4 w-full px-4  text-2xl">
-                    <MdEdit className=" text-blue-500" onClick={() => { setModalEditar(true), setOpen(true) }} />
+                <div className="flex justify-end m-4 w-full px-4  text-2xl">
+                    <MdEdit className=" text-blue-500 mx-3" onClick={() => { setModalEditar(true), setOpen(true) }} />
                     <FaTrashAlt className="text-red-600 hover:scale-110 transition-all duration-100" onClick={() => setModalEliminar(true)} />
                 </div>
                 <div className="p-5 flex flex-col items-center justify-start rounded">
-                    <IoIosBriefcase className="text-red-600 bg-red-200 p-1 rounded-md text-5xl text-center" />
                     <h1 className="text-xl font-normal mt-5 mb-3">{nombre}</h1>
                     <h1 className="text-xl font-extralight mb-5">{razonSocial}</h1>
                     <h1 className='font-Roboto text-lg px-2 bg- rounded text-red-600 hover:text-white hover:bg-red-600 transition-all hover:scale-105'
@@ -107,6 +107,9 @@ const CardEmpresa: FC<IEmpresa> = ({ cuil, id, nombre, razonSocial, sucursales }
                         Ingresar
                     </h1>
                 </div>
+                <figure className='w-full '>
+                    {imagenes !== undefined && imagenes.length >= 1 && <figure><img src={imagenes[0].url} className='w-full ' alt="imagenEmpresa" style={{ height: '231.63px', width: '320px' }}/></figure>}
+                </figure>
             </div>
 
             {modalEliminar && (confirmarEliminacion())}

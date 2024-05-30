@@ -10,6 +10,7 @@ import { setGlobalUpdated } from '../../../redux/slices/globalUpdate';
 import * as Yup from 'yup'
 import Swal from 'sweetalert2'
 import { validationEmpresa } from './Validaciones/EmpresaValidacion';
+import ImageInput from './Inputs/ImageInput';
 
 interface IForm {
   open: boolean;
@@ -26,6 +27,8 @@ type FormState = {
   cuil: number;
   //sucursales: ISucursal[] | null;
 };
+
+type FileWithPreview = File & { preview: string };
 
 class GenericBackend extends BackendClient<IEmpresaShort> { } //Métodos genéricos 
 
@@ -66,11 +69,10 @@ const EmpresaForm: FC<IForm> = ({ open, setOpen, data, method }) => {
     if (method === 'POST') {
       try {
         //const res: IEmpresaShort = await backend.post("http://localhost:8081/empresa/short", data);
-        const res: IEmpresaShort = await backend.post(`${import.meta.env.VITE_LOCAL}empresa`, data);
-
+        //const res: IEmpresaShort = await backend.post(`${import.meta.env.VITE_LOCAL}empresa`, data);
+        const res: IEmpresaShort = await backend.postConImagen(`${import.meta.env.VITE_LOCAL}empresa/save`, data, files);
         dispatch(setGlobalUpdated(true))
-        mostrarAlerta()
-
+        //mostrarAlerta()
 
       } catch (error) {
         console.error(error)
@@ -88,13 +90,12 @@ const EmpresaForm: FC<IForm> = ({ open, setOpen, data, method }) => {
   }
 
   console.log(values)
-
   const handleSubmit = async () => {
     try {
 
       await validationEmpresa.validate(values, { abortEarly: false });
       //@ts-ignore
-      postEmpresa(values);
+      await postEmpresa(values);
       dispatch(setGlobalUpdated(true));
       resetForm();
       setOpen(false);
@@ -117,6 +118,8 @@ const EmpresaForm: FC<IForm> = ({ open, setOpen, data, method }) => {
 
     }
   };
+
+  const [files, setFiles] = useState<FileWithPreview[]>([]);
 
   return (
     <div className='w-full flex flex-col items-center justify-center space-y-4 p-10 '
@@ -142,6 +145,9 @@ const EmpresaForm: FC<IForm> = ({ open, setOpen, data, method }) => {
 
           {genericInput('cuil', 'number', values.cuil, handleChange, errors)} {/* Cuil */}
 
+          <div className='w-full flex justify-center '>
+            <ImageInput files={files} setFiles={setFiles} />
+          </div>
         </div>
       </div>
 

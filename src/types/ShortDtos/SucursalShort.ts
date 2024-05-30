@@ -1,4 +1,5 @@
 import { IDomicilio } from "../Domicilio/Domicilio";
+import { IImagen } from "../Imagen";
 
 export interface ISucursalShort {
   id: number;
@@ -9,4 +10,5 @@ export interface ISucursalShort {
   esCasaMatriz: boolean;
   idEmpresa: number;
   domicilio: IDomicilio;
+  imagenes: IImagen[];
 }

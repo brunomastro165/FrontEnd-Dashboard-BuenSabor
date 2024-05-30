@@ -17,7 +17,7 @@ import SucursalForm from '../Form/SucursalForm';
 
 class GenericBackend extends BackendClient<ISucursalShort> { } //Métodos genéricos 
 
-const CardSucursal: FC<ISucursalShort> = ({ esCasaMatriz, eliminado, horarioApertura, horarioCierre, id, nombre, domicilio }) => {
+const CardSucursal: FC<ISucursalShort> = ({ esCasaMatriz, eliminado, horarioApertura, horarioCierre, id, nombre, domicilio, imagenes }) => {
 
     const CRUD = new GenericBackend();
 
@@ -39,7 +39,8 @@ const CardSucursal: FC<ISucursalShort> = ({ esCasaMatriz, eliminado, horarioAper
         horarioCierre: horarioCierre,
         eliminado: eliminado,
         idEmpresa: idEmpresaNumber,
-        domicilio: domicilio
+        domicilio: domicilio,
+        imagenes: []
     });
 
     useEffect(() => {
@@ -57,7 +58,7 @@ const CardSucursal: FC<ISucursalShort> = ({ esCasaMatriz, eliminado, horarioAper
 
     const deleteSucursal = async () => {
         try {
-            const res = await CRUD.delete(`${import.meta.env.VITE_LOCAL}/sucursal/${id}`);
+            const res = await CRUD.delete(`${import.meta.env.VITE_LOCAL}sucursal/${id}`);
             console.log(res)
         } catch (error) {
             console.error(error)
@@ -125,8 +126,8 @@ const CardSucursal: FC<ISucursalShort> = ({ esCasaMatriz, eliminado, horarioAper
                     <FaBuilding className='group-hover:text-red-600 text-gray-600 p-1 transition-all text-5xl text-center' />
                     <h1 className='text-xl font-extralight mt-5 mb-3'>{nombre}</h1>
                 </div>
-
-                <img src={'/assets/img/mutual-kfc-tibas-featured.jpg'} alt="Sucursal" className=' rounded-b' style={{ height: '231.63px', width: '320px' }} />
+                {imagenes !== undefined && imagenes.length >= 1 && <figure><img src={imagenes[0].url}  style={{ height: '231.63px', width: '320px' }} alt="promo" /></figure>}
+               
             </div>
 
             {modalEliminar && confirmarEliminacion()}

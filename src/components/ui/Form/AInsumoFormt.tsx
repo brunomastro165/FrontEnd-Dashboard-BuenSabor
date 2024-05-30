@@ -42,6 +42,8 @@ type FormState = {
 //@ts-ignore
 class GenericBackend extends BackendClient<T> { } //Métodos genéricos 
 
+type FileWithPreview = File & { preview: string };
+
 const AInsumoForm: FC<IForm> = ({ open, setOpen, method }) => {
 
     const backend = new GenericBackend(); //Objeto de BackendClient
@@ -106,10 +108,7 @@ const AInsumoForm: FC<IForm> = ({ open, setOpen, method }) => {
         else if (method === 'PUT') {
             try {
                 //const res: IEmpresaShort = await backend.put(`http://localhost:8081/empresa/${data.id}/short`, data);
-                const res: IArticuloInsumo = await backend.put(`${import.meta.env.VITE_LOCAL}ArticuloInsumo/${data.id}`, data);
-
-                const subirImagen = await subirImagenes(res.id, values.imagenes)
-
+                const res: IArticuloInsumo = await backend.postConImagen(`${import.meta.env.VITE_LOCAL}ArticuloInsumo/save`, data, files);
                 dispatch(setGlobalUpdated(true))
                 setOpen(false);
             } catch (error) {
@@ -159,7 +158,7 @@ const AInsumoForm: FC<IForm> = ({ open, setOpen, method }) => {
 
     //Manejo de las imagenes
 
-    const [files, setFiles] = useState<File[]>([]);
+    const [files, setFiles] = useState<FileWithPreview[]>([]);
 
     console.log(files);
 
