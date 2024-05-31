@@ -10,6 +10,7 @@ import { setGlobalUpdated } from '../../../redux/slices/globalUpdate';
 import { motion, AnimatePresence } from 'framer-motion';
 import { BsPencil } from "react-icons/bs";
 import GenericWaiter from '../Waiters/GenericWaiter';
+import { GoChevronDown } from "react-icons/go";
 
 
 class CRUDMetods extends BackendClient<any> { }
@@ -28,6 +29,8 @@ const ContainerCategorias = () => {
 
   const [open, setOpen] = useState<boolean>(false);
 
+  const [filtros, setFiltros] = useState<string>('all')
+
   //REDUX 
 
   const updated = useAppSelector((state) => state.GlobalUpdated.updated)
@@ -42,7 +45,14 @@ const ContainerCategorias = () => {
 
       const categoriasExistentes: ICategoria[] = categoriasPadre.filter((categoria) => categoria.eliminado === false)
 
-      const categoriasOrdenadas: ICategoria[] = categoriasExistentes
+
+      let categoriasFiltradas: ICategoria[] = categoriasExistentes;
+
+      if (filtros != 'all') {
+        categoriasFiltradas = categoriasExistentes.filter((categoria) => categoria.esInsumo.toString() === filtros)
+      }
+
+      const categoriasOrdenadas: ICategoria[] = categoriasFiltradas
         .filter((categoria) => categoria.eliminado === false)
         .sort((a, b) => a.denominacion.localeCompare(b.denominacion));
 
@@ -60,21 +70,30 @@ const ContainerCategorias = () => {
     }))
 
     dispatch(setGlobalUpdated(false))
-  }, [updated])
+  }, [updated, filtros])
 
 
   return (
     <>
-      <div className='w-full  flex justify-end'>
+      <div className='w-full  flex justify-end items-center'>
+        <details className="dropdown ">
+          <summary className=" text-2xl font-Roboto btn btn-info my-4 bg-white text-blue-600 hover:text-white mr-10 hover:bg-blue-600">Filtros <GoChevronDown /></summary>
+          <ul className="p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-52">
+            <li onClick={() => setFiltros('all')}><a>Todas</a></li>
+            <li onClick={() => setFiltros('true')}><a>Insumos</a></li>
+            <li onClick={() => setFiltros('false')}><a>Manufacturados</a></li>
+          </ul>
+        </details>
+
         <button className='text-2xl font-Roboto btn btn-success my-4 bg-white text-green-600 hover:text-white mr-10 hover:bg-green-600'
           onClick={() => setOpen(true)}
         >Agregar +</button>
+
 
         {/* <button className='text-2xl font-Roboto btn bg-white border-blue-600 my-4 bg-blue text-blue-600 hover:text-white mr-10 hover:bg-blue-600'
           onClick={() => setEdicion(!edicion)}
         >Editar <BsPencil /></button> */}
       </div>
-
       {categorias.length >= 1 ? (
         <>
           <AnimatePresence>

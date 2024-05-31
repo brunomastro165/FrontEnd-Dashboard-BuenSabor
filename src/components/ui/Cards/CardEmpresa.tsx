@@ -37,7 +37,7 @@ const CardEmpresa: FC<IEmpresa> = ({ cuil, id, nombre, razonSocial, sucursales, 
 
     const deleteEmpresa = async () => {
         try {
-            const res: IEmpresaShort = await backend.delete(`${import.meta.env.VITE_LOCAL}/empresa/${id}`);
+            const res: IEmpresaShort = await backend.delete(`${import.meta.env.VITE_LOCAL}empresa/${id}`);
             console.log(res)
         } catch (error) {
             console.error(error)
@@ -108,7 +108,7 @@ const CardEmpresa: FC<IEmpresa> = ({ cuil, id, nombre, razonSocial, sucursales, 
                     </h1>
                 </div>
                 <figure className='w-full '>
-                    {imagenes !== undefined && imagenes.length >= 1 && <figure><img src={imagenes[0].url} className='w-full ' alt="imagenEmpresa" style={{ height: '231.63px', width: '320px' }}/></figure>}
+                    {imagenes !== undefined && imagenes.length >= 1 && <figure><img src={imagenes[0].url} className='w-full ' alt="imagenEmpresa" style={{ height: '231.63px', width: '320px' }} /></figure>}
                 </figure>
             </div>
 

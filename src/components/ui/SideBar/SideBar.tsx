@@ -26,15 +26,25 @@ const SideBar = () => {
 
     const [active, setActive] = useState("Home");
 
+    //const { idEmpresa, idSucursales } = useParams()
+
+    //const [url, setUrl] = useState<string>(`/${idEmpresa}/sucursales/${idSucursales}`)
     // const [idEmpresa, setIdEmpresa] = useState<number>(1)
-    const [idSucursales, setIdSucursales] = useState<number>(1)
+    //const [idSucursales, setIdSucursales] = useState<number>(1)
 
     const url = useAppSelector((state) => state.globalUrl.url);
 
     const idEmpresa = useAppSelector((state) => state.GlobalIdEmpresa.idEmpresa);
 
+
+    useEffect(() => {
+
+    }, [])
+
+    // const url = `/${idEmpresa}/sucursales/${idSucursales}`
+
     const dispatch = useAppDispatch()
-    
+
     //Hice todo para que modificando este JSON se modifiquen directamente los botones de la sidebar con sus configuraciones 
     const Buttons: IButton[] = [
         { Icon: IoHomeOutline, text: "Inicio", link: `${url}/home`, active: active, setActive: setActive, subButton: null, child: false },

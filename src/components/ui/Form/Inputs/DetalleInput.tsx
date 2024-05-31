@@ -26,41 +26,83 @@ const DetalleInput: FC<IDetalleInput> = ({ values, setValues, idSucursales }) =>
     const [popUp, setPopUp] = useState<boolean>(false);
 
     //En esta función pedimos el valor del número ingresado por el usuario y el valor de la denominación del articulo insumo
-    const handleQuantityChange = (cantidad: number, denominacion: string) => {
+    // const handleQuantityChange = (cantidad: number, denominacion: string) => {
+
+    //     let existe: boolean = false;
+
+    //     let newDetalles = aMDetalles.map(detalle => {
+    //         //Si el insumo ya existe dentro de la lista de detalles, solo actualizamos su cantidad
+    //         if (detalle.articuloInsumo?.denominacion === denominacion) {
+    //             existe = true;
+    //             return {
+    //                 ...detalle,
+    //                 cantidad: cantidad === 1 ? detalle.cantidad + 1 : detalle.cantidad - 1
+    //             };
+    //         } else {
+    //             return detalle;
+    //         }
+    //     });
+
+    //     //Si el insumo no existe y e es 1, lo añadimos a la lista con cantidad 1
+    //     if (!existe && cantidad === 1) {
+    //         const selectedArticulo: IArticuloInsumo | undefined = articulosInsumo?.find((a) => a.denominacion === denominacion)
+    //         newDetalles.push({
+    //             id: 0,
+    //             cantidad: 1,
+    //             articuloInsumo: selectedArticulo
+    //         });
+    //     }
+
+    //     //Eliminamos los artículos con cantidad 0
+    //     newDetalles = newDetalles.filter(detalle => detalle.cantidad !== 0);
+
+
+    //     //Esto es para almacenar temporalmene los insumos (de esta forma no tengo que traer de más)
+    //     const insumos: IArticuloInsumo[] | undefined = [];
+
+    //     const insumosGuardados = newDetalles.map((detalle) => detalle.articuloInsumo && insumos.push(detalle.articuloInsumo))
+
+    //     //const insumosFinales = insumosGuardados.map((insumo) => insumo.articuloInsumo && insumos.push(insumo.articuloInsumo))
+
+    //     setAmDetalles(newDetalles);
+    // }
+
+    const handleDirectQuantity = (e: ChangeEvent<HTMLInputElement>, id: number) => {
+
+        const cantidad = Number(e.target.value);
 
         let existe: boolean = false;
 
         let newDetalles = aMDetalles.map(detalle => {
             //Si el insumo ya existe dentro de la lista de detalles, solo actualizamos su cantidad
-            if (detalle.articuloInsumo?.denominacion === denominacion) {
+            if (detalle.articuloInsumo?.id === id) {
                 existe = true;
                 return {
                     ...detalle,
-                    cantidad: cantidad === 1 ? detalle.cantidad + 1 : detalle.cantidad - 1
+                    cantidad: cantidad
                 };
             } else {
                 return detalle;
             }
         });
 
-        //Si el insumo no existe y e es 1, lo añadimos a la lista con cantidad 1
-        if (!existe && cantidad === 1) {
-            const selectedArticulo: IArticuloInsumo | undefined = articulosInsumo?.find((a) => a.denominacion === denominacion)
+        if (!existe) {
+            const selectedArticulo: IArticuloInsumo | undefined = articulosInsumo?.find((a) => a.id === id)
             newDetalles.push({
                 id: 0,
-                cantidad: 1,
-                articuloInsumo: selectedArticulo
+                cantidad: cantidad,
+                articuloInsumo: selectedArticulo,
             });
         }
+
 
         //Eliminamos los artículos con cantidad 0
         newDetalles = newDetalles.filter(detalle => detalle.cantidad !== 0);
 
-
         //Esto es para almacenar temporalmene los insumos (de esta forma no tengo que traer de más)
         const insumos: IArticuloInsumo[] | undefined = [];
 
-        const insumosGuardados = newDetalles.map((detalle) => detalle.articuloInsumo && insumos.push(detalle.articuloInsumo))
+        //const insumosGuardados = newDetalles.map((detalle) => detalle.idArticulo && insumos.push(detalle.idArticulo))
 
         //const insumosFinales = insumosGuardados.map((insumo) => insumo.articuloInsumo && insumos.push(insumo.articuloInsumo))
 
@@ -89,6 +131,8 @@ const DetalleInput: FC<IDetalleInput> = ({ values, setValues, idSucursales }) =>
             return res;
         }
     }
+
+
 
     // console.log(values)
 
@@ -125,10 +169,11 @@ const DetalleInput: FC<IDetalleInput> = ({ values, setValues, idSucursales }) =>
                     {filtroDetalle
                         .filter((articulo: IArticuloInsumo) => articulo.esParaElaborar)
                         .map((articulo: IArticuloInsumo, index: number) => (
-                            <div key={index} className='  rounded p-1 flex justify-between items-center'>
+                            <div key={index} className={` flex w-full my-2 justify-between items-center border transition-all
+                            bg-gray-100 rounded-md p-2 ${aMDetalles.find(e => e.articuloInsumo?.id === articulo.id)?.cantidad && 'bg-green-400 text-white'}`}>
                                 <div className='flex flex-row my-2 items-center'>
-                                    <h1 className='w-24'>{articulo.denominacion}</h1>
-                                    <input
+                                    <h1 className='w-48'>{articulo.denominacion}</h1>
+                                    {/* <input
                                         className=' btn text-white bg-green-600 hover:bg-green-500 size-10'
                                         value={'+'}
                                         type="button"
@@ -145,12 +190,18 @@ const DetalleInput: FC<IDetalleInput> = ({ values, setValues, idSucursales }) =>
                                         name='cantidad'
                                         min="0"
                                         onClick={() => handleQuantityChange(0, articulo.denominacion)}
+                                    /> */}
+                                    <input type="number"
+                                        className='w-36 rounded focus:ring-0 border-none outline-none text-black'
+                                        name='cantidad'
+                                        min={0}
+                                        placeholder='Cantidad'
+                                        id={`cantidad${index}`}
+                                        value={aMDetalles.find(e => e.articuloInsumo?.id === articulo.id)?.cantidad}
+                                        onChange={(e) => handleDirectQuantity(e, articulo.id)}
                                     />
                                 </div>
                                 {/*Por si no queda claro, esto me pone la cantidad actual de cada articulo */}
-                                <div className=''>
-                                    <h1 className='ml-2 w-20'>{aMDetalles.find(e => e.articuloInsumo?.denominacion === articulo.denominacion)?.cantidad}</h1>
-                                </div>
                             </div>
                         ))}
                 </div>

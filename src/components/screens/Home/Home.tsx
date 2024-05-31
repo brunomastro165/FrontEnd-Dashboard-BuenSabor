@@ -70,6 +70,7 @@ const Home = () => {
 
     useEffect(() => {
         dispatch(setGlobalUrl(url), setLogged(true))
+        sessionStorage.setItem('logged', 'true');
     }, [logged])
 
     useEffect(() => {
