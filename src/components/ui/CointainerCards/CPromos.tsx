@@ -54,7 +54,8 @@ const CPromos = () => {
 
     const getPromos = async () => {
         const res: IPromos[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}sucursal/getPromociones/${idSucursales}`) as IPromos[];
-        console.log(res)
+
+
         const promosHabilitadas = res.filter((promo) => !promo.eliminado)
         setPromos(promosHabilitadas)
         dispatch(setGlobalUpdated(false))
@@ -64,7 +65,8 @@ const CPromos = () => {
         getPromos();
     }, [updated])
 
-
+    console.log("here")
+    console.log(filteredPromos)
     const handlerFilter = () => {
         const promosFiltradas = promos?.filter((promo) => promo.denominacion.toLowerCase().includes(search))
         setFilteredPromos(promosFiltradas)
@@ -103,6 +105,7 @@ const CPromos = () => {
                         imagenes={promo.imagenes}
                         tipoPromocion={promo.tipoPromocion}
                         key={promo.id}
+                        sucursales={promo.sucursales}
                     />
                 ))}
             </div>

@@ -17,6 +17,7 @@ import { subirImagenes } from './Inputs/ImageFunction';
 import ImageInput from './Inputs/ImageInput';
 import { validationInsumo } from './Validaciones/AInsumoValidacion';
 
+
 interface IForm {
     open: boolean;
     setOpen: Dispatch<SetStateAction<boolean>>;
@@ -52,32 +53,6 @@ const AInsumoForm: FC<IForm> = ({ open, setOpen, method }) => {
 
     const [errors, setErrors] = useState<any>({});
 
-    // const validationSchema = Yup.object().shape({
-    //     denominacion: Yup.string().required('La denominación es requerida'),
-    //     descripcion: Yup.string().required('La descripción es requerida'),
-    //     precioVenta: Yup.number()
-    //         .typeError('El precio de venta debe ser un número')
-    //         .required('El precio de venta es requerido'),
-    //     precioCompra: Yup.number()
-    //         .typeError('El precio de compra debe ser un número')
-    //         .required('El precio de compra es requerido'),
-    //     stockActual: Yup.number()
-    //         .typeError('El stock actual debe ser un número')
-    //         .required('El stock actual es requerido'),
-    //     stockMaximo: Yup.number()
-    //         .typeError('El stock máximo debe ser un número')
-    //         .required('El stock máximo es requerido'),
-    //     stockMinimo: Yup.number()
-    //         .typeError('El stock mínimo debe ser un número')
-    //         .required('El stock mínimo es requerido'),
-    //     esParaElaborar: Yup.boolean().required('Este campo es requerido'),
-    //     unidadMedida: Yup.object().shape({
-    //         denominacion: Yup.string().required('Debe seleccionar una unidad de medida'),
-    //         id: Yup.number().required('Debe seleccionar una unidad de medida')
-    //     }).required('Debe seleccionar una unidad de medida'),
-    //     idCategoria: Yup.number().required('Debe seleccionar una categoría').moreThan(0, 'Debe seleccionar una categoría')
-    // });
-
     //REDUX 
 
     const initialValues = useAppSelector((state) => state.GlobalInitialValues.data);
@@ -87,6 +62,15 @@ const AInsumoForm: FC<IForm> = ({ open, setOpen, method }) => {
     //USE FORM
 
     const { handleChange, values, resetForm, handleChoose, handleFileDrop, setValues } = useForm<FormState>(initialValues)
+
+
+    useEffect(() => {
+        setValues((prevValues: any) => {
+            const newValues = { ...prevValues, idCategoria: prevValues.categoria?.id };
+            delete newValues.categoria;
+            return newValues;
+        });
+    }, [])
 
     const postArticulo = async (data: FormState) => {
 
@@ -100,6 +84,7 @@ const AInsumoForm: FC<IForm> = ({ open, setOpen, method }) => {
 
                 dispatch(setGlobalUpdated(true))
                 setOpen(false);
+
                 console.log(res)
             } catch (error) {
                 console.error(error)
@@ -154,15 +139,12 @@ const AInsumoForm: FC<IForm> = ({ open, setOpen, method }) => {
         }
     };
 
+    console.log("sex")
     console.log(values)
 
     //Manejo de las imagenes
 
     const [files, setFiles] = useState<FileWithPreview[]>([]);
-
-    console.log(files);
-
-    console.log(errors)
 
     //Manejo del input UNIDAD MEDIDA
 
@@ -172,68 +154,79 @@ const AInsumoForm: FC<IForm> = ({ open, setOpen, method }) => {
 
     const [idCategoria, setIdCategoria] = useState<number>(0);
 
+
+    useEffect(() => {
+
+    }, [])
+
     return (
-        <div className='w-full flex flex-col items-center justify-center space-y-4 p-10 '
-            onSubmit={handleSubmit}
-        >
-            <div className='w-full flex justify-end '>
-                <h1 className='flex text-end justify-end bg-red-600 btn btn-error rounded-full text-white text-xl cursor-pointer w-min'
-                    onClick={() => { setOpen(false), resetForm() }}>X</h1>
-            </div>
-
-            <h2 className='text-3xl font-Roboto'>Agrega tu insumo</h2>
-            {/*Mapeo los objetos que traigo al formulario, dependiendo de cada objeto, genero un input distinto */}
-
-            <div className={`w-full h-auto`}>
-                <div className="relative z-0 w-full mb-5 group">
-                    <div className='w-full flex flex-row md:space-x-5'>
-                        {genericInput('denominacion', "text", values.denominacion, handleChange, errors)}
-                        {genericInput('descripcion', 'text', values.descripcion, handleChange, errors)}
-                    </div>
-
-                    <div className='flex justify-center w-full md:space-x-5'>
-                        {genericInput('precioVenta', 'number', values.precioVenta, handleChange, errors)}
-                        {genericInput('precioCompra', 'number', values.precioCompra, handleChange, errors)}
-                    </div>
-
-                    <div className='flex justify-center w-full space-x-4'>
-                        {genericInput('stockActual', 'number', values.stockActual, handleChange, errors)}
-                        {genericInput('stockMaximo', 'number', values.stockMaximo, handleChange, errors)}
-                        {genericInput('stockMinimo', 'number', values.stockMinimo, handleChange, errors)}
-                    </div>
-
-                    <div className='w-full flex flex-col justify-center '>
-                        <div className='w-full'>
-
-                            <div className='flex flex-col justify-center'>
-                                <UnidadMedidaInput loaded={loaded} openUnidad={openUnidad}
-                                    setLoaded={setLoaded} setOpenUnidad={setOpenUnidad} setUnidadSeleccionada={setUnidadSeleccionada}
-                                    handleChoose={handleChoose}
-                                    key={1} />
-                                {errors.unidadMedida?.denominacion && <h1 className='font-Roboto text-red-600 text-sm'>{errors.unidadMedida?.denominacion}</h1>}
-                            </div>
-
-                            <div className='flex flex-col justify-center'>
-                                <CategoriaInput handleChange={handleChange} setLoaded={setLoaded} setIdCategoria={setIdCategoria}
-                                    key={1} value={values.idCategoria} />
-                                {errors.idCategoria && <h1 className='font-Roboto text-red-600'>{errors.idCategoria}</h1>}
-                            </div>
-                        </div>
-                    </div>
-                    <div className='w-full flex justify-center flex-col '>
-
-                        <div className='flex flex-col'>
-                            <ImageInput files={files} setFiles={setFiles} />
-                            {booleanInput('esParaElaborar', 'boolean', values.esParaElaborar, handleChange, 'Es para elaborar', 'No es para elaborar', errors)}
-                        </div>
-                    </div>
-
+        <>
+            <div className='w-full flex flex-col items-center justify-center space-y-4 p-10 '
+                onSubmit={handleSubmit}
+            >
+                <div className='w-full flex justify-end '>
+                    <h1 className='flex text-end justify-end bg-red-600 btn btn-error rounded-full text-white text-xl cursor-pointer w-min'
+                        onClick={() => { setOpen(false), resetForm() }}>X</h1>
                 </div>
+
+                <h2 className='text-3xl font-Roboto'>Agrega tu insumo</h2>
+                {/*Mapeo los objetos que traigo al formulario, dependiendo de cada objeto, genero un input distinto */}
+
+                <div className={`w-full h-auto`}>
+                    <div className="relative z-0 w-full mb-5 group">
+                        <div className='w-full flex flex-row md:space-x-5'>
+                            {genericInput('denominacion', "text", values.denominacion, handleChange, errors)}
+                            {genericInput('descripcion', 'text', values.descripcion, handleChange, errors)}
+                        </div>
+
+                        <div className='flex justify-center w-full md:space-x-5'>
+                            {genericInput('precioVenta', 'number', values.precioVenta, handleChange, errors)}
+                            {genericInput('precioCompra', 'number', values.precioCompra, handleChange, errors)}
+                        </div>
+
+                        <div className='flex justify-center w-full space-x-4'>
+                            {genericInput('stockActual', 'number', values.stockActual, handleChange, errors)}
+                            {genericInput('stockMaximo', 'number', values.stockMaximo, handleChange, errors)}
+                            {genericInput('stockMinimo', 'number', values.stockMinimo, handleChange, errors)}
+                        </div>
+
+                        <div className='w-full flex flex-col justify-center '>
+                            <div className='w-full'>
+
+                                <div className='flex flex-col justify-center'>
+                                    <UnidadMedidaInput loaded={loaded} openUnidad={openUnidad}
+                                        setLoaded={setLoaded} setOpenUnidad={setOpenUnidad} setUnidadSeleccionada={setUnidadSeleccionada}
+                                        handleChoose={handleChoose} values={values}
+                                        key={1} />
+                                    {errors.unidadMedida?.denominacion && <h1 className='font-Roboto text-red-600 text-sm'>{errors.unidadMedida?.denominacion}</h1>}
+                                </div>
+
+                                <div className='flex flex-col justify-center'>
+                                    <CategoriaInput handleChange={handleChange} setLoaded={setLoaded} setIdCategoria={setIdCategoria}
+                                        key={1} value={values.idCategoria} />
+                                    {errors.idCategoria && <h1 className='font-Roboto text-red-600'>{errors.idCategoria}</h1>}
+                                </div>
+                            </div>
+                        </div>
+                        <div className='w-full flex justify-center flex-col '>
+
+                            <div className='flex flex-col'>
+                                <ImageInput files={files} setFiles={setFiles} id={values.id}/>
+                                {booleanInput('esParaElaborar', 'boolean', values.esParaElaborar, handleChange, 'Es para elaborar', 'No es para elaborar', errors)}
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <button className='bg-red-600 text-white px-4 py-2 rounded-md active:scale-95 transition-all'
+                    onClick={handleSubmit}>Enviar</button>
             </div>
 
-            <button className='bg-red-600 text-white px-4 py-2 rounded-md active:scale-95 transition-all'
-                onClick={handleSubmit}>Enviar</button>
-        </div>
+
+
+
+        </>
     )
 }
 

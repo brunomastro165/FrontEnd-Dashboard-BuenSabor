@@ -35,7 +35,7 @@ const CategoriaInput: FC<CategoriaInput> = ({ setLoaded, setIdCategoria, handleC
 
     const updated = useAppSelector((state) => state.GlobalUpdated.updated)
 
-    const getUnidades = async () => {
+    const getCategorias = async () => {
         const res: ICategoriaShort[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}sucursal/getCategorias/${idSucursales}`) as ICategoriaShort[];
         const categoriaExistente = res.filter((categoria) => categoria.eliminado === false)
         const categoriaFiltrada = categoriaExistente.filter((categoria) => categoria.esInsumo === esInsumo)
@@ -44,11 +44,13 @@ const CategoriaInput: FC<CategoriaInput> = ({ setLoaded, setIdCategoria, handleC
     }
 
     useEffect(() => {
-        getUnidades();
+        getCategorias();
     }, [updated])
 
 
     const [editar, setEditar] = useState<boolean>(false);
+
+    console.log(value)
 
     return (
         <>
@@ -67,6 +69,7 @@ const CategoriaInput: FC<CategoriaInput> = ({ setLoaded, setIdCategoria, handleC
 
                                     //@ts-ignore
                                     onChange={handleChange}
+                                // checked={value === categoria.id}
                                 />
 
                                 <label htmlFor={`idCategoria${index}`} className="ml-2">

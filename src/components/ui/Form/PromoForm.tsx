@@ -83,13 +83,9 @@ const PromoForm: FC<IForm> = ({ open, setOpen, method }) => {
             try {
                 console.log(data)
                 //const res: IEmpresaShort = await backend.put(`http://localhost:8081/empresa/${data.id}/short`, data);
-                const res: IPromos = await backend.put(`${import.meta.env.VITE_LOCAL}ArticuloManufacturado/${data.id}`, data) as IPromos;
-
+                const res: IPromos = await backend.postConImagen(`${import.meta.env.VITE_LOCAL}promocion/save`, data, files);
                 console.log(res)
                 //  const subirImagen = await subirImagenes(res.id, values.imagenes)
-
-                setOpen(false);
-
                 dispatch(setGlobalUpdated(true))
             } catch (error) {
                 console.log("put")
@@ -183,7 +179,7 @@ const PromoForm: FC<IForm> = ({ open, setOpen, method }) => {
                     <DetalleGenerico setValues={setValues} idSucursales={idSucursales} values={values} />
 
                     {/* {articulosInput()} */}
-                    <ImageInput files={files} setFiles={setFiles} key={1} />
+                    <ImageInput files={files} setFiles={setFiles} key={1} id={values.id} />
                 </div>
             </div>
 

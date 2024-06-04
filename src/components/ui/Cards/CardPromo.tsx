@@ -8,12 +8,35 @@ import { RiDeleteBinLine } from 'react-icons/ri';
 import { BackendMethods } from '../../../services/BackendClient';
 import { useAppDispatch } from '../../../hooks/redux';
 import { setGlobalUpdated } from '../../../redux/slices/globalUpdate';
+import { setGlobalInitialValues } from '../../../redux/slices/globalInitialValues';
+import PromoForm from '../Form/PromoForm';
+import { ISucursal } from '../../../types/Sucursal';
 
-const CardPromo: FC<IPromosShort> = ({ denominacion, descripcionDescuento, detalles, fechaDesde, fechaHasta, horaDesde, horaHasta, id, imagenes, precioPromocional, tipoPromocion, eliminado }) => {
+const CardPromo: FC<IPromos> = ({ denominacion, descripcionDescuento, detalles, fechaDesde, fechaHasta, horaDesde, horaHasta, id, imagenes, precioPromocional, tipoPromocion, eliminado, sucursales }) => {
 
+
+
+    console.log("ayuda")
+    console.log(detalles);
 
     const [vencida, setVencida] = useState<boolean>(false);
 
+    const [editar, setEditar] = useState<boolean>(false);
+
+    const [idSucursales, setIdSucursales] = useState<number[]>([]);
+
+
+    useEffect(() => {
+        async function extraerIdSucursal() {
+            const id = sucursales.map((sucursal: ISucursal) => sucursal.id)
+            setIdSucursales(id)
+        }
+        extraerIdSucursal()
+    }, [])
+
+
+    console.log("id sucursas")
+    console.log(idSucursales)
     useEffect(() => {
         const fechaActual = new Date();
 
@@ -41,11 +64,28 @@ const CardPromo: FC<IPromosShort> = ({ denominacion, descripcionDescuento, detal
             dispatch(setGlobalUpdated(true))
             console.log(res)
         } catch (error) {
+            dispatch(setGlobalUpdated(true))
             console.error(error)
         }
 
     }
 
+
+    function editarPromocion() {
+        return <>
+            <div className="fixed z-50 inset-0 overflow-y-auto w-full">
+                <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0 m-14">
+                    <div className="fixed inset-0 transition-opacity" aria-hidden="true">
+                        <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
+                    </div>
+                    <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+                    <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle  w-full md:w-1/2">
+                        <PromoForm method='PUT' open={editar} setOpen={setEditar} key={1} />
+                    </div>
+                </div>
+            </div>
+        </>
+    }
 
     function promoActiva() {
         if (!vencida) {
@@ -57,6 +97,31 @@ const CardPromo: FC<IPromosShort> = ({ denominacion, descripcionDescuento, detal
             return (
                 <h3 className='bg-red-600 w-max p-2 rounded-xl text-white font-bold'>VENCIÓ</h3>
             )
+        }
+    }
+
+
+    const put = async () => {
+        try {
+
+            dispatch(setGlobalInitialValues(
+                {
+                    id: id,
+                    denominacion: denominacion,
+                    eliminado: eliminado,
+                    fechaDesde: fechaDesde,
+                    fechaHasta: fechaHasta,
+                    horaDesde: horaDesde,
+                    horaHasta: horaHasta,
+                    precioPromocional: precioPromocional,
+                    detalles: detalles,
+                    tipoPromocion: tipoPromocion,
+                    idSucursales: idSucursales,
+
+                }
+            ))
+        } catch (error) {
+            console.error(error)
         }
     }
 
@@ -81,10 +146,12 @@ const CardPromo: FC<IPromosShort> = ({ denominacion, descripcionDescuento, detal
                 </div>
 
                 <h1 className='flex justify-end items-end p-3 md:space-x-5'>
-                    <MdOutlineModeEdit className='text-3xl transition-all cursor-pointer hover:text-blue-600' />
+                    <MdOutlineModeEdit className='text-3xl transition-all cursor-pointer hover:text-blue-600' onClick={() => { put(), setEditar(true) }} />
                     <RiDeleteBinLine className='text-3xl transition-all cursor-pointer hover:text-red-600' onClick={() => deleteLogico()} />
                 </h1>
             </div>
+
+            {editar && editarPromocion()}
         </>
     )
 }

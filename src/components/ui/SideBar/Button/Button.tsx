@@ -1,13 +1,17 @@
-//@ts-nocheck
 import React, { FC } from 'react'
 import { IButton } from '../../../../types/Button'
 import { Link } from 'react-router-dom'
+import { setCategory } from '../../../../redux/slices/globalCategory';
+import { useAppDispatch } from '../../../../hooks/redux';
 
 const Button: FC<IButton> = ({ Icon, active, link, setActive, subButton, text, child }) => {
+
+    const dispatch = useAppDispatch();
+
     return (
         <div className={`${child && 'absolute '} w-full`}>
             <div className=''>
-                <Link to={link} onClick={() => setActive(text)}>
+                <Link to={link} onClick={() => { setActive(text), dispatch(setCategory('Todos')) }}>
                     <div className={`flex text-start items-center 
                     text-xl text-gray-800 rounded-md transition-all
                   hover:bg-[#edf2f4] 

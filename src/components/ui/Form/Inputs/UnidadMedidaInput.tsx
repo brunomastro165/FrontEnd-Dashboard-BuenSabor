@@ -17,10 +17,11 @@ interface UnidadInput {
     loaded: boolean,
     setLoaded: Dispatch<SetStateAction<boolean>>;
     handleChoose: any;
+    values: any;
 }
 
 
-const UnidadMedidaInput: FC<UnidadInput> = ({ loaded, openUnidad, setLoaded, setOpenUnidad, setUnidadSeleccionada, handleChoose }) => {
+const UnidadMedidaInput: FC<UnidadInput> = ({ loaded, openUnidad, setLoaded, setOpenUnidad, setUnidadSeleccionada, handleChoose, values }) => {
 
     const backend = new BackendMethods();
 
@@ -55,6 +56,8 @@ const UnidadMedidaInput: FC<UnidadInput> = ({ loaded, openUnidad, setLoaded, set
 
     const [editar, setEditar] = useState<boolean>(false);
 
+    console.log("hola2")
+    console.log(values.unidadMedida)
     return (
         <>
             <div className='font-Roboto text-xl'>Unidades de medida: </div>
@@ -71,7 +74,7 @@ const UnidadMedidaInput: FC<UnidadInput> = ({ loaded, openUnidad, setLoaded, set
                                     name='unidadMedida'
                                     value={unidad.denominacion}
                                     className="ml-5 text-green-600 rounded-none b border-dashed"
-
+                                    checked={values.unidadMedida.denominacion === unidad.denominacion}
                                     //@ts-ignore
                                     onChange={(e) => handleChoose(e, unidadesValidas, setUnidadSeleccionada, 'denominacion', 'unidadMedida')}
                                 />

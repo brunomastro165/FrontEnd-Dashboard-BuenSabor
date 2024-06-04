@@ -14,6 +14,6 @@ export interface IPromos {
   precioPromocional: number;
   tipoPromocion: string;
   detalles: IDetallePromo[];
-  imagenes: [];
+  imagenes: IImagen[];
   sucursales: [];
 }

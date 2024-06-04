@@ -57,24 +57,24 @@ const Insumos = () => {
 
     }
 
-    const obtenerArticulos = (categoria: ICategoria | undefined): any[] => {
-        if (categoria) {
-            let articulos = Array.isArray(categoria?.insumos) ? [...categoria.insumos] : [];
+    // const obtenerArticulos = (categoria: ICategoria | undefined): any[] => {
+    //     if (categoria) {
+    //         let articulos = Array.isArray(categoria?.insumos) ? [...categoria.insumos] : [];
 
-            categoria.subCategorias.forEach(subCategoria => {
-                const subCategoriaArticulos = obtenerArticulos(subCategoria);
-                if (Array.isArray(subCategoriaArticulos)) {
-                    articulos = [...articulos, ...subCategoriaArticulos];
-                }
-            });
+    //         categoria.subCategorias.forEach(subCategoria => {
+    //             const subCategoriaArticulos = obtenerArticulos(subCategoria);
+    //             if (Array.isArray(subCategoriaArticulos)) {
+    //                 articulos = [...articulos, ...subCategoriaArticulos];
+    //             }
+    //         });
 
-            console.log(articulos)
-            return articulos;
-        }
-        else {
-            return [];
-        }
-    }
+    //         console.log(articulos)
+    //         return articulos;
+    //     }
+    //     else {
+    //         return [];
+    //     }
+    // }
 
     console.log(borrados)
 
@@ -82,29 +82,33 @@ const Insumos = () => {
         const fetchInsumo = async () => {
 
             // const response: IArticuloManufacturadoCategoria[] = await backend.getAll("http://localhost:8081/ArticuloManufacturado/noEliminados") as IArticuloManufacturadoCategoria[];
-
             //Esto está hecho precariamente en el front, en realidad debería ser un endpoint que cumpla estas condiciones, pero por lo pronto, funciona
+            if (selectedCategory !== 'Todos') {
 
-            //Traemos las categorias de una sucursal$x
-            const responseCategoria: ICategoria[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}sucursal/getCategorias/${idSucursales}`) as ICategoria[];
+                //Traemos las categorias de una sucursal$x
+                const responseCategoria: ICategoria[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}sucursal/getCategorias/${idSucursales}`) as ICategoria[];
 
-            //Filtramos la categoria que está seleccionada en el selector (con redux)
-            const categoriaFiltrada: ICategoria | undefined = responseCategoria.find((categoria) => categoria.denominacion === selectedCategory)
+                //Filtramos la categoria que está seleccionada en el selector (con redux)
+                const categoriaFiltrada: ICategoria | undefined = responseCategoria.find((categoria) => categoria.denominacion === selectedCategory)
 
-            //Usamos una función recursiva para traernos todos los articulos dentro de la categoria que seleccionamos
-            const insumos: IArticuloInsumoCategoria[] = obtenerArticulos(categoriaFiltrada);
+                //Usamos una función recursiva para traernos todos los articulos dentro de la categoria que seleccionamos
+                const insumos: IArticuloInsumoCategoria[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}categoria/getInsumos/${categoriaFiltrada?.id}`) as IArticuloInsumoCategoria[];
 
-            //Filtramos por articulos eliminados (si lo igualamos a borrados, vamos a poder invertir la vista de los articulos eliminados)
-            const insumosHabilitados: IArticuloInsumoCategoria[] = insumos.filter((articulo) => articulo.eliminado === borrados)
+                //Filtramos por articulos eliminados (si lo igualamos a borrados, vamos a poder invertir la vista de los articulos eliminados)
+                const insumosHabilitados: IArticuloInsumoCategoria[] = insumos.filter((articulo) => articulo.eliminado === borrados)
+                const transformedData = transformData(insumosHabilitados);
+                setData(transformedData);
+            }
+            else {
 
-            const filteredByCategoria = insumosHabilitados.filter((articulo) => articulo.categoria?.denominacion === selectedCategory)
+                const responseArticulos: IArticuloInsumoCategoria[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}sucursal/getInsumos/${idSucursales}`) as IArticuloInsumoCategoria[];
+                const insumosHabilitados: IArticuloInsumoCategoria[] = responseArticulos.filter((articulo) => articulo.eliminado === borrados)
+                const transformedData = transformData(insumosHabilitados);
+                setData(transformedData);
+            }
 
-            const transformedData = transformData(filteredByCategoria);
-
-            setData(transformedData);
             setLoading(true);
             dispatch((setGlobalUpdated(false), setEsInsumo(true)))
-
         }
 
         fetchInsumo();
@@ -123,7 +127,6 @@ const Insumos = () => {
 
 
     useEffect(() => {
-
         const handleFocus = () => {
 
         };

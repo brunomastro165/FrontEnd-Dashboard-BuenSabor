@@ -388,7 +388,7 @@ const AManufacturadoForm: FC<IForm> = ({ open, setOpen, method }) => {
                             <div className='flex flex-col w-full'>
                                 <UnidadMedidaInput loaded={loaded} openUnidad={openUnidad}
                                     setLoaded={setLoaded} setOpenUnidad={setOpenUnidad} setUnidadSeleccionada={setUnidadSeleccionada}
-                                    handleChoose={handleChoose}
+                                    handleChoose={handleChoose} values={values}
                                     key={1} />
                                 {errors.unidadMedida?.denominacion && <h1 className='font-Roboto text-red-600'>{errors.unidadMedida.denominacion}</h1>}
                             </div>

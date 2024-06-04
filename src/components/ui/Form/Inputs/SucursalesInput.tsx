@@ -52,6 +52,7 @@ const SucursalesInput: FC<ISucursalesInput> = ({ setValues, values, idEmpresa })
                         name='idSucursales'
                         value={sucursal.nombre}
                         onChange={(e) => handleCheckboxChange(e, sucursal.id)}
+                        checked={values.idSucursales.includes(sucursal.id)}
                     //onClick={() => setSelected(unidad.denominacion)}
                     //className={`peer ${selected === unidad.denominacion ? 'p-12' : ''}`}
                     //checked={medidaSeleccionada?.denominacion === unidad.denominacion}

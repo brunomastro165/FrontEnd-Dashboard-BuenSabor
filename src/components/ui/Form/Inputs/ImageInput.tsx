@@ -1,15 +1,21 @@
-import { Dispatch, FC, SetStateAction, useState } from "react";
+import { Dispatch, FC, SetStateAction, useEffect, useState } from "react";
 import { BackendMethods } from "../../../../services/BackendClient";
 import { useDropzone } from "react-dropzone";
+import { IImagen } from "../../../../types/Imagen";
 
 type FileWithPreview = File & { preview: string };
 
 interface IImageInput {
     files: FileWithPreview[]
     setFiles: Dispatch<SetStateAction<FileWithPreview[]>>
+    id: number,
 }
 
-const ImageInput: FC<IImageInput> = ({files, setFiles}) => {
+const ImageInput: FC<IImageInput> = ({ files, setFiles, id }) => {
+
+    const backend = new BackendMethods()
+
+    const [imagenes, setImagenes] = useState<IImagen[]>([]);
 
     const { getRootProps, getInputProps } = useDropzone({
         //@ts-ignore
@@ -23,6 +29,21 @@ const ImageInput: FC<IImageInput> = ({files, setFiles}) => {
             ]);
         },
     });
+
+
+
+    useEffect(() => {
+
+        const getImagenId = async () => {
+            const imagenes: IImagen[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}imagenArticulo/${id}`) as IImagen[]
+            console.log("acá")
+            console.log(imagenes)
+            setImagenes(imagenes)
+        }
+
+        getImagenId();
+
+    }, [])
 
     const removeImage = (index: number) => {
         setFiles(files => files.filter((file, i) => i !== index));
@@ -50,6 +71,20 @@ const ImageInput: FC<IImageInput> = ({files, setFiles}) => {
                         </div>
                     </>
                 ))}
+
+
+                {imagenes.length>= 1 &&
+
+                <>
+                    <div className="border m-2 p-4 rounded flex flex-col justify-center items-center">
+                        <img src={imagenes[0].url} alt="Vista previa de la imagen seleccionada" key={imagenes[0].name}
+                            className="size-48 rounded" />
+
+                        <button onClick={() => removeImage(1)}
+                            className="btn bg-red-600 text-white mt-2 hover:bg-red-500 items-center">Quitar</button>
+                    </div>
+                </>
+                }
             </div>
         </>
     );
