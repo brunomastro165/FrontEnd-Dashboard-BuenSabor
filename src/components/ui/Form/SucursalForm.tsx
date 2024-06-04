@@ -304,7 +304,7 @@ const SucursalForm: FC<IForm> = ({ open, setOpen, data, method }) => {
                     </div>
                     {booleanInput('casaMatriz', 'boolean', values.casaMatriz, handleChange, 'Es casa matriz', 'No es casa matriz', errors)}
 
-                    <ImageInput files={files} setFiles={setFiles} />
+                    <ImageInput files={files} setFiles={setFiles} id={values.id}/>
 
                 </div>
             </div>
