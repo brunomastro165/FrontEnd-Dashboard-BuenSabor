@@ -404,10 +404,12 @@ const AManufacturadoForm: FC<IForm> = ({ open, setOpen, method }) => {
                             <DetalleInput setValues={setValues} values={values} idSucursales={idSucursales} />
                         </div>
 
+                        <div className='w-full flex flex-col justify-center '>
+                            <ImageInput files={files} setFiles={setFiles} id={values.id} />
+                        </div>
                     </div>
-                    <div className='w-full flex justify-center '>
-                        <ImageInput files={files} setFiles={setFiles} id={values.id}/>
-                    </div>
+
+
 
                 </div>
             </div>

@@ -145,7 +145,7 @@ const EmpresaForm: FC<IForm> = ({ open, setOpen, data, method }) => {
 
           {genericInput('cuil', 'number', values.cuil, handleChange, errors)} {/* Cuil */}
 
-          <div className='w-full flex justify-center '>
+          <div className='w-full flex flex-col justify-center '>
             <ImageInput files={files} setFiles={setFiles} id={values.id}/>
           </div>
         </div>

@@ -17,6 +17,7 @@ import { LiaBalanceScaleRightSolid } from "react-icons/lia";
 import { FaRegBuilding } from "react-icons/fa6";
 import { TbSquarePercentage } from "react-icons/tb";
 import { setIdEmpresa } from '../../../redux/slices/idEmpresa';
+import { HiOutlineTicket } from "react-icons/hi2";
 
 
 
@@ -61,6 +62,7 @@ const SideBar = () => {
         { Icon: FaRegBuilding, text: "Sucursales", link: `${idEmpresa}/sucursales`, active: active, setActive: setActive, subButton: null, child: false },
         { Icon: FaRegUser, text: "Usuarios", link: `${url}/usuarios`, active: active, setActive: setActive, subButton: null, child: false },
         { Icon: LiaBalanceScaleRightSolid, text: "Unidades de medida", link: `${url}/unidadesDeMedida`, active: active, setActive: setActive, subButton: null, child: false },
+        { Icon: HiOutlineTicket, text: "Pedidos", link: `${url}/pedidos`, active: active, setActive: setActive, subButton: null, child: false },
     ];
 
 

@@ -20,6 +20,7 @@ import Sucursal from '../screens/Sucursal/Sucursal'
 import { useAppDispatch, useAppSelector } from '../../hooks/redux'
 import UnidadesMedida from '../screens/UnidadesDeMedida/UnidadesDeMedida'
 import { setLogged } from '../../redux/slices/logged'
+import Pedidos from '../screens/Pedidos/Pedidos'
 
 const AppRouter = () => {
 
@@ -53,6 +54,7 @@ const AppRouter = () => {
                         <Route path='/:idEmpresa/sucursales' element={<Sucursal />} />
                         <Route path='/:idEmpresa/sucursales/:idSucursales/empresas/:id' element={<SucursalPorEmpresa />} />
                         <Route path='/:idEmpresa/sucursales/:idSucursales/unidadesDeMedida' element={<UnidadesMedida />} />
+                        <Route path='/:idEmpresa/sucursales/:idSucursales/pedidos' element={<Pedidos />} />
                     </Routes>
                 </div>
             </div>
