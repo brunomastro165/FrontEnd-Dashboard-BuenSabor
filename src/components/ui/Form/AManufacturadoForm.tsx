@@ -85,6 +85,8 @@ const AManufacturadoForm: FC<IForm> = ({ open, setOpen, method }) => {
 
     const { handleChange, values, resetForm, handleSelect, handleChoose, handleFileDrop, setValues } = useForm<FormState>(initialValues) //Form genérico
 
+    console.log("INITIAL VALUES")
+    console.log(initialValues)
     const postArticulo = async (data: FormState) => {
         if (method === 'POST') {
             try {
@@ -100,9 +102,10 @@ const AManufacturadoForm: FC<IForm> = ({ open, setOpen, method }) => {
         }
         else if (method === 'PUT') {
             try {
+                console.log("PUT")
                 console.log(data)
                 //const res: IEmpresaShort = await backend.put(`http://localhost:8081/empresa/${data.id}/short`, data);
-                const res: IArticuloManufacturado = await backend.put(`${import.meta.env.VITE_LOCAL}ArticuloManufacturado/${data.id}`, data);
+                const res: IArticuloManufacturado = await backend.putConImagen(`http://localhost:8081/ArticuloManufacturado/save/${values.id}`, data, files);
 
                 //  const subirImagen = await subirImagenes(res.id, values.imagenes)
 
@@ -243,6 +246,7 @@ const AManufacturadoForm: FC<IForm> = ({ open, setOpen, method }) => {
 
     // }
 
+    console.log("VALUES")
     console.log(values);
 
     // useEffect(() => {

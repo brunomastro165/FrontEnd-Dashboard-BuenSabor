@@ -86,6 +86,38 @@ const DetalleGenerico: FC<IDetalleInput> = ({ values, setValues, idSucursales })
     //     setAmDetalles(newDetalles);
     // }
 
+
+    //TODO CONTINUAR CON ESTO (PODER EDITAR BIEN EL DETALLE DE LA PROMOCIÓN)
+    console.log("detallines")
+    console.log(values.detalles)
+    useEffect(() => {
+
+        const traerArticulos = async () => {
+            values.detalles.map(async (detalle) => {
+                const res: IArticuloGenerico[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}ArticuloInsumo/getArticulos/${detalle.insumos.denominacion}/${idSucursales}`) as IArticuloGenerico[]
+                setArticulosGenericos(res);
+                setFiltroGenerico(res);
+            })
+        }
+        traerArticulos()
+
+        setAmDetalles(values.detalles)
+     
+    }, [])
+
+    console.log("sexin")
+    console.log(values.detalles)
+
+    console.log("sexopata")
+    console.log(aMDetalles)
+
+    console.log("sexomaniaco")
+    console.log(articulosGuardados)
+
+    console.log("Sex?")
+    console.log(articulosGenericos)
+
+
     const handleDirectQuantity = (e: ChangeEvent<HTMLInputElement>, id: number) => {
 
         const cantidad = Number(e.target.value);
@@ -147,9 +179,13 @@ const DetalleGenerico: FC<IDetalleInput> = ({ values, setValues, idSucursales })
         ) as any[][];
 
         setArticulosGuardados(prevArticulos => {
+            console.log("hola entré")
             const nuevosArticulos = articulosFiltrados.flat();
+            console.log(nuevosArticulos)
             const idsPrevios = prevArticulos.map(articulo => articulo.id);
+            console.log(idsPrevios)
             const articulosUnicos = nuevosArticulos.filter((articulo) => !idsPrevios.includes(articulo.id));
+            console.log(articulosUnicos)
             return [...prevArticulos, ...articulosUnicos];
         });
 

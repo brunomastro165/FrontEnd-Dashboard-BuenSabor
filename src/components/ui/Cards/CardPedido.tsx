@@ -47,8 +47,6 @@ const CardPedido: FC<IPedido> = ({ cliente, domicilio, eliminado, empleado, esta
         <div className="card w-64 bg-base-100  shadow-md my-4">
 
             <div className="p-4 flex flex-col ">
-
-
                 {/* <h1 className='font-Roboto'>Articulos en el pedido:</h1> */}
                 {/* MOSTRAR LOS MANUFACTURADOS */}
                 <h1 className="w-max text-sm  mb-2 text-white px-2  font-Roboto  bg-blue-600  rounded ">ID: {id}</h1>
@@ -82,8 +80,10 @@ const CardPedido: FC<IPedido> = ({ cliente, domicilio, eliminado, empleado, esta
                 </div>
 
             </div>
-            <select className=" select border-none focus:outline-none rounded-none rounded-b  focus:bg-blue-500 hover:bg-blue-500 text-black hover:text-white focus:text-white transition-all" onChange={(e) => cambiarEstado((e.target as HTMLSelectElement).value)}>
-                <option value="">Estado del pedido</option>
+            <select className=" select border-none focus:outline-none rounded-none rounded-b  focus:bg-blue-500 hover:bg-blue-500 text-black hover:text-white focus:text-white transition-all"
+                onChange={(e) => cambiarEstado((e.target as HTMLSelectElement).value)}
+                onClick={()=>(console.log("sexo"))}>
+                <option value="" >Estado del pedido</option>
                 <option value="PREPARACION">PREPARACION</option>
                 <option value="PENDIENTE">PENDIENTE</option>
                 <option value="CANCELADO">CANCELADO</option>

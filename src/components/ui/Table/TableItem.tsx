@@ -35,6 +35,12 @@ const TableItem: FC<IItem> = ({ id, denominacion, param2, param3, param4, endpoi
 
     const fetchIndividual = async () => {
         const response: any = await fetchData(`${import.meta.env.VITE_LOCAL}${endpoint}/${id}`)
+        console.log("RESPONSE")
+        console.log(response);
+        if (response.categoria) {
+            delete response.categoria;
+        }
+        console.log(response)
         dispatch(setGlobalInitialValues(response))
         setOpen(true);
     }

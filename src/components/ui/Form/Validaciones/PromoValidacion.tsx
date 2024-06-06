@@ -13,11 +13,11 @@ export const validationPromo = Yup.object().shape({
     horaDesde: Yup.string()
         .required('Hora Desde es obligatorio'),
     horaHasta: Yup.string()
-        .required('Hora Hasta es obligatorio')
-        .test('is-greater', 'Hora Hasta debe ser posterior a Hora Desde', function (value) {
-            const { horaDesde } = this.parent;
-            return new Date(`1970-01-01T${value}:00`) > new Date(`1970-01-01T${horaDesde}:00`);
-        }),
+        .required('Hora Hasta es obligatorio'),
+        // .test('is-greater', 'Hora Hasta debe ser posterior a Hora Desde', function (value) {
+        //     const { horaDesde } = this.parent;
+        //     return new Date(`1970-01-01T${value}:00`) > new Date(`1970-01-01T${horaDesde}:00`);
+        // }),
     precioPromocional: Yup.number()
         .required('Precio Promocional es obligatorio')
         .positive('Precio Promocional debe ser un número positivo')

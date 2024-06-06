@@ -16,6 +16,7 @@ const CardPromo: FC<IPromos> = ({ denominacion, descripcionDescuento, detalles, 
 
 
 
+
     console.log("ayuda")
     console.log(detalles);
 
@@ -104,18 +105,19 @@ const CardPromo: FC<IPromos> = ({ denominacion, descripcionDescuento, detalles, 
     const put = async () => {
         try {
 
+            const res: IPromos = await backend.getById(`${import.meta.env.VITE_LOCAL}promocion/${id}`) as IPromos; //Hice esto porque pasarlo por props me daba errores
             dispatch(setGlobalInitialValues(
                 {
-                    id: id,
-                    denominacion: denominacion,
-                    eliminado: eliminado,
-                    fechaDesde: fechaDesde,
-                    fechaHasta: fechaHasta,
-                    horaDesde: horaDesde,
-                    horaHasta: horaHasta,
-                    precioPromocional: precioPromocional,
-                    detalles: detalles,
-                    tipoPromocion: tipoPromocion,
+                    id: res.id,
+                    denominacion: res.denominacion,
+                    eliminado: res.eliminado,
+                    fechaDesde: res.fechaDesde,
+                    fechaHasta: res.fechaHasta,
+                    horaDesde: res.horaDesde,
+                    horaHasta: res.horaHasta,
+                    precioPromocional: res.precioPromocional,
+                    detalles: res.detalles,
+                    tipoPromocion: res.tipoPromocion,
                     idSucursales: idSucursales,
 
                 }
@@ -129,7 +131,6 @@ const CardPromo: FC<IPromos> = ({ denominacion, descripcionDescuento, detalles, 
         <>
 
             <div className="card size-96  bg-base-100 shadow-xl transition-transform m-5 z-0">
-
                 <figure>
                     {imagenes !== undefined && imagenes.length >= 1 && <figure><img src={imagenes[0].url} alt="promo" /></figure>}
                 </figure>

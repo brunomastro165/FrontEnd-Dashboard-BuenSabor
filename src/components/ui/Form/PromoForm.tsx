@@ -67,11 +67,8 @@ const PromoForm: FC<IForm> = ({ open, setOpen, method }) => {
     const postPromo = async (data: FormState) => {
         if (method === 'POST') {
             try {
-                console.log("datos enviados al backend")
-                console.log(data)
                 //TODO Cambiar el método para que coincida con el backend
                 const res: IPromos = await backend.postConImagen(`${import.meta.env.VITE_LOCAL}promocion/save`, data, files);
-                console.log("response")
                 console.log(res)
                 // const subirImagen = await subirImagenes(res.id, values.imagenes)
                 dispatch(setGlobalUpdated(true))
@@ -81,14 +78,12 @@ const PromoForm: FC<IForm> = ({ open, setOpen, method }) => {
         }
         else if (method === 'PUT') {
             try {
-                console.log(data)
                 //const res: IEmpresaShort = await backend.put(`http://localhost:8081/empresa/${data.id}/short`, data);
-                const res: IPromos = await backend.postConImagen(`${import.meta.env.VITE_LOCAL}promocion/save`, data, files);
+                const res: IPromos = await backend.putConImagen(`${import.meta.env.VITE_LOCAL}promocion/save/${values.id}`, data, files);
                 console.log(res)
                 //  const subirImagen = await subirImagenes(res.id, values.imagenes)
                 dispatch(setGlobalUpdated(true))
             } catch (error) {
-                console.log("put")
                 console.error(error)
             }
         }

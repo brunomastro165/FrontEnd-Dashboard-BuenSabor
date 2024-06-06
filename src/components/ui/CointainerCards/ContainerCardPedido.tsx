@@ -50,7 +50,7 @@ const ContainerCardPedido = () => {
                             sucursal={pedido.sucursal}
                             total={pedido.total}
                             detallesPedido={pedido.detallesPedido}
-                            key={index}
+                            key={pedido.id}
                         />
                     ))}
             </div>
@@ -73,7 +73,7 @@ const ContainerCardPedido = () => {
                             sucursal={pedido.sucursal}
                             total={pedido.total}
                             detallesPedido={pedido.detallesPedido}
-                            key={index}
+                            key={pedido.id}
                         />
                     ))}
             </div>
@@ -96,7 +96,7 @@ const ContainerCardPedido = () => {
                             sucursal={pedido.sucursal}
                             total={pedido.total}
                             detallesPedido={pedido.detallesPedido}
-                            key={index}
+                            key={pedido.id}
                         />
                     ))}
             </div>
@@ -120,7 +120,7 @@ const ContainerCardPedido = () => {
                             sucursal={pedido.sucursal}
                             total={pedido.total}
                             detallesPedido={pedido.detallesPedido}
-                            key={index}
+                            key={pedido.id}
                         />
                     ))}
             </div>

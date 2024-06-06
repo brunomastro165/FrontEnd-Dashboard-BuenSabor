@@ -15,6 +15,8 @@ const ImageInput: FC<IImageInput> = ({ files, setFiles, id }) => {
 
     const backend = new BackendMethods()
 
+    console.log(files)
+
     const [imagenes, setImagenes] = useState<IImagen>();
 
     const { getRootProps, getInputProps } = useDropzone({
@@ -30,18 +32,41 @@ const ImageInput: FC<IImageInput> = ({ files, setFiles, id }) => {
         },
     });
 
-    useEffect(() => {
-
-        const getImagenId = async () => {
-            const imagenes: IImagen = await backend.getById(`${import.meta.env.VITE_LOCAL}imagenArticulo/${id}`) as IImagen;
-            console.log("acá")
-            console.log(imagenes)
-            setImagenes(imagenes)
+    const urlToFile = async (url, filename, mimeType) => {
+        try {
+            const res = await fetch(url);
+            const buf = await res.arrayBuffer();
+            const file = new File([buf], filename, { type: mimeType, lastModified: Date.now() });
+            const fileWithPreview = Object.assign(file, {
+                preview: URL.createObjectURL(file),
+                path: filename // Asegura que 'path' esté presente
+            });
+            return fileWithPreview;
+        } catch (error) {
+            console.error('Error fetching image:', error);
+            throw error; // Lanza el error para manejarlo después si es necesario
         }
-
+    };
+    
+    useEffect(() => {
+        const getImagenId = async () => {
+            try {
+                const imagenes = await backend.getById(`${import.meta.env.VITE_LOCAL}imagenArticulo/${id}`);
+                console.log("acá");
+                console.log(imagenes);
+                setImagenes(imagenes);
+    
+                // Crear un objeto FileWithPreview a partir de la URL de la imagen
+                const file = await urlToFile(imagenes.url, `nombre-${imagenes.url}`, "image/jpeg");
+                console.log(file);
+                setFiles(prevFiles => [...prevFiles, file]);
+            } catch (error) {
+                console.error('Error fetching image data:', error);
+            }
+        };
+    
         getImagenId();
-
-    }, [imagenes])
+    }, [id]); // Asegúrate de que el efecto se ejecute cuando 'id' cambie// Asegúrate de que el efecto se ejecute cuando 'id' cambie
 
     const removeImage = (index: number) => {
         setFiles(files => files.filter((file, i) => i !== index));
@@ -69,7 +94,7 @@ const ImageInput: FC<IImageInput> = ({ files, setFiles, id }) => {
                         </div>
                     </>
                 ))}
-
+                {/* 
                 <>
                     {imagenes && (
                         <div className="border m-2 p-4 rounded flex flex-col justify-center items-center">
@@ -79,7 +104,7 @@ const ImageInput: FC<IImageInput> = ({ files, setFiles, id }) => {
                                 className="btn bg-red-600 text-white mt-2 hover:bg-red-500 items-center">Quitar</button>
                         </div>
                     )}
-                </>
+                </> */}
 
             </div>
         </>

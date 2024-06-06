@@ -67,6 +67,11 @@ const DetalleInput: FC<IDetalleInput> = ({ values, setValues, idSucursales }) =>
     //     setAmDetalles(newDetalles);
     // }
 
+    useEffect(() => {
+      setAmDetalles(values.articuloManufacturadoDetalles)
+    }, [])
+    
+
     const handleDirectQuantity = (e: ChangeEvent<HTMLInputElement>, id: number) => {
 
         const cantidad = Number(e.target.value);
