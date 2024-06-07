@@ -38,13 +38,14 @@ const ContainerCategorias = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
+
+    //TODO TRAER CATEGORÍAS SIN ARTICULOS (PARA OPTIMIZAR LA CARGA DE DATOS)
     const getCategorias = async () => {
       const res: ICategoria[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}sucursal/getCategorias/${idSucursales}`);
 
       const categoriasPadre: ICategoria[] = res.filter((categoria) => categoria.esPadre === true)
 
       const categoriasExistentes: ICategoria[] = categoriasPadre.filter((categoria) => categoria.eliminado === false)
-
 
       let categoriasFiltradas: ICategoria[] = categoriasExistentes;
 

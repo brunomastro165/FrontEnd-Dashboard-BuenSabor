@@ -20,6 +20,7 @@ const ContainerCardPedido = () => {
     useEffect(() => {
         const traerPedidos = async () => {
             const res: IPedido[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}pedido`) as IPedido[];
+            console.log(res);
             setPedidos(res);
         }
         traerPedidos();
@@ -50,6 +51,7 @@ const ContainerCardPedido = () => {
                             sucursal={pedido.sucursal}
                             total={pedido.total}
                             detallesPedido={pedido.detallesPedido}
+                            horaEstimadaFinalizacion={pedido.horaEstimadaFinalizacion}
                             key={pedido.id}
                         />
                     ))}
@@ -73,6 +75,7 @@ const ContainerCardPedido = () => {
                             sucursal={pedido.sucursal}
                             total={pedido.total}
                             detallesPedido={pedido.detallesPedido}
+                            horaEstimadaFinalizacion={pedido.horaEstimadaFinalizacion}
                             key={pedido.id}
                         />
                     ))}
@@ -96,6 +99,7 @@ const ContainerCardPedido = () => {
                             sucursal={pedido.sucursal}
                             total={pedido.total}
                             detallesPedido={pedido.detallesPedido}
+                            horaEstimadaFinalizacion={pedido.horaEstimadaFinalizacion}
                             key={pedido.id}
                         />
                     ))}
@@ -120,6 +124,7 @@ const ContainerCardPedido = () => {
                             sucursal={pedido.sucursal}
                             total={pedido.total}
                             detallesPedido={pedido.detallesPedido}
+                            horaEstimadaFinalizacion={pedido.horaEstimadaFinalizacion}
                             key={pedido.id}
                         />
                     ))}
@@ -144,6 +149,7 @@ const ContainerCardPedido = () => {
                             sucursal={pedido.sucursal}
                             total={pedido.total}
                             detallesPedido={pedido.detallesPedido}
+                            horaEstimadaFinalizacion={pedido.horaEstimadaFinalizacion}
                             key={index}
                         />
                     ))}

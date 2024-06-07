@@ -14,5 +14,7 @@ export interface IArticuloManufacturadoCategoria {
   articuloManufacturadoDetalles: IArticuloManufacturadoDetalle[];
   stock: number;
   eliminado: boolean;
+
+  //CAMBIAR ESTO POR UN DTO CATEGORIA QUE NO TENGA ARTICULOS
   categoria: ICategoria;
 }

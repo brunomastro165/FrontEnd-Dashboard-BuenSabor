@@ -13,6 +13,7 @@ import { setGlobalInitialValues } from '../../../redux/slices/globalInitialValue
 import { setGlobalUpdated } from '../../../redux/slices/globalUpdate';
 import { IArticuloManufacturadoCategoria } from '../../../types/SpecialDtos/ArticuloManufacturadoCategoria';
 import GlobalEsInsumo, { setEsInsumo } from '../../../redux/slices/esInsumo';
+import GlobalCategory from '../../../redux/slices/globalCategory';
 
 //class Backend extends BackendClient<IArticuloManufacturadoCategoria> { }
 
@@ -28,6 +29,8 @@ const Manufacturados = () => {
 
     const selectedCategory = useAppSelector((state) => state.GlobalCategory.selected)
 
+    const idCategory = useAppSelector((state) => state.GlobalCategory.id)
+
     const initialValues = useAppSelector((state) => state.GlobalInitialValues.data);
 
     const updated = useAppSelector((state) => state.GlobalUpdated.updated);
@@ -38,7 +41,6 @@ const Manufacturados = () => {
 
     const dispatch = useAppDispatch();
 
-
     const [loading, setLoading] = useState<boolean>(false);
 
     const [data, setData] = useState<IItem[]>([]);
@@ -46,10 +48,6 @@ const Manufacturados = () => {
     const [todosLosArticulos, setTodosLosArticulos] = useState<any[]>([]);
 
     const [categorias, setCategorias] = useState<ICategoria[]>([])
-
-
-
-    //const [categorias, setCategorias] = useState<ICategoria[]>([])
 
     //Esto es para normalizar los datos de IArticuloInsumo que traiga el Fetch, asi la tabla puede entender
     //distintos tipos de datos.
@@ -65,60 +63,26 @@ const Manufacturados = () => {
         }));
     }
 
-    //CODIGO RECURSIVO PARA TRAER TODOS LOS PRODUCTOS DE UNA SUCURSAL
-
-    const obtenerArticulos = (categoria: ICategoria | undefined): any[] => {
-        console.log("hola")
-        if (categoria) {
-            let articulos = Array.isArray(categoria?.articulosManufacturados) ? [...categoria.articulosManufacturados] : [];
-
-            categoria.subCategorias.forEach(subCategoria => {
-                const subCategoriaArticulos = obtenerArticulos(subCategoria);
-                if (Array.isArray(subCategoriaArticulos)) {
-                    articulos = [...articulos, ...subCategoriaArticulos];
-                }
-            });
-
-            console.log(articulos)
-            return articulos;
-        }
-        else {
-            return [];
-        }
-    }
-
     useEffect(() => {
+
         const fetchManufacturado = async () => {
 
-            // const response: IArticuloManufacturadoCategoria[] = await backend.getAll("http://localhost:8081/ArticuloManufacturado/noEliminados") as IArticuloManufacturadoCategoria[];
-
-            //Esto está hecho precariamente en el front, en realidad debería ser un endpoint que cumpla estas condiciones, pero por lo pronto, funciona
-
-            //Traemos las categorias de una sucursal
-            const responseCategoria: ICategoria[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}sucursal/getCategorias/${idSucursales}`) as ICategoria[];
-
-            //Filtramos la categoria que está seleccionada en el selector (con redux)
-            const categoriaFiltrada: ICategoria | undefined = responseCategoria.find((categoria) => categoria.denominacion === selectedCategory)
-
-
-            console.log("aasdkaslkññlasjjdaklasj")
-            console.log(categoriaFiltrada);
-
-            //Usamos una función recursiva para traernos todos los articulos dentro de la categoria que seleccionamos
-            const manufacturados: IArticuloManufacturadoCategoria[] = obtenerArticulos(categoriaFiltrada);
-
-            //Filtramos por articulos eliminados
-            const manufacturadosHabilitados: IArticuloManufacturadoCategoria[] = manufacturados.filter((articulo) => articulo.eliminado === borrados)
-
-            const filteredByCategoria = manufacturadosHabilitados.filter((articulo) => articulo.categoria?.denominacion === selectedCategory)
-
-            const transformedData = transformData(filteredByCategoria);
-
-            setData(transformedData);
-
-            setLoading(true);
+            if (selectedCategory !== 'Todos') {
+                const manufacturados: IArticuloManufacturadoCategoria[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}ArticuloManufacturado/getArticulosCategoria/${idCategory}`) as IArticuloManufacturadoCategoria[];
+                const manufacturadosHabilitados: IArticuloManufacturadoCategoria[] = manufacturados.filter((articulo) => articulo.eliminado === borrados)
+                const transformedData = transformData(manufacturadosHabilitados);
+                setData(transformedData);
+            }
+            
+            else {
+                const manufacturados: IArticuloManufacturadoCategoria[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}ArticuloManufacturado/buscar/${idSucursales}`) as IArticuloManufacturadoCategoria[];
+                const manufacturadosHabilitados: IArticuloManufacturadoCategoria[] = manufacturados.filter((articulo) => articulo.eliminado === borrados)
+                const transformedData = transformData(manufacturadosHabilitados);
+                setData(transformedData);
+            }
 
             dispatch((setGlobalUpdated(false), setEsInsumo(false)))
+            setLoading(true);
             console.log(esInsumo)
         }
 

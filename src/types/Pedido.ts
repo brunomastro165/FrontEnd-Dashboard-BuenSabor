@@ -16,4 +16,5 @@ export interface IPedido {
   empleado: string;
   factura: string;
   detallesPedido: IDetallePedido[];
+  horaEstimadaFinalizacion: Date;
 }

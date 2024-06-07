@@ -10,9 +10,11 @@ interface IArticuloGenerico {
     cantidad: number;
 }
 
-const CardPedido: FC<IPedido> = ({ cliente, domicilio, eliminado, empleado, estado, factura, fechaPedido, formaPago, id, sucursal, tipoEnvio, total, detallesPedido }) => {
+const CardPedido: FC<IPedido> = ({ cliente, domicilio, eliminado, empleado, estado, factura, fechaPedido, formaPago, id, sucursal, tipoEnvio, total, detallesPedido, horaEstimadaFinalizacion }) => {
 
     const backend = new BackendMethods();
+
+    console.log(horaEstimadaFinalizacion)
 
     const [estadoActual, setEstadoActual] = useState<string>();
 
@@ -51,11 +53,13 @@ const CardPedido: FC<IPedido> = ({ cliente, domicilio, eliminado, empleado, esta
                 {/* MOSTRAR LOS MANUFACTURADOS */}
                 <h1 className="w-max text-sm  mb-2 text-white px-2  font-Roboto  bg-blue-600  rounded ">ID: {id}</h1>
                 <div>
+                    {/* <h1>{fechaPedido.toString()}</h1> */}
+                    <h1>Entrega: {horaEstimadaFinalizacion?.toString()}</h1>
                     {detallesPedido && detallesPedido.length > 0 && detallesPedido
                         .filter((detalle) => detalle.articuloManufacturado)
                         .map((detalle) => (
                             <div className='flex flex-row space-x-2'>
-                                <h1>{detalle.articuloManufacturado?.denominacion}</h1>
+                                <h1 className='w-32'>{detalle.articuloManufacturado?.denominacion}</h1>
                                 <h1><span className='text-sm'>x</span>{detalle.cantidad}</h1>
                             </div>
                         ))}
@@ -70,7 +74,7 @@ const CardPedido: FC<IPedido> = ({ cliente, domicilio, eliminado, empleado, esta
                             </div>
                         ))}
 
-                    <h1>{formaPago}</h1>
+                    <h1 className='bg-green-500 text-white w-max p-1 rounded mt-1'>{formaPago}</h1>
                 </div>
                 {/* <p>{detallesPedido}</p> */}
                 <div className=" flex  items-center mt-4">
@@ -82,7 +86,7 @@ const CardPedido: FC<IPedido> = ({ cliente, domicilio, eliminado, empleado, esta
             </div>
             <select className=" select border-none focus:outline-none rounded-none rounded-b  focus:bg-blue-500 hover:bg-blue-500 text-black hover:text-white focus:text-white transition-all"
                 onChange={(e) => cambiarEstado((e.target as HTMLSelectElement).value)}
-                onClick={()=>(console.log("sexo"))}>
+                onClick={() => (console.log("sexo"))}>
                 <option value="" >Estado del pedido</option>
                 <option value="PREPARACION">PREPARACION</option>
                 <option value="PENDIENTE">PENDIENTE</option>

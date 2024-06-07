@@ -72,9 +72,10 @@ const CategoriaButton: FC<ICategoriaButton> = ({ categoria, edicion }) => {
 
     const eliminarCategoria = async () => {
         try {
-            const res = backend.delete(`http://localhost:8081/categoria/${categoria.id}`)
+            const res = backend.delete(`${import.meta.env.VITE_LOCAL}categoria/${categoria.id}`)
             dispatch(setGlobalUpdated(true))
         } catch (error) {
+            dispatch(setGlobalUpdated(true))
             console.error(error);
         }
     }
@@ -127,7 +128,7 @@ const CategoriaButton: FC<ICategoriaButton> = ({ categoria, edicion }) => {
 
                                 <>
                                     <Link
-                                        onClick={() => dispatch(setCategory(categoria.denominacion))}
+                                        onClick={() => dispatch(setCategory({selected: categoria.denominacion, id: categoria.id}))}
                                         to={`/${idEmpresa}/sucursales/${idSucursales}/${categoria.esInsumo ? 'insumos' : 'manufacturados'}`}
                                         className='text-sm size-13 font-Roboto btn btn-info bg-blue-600 border-blue-600 text-white '>
                                         <IoEnterOutline className='text-2xl ' />

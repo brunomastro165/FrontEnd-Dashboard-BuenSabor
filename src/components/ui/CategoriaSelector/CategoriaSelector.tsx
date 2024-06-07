@@ -33,10 +33,10 @@ const CategoriaSelector = () => {
         const getAll = async () => {
             const res: ICategoriaShort[] = await back.getAll(`${import.meta.env.VITE_LOCAL}sucursal/getCategorias/${idSucursales}`) as ICategoriaShort[]
 
-
             const categorias: ICategoriaShort[] = res.filter((categoria) => categoria.esInsumo === globalEsInsumo)
 
             const categoriasExistentes: ICategoriaShort[] = categorias.filter((categoria) => !categoria.eliminado)
+
             setItems(categoriasExistentes);
         }
         getAll();
@@ -50,7 +50,7 @@ const CategoriaSelector = () => {
                 <ul className="p-5 shadow  border dropdown-content flex flex-col space-y-4 bg-base-100 rounded-box w-52 z-50 overflow-y-scroll max-h-48">
                     {items.map((item: ICategoriaShort) => (
                         <li className='btn bg-white text-red-600 border-none shadow-none'
-                            onClick={() => dispatch(setCategory(item.denominacion))}><a>{item.denominacion}</a></li>
+                            onClick={() => dispatch(setCategory({ selected: item.denominacion, id: item.id }))}><a>{item.denominacion}</a></li>
                     ))}
                 </ul>
             </details>

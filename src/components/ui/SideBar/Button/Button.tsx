@@ -11,7 +11,7 @@ const Button: FC<IButton> = ({ Icon, active, link, setActive, subButton, text, c
     return (
         <div className={`${child && 'absolute '} w-full`}>
             <div className=''>
-                <Link to={link} onClick={() => { setActive(text), dispatch(setCategory('Todos')) }}>
+                <Link to={link} onClick={() => { setActive(text), dispatch(setCategory({selected: 'Todos', id:0})) }}>
                     <div className={`flex text-start items-center 
                     text-xl text-gray-800 rounded-md transition-all
                   hover:bg-[#edf2f4] 
