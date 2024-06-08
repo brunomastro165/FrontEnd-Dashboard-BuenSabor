@@ -39,7 +39,7 @@ type FormState = {
     precioPromocional: number,
     tipoPromocion: string,
     detalles: IDetallePromo[] | null,
-    imagen: []
+    imagenes: IImagen[]
 };
 
 
@@ -56,6 +56,7 @@ const PromoForm: FC<IForm> = ({ open, setOpen, method }) => {
     const initialValues = useAppSelector((state) => state.GlobalInitialValues.data)
 
     const dispatch = useAppDispatch()
+
 
 
     const [errors, setErrors] = useState<any>();
@@ -174,7 +175,7 @@ const PromoForm: FC<IForm> = ({ open, setOpen, method }) => {
                     <DetalleGenerico setValues={setValues} idSucursales={idSucursales} values={values} />
 
                     {/* {articulosInput()} */}
-                    <ImageInput files={files} setFiles={setFiles} key={1} id={values.id} />
+                    <ImageInput files={files} setFiles={setFiles} key={1} id={values.id} imagenes={values.imagenes}/>
                 </div>
             </div>
 

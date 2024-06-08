@@ -36,6 +36,7 @@ type FormState = {
     stockMinimo: number,
     esParaElaborar: boolean,
     idCategoria: number,
+    imagenes: any[]
 };
 
 
@@ -211,7 +212,7 @@ const AInsumoForm: FC<IForm> = ({ open, setOpen, method }) => {
                         <div className='w-full flex justify-center flex-col '>
 
                             <div className='flex flex-col'>
-                                <ImageInput files={files} setFiles={setFiles} id={values.id}/>
+                                <ImageInput files={files} setFiles={setFiles} id={values.id} imagenes={values.imagenes}/>
                                 {booleanInput('esParaElaborar', 'boolean', values.esParaElaborar, handleChange, 'Es para elaborar', 'No es para elaborar', errors)}
                             </div>
                         </div>

@@ -106,6 +106,8 @@ const CardPromo: FC<IPromos> = ({ denominacion, descripcionDescuento, detalles, 
         try {
 
             const res: IPromos = await backend.getById(`${import.meta.env.VITE_LOCAL}promocion/${id}`) as IPromos; //Hice esto porque pasarlo por props me daba errores
+            console.log("RESPONSE DEL BACKEND")
+            console.log(res)
             dispatch(setGlobalInitialValues(
                 {
                     id: res.id,
@@ -119,6 +121,7 @@ const CardPromo: FC<IPromos> = ({ denominacion, descripcionDescuento, detalles, 
                     detalles: res.detalles,
                     tipoPromocion: res.tipoPromocion,
                     idSucursales: idSucursales,
+                    imagenes: res.imagenes,
 
                 }
             ))

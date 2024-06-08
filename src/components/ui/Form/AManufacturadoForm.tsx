@@ -40,6 +40,7 @@ type FormState = {
     stock: number,
     eliminado: boolean,
     idCategoria: number,
+    imagenes:any[],
 };
 
 //@ts-ignore
@@ -105,11 +106,11 @@ const AManufacturadoForm: FC<IForm> = ({ open, setOpen, method }) => {
                 console.log("PUT")
                 console.log(data)
                 //const res: IEmpresaShort = await backend.put(`http://localhost:8081/empresa/${data.id}/short`, data);
-                const res: IArticuloManufacturado = await backend.putConImagen(`http://localhost:8081/ArticuloManufacturado/save/${values.id}`, data, files);
+                const res: IArticuloManufacturado = await backend.putConImagen(`${import.meta.env.VITE_LOCAL}ArticuloManufacturado/save/${values.id}`, data, files);
 
                 //  const subirImagen = await subirImagenes(res.id, values.imagenes)
 
-                setOpen(false);
+                //setOpen(false);
 
                 dispatch(setGlobalUpdated(true))
             } catch (error) {
@@ -409,7 +410,7 @@ const AManufacturadoForm: FC<IForm> = ({ open, setOpen, method }) => {
                         </div>
 
                         <div className='w-full flex flex-col justify-center '>
-                            <ImageInput files={files} setFiles={setFiles} id={values.id} />
+                            <ImageInput files={files} setFiles={setFiles} id={values.id} imagenes={values.imagenes} />
                         </div>
                     </div>
 
