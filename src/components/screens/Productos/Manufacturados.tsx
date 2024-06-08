@@ -59,7 +59,7 @@ const Manufacturados = () => {
             denominacion: manufacturado.denominacion,
             param2: manufacturado.unidadMedida.denominacion,
             param3: manufacturado.precioVenta,
-            param4: manufacturado.stock
+            param4: manufacturado.categoria.denominacion
         }));
     }
 

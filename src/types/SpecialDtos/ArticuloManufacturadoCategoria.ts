@@ -1,6 +1,7 @@
 import { IArticuloManufacturadoDetalle } from "../ArticuloManufacturadoDetalle";
 import { ICategoria } from "../Categoria";
 import { IUnidadMedida } from "../UnidadMedida";
+import { ICategoriaSinArticulo } from "./CategoriaSinArticulo";
 
 export interface IArticuloManufacturadoCategoria {
   id: number;
@@ -16,5 +17,5 @@ export interface IArticuloManufacturadoCategoria {
   eliminado: boolean;
 
   //CAMBIAR ESTO POR UN DTO CATEGORIA QUE NO TENGA ARTICULOS
-  categoria: ICategoria;
+  categoria: ICategoriaSinArticulo;
 }

@@ -9,7 +9,7 @@ interface FormValues {
 export const useForm = <T extends FormValues>(initialValues: T) => {
   const [values, setValues] = useState<T>(initialValues);
 
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>) => {
     const { value, name } = event.target;
     setValues({ ...values, [`${name}`]: value });
   };

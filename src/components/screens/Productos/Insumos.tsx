@@ -51,7 +51,7 @@ const Insumos = () => {
             denominacion: insumo.denominacion,
             param2: insumo.precioVenta,
             param3: insumo.unidadMedida.denominacion,
-            param4: insumo.stockActual,
+            param4: insumo.categoria.denominacion,
             endpoint: ''
         }));
 
@@ -139,7 +139,7 @@ const Insumos = () => {
                 row2="Denominación"
                 row3="Precio venta"
                 row4="Unidad de medida"
-                row5="Stock"
+                row5="Categoria"
                 endpoint="ArticuloInsumo"
             />
         </>

@@ -69,7 +69,10 @@ const PromoForm: FC<IForm> = ({ open, setOpen, method }) => {
         if (method === 'POST') {
             try {
                 //TODO Cambiar el método para que coincida con el backend
+                console.log("FRONTEND")
+                console.log(data)
                 const res: IPromos = await backend.postConImagen(`${import.meta.env.VITE_LOCAL}promocion/save`, data, files);
+                console.log("BACKEND")
                 console.log(res)
                 // const subirImagen = await subirImagenes(res.id, values.imagenes)
                 dispatch(setGlobalUpdated(true))
@@ -127,6 +130,28 @@ const PromoForm: FC<IForm> = ({ open, setOpen, method }) => {
         }
     }
 
+    const tipoPromocionInput = () => {
+        return (
+            <>
+                <div className="flex flex-col justify-center items-start w-full h-min">
+                    <div className="my-4 w-full ">
+                        {/* <h1 className='font-Roboto text-xl first-letter:uppercase'>{name}</h1> */}
+                        <label htmlFor={'tipoPromocion'} className="font-Roboto text-xl first-letter:uppercase" >
+                            <h1 className={`first-letter:uppercase transition-all duration-500 `}>{'Tipo de promoción'}</h1>
+                        </label>
+                        <select name="tipoPromocion" id="tipoPromocion" onChange={handleChange} className='select select-bordered w-full'>
+                            <option value="HAPPY_HOUR">Happy hour</option>
+                            <option value="PROMOCION">Promoción</option>
+                        </select>
+                    </div>
+
+                    <h1 className={`font-Roboto h-5 mb-4  flex text-start justify-start text-red-600 transition-all duration-500 ${errors?.tipoPromocion || 'opacity-0'}`}>{errors?.tipoPromocion}</h1>
+                </div>
+            </>
+        )
+
+
+    }
 
     console.log(values)
     console.log(errors)
@@ -162,7 +187,7 @@ const PromoForm: FC<IForm> = ({ open, setOpen, method }) => {
                     </div>
 
                     <div className='w-full flex flex-col md:flex-row space-x-0 md:space-x-4'>
-                        {/* {genericInput('descripcionDescuento', 'text', values.descripcionDescuento, handleChange)} */}
+                        {tipoPromocionInput()}
                         {genericInput('precioPromocional', 'number', values.precioPromocional, handleChange, errors)}
                     </div>
 
@@ -176,7 +201,7 @@ const PromoForm: FC<IForm> = ({ open, setOpen, method }) => {
                     <h1 className={`font-Roboto h-5 mb-4  flex text-start justify-start text-red-600 transition-all duration-500 ${errors?.detalles || 'opacity-0'}`}>{errors?.detalles}</h1>
 
                     {/* {articulosInput()} */}
-                    <ImageInput files={files} setFiles={setFiles} key={1} id={values.id} imagenes={values.imagenes}/>
+                    <ImageInput files={files} setFiles={setFiles} key={1} id={values.id} imagenes={values.imagenes} />
                 </div>
             </div>
 
