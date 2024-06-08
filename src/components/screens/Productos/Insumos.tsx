@@ -139,7 +139,7 @@ const Insumos = () => {
                 row2="Denominación"
                 row3="Precio venta"
                 row4="Unidad de medida"
-                row5="Categoria"
+                row5="Categoría"
                 endpoint="ArticuloInsumo"
             />
         </>

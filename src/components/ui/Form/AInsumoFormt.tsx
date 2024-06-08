@@ -48,6 +48,8 @@ type FileWithPreview = File & { preview: string };
 
 const AInsumoForm: FC<IForm> = ({ open, setOpen, method }) => {
 
+    const [subiendo, setSubiendo] = useState<boolean>(false);
+
     const backend = new GenericBackend(); //Objeto de BackendClient
 
     const [loaded, setLoaded] = useState<boolean>(false);
@@ -77,6 +79,7 @@ const AInsumoForm: FC<IForm> = ({ open, setOpen, method }) => {
 
         if (method === 'POST') {
             try {
+                setSubiendo(true);
                 console.log("ssdaasddsads")
                 //TODO Cambiar el método para que coincida con el backend
                 const res: IArticuloInsumo = await backend.postConImagen(`${import.meta.env.VITE_LOCAL}ArticuloInsumo/save`, data, files);
@@ -84,20 +87,25 @@ const AInsumoForm: FC<IForm> = ({ open, setOpen, method }) => {
                 // const subirImagen = await subirImagenes(res.id, values.imagenes)
 
                 dispatch(setGlobalUpdated(true))
+                setSubiendo(false)
                 setOpen(false);
 
                 console.log(res)
             } catch (error) {
+                setSubiendo(false)
                 console.error(error)
             }
         }
         else if (method === 'PUT') {
             try {
+                setSubiendo(true);
                 //const res: IEmpresaShort = await backend.put(`http://localhost:8081/empresa/${data.id}/short`, data);
                 const res: IArticuloInsumo = await backend.postConImagen(`${import.meta.env.VITE_LOCAL}ArticuloInsumo/save`, data, files);
                 dispatch(setGlobalUpdated(true))
+                setSubiendo(false)
                 setOpen(false);
             } catch (error) {
+                setSubiendo(false)
                 console.error(error)
             }
         }
@@ -212,7 +220,7 @@ const AInsumoForm: FC<IForm> = ({ open, setOpen, method }) => {
                         <div className='w-full flex justify-center flex-col '>
 
                             <div className='flex flex-col'>
-                                <ImageInput files={files} setFiles={setFiles} id={values.id} imagenes={values.imagenes}/>
+                                <ImageInput files={files} setFiles={setFiles} id={values.id} imagenes={values.imagenes} />
                                 {booleanInput('esParaElaborar', 'boolean', values.esParaElaborar, handleChange, 'Es para elaborar', 'No es para elaborar', errors)}
                             </div>
                         </div>
@@ -220,8 +228,10 @@ const AInsumoForm: FC<IForm> = ({ open, setOpen, method }) => {
                     </div>
                 </div>
 
-                <button className='bg-red-600 text-white px-4 py-2 rounded-md active:scale-95 transition-all'
-                    onClick={handleSubmit}>Enviar</button>
+                <button className={`btn btn-wide btn-success text-white ${subiendo && 'btn-disabled animate-pulse'}`}
+                    onClick={handleSubmit}>
+                    {subiendo ? 'Subiendo...' : 'Enviar'}
+                </button>
             </div>
 
 

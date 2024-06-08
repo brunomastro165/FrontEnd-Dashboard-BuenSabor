@@ -104,7 +104,7 @@ const ContainerCategorias = () => {
                   <div className='flex  justify-center items-center'>
                     <div className='shadow-md rounded-xl w-2/3  p-5 m-5'>
                       <h1 className={`font-Roboto  w-max px-4 py-1 rounded-md text-white ${categoria.esInsumo ? 'bg-blue-600' : 'bg-red-600'}`}>{categoria.esInsumo ? 'Insumo' : 'Manufacturado'}</h1>
-                      <CategoriaButton categoria={categoria} edicion={edicion} />
+                      <CategoriaButton categoria={categoria} edicion={edicion} key={categoria.id}/>
                     </div>
                   </div>
                 </>

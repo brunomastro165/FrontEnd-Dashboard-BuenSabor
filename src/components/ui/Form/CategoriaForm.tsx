@@ -43,6 +43,8 @@ class GenericBackend extends BackendClient<FormState> { } //Métodos genéricos
 
 const CategoriaForm: FC<IForm> = ({ open, setOpen, method }) => {
 
+    const [subiendo, setSubiendo] = useState<boolean>(false);
+
     const backend = new GenericBackend(); //Objeto de BackendClient
 
     //REDUX
@@ -67,15 +69,18 @@ const CategoriaForm: FC<IForm> = ({ open, setOpen, method }) => {
         if (method === 'POST') {
             try {
 
+                setSubiendo(true)
                 console.log(data)
 
                 const res: FormState = await backend.post(`${import.meta.env.VITE_LOCAL}categoria`, data);
                 dispatch(setGlobalUpdated(true))
                 console.log("response desde el backend")
                 console.log(res)
+                setSubiendo(false)
                 setOpen(false);
 
             } catch (error) {
+                setSubiendo(false)
                 console.error(error)
             }
         }
@@ -90,12 +95,15 @@ const CategoriaForm: FC<IForm> = ({ open, setOpen, method }) => {
         }
         else if (method === 'SUBPUT') {
             try {
+                setSubiendo(true)
                 const res: FormState = await backend.put(`${import.meta.env.VITE_LOCAL}categoria/addSubCategoria/${data.id}`, data);
                 dispatch(setGlobalUpdated(true))
                 console.log("response desde el backend")
                 console.log(res)
+                setSubiendo(false)
                 setOpen(false);
             } catch (error) {
+                setSubiendo(false)
                 console.error(error)
             }
         }
@@ -201,8 +209,10 @@ const CategoriaForm: FC<IForm> = ({ open, setOpen, method }) => {
 
             </div>
 
-            <button className='bg-red-600 text-white px-4 py-2 rounded-md active:scale-95 transition-all'
-                onClick={handleSubmit}>Enviar</button>
+            <button className={`btn btn-wide btn-success text-white ${subiendo && 'btn-disabled animate-pulse'}`}
+                onClick={handleSubmit}>
+                {subiendo ? 'Subiendo...' : 'Enviar'}
+            </button>
         </div>
     )
 }

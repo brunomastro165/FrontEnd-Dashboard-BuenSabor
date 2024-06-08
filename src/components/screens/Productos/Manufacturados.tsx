@@ -99,7 +99,7 @@ const Manufacturados = () => {
                 row2="Denominación"
                 row3="Unidad de medida"
                 row4="Precio venta"
-                row5="Stock"
+                row5="Categoría"
                 endpoint="ArticuloManufacturado"
             />
         </>

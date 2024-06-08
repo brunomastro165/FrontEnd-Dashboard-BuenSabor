@@ -47,6 +47,8 @@ type FileWithPreview = File & { preview: string };
 
 const PromoForm: FC<IForm> = ({ open, setOpen, method }) => {
 
+    const [subiendo, setSubiendo] = useState<boolean>(false);
+
     const backend = new BackendMethods(); //Objeto de BackendClient
 
     const { idEmpresa, idSucursales } = useParams()
@@ -69,6 +71,7 @@ const PromoForm: FC<IForm> = ({ open, setOpen, method }) => {
         if (method === 'POST') {
             try {
                 //TODO Cambiar el método para que coincida con el backend
+                setSubiendo(true)
                 console.log("FRONTEND")
                 console.log(data)
                 const res: IPromos = await backend.postConImagen(`${import.meta.env.VITE_LOCAL}promocion/save`, data, files);
@@ -76,18 +79,23 @@ const PromoForm: FC<IForm> = ({ open, setOpen, method }) => {
                 console.log(res)
                 // const subirImagen = await subirImagenes(res.id, values.imagenes)
                 dispatch(setGlobalUpdated(true))
+                setSubiendo(false)
             } catch (error) {
+                setSubiendo(false)
                 console.error(error)
             }
         }
         else if (method === 'PUT') {
             try {
+                setSubiendo(true)
                 //const res: IEmpresaShort = await backend.put(`http://localhost:8081/empresa/${data.id}/short`, data);
                 const res: IPromos = await backend.putConImagen(`${import.meta.env.VITE_LOCAL}promocion/save/${values.id}`, data, files);
                 console.log(res)
                 //  const subirImagen = await subirImagenes(res.id, values.imagenes)
                 dispatch(setGlobalUpdated(true))
+                setSubiendo(false)
             } catch (error) {
+                setSubiendo(false)
                 console.error(error)
             }
         }
@@ -205,8 +213,10 @@ const PromoForm: FC<IForm> = ({ open, setOpen, method }) => {
                 </div>
             </div>
 
-            <button className='bg-red-600 text-white px-4 py-2 rounded-md active:scale-95 transition-all'
-                onClick={handleSubmit}>Enviar</button>
+            <button className={`btn btn-wide btn-success text-white ${subiendo && 'btn-disabled animate-pulse'}`}
+                onClick={handleSubmit}>
+                {subiendo ? 'Subiendo...' : 'Enviar'}
+            </button>
         </div>
     )
 }

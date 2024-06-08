@@ -50,6 +50,8 @@ type FileWithPreview = File & { preview: string };
 
 const AManufacturadoForm: FC<IForm> = ({ open, setOpen, method }) => {
 
+    const [subiendo, setSubiendo] = useState<boolean>(false);
+
     const { idSucursales } = useParams();
 
     const backend = new GenericBackend(); //Objeto de BackendClient
@@ -91,18 +93,22 @@ const AManufacturadoForm: FC<IForm> = ({ open, setOpen, method }) => {
     const postArticulo = async (data: FormState) => {
         if (method === 'POST') {
             try {
+                setSubiendo(true)
                 //TODO Cambiar el método para que coincida con el backend
                 const res: IArticuloManufacturado = await backend.postConImagen(`${import.meta.env.VITE_LOCAL}ArticuloManufacturado/save`, data, files);
                 console.log(res)
                 // const subirImagen = await subirImagenes(res.id, values.imagenes)
                 dispatch(setGlobalUpdated(true))
+                setSubiendo(false);
                 setOpen(false);
             } catch (error) {
+                setSubiendo(false)
                 console.error(error)
             }
         }
         else if (method === 'PUT') {
             try {
+                setSubiendo(true)
                 console.log("PUT")
                 console.log(data)
                 //const res: IEmpresaShort = await backend.put(`http://localhost:8081/empresa/${data.id}/short`, data);
@@ -114,6 +120,7 @@ const AManufacturadoForm: FC<IForm> = ({ open, setOpen, method }) => {
 
                 dispatch(setGlobalUpdated(true))
             } catch (error) {
+                setSubiendo(false)
                 console.error(error)
             }
         }
@@ -162,9 +169,13 @@ const AManufacturadoForm: FC<IForm> = ({ open, setOpen, method }) => {
     //const [unidadesMedida, setUnidadesMedida] = useState<IUnidadMedida[]>([]);
 
     const getUnidades = async () => {
-        const res: IUnidadMedida[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}UnidadMedida`);
-        dispatch(setUnidades(res))
-        setLoaded(true);
+        try {
+            const res: IUnidadMedida[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}UnidadMedida`);
+            dispatch(setUnidades(res))
+            setLoaded(true);
+        } catch (error) {
+            console.error(error);
+        }
     }
 
     useEffect(() => {
@@ -246,9 +257,6 @@ const AManufacturadoForm: FC<IForm> = ({ open, setOpen, method }) => {
     //     setAmDetalles(newDetalles);
 
     // }
-
-    console.log("VALUES")
-    console.log(values);
 
     // useEffect(() => {
     //     setValues(prevValues => ({
@@ -352,8 +360,6 @@ const AManufacturadoForm: FC<IForm> = ({ open, setOpen, method }) => {
 
     //Manejo de imagenes 
 
-    console.log(errors)
-
     const [files, setFiles] = useState<FileWithPreview[]>([]);
 
     return (
@@ -417,8 +423,10 @@ const AManufacturadoForm: FC<IForm> = ({ open, setOpen, method }) => {
                 </div>
             </div>
 
-            <button className='bg-red-600 text-white px-4 py-2 rounded-md active:scale-95 transition-all'
-                onClick={handleSubmit}>Enviar</button>
+            <button className={`btn btn-wide btn-success text-white ${subiendo && 'btn-disabled animate-pulse'}`}
+                onClick={handleSubmit}>
+                {subiendo ? 'Subiendo...' : 'Enviar'}
+            </button>
         </div >
     )
 }

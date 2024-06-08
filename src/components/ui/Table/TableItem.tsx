@@ -34,15 +34,21 @@ const TableItem: FC<IItem> = ({ id, denominacion, param2, param3, param4, endpoi
     const dispatch = useAppDispatch();
 
     const fetchIndividual = async () => {
-        const response: any = await fetchData(`${import.meta.env.VITE_LOCAL}${endpoint}/${id}`)
-        console.log("RESPONSE")
-        console.log(response);
-        if (response.categoria) {
-            delete response.categoria;
+
+        try {
+            const response: any = await fetchData(`${import.meta.env.VITE_LOCAL}${endpoint}/${id}`)
+            console.log("RESPONSE")
+            console.log(response);
+            if (response.categoria) {
+                delete response.categoria;
+            }
+            console.log(response)
+            dispatch(setGlobalInitialValues(response))
+            setOpen(true);
+        } catch (error) {
+            console.log(error)
         }
-        console.log(response)
-        dispatch(setGlobalInitialValues(response))
-        setOpen(true);
+
     }
 
     const deleteLogico = async () => {
@@ -56,7 +62,7 @@ const TableItem: FC<IItem> = ({ id, denominacion, param2, param3, param4, endpoi
 
     return (
         <>
-            <tr className='hover:bg-gray-200 cursor-pointer border-none'>
+            <tr className='hover:bg-gray-200  cursor-pointer border-none'>
                 <th className='w-10'>{id}</th>
                 <td className='w-72'>{denominacion}</td>
                 <td className='w-72'>{param2}</td>

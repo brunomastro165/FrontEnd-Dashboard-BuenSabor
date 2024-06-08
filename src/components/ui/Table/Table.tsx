@@ -98,7 +98,7 @@ const Table: FC<ITable> = ({ items, row1, row2, row3, row4, row5, endpoint }) =>
 
             {items.length >= 1 ? (
                 <div className='w-full'>
-                    <div className="overflow-x-auto flex rounded-md border">
+                    <div className="overflow-x-auto flex rounded-md border max-h-72 overflow-y-scroll">
                         <table className="table-sm md:table ">
                             {/* head */}
                             <thead className=''>
@@ -122,6 +122,7 @@ const Table: FC<ITable> = ({ items, row1, row2, row3, row4, row5, endpoint }) =>
                                             param3={item.param3}
                                             param4={item.param4}
                                             endpoint={endpoint}
+                                            key={item.id}
                                         />))
 
                                         ) : (

@@ -35,6 +35,8 @@ class GenericBackend extends BackendClient<IEmpresaShort> { } //Métodos genéri
 
 const EmpresaForm: FC<IForm> = ({ open, setOpen, data, method }) => {
 
+  const [subiendo, setSubiendo] = useState<boolean>(false);
+
   const backend = new GenericBackend(); //Objeto de BackendClient
 
   const dispatch = useAppDispatch();
@@ -69,22 +71,27 @@ const EmpresaForm: FC<IForm> = ({ open, setOpen, data, method }) => {
   const postEmpresa = async (data: IEmpresaShort) => {
     if (method === 'POST') {
       try {
+        setSubiendo(true)
         //const res: IEmpresaShort = await backend.post("http://localhost:8081/empresa/short", data);
         //const res: IEmpresaShort = await backend.post(`${import.meta.env.VITE_LOCAL}empresa`, data);
         const res: IEmpresaShort = await backend.postConImagen(`${import.meta.env.VITE_LOCAL}empresa/save`, data, files);
         dispatch(setGlobalUpdated(true))
         //mostrarAlerta()
-
+        setSubiendo(false)
       } catch (error) {
+        setSubiendo(false)
         console.error(error)
       }
     }
     else if (method === 'PUT') {
       try {
+        setSubiendo(true)
         //const res: IEmpresaShort = await backend.put(`http://localhost:8081/empresa/${data.id}/short`, data);
         const res: IEmpresaShort = await backend.put(`${import.meta.env.VITE_LOCAL}empresa/${data.id}`, data);
         dispatch(setGlobalUpdated(true))
+        setSubiendo(false)
       } catch (error) {
+        setSubiendo(false)
         console.error(error)
       }
     }
@@ -147,13 +154,15 @@ const EmpresaForm: FC<IForm> = ({ open, setOpen, data, method }) => {
           {genericInput('cuil', 'number', values.cuil, handleChange, errors)} {/* Cuil */}
 
           <div className='w-full flex flex-col justify-center '>
-            <ImageInput files={files} setFiles={setFiles} id={values.id} imagenes={values.imagenes}/>
+            <ImageInput files={files} setFiles={setFiles} id={values.id} imagenes={values.imagenes} />
           </div>
         </div>
       </div>
 
-      <button className='bg-red-600 text-white px-4 py-2 rounded-md active:scale-95 transition-all'
-        onClick={handleSubmit}>Enviar</button>
+      <button className={`btn btn-wide btn-success text-white ${subiendo && 'btn-disabled animate-pulse'}`}
+        onClick={handleSubmit}>
+        {subiendo ? 'Subiendo...' : 'Enviar'}
+      </button>
     </div>
   )
 }

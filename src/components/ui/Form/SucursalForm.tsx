@@ -52,6 +52,8 @@ type FileWithPreview = File & { preview: string };
 
 const SucursalForm: FC<IForm> = ({ open, setOpen, data, method }) => {
 
+    const [subiendo, setSubiendo] = useState<boolean>(false);
+
     const dispatch = useAppDispatch()
 
     const backend = new GenericBackend(); //Objeto de BackendClient
@@ -88,19 +90,25 @@ const SucursalForm: FC<IForm> = ({ open, setOpen, data, method }) => {
     const postSucursal = async (data: FormState) => {
         if (method === 'POST') {
             try {
+                setSubiendo(true)
                 // const res: IEmpresaShort = await backend.post(`${import.meta.env.VITE_LOCAL}sucursal`, data);
                 const res: ISucursalShort = await backend.postConImagen(`${import.meta.env.VITE_LOCAL}sucursal/save`, data, files)
                 console.log(res)
                 dispatch(setGlobalUpdated(true))
+                setSubiendo(false)
             } catch (error) {
+                setSubiendo(false)
                 console.error(error)
             }
         }
         else if (method === 'PUT') {
             try {
+                setSubiendo(true)
                 const res: IEmpresaShort = await backend.put(`${import.meta.env.VITE_LOCAL}sucursal/${data.id}`, data);
                 dispatch(setGlobalUpdated(true))
+                setSubiendo(false)
             } catch (error) {
+                setSubiendo(false)
                 console.error(error)
             }
         }
@@ -305,7 +313,7 @@ const SucursalForm: FC<IForm> = ({ open, setOpen, data, method }) => {
                     </div>
                     {booleanInput('casaMatriz', 'boolean', values.casaMatriz, handleChange, 'Es casa matriz', 'No es casa matriz', errors)}
 
-                    <ImageInput files={files} setFiles={setFiles} id={values.id} imagenes={values.imagenes}/>
+                    <ImageInput files={files} setFiles={setFiles} id={values.id} imagenes={values.imagenes} />
 
                 </div>
             </div>
@@ -346,10 +354,11 @@ const SucursalForm: FC<IForm> = ({ open, setOpen, data, method }) => {
             </button>
 
             {values.domicilio &&
-                <button className='bg-red-600 text-white px-4 py-2 rounded-md active:scale-95 transition-all'
+                <button className={`btn btn-wide btn-success text-white ${subiendo && 'btn-disabled animate-pulse'}`}
                     onClick={handleSubmit}>
-                    Enviar
-                </button>}
+                    {subiendo ? 'Subiendo...' : 'Enviar'}
+                </button>
+            }
 
         </div>
     )
