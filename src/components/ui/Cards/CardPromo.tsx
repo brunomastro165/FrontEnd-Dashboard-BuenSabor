@@ -14,9 +14,6 @@ import { ISucursal } from '../../../types/Sucursal';
 
 const CardPromo: FC<IPromos> = ({ denominacion, descripcionDescuento, detalles, fechaDesde, fechaHasta, horaDesde, horaHasta, id, imagenes, precioPromocional, tipoPromocion, eliminado, sucursales }) => {
 
-
-
-
     console.log("ayuda")
     console.log(detalles);
 
@@ -122,7 +119,6 @@ const CardPromo: FC<IPromos> = ({ denominacion, descripcionDescuento, detalles, 
                     tipoPromocion: res.tipoPromocion,
                     idSucursales: idSucursales,
                     imagenes: res.imagenes,
-
                 }
             ))
         } catch (error) {
@@ -150,7 +146,7 @@ const CardPromo: FC<IPromos> = ({ denominacion, descripcionDescuento, detalles, 
                 </div>
 
                 <h1 className='flex justify-end items-end p-3 md:space-x-5'>
-                    <MdOutlineModeEdit className='text-3xl transition-all cursor-pointer hover:text-blue-600' onClick={() => { put(), setEditar(true) }} />
+                    <MdOutlineModeEdit className='text-3xl transition-all cursor-pointer hover:text-blue-600' onClick={async () => { put(), setEditar(true) }} />
                     <RiDeleteBinLine className='text-3xl transition-all cursor-pointer hover:text-red-600' onClick={() => deleteLogico()} />
                 </h1>
             </div>

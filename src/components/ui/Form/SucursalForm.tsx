@@ -42,6 +42,7 @@ type FormState = {
     esCasaMatriz: boolean;
     idEmpresa: number;
     domicilio: IDomicilio;
+    imagenes: any[]
 };
 
 //@ts-ignore
@@ -304,7 +305,7 @@ const SucursalForm: FC<IForm> = ({ open, setOpen, data, method }) => {
                     </div>
                     {booleanInput('casaMatriz', 'boolean', values.casaMatriz, handleChange, 'Es casa matriz', 'No es casa matriz', errors)}
 
-                    <ImageInput files={files} setFiles={setFiles} id={values.id}/>
+                    <ImageInput files={files} setFiles={setFiles} id={values.id} imagenes={values.imagenes}/>
 
                 </div>
             </div>

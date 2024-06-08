@@ -40,7 +40,7 @@ const CardSucursal: FC<ISucursalShort> = ({ esCasaMatriz, eliminado, horarioAper
         eliminado: eliminado,
         idEmpresa: idEmpresaNumber,
         domicilio: domicilio,
-        imagenes: []
+        imagenes: imagenes,
     });
 
     useEffect(() => {

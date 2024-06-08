@@ -173,6 +173,7 @@ const PromoForm: FC<IForm> = ({ open, setOpen, method }) => {
 
                     {/* TODO cambiar el idSucursales cuando tengamos una */}
                     <DetalleGenerico setValues={setValues} idSucursales={idSucursales} values={values} />
+                    <h1 className={`font-Roboto h-5 mb-4  flex text-start justify-start text-red-600 transition-all duration-500 ${errors?.detalles || 'opacity-0'}`}>{errors?.detalles}</h1>
 
                     {/* {articulosInput()} */}
                     <ImageInput files={files} setFiles={setFiles} key={1} id={values.id} imagenes={values.imagenes}/>

@@ -25,6 +25,7 @@ type FormState = {
   nombre: string;
   razonSocial: string;
   cuil: number;
+  imagenes: any[];
   //sucursales: ISucursal[] | null;
 };
 
@@ -146,7 +147,7 @@ const EmpresaForm: FC<IForm> = ({ open, setOpen, data, method }) => {
           {genericInput('cuil', 'number', values.cuil, handleChange, errors)} {/* Cuil */}
 
           <div className='w-full flex flex-col justify-center '>
-            <ImageInput files={files} setFiles={setFiles} id={values.id}/>
+            <ImageInput files={files} setFiles={setFiles} id={values.id} imagenes={values.imagenes}/>
           </div>
         </div>
       </div>

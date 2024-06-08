@@ -29,6 +29,7 @@ const CardEmpresa: FC<IEmpresa> = ({ cuil, id, nombre, razonSocial, sucursales, 
         nombre,
         razonSocial,
         sucursales,
+        imagenes,
     });
 
     const [modalEliminar, setModalEliminar] = useState<boolean>(false);

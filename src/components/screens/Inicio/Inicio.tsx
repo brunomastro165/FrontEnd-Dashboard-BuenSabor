@@ -35,8 +35,15 @@ const Inicio = () => {
     const dispatch = useAppDispatch();
 
     const getEmpresas = async () => {
-        const res: IEmpresa[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}empresa/noEliminados`);
-        setEmpresas(res);
+        try {
+            const res: IEmpresa[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}empresa/noEliminados`);
+            console.log("Empresas")
+            console.log(res)
+            setEmpresas(res);
+        } catch (error) {
+            console.error(error)
+        }
+
     }
 
     const traerGetters = async () => {

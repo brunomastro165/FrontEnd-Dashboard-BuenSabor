@@ -93,7 +93,7 @@ const DetalleGenerico: FC<IDetalleInput> = ({ values, setValues, idSucursales })
     useEffect(() => {
 
         const traerArticulos = async () => {
-            values.detalles.map(async (detalle) => {
+            values.detalles?.map(async (detalle) => {
                 const res: IArticuloGenerico[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}ArticuloInsumo/getArticulos/${detalle.insumos.denominacion}/${idSucursales}`) as IArticuloGenerico[]
                 setArticulosGenericos(res);
                 setFiltroGenerico(res);

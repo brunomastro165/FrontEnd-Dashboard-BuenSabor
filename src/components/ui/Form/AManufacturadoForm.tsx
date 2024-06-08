@@ -40,7 +40,7 @@ type FormState = {
     stock: number,
     eliminado: boolean,
     idCategoria: number,
-    imagenes:any[],
+    imagenes: any[],
 };
 
 //@ts-ignore
@@ -407,15 +407,13 @@ const AManufacturadoForm: FC<IForm> = ({ open, setOpen, method }) => {
                         </div>
                         <div>
                             <DetalleInput setValues={setValues} values={values} idSucursales={idSucursales} />
+                            {errors.articuloManufacturadoDetalles && <h1 className='font-Roboto text-red-600'>{errors.articuloManufacturadoDetalles}</h1>}
                         </div>
 
                         <div className='w-full flex flex-col justify-center '>
                             <ImageInput files={files} setFiles={setFiles} id={values.id} imagenes={values.imagenes} />
                         </div>
                     </div>
-
-
-
                 </div>
             </div>
 

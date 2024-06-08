@@ -12,5 +12,8 @@ export const validationManufacturado = Yup.object().shape({
         denominacion: Yup.string().required('Debe seleccionar una unidad de medida'),
         id: Yup.number().required('Debe seleccionar una unidad de medida')
     }).required('Debe seleccionar una unidad de medida'),
+    articuloManufacturadoDetalles: Yup.array()
+        .min(1, 'Debe haber al menos un detalle de artículo manufacturado')
+        .required('Los detalles de artículos manufacturados son requeridos'),
     idCategoria: Yup.number().required('Debe seleccionar una categoría').moreThan(0, 'Debe seleccionar una categoría')
 });
