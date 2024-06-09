@@ -62,7 +62,7 @@ const CategoriaButton: FC<ICategoriaButton> = ({ categoria, edicion }) => {
     const { idEmpresa, idSucursales } = useParams();
 
     const handleClick = (categoria: ICategoria | null) => {
-        if (selectedCategoria !== categoria) {
+        if (selectedCategoria !== categoria && !categoria?.eliminado) {
             setSelectedCategoria(categoria);
         }
         else {
@@ -128,7 +128,7 @@ const CategoriaButton: FC<ICategoriaButton> = ({ categoria, edicion }) => {
 
                                 <>
                                     <Link
-                                        onClick={() => dispatch(setCategory({selected: categoria.denominacion, id: categoria.id}))}
+                                        onClick={() => dispatch(setCategory({ selected: categoria.denominacion, id: categoria.id }))}
                                         to={`/${idEmpresa}/sucursales/${idSucursales}/${categoria.esInsumo ? 'insumos' : 'manufacturados'}`}
                                         className='text-sm size-13 font-Roboto btn btn-info bg-blue-600 border-blue-600 text-white '>
                                         <IoEnterOutline className='text-2xl ' />
