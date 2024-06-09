@@ -8,7 +8,8 @@ import { IItem } from '../../../types/Table/TableItem';
 import { setGlobalUpdated } from '../../../redux/slices/globalUpdate';
 import CategoriaSelector from '../../ui/CategoriaSelector/CategoriaSelector';
 import { setCategoriaSelector } from '../../../redux/slices/mostrarCategoriaSelector';
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const ITEMS_PER_PAGE = 7;
 
@@ -76,6 +77,8 @@ const BasePage: FC<IBasePage> = ({ data, title, loading, row1, row2, row3, row4,
                         ))}
                     </div>
                 </div>
+
+  
             </div>
         </>
     )

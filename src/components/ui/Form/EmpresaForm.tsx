@@ -11,6 +11,7 @@ import * as Yup from 'yup'
 import Swal from 'sweetalert2'
 import { validationEmpresa } from './Validaciones/EmpresaValidacion';
 import ImageInput from './Inputs/ImageInput';
+import { errorMessage, successMessage } from '../../toasts/ToastAlerts';
 
 interface IForm {
   open: boolean;
@@ -68,17 +69,25 @@ const EmpresaForm: FC<IForm> = ({ open, setOpen, data, method }) => {
   //     }),
   // });
 
-  const postEmpresa = async (data: IEmpresaShort) => {
+
+  const succes = () => {
+    dispatch(setGlobalUpdated(true))
+    setSubiendo(false)
+    setOpen(false);
+    resetForm();
+    dispatch(setGlobalUpdated(true));
+    successMessage();
+  }
+
+
+  const postEmpresa = async (data: FormState) => {
     if (method === 'POST') {
       try {
         setSubiendo(true)
-        //const res: IEmpresaShort = await backend.post("http://localhost:8081/empresa/short", data);
-        //const res: IEmpresaShort = await backend.post(`${import.meta.env.VITE_LOCAL}empresa`, data);
-        const res: IEmpresaShort = await backend.postConImagen(`${import.meta.env.VITE_LOCAL}empresa/save`, data, files);
-        dispatch(setGlobalUpdated(true))
-        //mostrarAlerta()
-        setSubiendo(false)
+        const res: IEmpresaShort = await backend.postConImagen(`${import.meta.env.VITE_LOCAL}empresa/save`, data as IEmpresaShort, files);
+        succes()
       } catch (error) {
+        errorMessage()
         setSubiendo(false)
         console.error(error)
       }
@@ -87,26 +96,21 @@ const EmpresaForm: FC<IForm> = ({ open, setOpen, data, method }) => {
       try {
         setSubiendo(true)
         //const res: IEmpresaShort = await backend.put(`http://localhost:8081/empresa/${data.id}/short`, data);
-        const res: IEmpresaShort = await backend.put(`${import.meta.env.VITE_LOCAL}empresa/${data.id}`, data);
-        dispatch(setGlobalUpdated(true))
-        setSubiendo(false)
+        const res: IEmpresaShort = await backend.put(`${import.meta.env.VITE_LOCAL}empresa/${data.id}`, data as IEmpresaShort);
+        succes()
       } catch (error) {
+        errorMessage()
         setSubiendo(false)
         console.error(error)
       }
     }
   }
 
-  console.log(values)
   const handleSubmit = async () => {
     try {
 
       await validationEmpresa.validate(values, { abortEarly: false });
-      //@ts-ignore
       await postEmpresa(values);
-      dispatch(setGlobalUpdated(true));
-      resetForm();
-      setOpen(false);
       setErrors({}); // limpia los errores
 
     } catch (error) {

@@ -20,6 +20,7 @@ import { useParams } from 'react-router-dom';
 import SucursalesInput from './Inputs/SucursalesInput';
 import { validationPromo } from './Validaciones/PromoValidacion';
 import * as Yup from 'yup'
+import { errorMessage, successMessage } from '../../toasts/ToastAlerts';
 
 interface IForm {
     open: boolean;
@@ -67,35 +68,37 @@ const PromoForm: FC<IForm> = ({ open, setOpen, method }) => {
 
     const { handleChange, values, resetForm, handleSelect, handleChoose, handleFileDrop, setValues } = useForm<FormState>(initialValues)
 
+
+    const succes = () => {
+        dispatch(setGlobalUpdated(true))
+        setSubiendo(false)
+        setOpen(false);
+        resetForm();
+        dispatch(setGlobalUpdated(true));
+        successMessage();
+    }
+
     const postPromo = async (data: FormState) => {
         if (method === 'POST') {
             try {
                 //TODO Cambiar el método para que coincida con el backend
                 setSubiendo(true)
-                console.log("FRONTEND")
-                console.log(data)
                 const res: IPromos = await backend.postConImagen(`${import.meta.env.VITE_LOCAL}promocion/save`, data, files);
-                console.log("BACKEND")
-                console.log(res)
-                // const subirImagen = await subirImagenes(res.id, values.imagenes)
-                dispatch(setGlobalUpdated(true))
-                setSubiendo(false)
+                succes();
             } catch (error) {
                 setSubiendo(false)
+                errorMessage()
                 console.error(error)
             }
         }
         else if (method === 'PUT') {
             try {
                 setSubiendo(true)
-                //const res: IEmpresaShort = await backend.put(`http://localhost:8081/empresa/${data.id}/short`, data);
                 const res: IPromos = await backend.putConImagen(`${import.meta.env.VITE_LOCAL}promocion/save/${values.id}`, data, files);
-                console.log(res)
-                //  const subirImagen = await subirImagenes(res.id, values.imagenes)
-                dispatch(setGlobalUpdated(true))
-                setSubiendo(false)
+                succes()
             } catch (error) {
                 setSubiendo(false)
+                errorMessage()
                 console.error(error)
             }
         }
@@ -105,9 +108,6 @@ const PromoForm: FC<IForm> = ({ open, setOpen, method }) => {
         try {
             await validationPromo.validate(values, { abortEarly: false })
             await postPromo(values)
-            dispatch(setGlobalUpdated(true));
-            setOpen(false);
-            resetForm();
             setErrors({});
         }
         catch (error) {

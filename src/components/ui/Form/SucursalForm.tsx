@@ -8,7 +8,7 @@ import { IEmpresa } from '../../../types/Empresa';
 import { ICategoria } from '../../../types/Categoria';
 import { useParams } from 'react-router-dom';
 import { ISucursalShort } from '../../../types/ShortDtos/SucursalShort';
-import { useAppDispatch } from '../../../hooks/redux';
+import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { setGlobalUpdated } from '../../../redux/slices/globalUpdate';
 import { IDomicilio } from '../../../types/Domicilio/Domicilio';
 import { IProvincia } from '../../../types/Domicilio/Provincia';
@@ -18,6 +18,10 @@ import * as Yup from 'yup'
 import { TbH1 } from 'react-icons/tb';
 import { validationSucursal } from './Validaciones/SucursalValidacion';
 import ImageInput from './Inputs/ImageInput';
+import { setGlobalError } from '../../../redux/slices/globalError';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { errorMessage, successMessage } from '../../toasts/ToastAlerts';
 
 interface IForm {
     open: boolean;
@@ -60,6 +64,8 @@ const SucursalForm: FC<IForm> = ({ open, setOpen, data, method }) => {
 
     const [errors, setErrors] = useState<any>({});
 
+    const globalError = useAppSelector((state) => state.GlobalError)
+
     // const validationSchema = Yup.object().shape({
     //     nombre: Yup.string()
     //         .required('El nombre es requerido'),
@@ -87,16 +93,24 @@ const SucursalForm: FC<IForm> = ({ open, setOpen, data, method }) => {
     //     })
     // });
 
+    const succes = () => {
+        dispatch(setGlobalUpdated(true))
+        setSubiendo(false)
+        setOpen(false);
+        resetForm();
+        dispatch(setGlobalUpdated(true));
+        successMessage();
+    }
+
     const postSucursal = async (data: FormState) => {
         if (method === 'POST') {
             try {
                 setSubiendo(true)
                 // const res: IEmpresaShort = await backend.post(`${import.meta.env.VITE_LOCAL}sucursal`, data);
                 const res: ISucursalShort = await backend.postConImagen(`${import.meta.env.VITE_LOCAL}sucursal/save`, data, files)
-                console.log(res)
-                dispatch(setGlobalUpdated(true))
-                setSubiendo(false)
+                succes()
             } catch (error) {
+                errorMessage();
                 setSubiendo(false)
                 console.error(error)
             }
@@ -105,10 +119,10 @@ const SucursalForm: FC<IForm> = ({ open, setOpen, data, method }) => {
             try {
                 setSubiendo(true)
                 const res: IEmpresaShort = await backend.put(`${import.meta.env.VITE_LOCAL}sucursal/${data.id}`, data);
-                dispatch(setGlobalUpdated(true))
-                setSubiendo(false)
+                succes()
             } catch (error) {
                 setSubiendo(false)
+                errorMessage()
                 console.error(error)
             }
         }
@@ -121,9 +135,6 @@ const SucursalForm: FC<IForm> = ({ open, setOpen, data, method }) => {
 
             await validationSucursal.validate(values, { abortEarly: false });
             await postSucursal(values)
-            dispatch(setGlobalUpdated(true));
-            resetForm();
-            setOpen(false);
             setErrors({}); // limpia los errores
 
         } catch (error) {
@@ -296,6 +307,7 @@ const SucursalForm: FC<IForm> = ({ open, setOpen, data, method }) => {
         <div className='w-full flex flex-col items-center justify-center space-y-4 p-10 '
             onSubmit={handleSubmit}
         >
+
             <div className='w-full flex justify-end '>
                 <h1 className='flex text-end justify-end bg-red-600 btn btn-error rounded-full text-white text-xl cursor-pointer w-min'
                     onClick={() => { setOpen(false), resetForm() }}>X</h1>

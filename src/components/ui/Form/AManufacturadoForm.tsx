@@ -20,6 +20,7 @@ import DetalleInput from './Inputs/DetalleInput';
 import ImageInput from './Inputs/ImageInput';
 import DetalleGenerico from './Inputs/DetalleGenerico';
 import { validationManufacturado } from './Validaciones/AManufacturadoValidacion';
+import { errorMessage, successMessage } from '../../toasts/ToastAlerts';
 
 interface IForm {
     open: boolean;
@@ -60,6 +61,17 @@ const AManufacturadoForm: FC<IForm> = ({ open, setOpen, method }) => {
 
     const [errors, setErrors] = useState<any>({});
 
+
+    const succes = () => {
+        dispatch(setGlobalUpdated(true))
+        setSubiendo(false)
+        setOpen(false);
+        resetForm();
+        dispatch(setGlobalUpdated(true));
+        successMessage();
+    }
+
+
     // const validationSchema = Yup.object().shape({
     //     denominacion: Yup.string().required('La denominación es requerida'),
     //     descripcion: Yup.string().required('La descripción es requerida'),
@@ -88,39 +100,26 @@ const AManufacturadoForm: FC<IForm> = ({ open, setOpen, method }) => {
 
     const { handleChange, values, resetForm, handleSelect, handleChoose, handleFileDrop, setValues } = useForm<FormState>(initialValues) //Form genérico
 
-    console.log("INITIAL VALUES")
-    console.log(initialValues)
     const postArticulo = async (data: FormState) => {
         if (method === 'POST') {
             try {
                 setSubiendo(true)
-                //TODO Cambiar el método para que coincida con el backend
                 const res: IArticuloManufacturado = await backend.postConImagen(`${import.meta.env.VITE_LOCAL}ArticuloManufacturado/save`, data, files);
-                console.log(res)
-                // const subirImagen = await subirImagenes(res.id, values.imagenes)
-                dispatch(setGlobalUpdated(true))
-                setSubiendo(false);
-                setOpen(false);
+                succes()
             } catch (error) {
                 setSubiendo(false)
+                errorMessage()
                 console.error(error)
             }
         }
         else if (method === 'PUT') {
             try {
                 setSubiendo(true)
-                console.log("PUT")
-                console.log(data)
-                //const res: IEmpresaShort = await backend.put(`http://localhost:8081/empresa/${data.id}/short`, data);
                 const res: IArticuloManufacturado = await backend.putConImagen(`${import.meta.env.VITE_LOCAL}ArticuloManufacturado/save/${values.id}`, data, files);
-
-                //  const subirImagen = await subirImagenes(res.id, values.imagenes)
-
-                //setOpen(false);
-
-                dispatch(setGlobalUpdated(true))
+                succes()
             } catch (error) {
                 setSubiendo(false)
+                errorMessage()
                 console.error(error)
             }
         }
@@ -130,9 +129,6 @@ const AManufacturadoForm: FC<IForm> = ({ open, setOpen, method }) => {
         try {
             await validationManufacturado.validate(values, { abortEarly: false });
             await postArticulo(values);
-            dispatch(setGlobalUpdated(true));
-            resetForm();
-            setOpen(false);
             setErrors({}); // limpia los errores
         } catch (error) {
 

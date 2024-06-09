@@ -16,6 +16,7 @@ import CategoriaInput from './Inputs/CategoriaInput';
 import { subirImagenes } from './Inputs/ImageFunction';
 import ImageInput from './Inputs/ImageInput';
 import { validationInsumo } from './Validaciones/AInsumoValidacion';
+import { errorMessage, successMessage } from '../../toasts/ToastAlerts';
 
 
 interface IForm {
@@ -75,24 +76,27 @@ const AInsumoForm: FC<IForm> = ({ open, setOpen, method }) => {
         });
     }, [])
 
+
+    const succes = () => {
+        dispatch(setGlobalUpdated(true))
+        setSubiendo(false)
+        setOpen(false);
+        resetForm();
+        dispatch(setGlobalUpdated(true));
+        successMessage();
+    }
+
+
     const postArticulo = async (data: FormState) => {
 
         if (method === 'POST') {
             try {
                 setSubiendo(true);
-                console.log("ssdaasddsads")
-                //TODO Cambiar el método para que coincida con el backend
                 const res: IArticuloInsumo = await backend.postConImagen(`${import.meta.env.VITE_LOCAL}ArticuloInsumo/save`, data, files);
-                console.log(res)
-                // const subirImagen = await subirImagenes(res.id, values.imagenes)
-
-                dispatch(setGlobalUpdated(true))
-                setSubiendo(false)
-                setOpen(false);
-
-                console.log(res)
+                succes()
             } catch (error) {
                 setSubiendo(false)
+                errorMessage()
                 console.error(error)
             }
         }
@@ -101,11 +105,10 @@ const AInsumoForm: FC<IForm> = ({ open, setOpen, method }) => {
                 setSubiendo(true);
                 //const res: IEmpresaShort = await backend.put(`http://localhost:8081/empresa/${data.id}/short`, data);
                 const res: IArticuloInsumo = await backend.postConImagen(`${import.meta.env.VITE_LOCAL}ArticuloInsumo/save`, data, files);
-                dispatch(setGlobalUpdated(true))
-                setSubiendo(false)
-                setOpen(false);
+                succes()
             } catch (error) {
                 setSubiendo(false)
+                errorMessage()
                 console.error(error)
             }
         }
@@ -115,9 +118,6 @@ const AInsumoForm: FC<IForm> = ({ open, setOpen, method }) => {
         try {
             await validationInsumo.validate(values, { abortEarly: false });
             await postArticulo(values);
-            dispatch(setGlobalUpdated(true));
-            resetForm();
-            setOpen(false);
             setErrors({}); // limpia los errores
         } catch (error) {
 

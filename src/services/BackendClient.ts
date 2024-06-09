@@ -103,7 +103,9 @@ export abstract class BackendClient<T> extends AbstractBackendClient<T> {
       console.log(data);
       return data;
     } catch (error) {
+      
       console.error(error);
+      throw error; 
     }
   }
 
@@ -134,6 +136,7 @@ export abstract class BackendClient<T> extends AbstractBackendClient<T> {
       console.log(data);
       return data;
     } catch (error) {
+      throw error;
       console.error(error);
     }
   }
