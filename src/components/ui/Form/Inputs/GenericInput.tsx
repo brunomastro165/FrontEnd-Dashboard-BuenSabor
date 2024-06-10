@@ -1,9 +1,5 @@
 import { useEffect, useState } from "react"
-
-export const genericInput = (name: string, type: string, value: any, handleChange: any, errors: any) => {
-
-    // Asi podemos acceder de forma dinámica a las propiedades del objeto 'errors'
-    //errors?.[name]
+export const genericInput = (name, type, value, handleChange, errors) => {
     const [textColor, setTextColor] = useState('');
 
     useEffect(() => {
@@ -17,30 +13,28 @@ export const genericInput = (name: string, type: string, value: any, handleChang
     }, [errors]);
 
     return (
-        <>
-            <div className="flex flex-col justify-center items-start w-full h-min">
-                <div className="my-4 w-full ">
-                    {/* <h1 className='font-Roboto text-xl first-letter:uppercase'>{name}</h1> */}
-                    <label htmlFor={name} className="font-Roboto text-xl first-letter:uppercase" >
-                        <h1 className={`first-letter:uppercase transition-all duration-500 ${textColor}`}>{name}</h1>
-                    </label>
-                    <input
-                        type={type}
-                        name={name}
-                        id={name}
-                        value={value}
-                        onChange={handleChange}
-                        required
-                        placeholder=""
-                        className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-red-600 peer 
-                transition-colors" />
-                </div>
-
-                <h1 className={`font-Roboto h-5 mb-4  flex text-start justify-start text-red-600 transition-all duration-500 ${errors?.[name] || 'opacity-0'}`}>{errors?.[name]}</h1>
+        <div className="flex flex-col justify-center items-start w-full h-min">
+            <div className="my-4 w-full">
+                <label htmlFor={name} className="font-Roboto text-xl first-letter:uppercase">
+                    <h1 className={`first-letter:uppercase transition-all duration-500 ${textColor}`}>{name}</h1>
+                </label>
+                <input
+                    type={type}
+                    name={name}
+                    id={name}
+                    value={value}
+                    onChange={handleChange}
+                    required
+                    placeholder=""
+                    className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-red-600 peer 
+                transition-colors"
+                />
             </div>
-        </>
-    )
-}
+            <h1 className={`font-Roboto h-5 mb-4 flex text-start justify-start text-red-600 transition-all duration-500 ${errors?.[name] || 'opacity-0'}`}>{errors?.[name]}</h1>
+        </div>
+    );
+};
+
 
 export const fileInput = (key: string, handleFileChange: any) => {
     return (

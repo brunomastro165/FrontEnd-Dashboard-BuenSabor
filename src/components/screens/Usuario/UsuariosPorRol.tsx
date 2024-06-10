@@ -8,12 +8,18 @@ import { IItem } from '../../../types/Table/TableItem';
 import { BackendClient, BackendMethods } from '../../../services/BackendClient';
 import { useAuth0 } from '@auth0/auth0-react';
 import { IEmpleado } from '../../../types/Empleado';
+import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
+import { setGlobalUpdated } from '../../../redux/slices/globalUpdate';
 
 const UsuariosPorRol = () => {
 
     const backend = new BackendMethods()
 
     const [loading, setLoading] = useState<boolean>(false);
+
+    const updated = useAppSelector((state) => state.GlobalUpdated.updated)
+
+    const dispatch = useAppDispatch();
 
     const [empleados, setEmpleados] = useState<IEmpleado[]>([])
 
@@ -27,18 +33,18 @@ const UsuariosPorRol = () => {
         return empleadoData.map(empleado => ({
             id: empleado.id,
             denominacion: empleado.nombre,
-            param2: empleado.apellido,
+            param2: empleado.telefono,
             param3: empleado.email,
-            param4: empleado.rol,
+            param4: empleado.tipoEmpleado,
             endpoint: 'empleado'
         }));
     }
 
     useEffect(() => {
-
         const getEmpleados = async () => {
             try {
-                const res: IEmpleado[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}`, getAccessTokenSilently) as IEmpleado[]
+                //TODO ESTO TIENE QUE FILTRAR POR EMPRESA/SUCURSAL
+                const res: IEmpleado[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}empleado`, getAccessTokenSilently) as IEmpleado[]
                 const data: IItem[] = transformData(res)
                 setData(data);
                 setEmpleados(res)
@@ -47,8 +53,8 @@ const UsuariosPorRol = () => {
             }
         }
         getEmpleados();
-
-    }, [loading])
+        dispatch(setGlobalUpdated(false))
+    }, [loading, updated])
 
     return (
         <>
@@ -57,10 +63,10 @@ const UsuariosPorRol = () => {
                 data={data}
                 loading={loading}
                 row1="ID"
-                row2="Nombre de usuario"
-                row3="Auth0Id"
-                row4="Rol"
-                row5=""
+                row2="Nombre"
+                row3="Teléfono"
+                row4="Email"
+                row5="Rol"
                 endpoint={`empleado`}
             />
         </>

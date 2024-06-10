@@ -9,9 +9,29 @@ interface FormValues {
 export const useForm = <T extends FormValues>(initialValues: T) => {
   const [values, setValues] = useState<T>(initialValues);
 
-  const handleChange = (event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>) => {
+  // const handleChange = (event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>) => {
+  //   const { value, name } = event.target;
+  //   setValues({ ...values, [`${name}`]: value });
+  // };
+
+  const handleChange = (
+    event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>
+  ) => {
     const { value, name } = event.target;
-    setValues({ ...values, [`${name}`]: value });
+
+    // Check if the name contains a dot, which indicates nested properties
+    if (name.includes(".")) {
+      const [mainProp, subProp] = name.split(".");
+      setValues((prevValues) => ({
+        ...prevValues,
+        [mainProp]: {
+          ...prevValues[mainProp],
+          [subProp]: value,
+        },
+      }));
+    } else {
+      setValues({ ...values, [name]: value });
+    }
   };
 
   //PARA SELECCIONES DE IMAGENES

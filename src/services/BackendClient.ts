@@ -148,6 +148,47 @@ export abstract class BackendClient<T> extends AbstractBackendClient<T> {
     }
   }
 
+  async postConImagenIndividual(
+    url: string,
+    entity: T,
+    file: File,
+    getAccessTokenSilently: any
+  ) {
+    const token = await getAccessTokenSilently({
+      authorizationParams: {
+        audience: import.meta.env.VITE_AUTH0_AUDIENCE,
+      },
+    });
+
+    const formData = new FormData();
+    const blob = new Blob([JSON.stringify(entity)], {
+      type: "application/json",
+    });
+    formData.append("entity", blob);
+    formData.append("file", file);
+
+    try {
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      console.log(data);
+      return data;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  }
+
   async putConImagen(
     url: string,
     entity: T,

@@ -7,7 +7,9 @@ export interface IEmpleado {
   nombre: string;
   apellido: string;
   email: string;
+  telefono: string;
+  usuario: IUsuarioEmpleado;
   domicilio: IDomicilio;
-  rol: string;
+  tipoEmpleado: string;
   sucursal: ISucursalShort;
 }

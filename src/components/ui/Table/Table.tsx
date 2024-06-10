@@ -15,6 +15,7 @@ import GlobalInitialValues, { setGlobalInitialValues } from '../../../redux/slic
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux'
 import GenericWaiter from '../Waiters/GenericWaiter'
 import { setBorrado } from '../../../redux/slices/borradosLogicamente'
+import EmpleadoForm from '../Form/EmpleadoForm'
 
 
 const Table: FC<ITable> = ({ items, row1, row2, row3, row4, row5, endpoint }) => {
@@ -67,6 +68,23 @@ const Table: FC<ITable> = ({ items, row1, row2, row3, row4, row5, endpoint }) =>
                     esParaElaborar: null,
                     unidadMedida: {},
                     idCategoria: 0,
+                }
+            ))
+        }
+
+        else if (endpoint === "empleado") {
+            dispatch(setGlobalInitialValues(
+                {
+                    id: 0,
+                    eliminado: false,
+                    nombre: '',
+                    apellido: '',
+                    email: '',
+                    telefono: '',
+                    domicilio: {},
+                    usuario: {},
+                    rol: '',
+                    idSucursal: 0,
                 }
             ))
         }
@@ -146,9 +164,9 @@ const Table: FC<ITable> = ({ items, row1, row2, row3, row4, row5, endpoint }) =>
                         <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
                         <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle  w-full md:w-1/2">
                             {/* {endpoint === "empresas" && <EmpresaForm open={open} setOpen={setOpen} method='POST' />} */}
-                            {endpoint === "ArticuloManufacturado" && <AManufacturadoForm open={open} setOpen={setOpen} method='POST' />}
-                            {endpoint === "ArticuloInsumo" && <AInsumoForm open={open} setOpen={setOpen} method='POST' />}
-                            {endpoint === "usuarios" && <UsuarioForm open={open} setOpen={setOpen} />}
+                            {endpoint === "ArticuloManufacturado" && <AManufacturadoForm open={open} setOpen={setOpen} method='POST' key={1} />}
+                            {endpoint === "ArticuloInsumo" && <AInsumoForm open={open} setOpen={setOpen} method='POST' key={1} />}
+                            {endpoint === "empleado" && <EmpleadoForm open={open} setOpen={setOpen} method='POST' key={1} />}
                             {/* {endpoint === "sucursal" && <SucursalForm open={open} setOpen={setOpen} method='POST' />} */}
                         </div>
                     </div>
