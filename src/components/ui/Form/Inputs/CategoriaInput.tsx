@@ -10,6 +10,7 @@ import { BackendMethods } from "../../../../services/BackendClient";
 import { setGlobalUpdated } from "../../../../redux/slices/globalUpdate";
 import { ICategoriaShort } from "../../../../types/ShortDtos/CategoriaShort";
 import { useParams } from "react-router-dom";
+import { useAuth0 } from "@auth0/auth0-react";
 
 
 interface CategoriaInput {
@@ -27,6 +28,8 @@ const CategoriaInput: FC<CategoriaInput> = ({ setLoaded, setIdCategoria, handleC
 
     const dispatch = useAppDispatch()
 
+    const {getAccessTokenSilently} = useAuth0()
+
     const esInsumo = useAppSelector((state) => state.GlobalEsInsumo.esInsumo)
 
     const { idSucursales } = useParams();
@@ -36,7 +39,7 @@ const CategoriaInput: FC<CategoriaInput> = ({ setLoaded, setIdCategoria, handleC
     const updated = useAppSelector((state) => state.GlobalUpdated.updated)
 
     const getCategorias = async () => {
-        const res: ICategoriaShort[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}sucursal/getCategorias/${idSucursales}`) as ICategoriaShort[];
+        const res: ICategoriaShort[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}sucursal/getCategorias/${idSucursales}`, getAccessTokenSilently) as ICategoriaShort[];
         const categoriaExistente = res.filter((categoria) => categoria.eliminado === false)
         const categoriaFiltrada = categoriaExistente.filter((categoria) => categoria.esInsumo === esInsumo)
         setCategorias(categoriaFiltrada)

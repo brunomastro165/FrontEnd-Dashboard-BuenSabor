@@ -78,7 +78,7 @@ const BasePage: FC<IBasePage> = ({ data, title, loading, row1, row2, row3, row4,
                     </div>
                 </div>
 
-  
+
             </div>
         </>
     )

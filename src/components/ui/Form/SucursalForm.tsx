@@ -22,6 +22,7 @@ import { setGlobalError } from '../../../redux/slices/globalError';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { errorMessage, successMessage } from '../../toasts/ToastAlerts';
+import { useAuth0 } from '@auth0/auth0-react';
 
 interface IForm {
     open: boolean;
@@ -55,6 +56,8 @@ class GenericBackend extends BackendClient<T> { } //Métodos genéricos
 type FileWithPreview = File & { preview: string };
 
 const SucursalForm: FC<IForm> = ({ open, setOpen, data, method }) => {
+
+    const {getAccessTokenSilently} = useAuth0()
 
     const [subiendo, setSubiendo] = useState<boolean>(false);
 
@@ -107,7 +110,7 @@ const SucursalForm: FC<IForm> = ({ open, setOpen, data, method }) => {
             try {
                 setSubiendo(true)
                 // const res: IEmpresaShort = await backend.post(`${import.meta.env.VITE_LOCAL}sucursal`, data);
-                const res: ISucursalShort = await backend.postConImagen(`${import.meta.env.VITE_LOCAL}sucursal/save`, data, files)
+                const res: ISucursalShort = await backend.postConImagen(`${import.meta.env.VITE_LOCAL}sucursal/save`, data, files, getAccessTokenSilently)
                 succes()
             } catch (error) {
                 errorMessage();
@@ -187,7 +190,7 @@ const SucursalForm: FC<IForm> = ({ open, setOpen, data, method }) => {
     useEffect(() => {
         const provincias = async () => {
             try {
-                const res: IProvincia[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}provincia`)
+                const res: IProvincia[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}provincia`, getAccessTokenSilently)
                 setProvincias(res);
                 console.log(res)
             } catch (error) {
@@ -202,7 +205,7 @@ const SucursalForm: FC<IForm> = ({ open, setOpen, data, method }) => {
 
         const localidades = async () => {
             try {
-                const res: ILocalidad[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}localidad/findByProvincia/${selectedProvincia?.id}`)
+                const res: ILocalidad[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}localidad/findByProvincia/${selectedProvincia?.id}`, getAccessTokenSilently)
                 setLocalidades(res);
                 console.log(res)
             } catch (error) {

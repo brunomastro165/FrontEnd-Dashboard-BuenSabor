@@ -11,6 +11,7 @@ import { setGlobalUpdated } from '../../../redux/slices/globalUpdate';
 import { setGlobalInitialValues } from '../../../redux/slices/globalInitialValues';
 import PromoForm from '../Form/PromoForm';
 import { ISucursal } from '../../../types/Sucursal';
+import { useAuth0 } from '@auth0/auth0-react';
 
 const CardPromo: FC<IPromos> = ({ denominacion, descripcionDescuento, detalles, fechaDesde, fechaHasta, horaDesde, horaHasta, id, imagenes, precioPromocional, tipoPromocion, eliminado, sucursales }) => {
 
@@ -23,6 +24,7 @@ const CardPromo: FC<IPromos> = ({ denominacion, descripcionDescuento, detalles, 
 
     const [idSucursales, setIdSucursales] = useState<number[]>([]);
 
+    const {getAccessTokenSilently} = useAuth0();
 
     useEffect(() => {
         async function extraerIdSucursal() {
@@ -102,7 +104,7 @@ const CardPromo: FC<IPromos> = ({ denominacion, descripcionDescuento, detalles, 
     const put = async () => {
         try {
 
-            const res: IPromos = await backend.getById(`${import.meta.env.VITE_LOCAL}promocion/${id}`) as IPromos; //Hice esto porque pasarlo por props me daba errores
+            const res: IPromos = await backend.getById(`${import.meta.env.VITE_LOCAL}promocion/${id}`, getAccessTokenSilently) as IPromos; //Hice esto porque pasarlo por props me daba errores
             console.log("RESPONSE DEL BACKEND")
             console.log(res)
             dispatch(setGlobalInitialValues(

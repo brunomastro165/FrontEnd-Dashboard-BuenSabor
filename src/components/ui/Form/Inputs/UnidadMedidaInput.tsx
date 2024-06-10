@@ -8,6 +8,7 @@ import { setUnidades } from "../../../../redux/slices/unidadMedida";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { BackendMethods } from "../../../../services/BackendClient";
 import { setGlobalUpdated } from "../../../../redux/slices/globalUpdate";
+import { useAuth0 } from "@auth0/auth0-react";
 
 
 interface UnidadInput {
@@ -27,6 +28,8 @@ const UnidadMedidaInput: FC<UnidadInput> = ({ loaded, openUnidad, setLoaded, set
 
     const dispatch = useAppDispatch()
 
+    const {getAccessTokenSilently} = useAuth0()
+
     const [unidadesValidas, setUnidadesValidas] = useState<IUnidadMedida[]>([])
 
     const unidades = useAppSelector((state) => state.UnidadesMedida.UnidadesMedida)
@@ -34,7 +37,7 @@ const UnidadMedidaInput: FC<UnidadInput> = ({ loaded, openUnidad, setLoaded, set
     const updated = useAppSelector((state) => state.GlobalUpdated.updated)
 
     const getUnidades = async () => {
-        const res: IUnidadMedida[] = await fetchData(`${import.meta.env.VITE_LOCAL}UnidadMedida`);
+        const res: IUnidadMedida[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}UnidadMedida`, getAccessTokenSilently ) as IUnidadMedida[];
         const unidadesHabilitadas = res.filter((unidad) => !unidad.eliminado)
         setUnidadesValidas(unidadesHabilitadas)
         setLoaded(true);
@@ -45,7 +48,6 @@ const UnidadMedidaInput: FC<UnidadInput> = ({ loaded, openUnidad, setLoaded, set
     //     const res = await backend.delete(`${import.meta.env.VITE_LOCAL}UnidadMedida/${id}`)
     //     dispatch(setGlobalUpdated(true))
     // }
-
 
     console.log(unidadesValidas)
 

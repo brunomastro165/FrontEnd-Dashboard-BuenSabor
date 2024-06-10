@@ -12,7 +12,7 @@ const NavBar: FC<INavBar> = ({ title }) => {
         <div className='w-full items-center flex justify-between bg-white p-4 fixed z-50 shadow-md'>
             <h1 className='font-Roboto text-2xl text-red-600 '>{title}</h1>
 
-            <div className='flex items-center space-x-4'>
+            <div className='flex items-center space-x-4 mr-72'>
                 <LoginButton />
                 <LogoutButton />
             </div>

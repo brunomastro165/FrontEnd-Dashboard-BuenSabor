@@ -2,6 +2,7 @@ import React, { ChangeEvent, FC, useEffect, useState } from 'react'
 import { IEmpresa } from '../../../../types/Empresa';
 import { ISucursal } from '../../../../types/Sucursal';
 import { BackendMethods } from '../../../../services/BackendClient';
+import { useAuth0 } from '@auth0/auth0-react';
 
 interface ISucursalesInput {
     values: any,
@@ -13,12 +14,14 @@ const SucursalesInput: FC<ISucursalesInput> = ({ setValues, values, idEmpresa })
 
     const backend = new BackendMethods();
 
+    const {getAccessTokenSilently} = useAuth0()
+
     const [sucursalesPorEmpresa, setSucursalesPorEmpresa] = useState<ISucursal[]>([]);
 
     const [sucursalesSeleccionadas, setSucursalesSeleccionadas] = useState<ISucursal[]>([]);
 
     const getSucursalesPorEmpresa = async () => {
-        const res: IEmpresa = await backend.getById(`${import.meta.env.VITE_LOCAL}empresa/sucursales/${idEmpresa}`) as IEmpresa
+        const res: IEmpresa = await backend.getById(`${import.meta.env.VITE_LOCAL}empresa/sucursales/${idEmpresa}`, getAccessTokenSilently) as IEmpresa
         setSucursalesPorEmpresa(res.sucursales);
     }
 

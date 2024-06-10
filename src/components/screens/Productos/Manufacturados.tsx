@@ -14,10 +14,14 @@ import { setGlobalUpdated } from '../../../redux/slices/globalUpdate';
 import { IArticuloManufacturadoCategoria } from '../../../types/SpecialDtos/ArticuloManufacturadoCategoria';
 import GlobalEsInsumo, { setEsInsumo } from '../../../redux/slices/esInsumo';
 import GlobalCategory from '../../../redux/slices/globalCategory';
+import { useAuth0 } from '@auth0/auth0-react';
 
 //class Backend extends BackendClient<IArticuloManufacturadoCategoria> { }
 
 const Manufacturados = () => {
+
+
+    const { getAccessTokenSilently } = useAuth0();
 
     const backend = new BackendMethods();
 
@@ -68,14 +72,14 @@ const Manufacturados = () => {
         const fetchManufacturado = async () => {
 
             if (selectedCategory !== 'Todos') {
-                const manufacturados: IArticuloManufacturadoCategoria[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}ArticuloManufacturado/getArticulosCategoria/${idCategory}`) as IArticuloManufacturadoCategoria[];
+                const manufacturados: IArticuloManufacturadoCategoria[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}ArticuloManufacturado/getArticulosCategoria/${idCategory}`, getAccessTokenSilently) as IArticuloManufacturadoCategoria[];
                 const manufacturadosHabilitados: IArticuloManufacturadoCategoria[] = manufacturados.filter((articulo) => articulo.eliminado === borrados)
                 const transformedData = transformData(manufacturadosHabilitados);
                 setData(transformedData);
             }
             
             else {
-                const manufacturados: IArticuloManufacturadoCategoria[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}ArticuloManufacturado/buscar/${idSucursales}`) as IArticuloManufacturadoCategoria[];
+                const manufacturados: IArticuloManufacturadoCategoria[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}ArticuloManufacturado/buscar/${idSucursales}`, getAccessTokenSilently) as IArticuloManufacturadoCategoria[];
                 const manufacturadosHabilitados: IArticuloManufacturadoCategoria[] = manufacturados.filter((articulo) => articulo.eliminado === borrados)
                 const transformedData = transformData(manufacturadosHabilitados);
                 setData(transformedData);

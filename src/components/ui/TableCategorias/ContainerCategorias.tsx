@@ -11,11 +11,14 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { BsPencil } from "react-icons/bs";
 import GenericWaiter from '../Waiters/GenericWaiter';
 import { GoChevronDown } from "react-icons/go";
+import { useAuth0 } from '@auth0/auth0-react';
 
 
 class CRUDMetods extends BackendClient<any> { }
 
 const ContainerCategorias = () => {
+
+  const { getAccessTokenSilently } = useAuth0();
 
   const backend = new CRUDMetods();
 
@@ -41,7 +44,7 @@ const ContainerCategorias = () => {
 
     //TODO TRAER CATEGORÍAS SIN ARTICULOS (PARA OPTIMIZAR LA CARGA DE DATOS)
     const getCategorias = async () => {
-      const res: ICategoria[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}sucursal/getCategorias/${idSucursales}`);
+      const res: ICategoria[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}sucursal/getCategorias/${idSucursales}`, getAccessTokenSilently);
 
       const categoriasPadre: ICategoria[] = res.filter((categoria) => categoria.esPadre === true)
 

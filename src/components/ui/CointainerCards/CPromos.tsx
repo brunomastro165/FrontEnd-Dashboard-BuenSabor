@@ -9,8 +9,11 @@ import SearchBar from '../SearchBar/SearchBar';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { setGlobalInitialValues } from '../../../redux/slices/globalInitialValues';
 import { setGlobalUpdated } from '../../../redux/slices/globalUpdate';
+import { useAuth0 } from '@auth0/auth0-react';
 
 const CPromos = () => {
+
+    const { getAccessTokenSilently } = useAuth0();
 
     const backend = new BackendMethods();
 
@@ -53,7 +56,7 @@ const CPromos = () => {
     }
 
     const getPromos = async () => {
-        const res: IPromos[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}sucursal/getPromociones/${idSucursales}`) as IPromos[];
+        const res: IPromos[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}sucursal/getPromociones/${idSucursales}`, getAccessTokenSilently) as IPromos[];
         const promosHabilitadas = res.filter((promo) => !promo.eliminado)
         setPromos(promosHabilitadas)
         dispatch(setGlobalUpdated(false))

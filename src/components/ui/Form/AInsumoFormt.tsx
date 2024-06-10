@@ -17,6 +17,7 @@ import { subirImagenes } from './Inputs/ImageFunction';
 import ImageInput from './Inputs/ImageInput';
 import { validationInsumo } from './Validaciones/AInsumoValidacion';
 import { errorMessage, successMessage } from '../../toasts/ToastAlerts';
+import { useAuth0 } from '@auth0/auth0-react';
 
 
 interface IForm {
@@ -63,6 +64,8 @@ const AInsumoForm: FC<IForm> = ({ open, setOpen, method }) => {
 
     const dispatch = useAppDispatch();
 
+    const {getAccessTokenSilently} = useAuth0()
+
     //USE FORM
 
     const { handleChange, values, resetForm, handleChoose, handleFileDrop, setValues } = useForm<FormState>(initialValues)
@@ -92,7 +95,7 @@ const AInsumoForm: FC<IForm> = ({ open, setOpen, method }) => {
         if (method === 'POST') {
             try {
                 setSubiendo(true);
-                const res: IArticuloInsumo = await backend.postConImagen(`${import.meta.env.VITE_LOCAL}ArticuloInsumo/save`, data, files);
+                const res: IArticuloInsumo = await backend.postConImagen(`${import.meta.env.VITE_LOCAL}ArticuloInsumo/save`, data, files, getAccessTokenSilently);
                 succes()
             } catch (error) {
                 setSubiendo(false)
@@ -104,7 +107,7 @@ const AInsumoForm: FC<IForm> = ({ open, setOpen, method }) => {
             try {
                 setSubiendo(true);
                 //const res: IEmpresaShort = await backend.put(`http://localhost:8081/empresa/${data.id}/short`, data);
-                const res: IArticuloInsumo = await backend.postConImagen(`${import.meta.env.VITE_LOCAL}ArticuloInsumo/save`, data, files);
+                const res: IArticuloInsumo = await backend.postConImagen(`${import.meta.env.VITE_LOCAL}ArticuloInsumo/save`, data, files, getAccessTokenSilently);
                 succes()
             } catch (error) {
                 setSubiendo(false)

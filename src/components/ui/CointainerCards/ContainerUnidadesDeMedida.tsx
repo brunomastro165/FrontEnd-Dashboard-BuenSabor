@@ -8,9 +8,11 @@ import UnidadMedidaForm from '../Form/UnidadMedidaForm';
 import { setGlobalInitialValues } from '../../../redux/slices/globalInitialValues';
 import CardUnidadMedida from '../Cards/CardUnidadMedida';
 import SearchBar from '../SearchBar/SearchBar';
+import { useAuth0 } from '@auth0/auth0-react';
 
 const ContainerUnidadesDeMedida = () => {
 
+    const {getAccessTokenSilently} = useAuth0()
     const backend = new BackendMethods();
 
     const dispatch = useAppDispatch();
@@ -32,7 +34,7 @@ const ContainerUnidadesDeMedida = () => {
     }
 
     const getUnidades = async () => {
-        const res: IUnidadMedida[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}UnidadMedida`) as IUnidadMedida[];
+        const res: IUnidadMedida[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}UnidadMedida`, getAccessTokenSilently) as IUnidadMedida[];
         const unidadesHabilitadas = res.filter((unidad) => !unidad.eliminado)
         setUnidades(unidadesHabilitadas)
         dispatch(setGlobalUpdated(false))

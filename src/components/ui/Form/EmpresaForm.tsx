@@ -12,6 +12,7 @@ import Swal from 'sweetalert2'
 import { validationEmpresa } from './Validaciones/EmpresaValidacion';
 import ImageInput from './Inputs/ImageInput';
 import { errorMessage, successMessage } from '../../toasts/ToastAlerts';
+import { useAuth0 } from '@auth0/auth0-react';
 
 interface IForm {
   open: boolean;
@@ -37,6 +38,8 @@ class GenericBackend extends BackendClient<IEmpresaShort> { } //Métodos genéri
 const EmpresaForm: FC<IForm> = ({ open, setOpen, data, method }) => {
 
   const [subiendo, setSubiendo] = useState<boolean>(false);
+
+  const {getAccessTokenSilently} = useAuth0()
 
   const backend = new GenericBackend(); //Objeto de BackendClient
 
@@ -84,7 +87,7 @@ const EmpresaForm: FC<IForm> = ({ open, setOpen, data, method }) => {
     if (method === 'POST') {
       try {
         setSubiendo(true)
-        const res: IEmpresaShort = await backend.postConImagen(`${import.meta.env.VITE_LOCAL}empresa/save`, data as IEmpresaShort, files);
+        const res: IEmpresaShort = await backend.postConImagen(`${import.meta.env.VITE_LOCAL}empresa/save`, data as IEmpresaShort, files, getAccessTokenSilently);
         succes()
       } catch (error) {
         errorMessage()

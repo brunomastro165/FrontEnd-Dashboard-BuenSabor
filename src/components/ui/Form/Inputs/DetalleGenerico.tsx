@@ -7,6 +7,7 @@ import { BackendMethods } from '../../../../services/BackendClient';
 import { IDetallePromo } from '../../../../types/DetallePromo';
 import { IDetallePromoCreate } from '../../../../types/CreateDtos/DetallePromoCreate';
 import { useParams } from 'react-router-dom';
+import { useAuth0 } from '@auth0/auth0-react';
 
 
 interface IDetalleInput {
@@ -26,6 +27,8 @@ interface IArticuloGenerico {
 const DetalleGenerico: FC<IDetalleInput> = ({ values, setValues, idSucursales }) => {
 
     const backend = new BackendMethods()
+
+    const {getAccessTokenSilently} = useAuth0();
 
     const [aMDetalles, setAmDetalles] = useState<IDetallePromoCreate[]>([])
 
@@ -93,8 +96,8 @@ const DetalleGenerico: FC<IDetalleInput> = ({ values, setValues, idSucursales })
     useEffect(() => {
 
         const traerArticulos = async () => {
-            values.detalles?.map(async (detalle) => {
-                const res: IArticuloGenerico[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}ArticuloInsumo/getArticulos/${detalle.insumos.denominacion}/${idSucursales}`) as IArticuloGenerico[]
+            values.detalles?.map(async (detalle: any) => {
+                const res: IArticuloGenerico[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}ArticuloInsumo/getArticulos/${detalle.insumos.denominacion}/${idSucursales}`, getAccessTokenSilently) as IArticuloGenerico[]
                 setArticulosGenericos(res);
                 setFiltroGenerico(res);
             })
@@ -198,7 +201,7 @@ const DetalleGenerico: FC<IDetalleInput> = ({ values, setValues, idSucursales })
             return 'no hay búsqueda';
         }
         else {
-            const res: IArticuloGenerico[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}ArticuloInsumo/getArticulos/${busqueda}/${idSucursales}`) as IArticuloGenerico[]
+            const res: IArticuloGenerico[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}ArticuloInsumo/getArticulos/${busqueda}/${idSucursales}`, getAccessTokenSilently) as IArticuloGenerico[]
             setFiltroGenerico(res);
             setArticulosGenericos(res);
             return res;

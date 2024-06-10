@@ -57,6 +57,7 @@ const ImageInput: FC<IImageInput> = ({ files, setFiles, id, imagenes }) => {
                             }
                         })
                     );
+                    //@ts-ignore
                     setFiles(prevFiles => [...prevFiles, ...newFiles.filter(file => file !== undefined)]);
                 }
             } catch (error) {

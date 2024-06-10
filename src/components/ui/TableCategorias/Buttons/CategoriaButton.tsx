@@ -11,6 +11,7 @@ import { IoEnterOutline } from "react-icons/io5";
 import { FaRegArrowAltCircleDown } from "react-icons/fa";
 import { BackendClient, BackendMethods } from '../../../../services/BackendClient';
 import { setGlobalUpdated } from '../../../../redux/slices/globalUpdate';
+import { useAuth0 } from '@auth0/auth0-react';
 
 
 interface ICategoriaButton {
@@ -20,13 +21,15 @@ interface ICategoriaButton {
 
 const CategoriaButton: FC<ICategoriaButton> = ({ categoria, edicion }) => {
 
+    const {getAccessTokenSilently} = useAuth0()
+
     const backend = new BackendMethods()
 
     const [idSucursalesC, setIdSucursales] = useState<number[]>([])
 
     useEffect(() => {
         async function extraerIdSucursal(categoria: ICategoria) {
-            const res: ICategoria = await backend.getById(`${import.meta.env.VITE_LOCAL}categoria/${categoria.id}`) as ICategoria;
+            const res: ICategoria = await backend.getById(`${import.meta.env.VITE_LOCAL}categoria/${categoria.id}`, getAccessTokenSilently) as ICategoria;
             const id = res.sucursales.map((sucursal) => sucursal.id)
             setIdSucursales(id)
         }

@@ -21,6 +21,7 @@ import ImageInput from './Inputs/ImageInput';
 import DetalleGenerico from './Inputs/DetalleGenerico';
 import { validationManufacturado } from './Validaciones/AManufacturadoValidacion';
 import { errorMessage, successMessage } from '../../toasts/ToastAlerts';
+import { useAuth0 } from '@auth0/auth0-react';
 
 interface IForm {
     open: boolean;
@@ -50,6 +51,8 @@ class GenericBackend extends BackendClient<T> { } //Métodos genéricos
 type FileWithPreview = File & { preview: string };
 
 const AManufacturadoForm: FC<IForm> = ({ open, setOpen, method }) => {
+
+    const {getAccessTokenSilently} = useAuth0();
 
     const [subiendo, setSubiendo] = useState<boolean>(false);
 
@@ -104,7 +107,7 @@ const AManufacturadoForm: FC<IForm> = ({ open, setOpen, method }) => {
         if (method === 'POST') {
             try {
                 setSubiendo(true)
-                const res: IArticuloManufacturado = await backend.postConImagen(`${import.meta.env.VITE_LOCAL}ArticuloManufacturado/save`, data, files);
+                const res: IArticuloManufacturado = await backend.postConImagen(`${import.meta.env.VITE_LOCAL}ArticuloManufacturado/save`, data, files, getAccessTokenSilently);
                 succes()
             } catch (error) {
                 setSubiendo(false)
@@ -115,7 +118,7 @@ const AManufacturadoForm: FC<IForm> = ({ open, setOpen, method }) => {
         else if (method === 'PUT') {
             try {
                 setSubiendo(true)
-                const res: IArticuloManufacturado = await backend.putConImagen(`${import.meta.env.VITE_LOCAL}ArticuloManufacturado/save/${values.id}`, data, files);
+                const res: IArticuloManufacturado = await backend.putConImagen(`${import.meta.env.VITE_LOCAL}ArticuloManufacturado/save/${values.id}`, data, files, getAccessTokenSilently);
                 succes()
             } catch (error) {
                 setSubiendo(false)
@@ -166,7 +169,7 @@ const AManufacturadoForm: FC<IForm> = ({ open, setOpen, method }) => {
 
     const getUnidades = async () => {
         try {
-            const res: IUnidadMedida[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}UnidadMedida`);
+            const res: IUnidadMedida[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}UnidadMedida`, getAccessTokenSilently);
             dispatch(setUnidades(res))
             setLoaded(true);
         } catch (error) {

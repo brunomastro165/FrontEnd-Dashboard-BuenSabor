@@ -89,6 +89,7 @@ const UnidadMedidaForm: FC<IForm> = ({ open, setOpen, method }) => {
             <div className='w-full'>
 
                 <div className="relative z-0 w-full mb-5 group">
+                    {/*@ts-ignore*/}
                     {genericInput('denominacion', "text", values.denominacion, handleChange)}
                 </div>
 

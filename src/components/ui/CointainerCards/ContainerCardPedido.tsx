@@ -4,10 +4,13 @@ import { BackendMethods } from '../../../services/BackendClient'
 import CardPedido from '../Cards/CardPedido';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { setGlobalUpdated } from '../../../redux/slices/globalUpdate';
+import { useAuth0 } from '@auth0/auth0-react';
 
 const ContainerCardPedido = () => {
 
     const backend = new BackendMethods();
+
+    const { getAccessTokenSilently } = useAuth0();
 
     const [pedidos, setPedidos] = useState<IPedido[]>([]);
 
@@ -19,7 +22,7 @@ const ContainerCardPedido = () => {
 
     useEffect(() => {
         const traerPedidos = async () => {
-            const res: IPedido[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}pedido`) as IPedido[];
+            const res: IPedido[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}pedido`, getAccessTokenSilently) as IPedido[];
             console.log(res);
             setPedidos(res);
         }

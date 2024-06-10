@@ -16,6 +16,7 @@ import { setGlobalUpdated } from '../../../redux/slices/globalUpdate';
 import { IArticuloManufacturado } from '../../../types/ArticuloManufacturado';
 
 import { IArticuloInsumo } from '../../../types/ArticuloInsumo';
+import { useAuth0 } from '@auth0/auth0-react';
 
 
 //@ts-ignore
@@ -24,6 +25,8 @@ class GenericBackend extends BackendClient<T> { } //Métodos genéricos
 const TableItem: FC<IItem> = ({ id, denominacion, param2, param3, param4, endpoint }) => {
 
     const CRUD = new GenericBackend();
+
+    const { getAccessTokenSilently } = useAuth0()
 
     const [data, setData] = useState([]);
 
@@ -36,7 +39,7 @@ const TableItem: FC<IItem> = ({ id, denominacion, param2, param3, param4, endpoi
     const fetchIndividual = async () => {
 
         try {
-            const response: any = await fetchData(`${import.meta.env.VITE_LOCAL}${endpoint}/${id}`)
+            const response: any = await CRUD.getById(`${import.meta.env.VITE_LOCAL}${endpoint}/${id}`, getAccessTokenSilently)
             console.log("RESPONSE")
             console.log(response);
             if (response.categoria) {

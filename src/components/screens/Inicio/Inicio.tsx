@@ -7,6 +7,7 @@ import { ISucursal } from "../../../types/Sucursal";
 import { IPromos } from "../../../types/Promos";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import { setGlobalUpdated } from "../../../redux/slices/globalUpdate";
+import { useAuth0 } from "@auth0/auth0-react";
 
 
 //@ts-ignore
@@ -15,6 +16,9 @@ class Backend extends BackendClient<T> { }
 const Inicio = () => {
 
     const backend = new Backend();
+
+
+    const { getAccessTokenSilently } = useAuth0();
 
     // JERARQUÍA DE DATOS
 
@@ -36,7 +40,7 @@ const Inicio = () => {
 
     const getEmpresas = async () => {
         try {
-            const res: IEmpresa[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}empresa/noEliminados`);
+            const res: IEmpresa[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}empresa/noEliminados`, getAccessTokenSilently);
             console.log("Empresas")
             console.log(res)
             setEmpresas(res);

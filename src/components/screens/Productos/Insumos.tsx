@@ -11,8 +11,12 @@ import { BackendMethods } from "../../../services/BackendClient";
 import { IArticuloInsumoCategoria } from "../../../types/SpecialDtos/ArticuloInsumoCategoria";
 import { setGlobalUpdated } from "../../../redux/slices/globalUpdate";
 import { setEsInsumo } from "../../../redux/slices/esInsumo";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const Insumos = () => {
+
+
+    const { getAccessTokenSilently } = useAuth0();
 
     const backend = new BackendMethods()
 
@@ -84,15 +88,16 @@ const Insumos = () => {
 
             if (selectedCategory !== 'Todos') {
                 //Usamos una función recursiva para traernos todos los articulos dentro de la categoria que seleccionamos
-                const insumos: IArticuloInsumoCategoria[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}categoria/getInsumos/${idCategoriaSeleccionada}`) as IArticuloInsumoCategoria[];
-                
+    const { getAccessTokenSilently } = useAuth0();
+                const insumos: IArticuloInsumoCategoria[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}categoria/getInsumos/${idCategoriaSeleccionada}`, getAccessTokenSilently) as IArticuloInsumoCategoria[];
+
                 //Filtramos por articulos eliminados (si lo igualamos a borrados, vamos a poder invertir la vista de los articulos eliminados)
                 const insumosHabilitados: IArticuloInsumoCategoria[] = insumos.filter((articulo) => articulo.eliminado === borrados)
                 const transformedData = transformData(insumosHabilitados);
                 setData(transformedData);
             }
             else {
-                const responseArticulos: IArticuloInsumoCategoria[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}sucursal/getInsumos/${idSucursales}`) as IArticuloInsumoCategoria[];
+                const responseArticulos: IArticuloInsumoCategoria[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}sucursal/getInsumos/${idSucursales}`, getAccessTokenSilently) as IArticuloInsumoCategoria[];
                 const insumosHabilitados: IArticuloInsumoCategoria[] = responseArticulos.filter((articulo) => articulo.eliminado === borrados)
                 const transformedData = transformData(insumosHabilitados);
                 setData(transformedData);

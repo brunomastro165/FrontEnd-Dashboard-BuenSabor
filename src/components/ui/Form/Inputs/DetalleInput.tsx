@@ -4,6 +4,7 @@ import { IArticuloManufacturadoDetalle } from '../../../../types/ArticuloManufac
 import { IArticuloInsumo } from '../../../../types/ArticuloInsumo';
 import { Dispatch } from '@reduxjs/toolkit';
 import { BackendMethods } from '../../../../services/BackendClient';
+import { useAuth0 } from '@auth0/auth0-react';
 
 
 interface IDetalleInput {
@@ -16,6 +17,8 @@ interface IDetalleInput {
 const DetalleInput: FC<IDetalleInput> = ({ values, setValues, idSucursales }) => {
 
     const backend = new BackendMethods()
+
+    const {getAccessTokenSilently} = useAuth0()
 
     const [aMDetalles, setAmDetalles] = useState<IArticuloManufacturadoDetalle[]>([])
 
@@ -130,7 +133,7 @@ const DetalleInput: FC<IDetalleInput> = ({ values, setValues, idSucursales }) =>
             return 'no hay búsqueda';
         }
         else {
-            const res: IArticuloInsumo[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}ArticuloInsumo/buscar/${busqueda}/${idSucursales}`) as IArticuloInsumo[]
+            const res: IArticuloInsumo[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}ArticuloInsumo/buscar/${busqueda}/${idSucursales}`, getAccessTokenSilently) as IArticuloInsumo[]
             setFiltroDetalle(res);
             setArticulosInsumo(res);
             return res;

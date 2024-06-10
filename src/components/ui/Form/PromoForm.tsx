@@ -21,6 +21,7 @@ import SucursalesInput from './Inputs/SucursalesInput';
 import { validationPromo } from './Validaciones/PromoValidacion';
 import * as Yup from 'yup'
 import { errorMessage, successMessage } from '../../toasts/ToastAlerts';
+import { useAuth0 } from '@auth0/auth0-react';
 
 interface IForm {
     open: boolean;
@@ -47,6 +48,9 @@ type FormState = {
 type FileWithPreview = File & { preview: string };
 
 const PromoForm: FC<IForm> = ({ open, setOpen, method }) => {
+
+
+    const {getAccessTokenSilently} = useAuth0()
 
     const [subiendo, setSubiendo] = useState<boolean>(false);
 
@@ -83,7 +87,7 @@ const PromoForm: FC<IForm> = ({ open, setOpen, method }) => {
             try {
                 //TODO Cambiar el método para que coincida con el backend
                 setSubiendo(true)
-                const res: IPromos = await backend.postConImagen(`${import.meta.env.VITE_LOCAL}promocion/save`, data, files);
+                const res: IPromos = await backend.postConImagen(`${import.meta.env.VITE_LOCAL}promocion/save`, data, files, getAccessTokenSilently);
                 succes();
             } catch (error) {
                 setSubiendo(false)
@@ -94,7 +98,7 @@ const PromoForm: FC<IForm> = ({ open, setOpen, method }) => {
         else if (method === 'PUT') {
             try {
                 setSubiendo(true)
-                const res: IPromos = await backend.putConImagen(`${import.meta.env.VITE_LOCAL}promocion/save/${values.id}`, data, files);
+                const res: IPromos = await backend.putConImagen(`${import.meta.env.VITE_LOCAL}promocion/save/${values.id}`, data, files, getAccessTokenSilently);
                 succes()
             } catch (error) {
                 setSubiendo(false)

@@ -8,8 +8,11 @@ import { setCategory } from '../../../redux/slices/globalCategory';
 import { ICategoriaShort } from '../../../types/ShortDtos/CategoriaShort';
 import { useParams } from 'react-router-dom';
 import { ICategoriaSinArticulo } from '../../../types/SpecialDtos/CategoriaSinArticulo';
+import { useAuth0 } from '@auth0/auth0-react';
 
 const CategoriaSelector = () => {
+
+    const { getAccessTokenSilently } = useAuth0();
 
     const back = new BackendMethods();
 
@@ -31,7 +34,7 @@ const CategoriaSelector = () => {
         const getAll = async () => {
 
             //SE TIENE QUE MODIFICAR ESTE MÉOTODO PARA QUE TRAIGA CATEGORIAS SIN ARTICULOS!!!
-            const res: ICategoriaSinArticulo[] = await back.getAll(`${import.meta.env.VITE_LOCAL}sucursal/getCategorias/${idSucursales}`) as ICategoriaSinArticulo[]
+            const res: ICategoriaSinArticulo[] = await back.getAll(`${import.meta.env.VITE_LOCAL}sucursal/getCategorias/${idSucursales}`, getAccessTokenSilently) as ICategoriaSinArticulo[]
 
             const categorias: ICategoriaSinArticulo[] = res.filter((categoria) => categoria.esInsumo === globalEsInsumo)
 

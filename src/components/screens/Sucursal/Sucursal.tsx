@@ -9,8 +9,11 @@ import { IEmpresaShort } from '../../../types/ShortDtos/EmpresaShort';
 import { IEmpresa } from '../../../types/Empresa';
 import { setGlobalUpdated } from '../../../redux/slices/globalUpdate';
 import NavBar from '../../ui/NavBar/NavBar';
+import { useAuth0 } from '@auth0/auth0-react';
 
 const Sucursal = () => {
+
+    const { getAccessTokenSilently } = useAuth0();
 
     const CRUD = new BackendMethods<IEmpresaShort>();
 
@@ -32,7 +35,7 @@ const Sucursal = () => {
 
         const fetchSucursal = async () => { //Método para llamar a todas las sucursales por su empresa
             try {
-                const res: IEmpresaShort = await CRUD.getById(`${import.meta.env.VITE_LOCAL}empresa/sucursales/${idEmpresa}`)
+                const res: IEmpresaShort = await CRUD.getById(`${import.meta.env.VITE_LOCAL}empresa/sucursales/${idEmpresa}`, getAccessTokenSilently)
                 const sucursales: ISucursalShort[] = res.sucursales;
                 console.log(sucursales)
                 dispatch(setGlobalUpdated(false))

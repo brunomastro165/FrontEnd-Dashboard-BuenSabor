@@ -4,11 +4,14 @@ import { IRol } from '../../../types/Rol';
 import CardRol from '../Cards/CardRol';
 import EmpresaForm from '../Form/EmpresaForm';
 import RolForm from '../Form/RolForm';
+import { useAuth0 } from '@auth0/auth0-react';
 
 //@ts-ignore
 class Backend extends BackendClient<T> { }
 
 const ContainerCardsRol = () => {
+
+    const { getAccessTokenSilently } = useAuth0();
 
     const backend = new Backend();
 
@@ -17,7 +20,7 @@ const ContainerCardsRol = () => {
     const [open, setOpen] = useState<boolean>(false);
 
     const getRol = async () => {
-        const res: IRol[] = await backend.getAll("https://backend-jsonserver-1.onrender.com/roles");
+        const res: IRol[] = await backend.getAll("https://backend-jsonserver-1.onrender.com/roles", getAccessTokenSilently);
         setRoles(res);
     }
 

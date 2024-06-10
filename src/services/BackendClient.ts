@@ -1,4 +1,5 @@
 // Importación de la clase abstracta AbstractBackendClient
+import { useAuth0 } from "@auth0/auth0-react";
 import { IArticuloManufacturado } from "../types/ArticuloManufacturado";
 import { AbstractBackendClient } from "./AbstractBackendClient";
 
@@ -46,19 +47,39 @@ export abstract class BackendClient<T> extends AbstractBackendClient<T> {
     return this.request(path, options);
   }
 
-  async getById(url: string): Promise<T> {
+  async getById(url: string, getAccessTokenSilently: any): Promise<T> {
+
+    const token = await getAccessTokenSilently({
+      authorizationParams: {
+        audience: import.meta.env.VITE_AUTH0_AUDIENCE,
+      },
+    });
+
     const path = url;
     const options: RequestInit = {
       method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     };
     return this.request(path, options);
   }
 
   // Método para obtener todos los elementos
-  async getAll(url: string): Promise<T[]> {
+  async getAll(url: string, getAccessTokenSilently: any): Promise<T[]> {
+
+    const token = await getAccessTokenSilently({
+      authorizationParams: {
+        audience: import.meta.env.VITE_AUTH0_AUDIENCE,
+      },
+    });
+
     const path = url;
     const options: RequestInit = {
       method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     };
     return this.requestAll(path, options);
   }
@@ -78,7 +99,14 @@ export abstract class BackendClient<T> extends AbstractBackendClient<T> {
     return this.request(path, options);
   }
 
-  async postConImagen(url: string, entity: T, files: File[]) {
+  async postConImagen(url: string, entity: T, files: File[], getAccessTokenSilently: any) {
+
+    const token = await getAccessTokenSilently({
+      authorizationParams: {
+        audience: import.meta.env.VITE_AUTH0_AUDIENCE,
+      },
+    });
+
     const formData = new FormData();
     const blob = new Blob([JSON.stringify(entity)], {
       type: "application/json",
@@ -92,6 +120,9 @@ export abstract class BackendClient<T> extends AbstractBackendClient<T> {
     try {
       const response = await fetch(url, {
         method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
         body: formData,
       });
 
@@ -103,15 +134,22 @@ export abstract class BackendClient<T> extends AbstractBackendClient<T> {
       console.log(data);
       return data;
     } catch (error) {
-      
+
       console.error(error);
-      throw error; 
+      throw error;
     }
   }
 
 
 
-  async putConImagen(url: string, entity: T, files: File[]) {
+  async putConImagen(url: string, entity: T, files: File[], getAccessTokenSilently: any) {
+
+    const token = await getAccessTokenSilently({
+      authorizationParams: {
+        audience: import.meta.env.VITE_AUTH0_AUDIENCE,
+      },
+    });
+
     const formData = new FormData();
     const blob = new Blob([JSON.stringify(entity)], {
       type: "application/json",
@@ -125,6 +163,9 @@ export abstract class BackendClient<T> extends AbstractBackendClient<T> {
     try {
       const response = await fetch(url, {
         method: "PUT",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
         body: formData,
       });
 
@@ -167,4 +208,4 @@ export abstract class BackendClient<T> extends AbstractBackendClient<T> {
   }
 }
 
-export class BackendMethods<T> extends BackendClient<T> {}
+export class BackendMethods<T> extends BackendClient<T> { }
