@@ -3,6 +3,7 @@ import { IPedido } from '../../../types/Pedido'
 import { BackendMethods } from '../../../services/BackendClient';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { setGlobalUpdated } from '../../../redux/slices/globalUpdate';
+import { useAuth0 } from '@auth0/auth0-react';
 
 interface IArticuloGenerico {
     id: number,
@@ -13,6 +14,8 @@ interface IArticuloGenerico {
 const CardPedido: FC<IPedido> = ({ cliente, domicilio, eliminado, empleado, estado, factura, fechaPedido, formaPago, id, sucursal, tipoEnvio, total, detallesPedido, horaEstimadaFinalizacion }) => {
 
     const backend = new BackendMethods();
+
+    const { getAccessTokenSilently } = useAuth0()
 
     console.log(horaEstimadaFinalizacion)
 
@@ -36,7 +39,7 @@ const CardPedido: FC<IPedido> = ({ cliente, domicilio, eliminado, empleado, esta
 
     const cambiarEstado = async (estado: string) => {
         try {
-            const res = await backend.put(`${import.meta.env.VITE_LOCAL}pedido/cambiarEstado/${id}`, estado);
+            const res = await backend.put(`${import.meta.env.VITE_LOCAL}pedido/cambiarEstado/${id}`, estado, getAccessTokenSilently);
             dispatch(setGlobalUpdated(true))
             console.log(res)
         } catch (error) {

@@ -28,7 +28,7 @@ const ImageInput: FC<IImageInput> = ({ files, setFiles, id, imagenes }) => {
         },
     });
 
-    const urlToFile = async (url, filename, mimeType) => {
+    const urlToFile = async (url: RequestInfo | URL, filename: string, mimeType: string) => {
         try {
             const res = await fetch(url);
             const buf = await res.arrayBuffer();

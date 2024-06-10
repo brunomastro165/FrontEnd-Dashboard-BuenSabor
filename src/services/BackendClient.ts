@@ -182,13 +182,21 @@ export abstract class BackendClient<T> extends AbstractBackendClient<T> {
     }
   }
   // Método para actualizar un elemento existente por su ID
-  async put(url: string, data: T): Promise<T> {
+  async put(url: string, data: T, getAccessTokenSilently: any): Promise<T> {
+
+    const token = await getAccessTokenSilently({
+      authorizationParams: {
+        audience: import.meta.env.VITE_AUTH0_AUDIENCE,
+      },
+    });
+
     const path = `${url}`;
     const options: RequestInit = {
       method: "PUT",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(data),
     };

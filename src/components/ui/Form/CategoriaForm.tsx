@@ -13,6 +13,7 @@ import { setGlobalUpdated } from '../../../redux/slices/globalUpdate';
 import SucursalesInput from './Inputs/SucursalesInput';
 import * as Yup from 'yup'
 import { validationCategoria } from './Validaciones/CategoriaValidacion';
+import { useAuth0 } from '@auth0/auth0-react';
 
 interface IForm {
     open: boolean;
@@ -42,6 +43,8 @@ type FormState = {
 class GenericBackend extends BackendClient<FormState> { } //Métodos genéricos 
 
 const CategoriaForm: FC<IForm> = ({ open, setOpen, method }) => {
+
+    const {getAccessTokenSilently} = useAuth0()
 
     const [subiendo, setSubiendo] = useState<boolean>(false);
 
@@ -96,7 +99,7 @@ const CategoriaForm: FC<IForm> = ({ open, setOpen, method }) => {
         else if (method === 'SUBPUT') {
             try {
                 setSubiendo(true)
-                const res: FormState = await backend.put(`${import.meta.env.VITE_LOCAL}categoria/addSubCategoria/${data.id}`, data);
+                const res: FormState = await backend.put(`${import.meta.env.VITE_LOCAL}categoria/addSubCategoria/${data.id}`, data, getAccessTokenSilently);
                 dispatch(setGlobalUpdated(true))
                 console.log("response desde el backend")
                 console.log(res)

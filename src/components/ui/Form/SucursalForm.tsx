@@ -121,7 +121,7 @@ const SucursalForm: FC<IForm> = ({ open, setOpen, data, method }) => {
         else if (method === 'PUT') {
             try {
                 setSubiendo(true)
-                const res: IEmpresaShort = await backend.put(`${import.meta.env.VITE_LOCAL}sucursal/${data.id}`, data);
+                const res: IEmpresaShort = await backend.put(`${import.meta.env.VITE_LOCAL}sucursal/${data.id}`, data, getAccessTokenSilently);
                 succes()
             } catch (error) {
                 setSubiendo(false)

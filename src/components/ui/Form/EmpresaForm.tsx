@@ -99,7 +99,7 @@ const EmpresaForm: FC<IForm> = ({ open, setOpen, data, method }) => {
       try {
         setSubiendo(true)
         //const res: IEmpresaShort = await backend.put(`http://localhost:8081/empresa/${data.id}/short`, data);
-        const res: IEmpresaShort = await backend.put(`${import.meta.env.VITE_LOCAL}empresa/${data.id}`, data as IEmpresaShort);
+        const res: IEmpresaShort = await backend.put(`${import.meta.env.VITE_LOCAL}empresa/${data.id}`, data as IEmpresaShort, getAccessTokenSilently);
         succes()
       } catch (error) {
         errorMessage()

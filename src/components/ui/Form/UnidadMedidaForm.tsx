@@ -9,6 +9,7 @@ import DragDrop from './Inputs/FileInput';
 import { IArticuloInsumo } from '../../../types/ArticuloInsumo';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { setGlobalUpdated } from '../../../redux/slices/globalUpdate';
+import { useAuth0 } from '@auth0/auth0-react';
 
 interface IForm {
     open: boolean;
@@ -28,6 +29,9 @@ class GenericBackend extends BackendClient<T> { } //Métodos genéricos
 
 const UnidadMedidaForm: FC<IForm> = ({ open, setOpen, method }) => {
 
+
+    const {getAccessTokenSilently} = useAuth0()
+    
     const backend = new GenericBackend(); //Objeto de BackendClient
 
     const [loaded, setLoaded] = useState<boolean>(false);
@@ -58,7 +62,7 @@ const UnidadMedidaForm: FC<IForm> = ({ open, setOpen, method }) => {
         else if (method === 'PUT') {
             try {
                 //const res: IEmpresaShort = await backend.put(`http://localhost:8081/empresa/${data.id}/short`, data);
-                const res: IUnidadMedida = await backend.put(`${import.meta.env.VITE_LOCAL}UnidadMedida/${data.id}`, data);
+                const res: IUnidadMedida = await backend.put(`${import.meta.env.VITE_LOCAL}UnidadMedida/${data.id}`, data, getAccessTokenSilently);
                 dispatch(setGlobalUpdated(true))
                 setOpen(false);
             } catch (error) {
