@@ -14,8 +14,7 @@ import { setEsInsumo } from "../../../redux/slices/esInsumo";
 import { useAuth0 } from "@auth0/auth0-react";
 
 const Insumos = () => {
-
-
+ 
     const { getAccessTokenSilently } = useAuth0();
 
     const backend = new BackendMethods()
@@ -88,7 +87,6 @@ const Insumos = () => {
 
             if (selectedCategory !== 'Todos') {
                 //Usamos una función recursiva para traernos todos los articulos dentro de la categoria que seleccionamos
-    const { getAccessTokenSilently } = useAuth0();
                 const insumos: IArticuloInsumoCategoria[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}categoria/getInsumos/${idCategoriaSeleccionada}`, getAccessTokenSilently) as IArticuloInsumoCategoria[];
 
                 //Filtramos por articulos eliminados (si lo igualamos a borrados, vamos a poder invertir la vista de los articulos eliminados)

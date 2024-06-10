@@ -14,6 +14,7 @@ import SucursalesInput from './Inputs/SucursalesInput';
 import * as Yup from 'yup'
 import { validationCategoria } from './Validaciones/CategoriaValidacion';
 import { useAuth0 } from '@auth0/auth0-react';
+import { errorMessage, successMessage } from '../../toasts/ToastAlerts';
 
 interface IForm {
     open: boolean;
@@ -44,7 +45,7 @@ class GenericBackend extends BackendClient<FormState> { } //Métodos genéricos
 
 const CategoriaForm: FC<IForm> = ({ open, setOpen, method }) => {
 
-    const {getAccessTokenSilently} = useAuth0()
+    const { getAccessTokenSilently } = useAuth0()
 
     const [subiendo, setSubiendo] = useState<boolean>(false);
 
@@ -68,28 +69,31 @@ const CategoriaForm: FC<IForm> = ({ open, setOpen, method }) => {
 
     const [errors, setErrors] = useState<any>({})
 
+    const succes = () => {
+        dispatch(setGlobalUpdated(true))
+        setSubiendo(false)
+        setOpen(false);
+        resetForm();
+        dispatch(setGlobalUpdated(true));
+        successMessage();
+    }
+
+
     const postCategoria = async (data: FormState) => {
         if (method === 'POST') {
             try {
-
                 setSubiendo(true)
-                console.log(data)
-
-                const res: FormState = await backend.post(`${import.meta.env.VITE_LOCAL}categoria`, data);
-                dispatch(setGlobalUpdated(true))
-                console.log("response desde el backend")
-                console.log(res)
-                setSubiendo(false)
-                setOpen(false);
-
+                const res: FormState = await backend.post(`${import.meta.env.VITE_LOCAL}categoria`, data, getAccessTokenSilently);
+                succes()
             } catch (error) {
                 setSubiendo(false)
+                errorMessage()
                 console.error(error)
             }
         }
         else if (method === 'PUT') {
             try {
-                const res: FormState = await backend.post(`${import.meta.env.VITE_LOCAL}categoria/${data.id}`, data);
+                const res: FormState = await backend.post(`${import.meta.env.VITE_LOCAL}categoria/${data.id}`, data, getAccessTokenSilently);
                 dispatch(setGlobalUpdated(true))
                 setOpen(false);
             } catch (error) {
@@ -100,13 +104,10 @@ const CategoriaForm: FC<IForm> = ({ open, setOpen, method }) => {
             try {
                 setSubiendo(true)
                 const res: FormState = await backend.put(`${import.meta.env.VITE_LOCAL}categoria/addSubCategoria/${data.id}`, data, getAccessTokenSilently);
-                dispatch(setGlobalUpdated(true))
-                console.log("response desde el backend")
-                console.log(res)
-                setSubiendo(false)
-                setOpen(false);
+                succes()
             } catch (error) {
                 setSubiendo(false)
+                errorMessage()
                 console.error(error)
             }
         }

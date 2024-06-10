@@ -48,7 +48,7 @@ const AppRouter = () => {
                         <Route path='/:idEmpresa/sucursales/:idSucursales/promociones' element={<Promociones />} />
                         <Route path='/:idEmpresa/sucursales/:idSucursales/promociones/:idPromocion' element={<ProductosPorPromociones />} />
                         {/* <Route path='/empresa' element={<Empresa />} /> */}
-                        <Route path='/:idEmpresa/sucursales/:idSucursales/usuarios' element={<Usuario />} />
+                        <Route path='/:idEmpresa/sucursales/:idSucursales/usuarios' element={<UsuariosPorRol />} />
                         <Route path="/:idEmpresa/sucursales/:idSucursales/usuarios/:id" element={<UsuariosPorRol />} />
                         <Route path='/:idEmpresa/sucursales/:idSucursales/categorias' element={<Categorias />} />
                         <Route path='/:idEmpresa/sucursales' element={<Sucursal />} />

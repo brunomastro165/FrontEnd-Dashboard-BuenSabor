@@ -48,7 +48,6 @@ export abstract class BackendClient<T> extends AbstractBackendClient<T> {
   }
 
   async getById(url: string, getAccessTokenSilently: any): Promise<T> {
-
     const token = await getAccessTokenSilently({
       authorizationParams: {
         audience: import.meta.env.VITE_AUTH0_AUDIENCE,
@@ -67,7 +66,6 @@ export abstract class BackendClient<T> extends AbstractBackendClient<T> {
 
   // Método para obtener todos los elementos
   async getAll(url: string, getAccessTokenSilently: any): Promise<T[]> {
-
     const token = await getAccessTokenSilently({
       authorizationParams: {
         audience: import.meta.env.VITE_AUTH0_AUDIENCE,
@@ -85,13 +83,20 @@ export abstract class BackendClient<T> extends AbstractBackendClient<T> {
   }
 
   // Método para crear un nuevo elemento
-  async post(url: string, data: T): Promise<T> {
+  async post(url: string, data: T, getAccessTokenSilently: any): Promise<T> {
+    const token = await getAccessTokenSilently({
+      authorizationParams: {
+        audience: import.meta.env.VITE_AUTH0_AUDIENCE,
+      },
+    });
+
     const path = url;
     const options: RequestInit = {
       method: "POST",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(data),
     };
@@ -99,8 +104,12 @@ export abstract class BackendClient<T> extends AbstractBackendClient<T> {
     return this.request(path, options);
   }
 
-  async postConImagen(url: string, entity: T, files: File[], getAccessTokenSilently: any) {
-
+  async postConImagen(
+    url: string,
+    entity: T,
+    files: File[],
+    getAccessTokenSilently: any
+  ) {
     const token = await getAccessTokenSilently({
       authorizationParams: {
         audience: import.meta.env.VITE_AUTH0_AUDIENCE,
@@ -134,16 +143,17 @@ export abstract class BackendClient<T> extends AbstractBackendClient<T> {
       console.log(data);
       return data;
     } catch (error) {
-
       console.error(error);
       throw error;
     }
   }
 
-
-
-  async putConImagen(url: string, entity: T, files: File[], getAccessTokenSilently: any) {
-
+  async putConImagen(
+    url: string,
+    entity: T,
+    files: File[],
+    getAccessTokenSilently: any
+  ) {
     const token = await getAccessTokenSilently({
       authorizationParams: {
         audience: import.meta.env.VITE_AUTH0_AUDIENCE,
@@ -183,7 +193,6 @@ export abstract class BackendClient<T> extends AbstractBackendClient<T> {
   }
   // Método para actualizar un elemento existente por su ID
   async put(url: string, data: T, getAccessTokenSilently: any): Promise<T> {
-
     const token = await getAccessTokenSilently({
       authorizationParams: {
         audience: import.meta.env.VITE_AUTH0_AUDIENCE,
@@ -216,4 +225,4 @@ export abstract class BackendClient<T> extends AbstractBackendClient<T> {
   }
 }
 
-export class BackendMethods<T> extends BackendClient<T> { }
+export class BackendMethods<T> extends BackendClient<T> {}

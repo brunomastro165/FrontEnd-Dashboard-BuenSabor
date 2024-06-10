@@ -50,6 +50,9 @@ type FileWithPreview = File & { preview: string };
 
 const AInsumoForm: FC<IForm> = ({ open, setOpen, method }) => {
 
+
+    const { getAccessTokenSilently } = useAuth0()
+
     const [subiendo, setSubiendo] = useState<boolean>(false);
 
     const backend = new GenericBackend(); //Objeto de BackendClient
@@ -64,7 +67,7 @@ const AInsumoForm: FC<IForm> = ({ open, setOpen, method }) => {
 
     const dispatch = useAppDispatch();
 
-    const {getAccessTokenSilently} = useAuth0()
+
 
     //USE FORM
 

@@ -9,7 +9,7 @@ export abstract class AbstractBackendClient<T> {
   abstract getAll(url: string, getAccessTokenSilently: any): Promise<T[]>;
 
   // Método abstracto para crear un nuevo elemento
-  abstract post(url: string, data: T): Promise<T>;
+  abstract post(url: string, data: T, getAccessTokenSilently: any): Promise<T>;
 
   // Método abstracto para actualizar un elemento existente por su ID
   abstract put(url: string, data: T, getAccessTokenSilently: any): Promise<T>;

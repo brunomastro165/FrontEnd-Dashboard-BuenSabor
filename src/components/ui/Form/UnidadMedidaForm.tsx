@@ -51,7 +51,7 @@ const UnidadMedidaForm: FC<IForm> = ({ open, setOpen, method }) => {
         if (method === 'POST') {
             try {
                 //TODO Cambiar el método para que coincida con el backend
-                const res: IUnidadMedida = await backend.post(`${import.meta.env.VITE_LOCAL}UnidadMedida`, data);
+                const res: IUnidadMedida = await backend.post(`${import.meta.env.VITE_LOCAL}UnidadMedida`, data, getAccessTokenSilently);
                 dispatch(setGlobalUpdated(true))
                 setOpen(false);
                 console.log(res)

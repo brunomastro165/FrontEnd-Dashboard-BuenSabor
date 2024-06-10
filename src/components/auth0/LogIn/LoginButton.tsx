@@ -5,8 +5,8 @@ const LoginButton = () => {
 
     return (
         isAuthenticated ? (
-            <div className="flex items-end space-x-2 border p-2 rounded">
-                <img src={user?.picture} alt="" className="size-10" />
+            <div className="flex items-end space-x-2  rounded">
+                <img src={user?.picture} alt="" className="size-10 rounded-full" />
                 <div>
                     <h1>Bienvenido</h1>
                     <h2>{user?.nickname}</h2>

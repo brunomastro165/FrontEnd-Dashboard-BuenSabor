@@ -12,11 +12,10 @@ import { setGlobalInitialValues } from '../../../redux/slices/globalInitialValue
 import PromoForm from '../Form/PromoForm';
 import { ISucursal } from '../../../types/Sucursal';
 import { useAuth0 } from '@auth0/auth0-react';
+import { IDetallePromo } from '../../../types/DetallePromo';
+import { IDetallePromoCreate } from '../../../types/CreateDtos/DetallePromoCreate';
 
 const CardPromo: FC<IPromos> = ({ denominacion, descripcionDescuento, detalles, fechaDesde, fechaHasta, horaDesde, horaHasta, id, imagenes, precioPromocional, tipoPromocion, eliminado, sucursales }) => {
-
-    console.log("ayuda")
-    console.log(detalles);
 
     const [vencida, setVencida] = useState<boolean>(false);
 
@@ -24,22 +23,54 @@ const CardPromo: FC<IPromos> = ({ denominacion, descripcionDescuento, detalles, 
 
     const [idSucursales, setIdSucursales] = useState<number[]>([]);
 
-    const {getAccessTokenSilently} = useAuth0();
+    const { getAccessTokenSilently } = useAuth0();
+
+    const [detallesTransformados, setDetallesTransformados] = useState<IDetallePromoCreate[]>([])
+
+    const extraerIdArticulo = async (detalles: IDetallePromo[]) => {
+        const transformados = detalles.map((detalle) => {
+            let idArticulo = 0;
+
+            // Determinar si es un artículo manufacturado o un insumo
+            if (detalle.articulosManufacturados && Object.keys(detalle.articulosManufacturados).length > 0) {
+                idArticulo = detalle.articulosManufacturados.id!;
+            } else if (detalle.insumos && Object.keys(detalle.insumos).length > 0) {
+                idArticulo = detalle.insumos.id!;
+            }
+
+            // Devolver el objeto con el formato necesario
+            return {
+                id: detalle.id,
+                cantidad: detalle.cantidad,
+                idArticulo: idArticulo,
+                eliminado: false
+            };
+        });
+
+        setDetallesTransformados(transformados);
+    };
+
+    async function extraerIdSucursal() {
+        const id = sucursales.map((sucursal: ISucursal) => sucursal.id)
+        setIdSucursales(id)
+    }
 
     useEffect(() => {
-        async function extraerIdSucursal() {
-            const id = sucursales.map((sucursal: ISucursal) => sucursal.id)
-            setIdSucursales(id)
+        const traerDatos = async () => {
+            await extraerIdSucursal()
+            await extraerIdArticulo(detalles)
         }
-        extraerIdSucursal()
+        traerDatos()
     }, [])
 
 
-    console.log("id sucursas")
-    console.log(idSucursales)
-    useEffect(() => {
-        const fechaActual = new Date();
 
+    console.log("Detalline tranformao")
+    console.log(detallesTransformados)
+
+    useEffect(() => {
+
+        const fechaActual = new Date();
         const fechaCaducidad = new Date(fechaHasta)
 
         if (fechaActual.getTime() <= fechaCaducidad.getTime()) {
@@ -103,24 +134,20 @@ const CardPromo: FC<IPromos> = ({ denominacion, descripcionDescuento, detalles, 
 
     const put = async () => {
         try {
-
-            const res: IPromos = await backend.getById(`${import.meta.env.VITE_LOCAL}promocion/${id}`, getAccessTokenSilently) as IPromos; //Hice esto porque pasarlo por props me daba errores
-            console.log("RESPONSE DEL BACKEND")
-            console.log(res)
             dispatch(setGlobalInitialValues(
                 {
-                    id: res.id,
-                    denominacion: res.denominacion,
-                    eliminado: res.eliminado,
-                    fechaDesde: res.fechaDesde,
-                    fechaHasta: res.fechaHasta,
-                    horaDesde: res.horaDesde,
-                    horaHasta: res.horaHasta,
-                    precioPromocional: res.precioPromocional,
-                    detalles: res.detalles,
-                    tipoPromocion: res.tipoPromocion,
+                    id: id,
+                    denominacion: denominacion,
+                    eliminado: eliminado,
+                    fechaDesde: fechaDesde,
+                    fechaHasta: fechaHasta,
+                    horaDesde: horaDesde,
+                    horaHasta: horaHasta,
+                    precioPromocional: precioPromocional,
+                    detalles: detallesTransformados,
+                    tipoPromocion: tipoPromocion,
                     idSucursales: idSucursales,
-                    imagenes: res.imagenes,
+                    imagenes: imagenes,
                 }
             ))
         } catch (error) {
