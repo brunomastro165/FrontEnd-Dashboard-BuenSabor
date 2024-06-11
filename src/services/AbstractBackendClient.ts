@@ -15,5 +15,5 @@ export abstract class AbstractBackendClient<T> {
   abstract put(url: string, data: T, getAccessTokenSilently: any): Promise<T>;
 
   // Método abstracto para eliminar un elemento por su ID
-  abstract delete(url: string, id: string): Promise<void>;
+  abstract delete(url: string, id: string, getAccessTokenSilently:any): Promise<void>;
 }

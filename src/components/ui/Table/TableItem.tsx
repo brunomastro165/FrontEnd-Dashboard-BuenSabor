@@ -17,6 +17,7 @@ import { IArticuloManufacturado } from '../../../types/ArticuloManufacturado';
 
 import { IArticuloInsumo } from '../../../types/ArticuloInsumo';
 import { useAuth0 } from '@auth0/auth0-react';
+import EmpleadoForm from '../Form/EmpleadoForm';
 
 
 //@ts-ignore
@@ -56,7 +57,7 @@ const TableItem: FC<IItem> = ({ id, denominacion, param2, param3, param4, endpoi
 
     const deleteLogico = async () => {
         try {
-            const response = await CRUD.delete(`${import.meta.env.VITE_LOCAL}${endpoint}/${id}`)
+            const response = await CRUD.delete(`${import.meta.env.VITE_LOCAL}${endpoint}/${id}`, getAccessTokenSilently)
             dispatch(setGlobalUpdated(true))
         } catch (error) {
             dispatch(setGlobalUpdated(true))
@@ -92,7 +93,7 @@ const TableItem: FC<IItem> = ({ id, denominacion, param2, param3, param4, endpoi
                             {/* {endpoint === "empresas" && <EmpresaForm open={open} setOpen={setOpen} />} */}
                             {endpoint === "ArticuloManufacturado" && <AManufacturadoForm open={open} setOpen={setOpen} method='PUT' />}
                             {endpoint === "ArticuloInsumo" && <AInsumoForm open={open} setOpen={setOpen} method='PUT' />}
-                            {endpoint === "usuarios" && <UsuarioForm open={open} setOpen={setOpen} />}
+                            {endpoint === "empleado" && <EmpleadoForm open={open} setOpen={setOpen} method='PUT' />}
                             {/* {endpoint === "sucursal" && <SucursalForm open={open} setOpen={setOpen} />} */}
                         </div>
                     </div>

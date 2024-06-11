@@ -44,7 +44,6 @@ type FormState = {
     usuario: IUsuarioEmpleadoCreate
 };
 
-
 //@ts-ignore
 class GenericBackend extends BackendClient<T> { } //Métodos genéricos 
 
