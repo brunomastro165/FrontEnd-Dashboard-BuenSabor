@@ -11,6 +11,7 @@ import { AiOutlineExclamationCircle } from "react-icons/ai";
 import { setGlobalUpdated } from '../../../redux/slices/globalUpdate';
 import { useAppDispatch } from '../../../hooks/redux';
 import EmpresaForm from '../Form/EmpresaForm';
+import { useAuth0 } from '@auth0/auth0-react';
 
 class GenericBackend extends BackendClient<IEmpresa> { } //Métodos genéricos 
 
@@ -21,6 +22,8 @@ const CardEmpresa: FC<IEmpresa> = ({ cuil, id, nombre, razonSocial, sucursales, 
     const dispatch = useAppDispatch();
 
     const [open, setOpen] = useState<boolean>(false);
+
+    const { getAccessTokenSilently } = useAuth0();
 
     //Para poder pasarlo mas estructuradamente al editar
     const [data, setData] = useState<IEmpresa>({
@@ -38,7 +41,7 @@ const CardEmpresa: FC<IEmpresa> = ({ cuil, id, nombre, razonSocial, sucursales, 
 
     const deleteEmpresa = async () => {
         try {
-            const res: IEmpresaShort = await backend.delete(`${import.meta.env.VITE_LOCAL}empresa/${id}`);
+            const res: IEmpresaShort = await backend.delete(`${import.meta.env.VITE_LOCAL}empresa/${id}`, getAccessTokenSilently);
             console.log(res)
         } catch (error) {
             console.error(error)

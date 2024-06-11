@@ -7,6 +7,7 @@ import { BackendMethods } from '../../../services/BackendClient';
 import { MdOutlineModeEdit } from "react-icons/md";
 import { setGlobalInitialValues } from '../../../redux/slices/globalInitialValues';
 import UnidadMedidaForm from '../Form/UnidadMedidaForm';
+import { useAuth0 } from '@auth0/auth0-react';
 
 
 interface ICardUnidad {
@@ -20,11 +21,18 @@ const CardUnidadMedida: FC<ICardUnidad> = ({ denominacion, id }) => {
 
     const dispatch = useAppDispatch();
 
+    const { getAccessTokenSilently } = useAuth0();
+
     const [edit, setEdit] = useState<boolean>(false);
 
     const deleteLogico = async (id: number) => {
         dispatch(setGlobalUpdated(true))
-        const res = await backend.delete(`${import.meta.env.VITE_LOCAL}UnidadMedida/${id}`)
+        try {
+            const res = await backend.delete(`${import.meta.env.VITE_LOCAL}UnidadMedida/${id}`, getAccessTokenSilently)
+        } catch (error) {
+            console.error(error)
+        }
+
         dispatch(setGlobalUpdated(true))
     }
 

@@ -12,6 +12,7 @@ import { FaRegArrowAltCircleDown } from "react-icons/fa";
 import { BackendClient, BackendMethods } from '../../../../services/BackendClient';
 import { setGlobalUpdated } from '../../../../redux/slices/globalUpdate';
 import { useAuth0 } from '@auth0/auth0-react';
+import { eliminarCategoriaError, eliminarCategoriaSuccess } from '../../../toasts/ToastAlerts';
 
 
 interface ICategoriaButton {
@@ -21,7 +22,7 @@ interface ICategoriaButton {
 
 const CategoriaButton: FC<ICategoriaButton> = ({ categoria, edicion }) => {
 
-    const {getAccessTokenSilently} = useAuth0()
+    const { getAccessTokenSilently } = useAuth0()
 
     const backend = new BackendMethods()
 
@@ -75,11 +76,14 @@ const CategoriaButton: FC<ICategoriaButton> = ({ categoria, edicion }) => {
 
     const eliminarCategoria = async () => {
         try {
-            const res = backend.delete(`${import.meta.env.VITE_LOCAL}categoria/${categoria.id}`)
+            const res = await backend.delete(`${import.meta.env.VITE_LOCAL}categoria/${categoria.id}`, getAccessTokenSilently)
+            eliminarCategoriaSuccess()
             dispatch(setGlobalUpdated(true))
-        } catch (error) {
+        } catch (error: any) {
+            if (error.status === 409) {
+                eliminarCategoriaError();
+            }
             dispatch(setGlobalUpdated(true))
-            console.error(error);
         }
     }
 

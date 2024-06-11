@@ -12,14 +12,19 @@ export abstract class BackendClient<T> extends AbstractBackendClient<T> {
       const response = await fetch(path, options);
       // Verifica si la respuesta es exitosa
       if (!response.ok) {
-        // Si no es exitosa, lanza un error con el mensaje de estado de la respuesta
-        throw new Error(response.statusText);
+        // Obtiene el cuerpo de la respuesta en caso de error
+        const errorData = await response.json().catch(() => null);
+        // Lanza un error detallado con el código de estado y el cuerpo de la respuesta
+        throw {
+          status: response.status,
+          statusText: response.statusText,
+          data: errorData,
+        };
       }
       // Retorna los datos de la respuesta en formato JSON
       return response.json();
     } catch (error) {
-      // Si hay algún error, rechaza la promesa con el error
-      return Promise.reject(error);
+      throw error;
     }
   }
 
@@ -268,7 +273,12 @@ export abstract class BackendClient<T> extends AbstractBackendClient<T> {
         Authorization: `Bearer ${token}`,
       },
     };
-    await this.request(path, options);
+
+    try {
+      await this.request(path, options);
+    } catch (error) {
+      throw error;
+    }
   }
 }
 

@@ -91,7 +91,7 @@ const CardPromo: FC<IPromos> = ({ denominacion, descripcionDescuento, detalles, 
 
         try {
             dispatch(setGlobalUpdated(true))
-            const res = await backend.delete(`${import.meta.env.VITE_LOCAL}promocion/${id}`)
+            const res = await backend.delete(`${import.meta.env.VITE_LOCAL}promocion/${id}`, getAccessTokenSilently)
             dispatch(setGlobalUpdated(true))
             console.log(res)
         } catch (error) {

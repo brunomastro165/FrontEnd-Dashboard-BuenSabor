@@ -14,6 +14,7 @@ import { AiOutlineExclamationCircle } from 'react-icons/ai';
 import { BackendClient } from '../../../services/BackendClient';
 import { setGlobalUpdated } from '../../../redux/slices/globalUpdate';
 import SucursalForm from '../Form/SucursalForm';
+import { useAuth0 } from '@auth0/auth0-react';
 
 class GenericBackend extends BackendClient<ISucursalShort> { } //Métodos genéricos 
 
@@ -26,6 +27,8 @@ const CardSucursal: FC<ISucursalShort> = ({ esCasaMatriz, eliminado, horarioAper
     const dispatch = useAppDispatch();
 
     const { idEmpresa } = useParams();
+
+    const { getAccessTokenSilently } = useAuth0();
 
     const idEmpresaNumber = Number(idEmpresa);
 
@@ -58,7 +61,7 @@ const CardSucursal: FC<ISucursalShort> = ({ esCasaMatriz, eliminado, horarioAper
 
     const deleteSucursal = async () => {
         try {
-            const res = await CRUD.delete(`${import.meta.env.VITE_LOCAL}sucursal/${id}`);
+            const res = await CRUD.delete(`${import.meta.env.VITE_LOCAL}sucursal/${id}`, getAccessTokenSilently);
             console.log(res)
         } catch (error) {
             console.error(error)
@@ -126,8 +129,8 @@ const CardSucursal: FC<ISucursalShort> = ({ esCasaMatriz, eliminado, horarioAper
                     <FaBuilding className='group-hover:text-red-600 text-gray-600 p-1 transition-all text-5xl text-center' />
                     <h1 className='text-xl font-extralight mt-5 mb-3'>{nombre}</h1>
                 </div>
-                {imagenes !== undefined && imagenes.length >= 1 && <figure><img src={imagenes[0].url}  style={{ height: '231.63px', width: '320px' }} alt="promo" /></figure>}
-               
+                {imagenes !== undefined && imagenes.length >= 1 && <figure><img src={imagenes[0].url} style={{ height: '231.63px', width: '320px' }} alt="promo" /></figure>}
+
             </div>
 
             {modalEliminar && confirmarEliminacion()}
