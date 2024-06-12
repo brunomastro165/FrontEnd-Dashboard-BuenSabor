@@ -21,8 +21,15 @@ import { useAppDispatch, useAppSelector } from '../../hooks/redux'
 import UnidadesMedida from '../screens/UnidadesDeMedida/UnidadesDeMedida'
 import { setLogged } from '../../redux/slices/logged'
 import Pedidos from '../screens/Pedidos/Pedidos'
+import { useAuth0 } from '@auth0/auth0-react'
+import { UserProfile } from '../auth0/UserProfile'
+
 
 const AppRouter = () => {
+
+
+    const { user } = useAuth0()
+
 
 
     const selector = useAppSelector((state) => state.logged.logged);
@@ -37,6 +44,7 @@ const AppRouter = () => {
         <>
             <div className='flex flex-row'>
                 {selector && <SideBar />}
+                {/* <UserProfile/> */}
                 <div className={`${selector && 'md:ml-72'} w-full`}>
                     <Routes>
                         <Route path='/' element={<Inicio />}></Route>

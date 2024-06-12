@@ -18,6 +18,7 @@ import { IArticuloManufacturado } from '../../../types/ArticuloManufacturado';
 import { IArticuloInsumo } from '../../../types/ArticuloInsumo';
 import { useAuth0 } from '@auth0/auth0-react';
 import EmpleadoForm from '../Form/EmpleadoForm';
+import { errorGenerico } from '../../toasts/ToastAlerts';
 
 
 //@ts-ignore
@@ -38,7 +39,6 @@ const TableItem: FC<IItem> = ({ id, denominacion, param2, param3, param4, endpoi
     const dispatch = useAppDispatch();
 
     const fetchIndividual = async () => {
-
         try {
             const response: any = await CRUD.getById(`${import.meta.env.VITE_LOCAL}${endpoint}/${id}`, getAccessTokenSilently)
             console.log("RESPONSE")
@@ -59,7 +59,10 @@ const TableItem: FC<IItem> = ({ id, denominacion, param2, param3, param4, endpoi
         try {
             const response = await CRUD.delete(`${import.meta.env.VITE_LOCAL}${endpoint}/${id}`, getAccessTokenSilently)
             dispatch(setGlobalUpdated(true))
-        } catch (error) {
+        } catch (error: any) {
+            if (error.status === 409) {
+                errorGenerico('No se puede eliminar un articulo que forme parte de una promoción u otro articulo')
+            }
             dispatch(setGlobalUpdated(true))
         }
     }

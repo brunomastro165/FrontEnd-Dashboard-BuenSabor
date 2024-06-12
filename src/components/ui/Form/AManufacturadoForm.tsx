@@ -20,7 +20,7 @@ import DetalleInput from './Inputs/DetalleInput';
 import ImageInput from './Inputs/ImageInput';
 import DetalleGenerico from './Inputs/DetalleGenerico';
 import { validationManufacturado } from './Validaciones/AManufacturadoValidacion';
-import { errorMessage, successMessage } from '../../toasts/ToastAlerts';
+import { errorGenerico, errorMessage, successMessage } from '../../toasts/ToastAlerts';
 import { useAuth0 } from '@auth0/auth0-react';
 
 interface IForm {
@@ -131,8 +131,14 @@ const AManufacturadoForm: FC<IForm> = ({ open, setOpen, method }) => {
     const handleSubmit = async () => {
         try {
             await validationManufacturado.validate(values, { abortEarly: false });
-            await postArticulo(values);
-            setErrors({}); // limpia los errores
+            if (files.length >= 1) {
+                await postArticulo(values);
+                setErrors({}); // limpia los errores
+            }
+            else {
+                errorGenerico('Necesita subir imágenes')
+            }
+
         } catch (error) {
 
             if (error instanceof Yup.ValidationError) {

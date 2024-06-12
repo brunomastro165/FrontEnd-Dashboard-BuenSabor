@@ -50,6 +50,7 @@ const ContainerCategorias = () => {
 
       const categoriasExistentes: ICategoria[] = categoriasPadre.filter((categoria) => categoria.eliminado === false)
 
+     
       let categoriasFiltradas: ICategoria[] = categoriasExistentes;
 
       if (filtros != 'all') {

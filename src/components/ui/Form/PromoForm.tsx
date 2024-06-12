@@ -20,7 +20,7 @@ import { useParams } from 'react-router-dom';
 import SucursalesInput from './Inputs/SucursalesInput';
 import { validationPromo } from './Validaciones/PromoValidacion';
 import * as Yup from 'yup'
-import { errorMessage, successMessage } from '../../toasts/ToastAlerts';
+import { errorGenerico, errorMessage, successMessage } from '../../toasts/ToastAlerts';
 import { useAuth0 } from '@auth0/auth0-react';
 
 interface IForm {
@@ -50,7 +50,7 @@ type FileWithPreview = File & { preview: string };
 const PromoForm: FC<IForm> = ({ open, setOpen, method }) => {
 
 
-    const {getAccessTokenSilently} = useAuth0()
+    const { getAccessTokenSilently } = useAuth0()
 
     const [subiendo, setSubiendo] = useState<boolean>(false);
 
@@ -111,8 +111,13 @@ const PromoForm: FC<IForm> = ({ open, setOpen, method }) => {
     const handleSubmit = async () => {
         try {
             await validationPromo.validate(values, { abortEarly: false })
-            await postPromo(values)
-            setErrors({});
+            if (files.length >= 1) {
+                await postPromo(values);
+                setErrors({}); // limpia los errores
+            }
+            else {
+                errorGenerico('Necesita subir imágenes')
+            }
         }
         catch (error) {
             if (error instanceof Yup.ValidationError) {

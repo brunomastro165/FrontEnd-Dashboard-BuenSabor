@@ -15,8 +15,12 @@ import { IArticuloManufacturadoCategoria } from '../../../types/SpecialDtos/Arti
 import GlobalEsInsumo, { setEsInsumo } from '../../../redux/slices/esInsumo';
 import GlobalCategory from '../../../redux/slices/globalCategory';
 import { useAuth0 } from '@auth0/auth0-react';
+import { setIdPaginador } from '../../../redux/slices/idPaginador';
 
 //class Backend extends BackendClient<IArticuloManufacturadoCategoria> { }
+
+
+const ITEMS_POR_PAGINA = 1;
 
 const Manufacturados = () => {
 
@@ -53,6 +57,10 @@ const Manufacturados = () => {
 
     const [categorias, setCategorias] = useState<ICategoria[]>([])
 
+    const search = useAppSelector((state) => state.search.search)
+
+    const idPagina = useAppSelector((state) => state.GlobalIdPaginador.idPaginador)
+
     //Esto es para normalizar los datos de IArticuloInsumo que traiga el Fetch, asi la tabla puede entender
     //distintos tipos de datos.
 
@@ -68,18 +76,24 @@ const Manufacturados = () => {
     }
 
     useEffect(() => {
+        dispatch(setIdPaginador(1))
+    }, [search])
+
+
+    console.log(search)
+    useEffect(() => {
 
         const fetchManufacturado = async () => {
 
             if (selectedCategory !== 'Todos') {
-                const manufacturados: IArticuloManufacturadoCategoria[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}ArticuloManufacturado/getArticulosCategoria/${idCategory}`, getAccessTokenSilently) as IArticuloManufacturadoCategoria[];
+                const manufacturados: IArticuloManufacturadoCategoria[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}categoria/getManufacturados/${idCategory}/${search}`, getAccessTokenSilently) as IArticuloManufacturadoCategoria[];
                 const manufacturadosHabilitados: IArticuloManufacturadoCategoria[] = manufacturados.filter((articulo) => articulo.eliminado === borrados)
                 const transformedData = transformData(manufacturadosHabilitados);
                 setData(transformedData);
             }
-            
+
             else {
-                const manufacturados: IArticuloManufacturadoCategoria[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}ArticuloManufacturado/buscar/${idSucursales}`, getAccessTokenSilently) as IArticuloManufacturadoCategoria[];
+                const manufacturados: IArticuloManufacturadoCategoria[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}ArticuloManufacturado/getArticulosManufacturados/${search}/${idSucursales}?limit=${ITEMS_POR_PAGINA}&startId=${idPagina}`, getAccessTokenSilently) as IArticuloManufacturadoCategoria[];
                 const manufacturadosHabilitados: IArticuloManufacturadoCategoria[] = manufacturados.filter((articulo) => articulo.eliminado === borrados)
                 const transformedData = transformData(manufacturadosHabilitados);
                 setData(transformedData);
@@ -91,7 +105,7 @@ const Manufacturados = () => {
         }
 
         fetchManufacturado();
-    }, [loading, updated, selectedCategory, borrados])
+    }, [loading, updated, selectedCategory, borrados, search, idPagina])
 
     return (
         <>

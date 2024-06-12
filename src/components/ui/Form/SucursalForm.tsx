@@ -302,10 +302,8 @@ const SucursalForm: FC<IForm> = ({ open, setOpen, data, method }) => {
     }, [selectedLocalidad])
 
 
-
-
     const [files, setFiles] = useState<FileWithPreview[]>([]);
-    console.log(files)
+
     return (
         <div className='w-full flex flex-col items-center justify-center space-y-4 p-10 '
             onSubmit={handleSubmit}

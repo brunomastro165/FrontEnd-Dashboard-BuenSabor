@@ -10,8 +10,9 @@ import CategoriaSelector from '../../ui/CategoriaSelector/CategoriaSelector';
 import { setCategoriaSelector } from '../../../redux/slices/mostrarCategoriaSelector';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { setIdPaginador } from '../../../redux/slices/idPaginador';
 
-const ITEMS_PER_PAGE = 7;
+// const ITEMS_PER_PAGE = 7;
 
 const BasePage: FC<IBasePage> = ({ data, title, loading, row1, row2, row3, row4, row5, endpoint }) => {
 
@@ -21,16 +22,18 @@ const BasePage: FC<IBasePage> = ({ data, title, loading, row1, row2, row3, row4,
 
     const selector = useAppSelector((state) => state.search.search);
 
+    const idPagina = useAppSelector((state) => state.GlobalIdPaginador.idPaginador)
+
     const update = useAppSelector((state) => state.GlobalUpdated.updated)
 
     const dispatch = useAppDispatch()
 
-    useEffect(() => {
-        setCurrentPage(1);
-        const filteredInsumosData = data.filter(d => d.denominacion.toLowerCase().includes(selector.toLowerCase()));
-        setFilteredData(filteredInsumosData);
-        dispatch(setGlobalUpdated(false))
-    }, [selector, loading, data]);
+    // useEffect(() => {
+    //     setCurrentPage(1);
+    //     const filteredInsumosData = data.filter(d => d.denominacion.toLowerCase().includes(selector.toLowerCase()));
+    //     setFilteredData(filteredInsumosData);
+    //     dispatch(setGlobalUpdated(false))
+    // }, [selector, loading, data]);
 
     useEffect(() => {
         dispatch(setCategoriaSelector(true))
@@ -38,14 +41,16 @@ const BasePage: FC<IBasePage> = ({ data, title, loading, row1, row2, row3, row4,
 
     //Lógica de la paginación
 
-    const indexOfLastItem = currentPage * ITEMS_PER_PAGE;
+    // const indexOfLastItem = currentPage * ITEMS_PER_PAGE;
 
-    const indexOfFirstItem = indexOfLastItem - ITEMS_PER_PAGE;
+    // const indexOfFirstItem = indexOfLastItem - ITEMS_PER_PAGE;
 
-    const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem);
+    // const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem);
 
-    const totalPages = Math.ceil(filteredData.length / ITEMS_PER_PAGE);
+    // const totalPages = Math.ceil(filteredData.length / ITEMS_PER_PAGE);
 
+    console.log("paginoide")
+    console.log(idPagina)
     return (
         <>
             <NavBar title={title} />
@@ -54,7 +59,7 @@ const BasePage: FC<IBasePage> = ({ data, title, loading, row1, row2, row3, row4,
 
                 <SearchBar />
                 <div className='pt-16'>
-                    {currentItems.length >= 0 ? <Table items={currentItems} row1={row1} row2={row2} row3={row3}
+                    {data.length >= 0 ? <Table items={data} row1={row1} row2={row2} row3={row3}
                         row4={row4} row5={row5} endpoint={endpoint}
                     />
                         :
@@ -66,7 +71,7 @@ const BasePage: FC<IBasePage> = ({ data, title, loading, row1, row2, row3, row4,
 
                     {/* Acá va el paginador */}
 
-                    <div className='flex flex-row items-center justify-center '>
+                    {/* <div className='flex flex-row items-center justify-center '>
                         {[...Array(totalPages)].map((_, index) => (
                             <button
                                 className={`border-red-500 border m-4 px-2 py-1 rounded-lg 
@@ -75,9 +80,18 @@ const BasePage: FC<IBasePage> = ({ data, title, loading, row1, row2, row3, row4,
                                 {index + 1}
                             </button>
                         ))}
-                    </div>
+                    </div> 
+                    */}
                 </div>
 
+
+                <div className={`flex flex-row items-center ${idPagina !== 0 ? 'justify-between' : 'justify-end'} mt-2`}>
+                    {idPagina !== 0 && <button className='btn ' onClick={() => dispatch(setIdPaginador(1))}>Inicio</button>}
+                    <div className=''>
+                        {idPagina > 1 && <button className='btn' onClick={() => dispatch(setIdPaginador(idPagina - 1))}>Página anterior</button>}
+                        {data.length >= 0 && <button className='btn' onClick={() => dispatch(setIdPaginador(idPagina + 1))}>Siguiente página</button>}
+                    </div>
+                </div>
 
             </div>
         </>

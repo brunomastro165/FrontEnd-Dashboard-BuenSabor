@@ -11,7 +11,7 @@ import * as Yup from 'yup'
 import Swal from 'sweetalert2'
 import { validationEmpresa } from './Validaciones/EmpresaValidacion';
 import ImageInput from './Inputs/ImageInput';
-import { errorMessage, successMessage } from '../../toasts/ToastAlerts';
+import { errorGenerico, errorMessage, successMessage } from '../../toasts/ToastAlerts';
 import { useAuth0 } from '@auth0/auth0-react';
 
 interface IForm {
@@ -39,7 +39,7 @@ const EmpresaForm: FC<IForm> = ({ open, setOpen, data, method }) => {
 
   const [subiendo, setSubiendo] = useState<boolean>(false);
 
-  const {getAccessTokenSilently} = useAuth0()
+  const { getAccessTokenSilently } = useAuth0()
 
   const backend = new GenericBackend(); //Objeto de BackendClient
 
@@ -111,11 +111,14 @@ const EmpresaForm: FC<IForm> = ({ open, setOpen, data, method }) => {
 
   const handleSubmit = async () => {
     try {
-
       await validationEmpresa.validate(values, { abortEarly: false });
-      await postEmpresa(values);
-      setErrors({}); // limpia los errores
-
+      if (files.length >= 1) {
+        await postEmpresa(values);
+        setErrors({}); // limpia los errores
+      }
+      else {
+        errorGenerico('Necesita subir imágenes')
+      }
     } catch (error) {
 
       if (error instanceof Yup.ValidationError) {

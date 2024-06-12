@@ -16,13 +16,14 @@ import CategoriaInput from './Inputs/CategoriaInput';
 import { subirImagenes } from './Inputs/ImageFunction';
 import ImageInput from './Inputs/ImageInput';
 import { validationInsumo } from './Validaciones/AInsumoValidacion';
-import { errorMessage, successMessage } from '../../toasts/ToastAlerts';
+import { errorGenerico, errorMessage, successMessage } from '../../toasts/ToastAlerts';
 import { useAuth0 } from '@auth0/auth0-react';
 import { IDomicilio } from '../../../types/Domicilio/Domicilio';
 import { IEmpleado } from '../../../types/Empleado';
 import ImageInputIndividual from './Inputs/ImagenInputIndividual';
 import SucursalIndividualInput from './Inputs/SucursalIndividualInput';
 import { useParams } from 'react-router-dom';
+import { validationEmpleado } from './Validaciones/EmpleadoValidation';
 
 
 interface IForm {
@@ -93,11 +94,7 @@ const EmpleadoForm: FC<IForm> = ({ open, setOpen, method }) => {
             try {
                 setSubiendo(true);
                 if (file) {
-                    console.log("FRONT")
-                    console.log(data)
                     const res: IEmpleado = await backend.postConImagenIndividual(`${import.meta.env.VITE_LOCAL}empleado/save`, data, file, getAccessTokenSilently);
-                    console.log("BACK")
-                    console.log(res)
                     succes()
                 }
                 else {
@@ -130,9 +127,15 @@ const EmpleadoForm: FC<IForm> = ({ open, setOpen, method }) => {
 
     const handleSubmit = async () => {
         try {
-            // await validationInsumo.validate(values, { abortEarly: false });
-            await postEmpleado(values);
-            setErrors({}); // limpia los errores
+            await validationEmpleado.validate(values, { abortEarly: false });
+            if (file) {
+                await postEmpleado(values);
+                setErrors({}); // limpia los errores
+            }
+            else {
+                errorGenerico('Necesita subir una imágen')
+            }
+
         } catch (error) {
 
             if (error instanceof Yup.ValidationError) {
