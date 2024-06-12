@@ -104,7 +104,8 @@ const Insumos = () => {
 
             if (selectedCategory !== 'Todos') {
                 //Usamos una función recursiva para traernos todos los articulos dentro de la categoria que seleccionamos
-                const insumos: IArticuloInsumoCategoria[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}categoria/getInsumos/${idCategoriaSeleccionada}/${search}`, getAccessTokenSilently) as IArticuloInsumoCategoria[];
+                'http://localhost:8080/categoria/getInsumos/1/se?limit=1&startId=1'
+                const insumos: IArticuloInsumoCategoria[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}categoria/getInsumos/${idCategoriaSeleccionada}/${search}?limit=${ITEMS_POR_PAGINA}&startId=${idPagina}`, getAccessTokenSilently) as IArticuloInsumoCategoria[];
                 console.log("SEX")
                 console.log(insumos)
                 //Filtramos por articulos eliminados (si lo igualamos a borrados, vamos a poder invertir la vista de los articulos eliminados)

@@ -86,7 +86,7 @@ const Manufacturados = () => {
         const fetchManufacturado = async () => {
 
             if (selectedCategory !== 'Todos') {
-                const manufacturados: IArticuloManufacturadoCategoria[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}categoria/getManufacturados/${idCategory}/${search}`, getAccessTokenSilently) as IArticuloManufacturadoCategoria[];
+                const manufacturados: IArticuloManufacturadoCategoria[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}categoria/getManufacturados/${idCategory}/${search}?limit=${ITEMS_POR_PAGINA}&startId=${idPagina}`, getAccessTokenSilently) as IArticuloManufacturadoCategoria[];
                 const manufacturadosHabilitados: IArticuloManufacturadoCategoria[] = manufacturados.filter((articulo) => articulo.eliminado === borrados)
                 const transformedData = transformData(manufacturadosHabilitados);
                 setData(transformedData);
