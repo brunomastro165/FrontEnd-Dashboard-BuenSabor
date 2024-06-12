@@ -49,7 +49,6 @@ type FileWithPreview = File & { preview: string };
 
 const PromoForm: FC<IForm> = ({ open, setOpen, method }) => {
 
-
     const { getAccessTokenSilently } = useAuth0()
 
     const [subiendo, setSubiendo] = useState<boolean>(false);
@@ -64,21 +63,17 @@ const PromoForm: FC<IForm> = ({ open, setOpen, method }) => {
 
     const dispatch = useAppDispatch()
 
-
-
     const [errors, setErrors] = useState<any>();
 
     //const [selectedSucursales, setSelectedSucursales] = useState<ISucursal[] | undefined>([]);
 
     const { handleChange, values, resetForm, handleSelect, handleChoose, handleFileDrop, setValues } = useForm<FormState>(initialValues)
 
-
     const succes = () => {
         dispatch(setGlobalUpdated(true))
         setSubiendo(false)
         setOpen(false);
         resetForm();
-        dispatch(setGlobalUpdated(true));
         successMessage();
     }
 
@@ -166,12 +161,8 @@ const PromoForm: FC<IForm> = ({ open, setOpen, method }) => {
                 </div>
             </>
         )
-
-
     }
 
-    console.log(values)
-    console.log(errors)
     const [files, setFiles] = useState<FileWithPreview[]>([]);
 
     return (

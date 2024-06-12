@@ -18,7 +18,7 @@ const DetalleInput: FC<IDetalleInput> = ({ values, setValues, idSucursales }) =>
 
     const backend = new BackendMethods()
 
-    const {getAccessTokenSilently} = useAuth0()
+    const { getAccessTokenSilently } = useAuth0()
 
     const [aMDetalles, setAmDetalles] = useState<IArticuloManufacturadoDetalle[]>([])
 
@@ -71,9 +71,9 @@ const DetalleInput: FC<IDetalleInput> = ({ values, setValues, idSucursales }) =>
     // }
 
     useEffect(() => {
-      setAmDetalles(values.articuloManufacturadoDetalles)
+        setAmDetalles(values.articuloManufacturadoDetalles)
     }, [])
-    
+
 
     const handleDirectQuantity = (e: ChangeEvent<HTMLInputElement>, id: number) => {
 
@@ -133,7 +133,7 @@ const DetalleInput: FC<IDetalleInput> = ({ values, setValues, idSucursales }) =>
             return 'no hay búsqueda';
         }
         else {
-            const res: IArticuloInsumo[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}ArticuloInsumo/buscar/${busqueda}/${idSucursales}`, getAccessTokenSilently) as IArticuloInsumo[]
+            const res: IArticuloInsumo[] = await backend.getAll(`http://localhost:8080/ArticuloInsumo/buscar/${idSucursales}?searchString=${busqueda}`, getAccessTokenSilently) as IArticuloInsumo[]
             setFiltroDetalle(res);
             setArticulosInsumo(res);
             return res;

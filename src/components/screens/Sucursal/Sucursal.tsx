@@ -25,8 +25,6 @@ const Sucursal = () => {
 
     const nombreEmpresa = location?.state?.nombre;
 
-    console.log(nombreEmpresa)
-
     const dispatch = useAppDispatch();
 
     const updated = useAppSelector((state) => state.GlobalUpdated.updated);

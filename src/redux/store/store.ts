@@ -14,6 +14,7 @@ import MostrarCategoriaSelector from "../slices/mostrarCategoriaSelector";
 import GlobalIdEmpresa from "../slices/idEmpresa";
 import GlobalError from "../slices/globalError";
 import GlobalIdPaginador from "../slices/idPaginador";
+import GlobalEmpleado from "../slices/empleadoCompleto";
 
 const persistConfig = {
   key: "root",
@@ -62,6 +63,7 @@ export const store = configureStore({
     GlobalIdEmpresa: persistedIdEmpresa,
     GlobalError: GlobalError.reducer,
     GlobalIdPaginador: GlobalIdPaginador.reducer,
+    GlobalEmpleado: GlobalEmpleado.reducer,
   },
 });
 

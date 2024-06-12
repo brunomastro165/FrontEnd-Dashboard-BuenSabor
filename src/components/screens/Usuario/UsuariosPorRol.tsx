@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useLocation } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import { IUsuario } from '../../../types/Usuario';
 import NavBar from '../../ui/NavBar/NavBar';
 import { Table, Title } from '@tremor/react';
@@ -10,6 +10,9 @@ import { useAuth0 } from '@auth0/auth0-react';
 import { IEmpleado } from '../../../types/Empleado';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { setGlobalUpdated } from '../../../redux/slices/globalUpdate';
+import { setCategoriaSelector } from '../../../redux/slices/mostrarCategoriaSelector';
+
+const ITEMS_POR_PAGINA = 5;
 
 const UsuariosPorRol = () => {
 
@@ -29,6 +32,17 @@ const UsuariosPorRol = () => {
 
     const { getAccessTokenSilently } = useAuth0()
 
+    const idPagina = useAppSelector((state) => state.GlobalIdPaginador.idPaginador)
+
+    const eliminado = useAppSelector((state) => state.GlobalBorrados.borrado)
+
+    const { idSucursales } = useParams();
+
+    useEffect(() => {
+        dispatch(setCategoriaSelector(false))
+    }, [])
+
+
     const transformData = (empleadoData: IEmpleado[]): IItem[] => {
         return empleadoData.map(empleado => ({
             id: empleado.id,
@@ -40,12 +54,15 @@ const UsuariosPorRol = () => {
         }));
     }
 
+    console.log(eliminado);
+
     useEffect(() => {
         const getEmpleados = async () => {
             try {
                 //TODO ESTO TIENE QUE FILTRAR POR EMPRESA/SUCURSAL
-                const res: IEmpleado[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}empleado`, getAccessTokenSilently) as IEmpleado[]
-                const data: IItem[] = transformData(res)
+                const res: IEmpleado[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}empleado/getPorSucursal/${idSucursales}?limit=${ITEMS_POR_PAGINA}&startId=${idPagina}`, getAccessTokenSilently) as IEmpleado[]
+                const empleadoFiltrado: IEmpleado[] = res.filter((empleado) => empleado.eliminado === eliminado)
+                const data: IItem[] = transformData(empleadoFiltrado)
                 setData(data);
                 setEmpleados(res)
             } catch (error) {
@@ -54,7 +71,7 @@ const UsuariosPorRol = () => {
         }
         getEmpleados();
         dispatch(setGlobalUpdated(false))
-    }, [loading, updated])
+    }, [loading, updated, idPagina, eliminado])
 
     return (
         <>

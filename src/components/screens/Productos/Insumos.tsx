@@ -15,7 +15,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { setIdPaginador } from "../../../redux/slices/idPaginador";
 
 
-const ITEMS_POR_PAGINA = 1;
+const ITEMS_POR_PAGINA = 5;
 
 const Insumos = () => {
 
@@ -88,9 +88,6 @@ const Insumos = () => {
     //     }
     // }
 
-    console.log(borrados)
-    console.log(selectedCategory)
-
     useEffect(() => {
         dispatch(setIdPaginador(1))
     }, [search])
@@ -98,23 +95,20 @@ const Insumos = () => {
 
     const idPagina = useAppSelector((state) => state.GlobalIdPaginador.idPaginador);
 
-    console.log(search)
     useEffect(() => {
         const fetchInsumo = async () => {
-
             if (selectedCategory !== 'Todos') {
-                //Usamos una función recursiva para traernos todos los articulos dentro de la categoria que seleccionamos
-                const insumos: IArticuloInsumoCategoria[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}categoria/getInsumos/${idCategoriaSeleccionada}/${search}`, getAccessTokenSilently) as IArticuloInsumoCategoria[];
-                console.log("SEX")
-                console.log(insumos)
-                //Filtramos por articulos eliminados (si lo igualamos a borrados, vamos a poder invertir la vista de los articulos eliminados)
+                const url = search !== '' ? `categoria/getInsumos/${idCategoriaSeleccionada}?searchString=${search}&limit=${ITEMS_POR_PAGINA}&startId=${idPagina}` : `categoria/getInsumos/${idCategoriaSeleccionada}?limit=${ITEMS_POR_PAGINA}&startId=${idPagina}`;
+                const insumos: IArticuloInsumoCategoria[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}${url}`, getAccessTokenSilently) as IArticuloInsumoCategoria[];
                 const insumosHabilitados: IArticuloInsumoCategoria[] = insumos.filter((articulo) => articulo.eliminado === borrados)
                 const transformedData = transformData(insumosHabilitados);
                 setData(transformedData);
             }
             else {
                 try {
-                    const responsePaginada: IArticuloInsumoCategoria[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}ArticuloInsumo/getArticulosInsumos/${search}/${idSucursales}?limit=${ITEMS_POR_PAGINA}&startId=${idPagina}`, getAccessTokenSilently) as IArticuloInsumoCategoria[];
+                    //Si search es vacío trae todo, sino trae por la búsqueda
+                    const url = search !== '' ? `ArticuloInsumo/getArticulosInsumos/${idSucursales}?searchString=${search}&limit=${ITEMS_POR_PAGINA}&startId=${idPagina}` : `ArticuloInsumo/getArticulosInsumos/${idSucursales}?limit=${ITEMS_POR_PAGINA}&startId=${idPagina}`;
+                    const responsePaginada: IArticuloInsumoCategoria[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}${url}`, getAccessTokenSilently) as IArticuloInsumoCategoria[];
                     const insumosHabilitados: IArticuloInsumoCategoria[] = responsePaginada.filter((articulo) => articulo.eliminado === borrados)
                     const transformedData = transformData(insumosHabilitados);
                     setData(transformedData);
@@ -123,13 +117,11 @@ const Insumos = () => {
                     console.log(error)
                 }
             }
-
             setLoading(true);
             dispatch((setGlobalUpdated(false), setEsInsumo(true)))
         }
         fetchInsumo();
     }, [loading, updated, selectedCategory, borrados, search, idPagina])
-    console.log(idPagina)
 
     // Uso de la función
     // useEffect(() => {

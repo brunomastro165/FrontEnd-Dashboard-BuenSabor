@@ -60,9 +60,8 @@ const TableItem: FC<IItem> = ({ id, denominacion, param2, param3, param4, endpoi
             const response = await CRUD.delete(`${import.meta.env.VITE_LOCAL}${endpoint}/${id}`, getAccessTokenSilently)
             dispatch(setGlobalUpdated(true))
         } catch (error: any) {
-            if (error.status === 409) {
-                errorGenerico('No se puede eliminar un articulo que forme parte de una promoción u otro articulo')
-            }
+            dispatch(setGlobalUpdated(true))
+            errorGenerico(error?.data?.message)
             dispatch(setGlobalUpdated(true))
         }
     }

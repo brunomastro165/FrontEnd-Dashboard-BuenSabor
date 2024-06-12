@@ -28,8 +28,12 @@ export const validationPromo = Yup.object().shape({
     detalles: Yup.array()
         .min(1, 'Se debe asignar por lo menos un detalle a la promoción')
         .required('El detalle es requerido'),
+        
     idSucursales: Yup.array()
         .of(Yup.number().integer('idSucursales debe contener solo números enteros'))
         .required('Asignar una sucursal es obligatorio')
         .min(1, 'Se debe asignar por lo menos una sucursal'),
+
+    tipoPromocion: Yup.string()
+        .required('El tipo de la promoción es requerido')
 });

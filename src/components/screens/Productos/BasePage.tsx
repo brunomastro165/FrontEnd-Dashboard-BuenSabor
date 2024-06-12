@@ -11,7 +11,7 @@ import { setCategoriaSelector } from '../../../redux/slices/mostrarCategoriaSele
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { setIdPaginador } from '../../../redux/slices/idPaginador';
-
+import { FaArrowCircleRight } from "react-icons/fa";
 // const ITEMS_PER_PAGE = 7;
 
 const BasePage: FC<IBasePage> = ({ data, title, loading, row1, row2, row3, row4, row5, endpoint }) => {
@@ -59,9 +59,10 @@ const BasePage: FC<IBasePage> = ({ data, title, loading, row1, row2, row3, row4,
 
                 <SearchBar />
                 <div className='pt-16'>
-                    {data.length >= 0 ? <Table items={data} row1={row1} row2={row2} row3={row3}
-                        row4={row4} row5={row5} endpoint={endpoint}
-                    />
+                    {data.length >= 0 ?
+                        <Table items={data} row1={row1} row2={row2} row3={row3}
+                            row4={row4} row5={row5} endpoint={endpoint}
+                        />
                         :
                         <div className=' flex flex-col justify-center items-center text-center w-full '>
                             <img src="/assets/img/buscando.svg" alt=""
@@ -86,10 +87,19 @@ const BasePage: FC<IBasePage> = ({ data, title, loading, row1, row2, row3, row4,
 
 
                 <div className={`flex flex-row items-center ${idPagina !== 0 ? 'justify-between' : 'justify-end'} mt-2`}>
-                    {idPagina !== 0 && <button className='btn ' onClick={() => dispatch(setIdPaginador(1))}>Inicio</button>}
+                    {idPagina !== 0 && <button className='btn btn-error text-white ' onClick={() => dispatch(setIdPaginador(1))}>Primera página</button>}
                     <div className=''>
-                        {idPagina > 1 && <button className='btn' onClick={() => dispatch(setIdPaginador(idPagina - 1))}>Página anterior</button>}
-                        {data.length >= 0 && <button className='btn' onClick={() => dispatch(setIdPaginador(idPagina + 1))}>Siguiente página</button>}
+                        {idPagina > 1 &&
+                            <button className='hover:scale-105 transition-all hover:-translate-x-3' onClick={() => dispatch(setIdPaginador(idPagina - 1))}>
+                                <FaArrowCircleRight className='rotate-180 text-4xl text-red-600' />
+                            </button>
+                        }
+
+                        {data.length >= 0 && data.length < 5 ||
+                            <button className='hover:scale-105 transition-all hover:translate-x-3' onClick={() => dispatch(setIdPaginador(idPagina + 1))}>
+                                <FaArrowCircleRight className=' text-4xl text-red-600' />
+                            </button>
+                        }
                     </div>
                 </div>
 

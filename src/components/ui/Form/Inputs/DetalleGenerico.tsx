@@ -28,7 +28,7 @@ const DetalleGenerico: FC<IDetalleInput> = ({ values, setValues, idSucursales })
 
     const backend = new BackendMethods()
 
-    const {getAccessTokenSilently} = useAuth0();
+    const { getAccessTokenSilently } = useAuth0();
 
     const [aMDetalles, setAmDetalles] = useState<IDetallePromoCreate[]>([])
 
@@ -105,20 +105,8 @@ const DetalleGenerico: FC<IDetalleInput> = ({ values, setValues, idSucursales })
         traerArticulos()
 
         setAmDetalles(values.detalles)
-     
+
     }, [])
-
-    console.log("sexin")
-    console.log(values.detalles)
-
-    console.log("sexopata")
-    console.log(aMDetalles)
-
-    console.log("sexomaniaco")
-    console.log(articulosGuardados)
-
-    console.log("Sex?")
-    console.log(articulosGenericos)
 
 
     const handleDirectQuantity = (e: ChangeEvent<HTMLInputElement>, id: number) => {
@@ -182,13 +170,9 @@ const DetalleGenerico: FC<IDetalleInput> = ({ values, setValues, idSucursales })
         ) as any[][];
 
         setArticulosGuardados(prevArticulos => {
-            console.log("hola entré")
             const nuevosArticulos = articulosFiltrados.flat();
-            console.log(nuevosArticulos)
             const idsPrevios = prevArticulos.map(articulo => articulo.id);
-            console.log(idsPrevios)
             const articulosUnicos = nuevosArticulos.filter((articulo) => !idsPrevios.includes(articulo.id));
-            console.log(articulosUnicos)
             return [...prevArticulos, ...articulosUnicos];
         });
 
@@ -200,8 +184,8 @@ const DetalleGenerico: FC<IDetalleInput> = ({ values, setValues, idSucursales })
             setFiltroGenerico([]);
             return 'no hay búsqueda';
         }
-        else {
-            const res: IArticuloGenerico[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}ArticuloInsumo/getArticulos/${busqueda}/${idSucursales}`, getAccessTokenSilently) as IArticuloGenerico[]
+        else { //ArticuloInsumo/getArticulos/1?searchString=m&limit=10&startId=1
+            const res: IArticuloGenerico[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}ArticuloInsumo/getArticulos/${idSucursales}?searchString=${busqueda}`, getAccessTokenSilently) as IArticuloGenerico[]
             setFiltroGenerico(res);
             setArticulosGenericos(res);
             return res;
