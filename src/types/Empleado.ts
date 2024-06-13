@@ -1,5 +1,6 @@
 import { IDomicilio } from "./Domicilio/Domicilio";
 import { ISucursalShort } from "./ShortDtos/SucursalShort";
+import { ISucursal } from "./Sucursal";
 
 export interface IEmpleado {
   id: number;

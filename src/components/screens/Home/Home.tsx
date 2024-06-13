@@ -37,33 +37,8 @@ const Home = () => {
 
     const url = `/${idEmpresa}/sucursales/${idSucursales}`
 
-
-    console.log("sex")
-    console.log(id)
     const [sucursales, setSucursales] = useState<ISucursal[]>([]);
 
-    // const getSucursales = async () => {
-
-    //     if (idEmpresa) {
-    //         const idEmpresaString = idEmpresa.toString();
-    //         const res: IEmpresa = await backend.get("https://backend-jsonserver-1.onrender.com/empresas", idEmpresaString);
-    //         const sucursales = res.sucursales;
-    //         setSucursales(sucursales)
-    //     }
-
-    // }
-
-    //@ts ignore
-    // const obtenerArticulos = (categoria: ICategoria): any[] => {
-
-    //     let articulos = [...categoria.articulos];
-
-    //     categoria.subCategorias.forEach(subCategoria => {
-    //         articulos = [...articulos, ...obtenerArticulos(subCategoria)];
-    //     });
-
-    //     return articulos;
-    // }
     const logged = useAppSelector((state) => state.logged.logged)
 
     console.log(logged)
@@ -77,60 +52,20 @@ const Home = () => {
         dispatch(setIdEmpresa(idEmpresa))
     }, [])
 
-
-
-    // useEffect(() => {
-    //     const fetchManufacturado = async () => {
-
-    //         //Esto está hecho de maneria precaria debido a las limitaciones de JSON SERVER,
-    //         // con un backend funcional se hará el endpoint correspondiente
-
-    //         if (idEmpresa && idSucursales) {
-
-    //             //Buscamos la empresa por el ID que nos traemos con useParams
-    //             const idEmpresaString = idEmpresa.toString()
-    //             const response: IEmpresa = await backend.get("https://backend-jsonserver-1.onrender.com/empresas", idEmpresaString)
-
-    //             //Una vez dentro de la empresa, buscamos la sucursal seleccionada con useParams
-    //             const idSucursalNumber = Number(idSucursales)
-    //             const sucursal: ISucursal | undefined = response.sucursales.find((sucursal: ISucursal) => sucursal.id === idSucursalNumber)
-
-    //             //Ahora buscamos las categorías dentro de la sucursal que fué seleccionada
-    //             const categorias: ICategoria[] | undefined = sucursal?.categorias
-
-    //             //Llamada a la función obtener articulos, la cual nos retorna todos los articulosManufacturados dentro de todas las categorías
-    //             const arCategorias: ICategoria[] | undefined = categorias;
-    //             let articulos: IArticuloManufacturado[] = [];
-
-    //             arCategorias?.forEach(categoria => {
-    //                 articulos = [...articulos, ...obtenerArticulos(categoria)];
-    //             });
-
-    //             //Llamada a la función transformData, la cual nos retorna los datos de articuloManufacturado en un tipo de dato
-    //             //compatible con la el componente Table
-    //             setArticulosManufacturados(articulos);
-    //             getSucursales()
-    //             setLoading(true);
-    //         }
-    //     }
-    //     fetchManufacturado();
-    // }, [loading])
-
-
     return (
         <div className='overflow-hidden'>
             <NavBar title='Inicio' />
 
             <div className='flex flex-col'>
                 <div className=' m-5 rounded-btn mt-24 shadow-lg'>
-                    <h1 className=' mx-auto font-Roboto text-2xl p-5  text-red-600 rounded-t'>Stock:</h1>
-                    <div className=' flex flex-col md:flex-row justify-center items-center align-middle '>
-                        <div className='p-5 rounded-md size-full md:size-2/6'>
+                    <h1 className=' mx-auto font-Roboto text-2xl p-5  text-red-600 rounded-t'>Articulos más vendidos:</h1>
+                    <div className=' flex flex-col md:flex-col justify-center items-center align-middle '>
+                        <div className='p-5 rounded-md size-full '>
                             <GraficoBarra />
                         </div>
-                        <div className='p-5 rounded-md size-full md:size-3/6'>
+                        {/* <div className='p-5 rounded-md size-full md:size-3/6'>
                             <BarListVisitas articulos={articulosManufacturados} />
-                        </div>
+                        </div> */}
                     </div>
                 </div>
 
@@ -145,9 +80,7 @@ const Home = () => {
                     <TrackerServ />
                 </div> */}
                         <div className='p-5 rounded-md size-full'>
-                            {sucursales.map((sucursal) => (
-                                <VentasSucGrafico id={sucursal.id} nombre={sucursal.nombre} key={sucursal.id} />
-                            ))}
+                            <VentasSucGrafico />
                         </div>
                     </div>
                 </div>

@@ -5,7 +5,7 @@ interface InitialState {
 }
 
 const initialState: InitialState = {
-  idPaginador: 0,
+  idPaginador: 1,
 };
 
 const GlobalIdPaginador = createSlice({

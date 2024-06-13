@@ -4,6 +4,8 @@ import { IEmpleado } from "../../../types/Empleado";
 import { BackendMethods } from "../../../services/BackendClient";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import { setGlobalEmpleado } from "../../../redux/slices/empleadoCompleto";
+import { useNavigate } from "react-router-dom";
+import { setLogged } from "../../../redux/slices/logged";
 
 const LoginButton = () => {
     const { loginWithRedirect, isAuthenticated, user, getAccessTokenSilently } = useAuth0();
@@ -13,6 +15,10 @@ const LoginButton = () => {
     const dispatch = useAppDispatch();
 
     const empledo = useAppSelector((state) => state.GlobalEmpleado.empleado)
+
+    const navigate = useNavigate();
+
+    const logged = useAppSelector((state) => state.logged.logged)
 
     useEffect(() => {
         const traerEmpleado = async () => {
@@ -50,26 +56,43 @@ const LoginButton = () => {
         traerEmpleado();
     }, [isAuthenticated, user])
 
-    // useEffect(() => {
-    //     if (empledo.email !== '') {
-    //         switch (empledo.tipoEmpleado) {
-    //             case 'COCINERO':
 
-    //                 break;
-
-    //             default:
-    //                 break;
-    //         }
-    //     }
-    // }, [empledo])
-
+    useEffect(() => {
+        if (!logged) {
+            if (empledo.email !== '') {
+                const idEmpresa = empledo.sucursal.empresa.id;
+                const idSucursal = empledo.sucursal.id
+                switch (empledo.tipoEmpleado) {
+                    case 'CAJERO':
+                        dispatch(setLogged(true))
+                        navigate(`/${idEmpresa}/sucursales/${idSucursal}/pedidos`);
+                        break;
+                    case 'COCINERO':
+                        dispatch(setLogged(true))
+                        navigate(`/${idEmpresa}/sucursales/${idSucursal}/pedidos`);
+                        break;
+                    case 'DELIVERY':
+                        dispatch(setLogged(true))
+                        navigate(`/${idEmpresa}/sucursales/${idSucursal}/home`);
+                        break;
+                    case 'ADMIN':
+                        dispatch(setLogged(true))
+                        navigate(`/${idEmpresa}/sucursales/`);
+                        break;
+                    default:
+                        navigate('/ruta-default');
+                        break;
+                }
+            }
+        }
+    }, [empledo]);
 
     return (
         isAuthenticated ? (
-            <div className="flex items-end space-x-2  rounded">
+            <div className="flex items-center space-x-2  rounded">
                 <img src={user?.picture} alt="" className="size-10 rounded-full" />
                 <div>
-                    <h1>Bienvenido</h1>
+                    <h1 className="bg-red-500 text-white px-1 rounded">{empledo.tipoEmpleado}</h1>
                     <h2>{user?.nickname}</h2>
                 </div>
             </div>

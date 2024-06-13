@@ -1,4 +1,3 @@
-//@ts-nocheck
 import { BarChart } from '@tremor/react';
 import { BackendClient } from '../../services/BackendClient';
 import { IRol } from '../../types/Rol';
@@ -7,90 +6,88 @@ import { IArticuloInsumo } from '../../types/ArticuloInsumo';
 import { IPromos } from '../../types/Promos';
 import { IUsuario } from '../../types/Usuario';
 import { IEmpresa } from '../../types/Empresa';
-import { IArticuloManufacturado } from '../../types/SpecialDtos';
-class GenericBackend extends BackendClient<T> { } //Métodos genéricos
+import { useAuth0 } from '@auth0/auth0-react';
+import useRankingArticulos from '../../hooks/useRankingArticulos';
 
-const dataFormatter = (number: number) =>
-  Intl.NumberFormat('us').format(number).toString();
 
 export const GraficoBarra = () => {
+  const [inicio, setInicio] = useState<string>('2024-01-01');
+  const [fin, setFin] = useState<string>('2030-11-12');
+  const [errorFecha, setErrorFecha] = useState<string>('');
 
-  const backend = new GenericBackend(); //Objeto de BackendClient
-
-  const [roles, setRoles] = useState<IRol[]>([]); 
-  const [articulosInsumo, setArtInsumo] = useState<IArticuloInsumo[]>([]); 
-  const [promos, setPromos] = useState<IPromos[]>([]);
-  const [usuarios, setUsuarios] = useState<IUsuario[]>([]); 
-  const [artManufacturados, setArtManu] = useState<IArticuloManufacturado[]>([]); 
-  const [empresa, setEmpresa] = useState<IEmpresa>();
-
-
-  const getRoles = async () => {
-    const res: IRol[] = await backend.getAll("https://backend-jsonserver-1.onrender.com/roles"); // Fetch de roles
-    setRoles(res)
-  }
-
-  const getArtInsumo = async () => {
-    const res: IArticuloInsumo[] = await backend.getAll("https://backend-jsonserver-1.onrender.com/articulosInsumos"); // Fetch de articulo insumo
-    setArtInsumo(res)
-  }
-
-  const getPromos = async () => {
-    const res: IPromos[] = await backend.getAll("https://backend-jsonserver-1.onrender.com/promociones"); // Fetch de promociones
-    setPromos(res)
-  }
-
-  const getUsuarios = async () => {
-    const res: IUsuario[] = await backend.getAll("https://backend-jsonserver-1.onrender.com/usuarios"); // Fetch de usuarios
-    setUsuarios(res)
-  }
-
-  const getArtManufacturado = async () => {
-    const res: IArticuloManufacturado[] = await backend.getAll("https://backend-jsonserver-1.onrender.com/articulosManufacturados"); // Fetch de articulo manufacturado
-    setArtManu(res)
-  }
+  const { data, loading, error, fetchRankingArticulos } = useRankingArticulos({
+    fechaInicio: inicio,
+    fechaFin: fin,
+  });
 
   useEffect(() => {
-    getRoles();
-    getArtInsumo();
-    getPromos();
-    getUsuarios();
-    getArtManufacturado();
-  }, [])
+    fetchRankingArticulos();
+  }, [inicio, fin]);
 
-  // Informacion dentro de Barras
-  const data = [
-     {
-      name: 'Roles',
-      'Elementos': roles.length,
-     },
-     {
-      name: 'Insumos',
-      'Elementos': articulosInsumo.length,
-     },
-     {
-      name: 'Usuarios',
-      'Elementos': usuarios.length,
-     },
-     {
-      name: 'Manufacturados',
-      'Elementos': artManufacturados.length,
-     },
-     {
-      name: 'Promociones',
-      'Elementos': promos.length,
-     }
-  ]
+  const transformData = (response: [string, number][]) => {
+    return response.map(([name, value]) => ({
+      name,
+      Elementos: value
+    }));
+  };
 
-  return(
-    <BarChart
-    data={data}
-    index="name"
-    categories={['Elementos']}
-    colors={['blue']}
-    valueFormatter={dataFormatter}
-    yAxisWidth={20}
-    onValueChange={(v) => console.log(v)}
-  />
-  )
+  //@ts-ignore
+  const chartData = data ? transformData(data) : [];
+
+  // Función para validar fechas
+  const validarFechas = (fechaInicio: string, fechaFin: string) => {
+    if (fechaInicio > fechaFin) {
+      setErrorFecha('La fecha de inicio no puede ser mayor que la fecha de fin');
+      return false;
+    }
+    setErrorFecha('');
+    return true;
+  };
+
+  const handleInicioChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const nuevaFechaInicio = e.target.value;
+    if (validarFechas(nuevaFechaInicio, fin)) {
+      setInicio(nuevaFechaInicio);
+    }
+  };
+
+  const handleFinChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const nuevaFechaFin = e.target.value;
+    if (validarFechas(inicio, nuevaFechaFin)) {
+      setFin(nuevaFechaFin);
+    }
+  };
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
+
+  return (
+    <div className='w-full'>
+      <div className='flex flex-row space-x-4'>
+        <input
+          type="date"
+          className='border rounded cursor-pointer '
+          value={inicio}
+          onChange={handleInicioChange}
+        />
+        <input
+          type="date"
+          className='border rounded cursor-pointer'
+          value={fin}
+          onChange={handleFinChange}
+        />
+      </div>
+
+      {errorFecha && <div className="text-red-500">{errorFecha}</div>}
+
+      <BarChart
+        data={chartData}
+        index="name"
+        categories={['Elementos']}
+        colors={['blue']}
+        yAxisWidth={20}
+        onValueChange={(v) => console.log(v)}
+      />
+    </div>
+  );
 };
