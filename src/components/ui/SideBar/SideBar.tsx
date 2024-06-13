@@ -19,6 +19,7 @@ import { TbSquarePercentage } from "react-icons/tb";
 import { setIdEmpresa } from '../../../redux/slices/idEmpresa';
 import { HiOutlineTicket } from "react-icons/hi2";
 import { GrTable } from "react-icons/gr";
+import { TbTruckDelivery } from "react-icons/tb";
 
 const SideBar = () => {
 
@@ -59,6 +60,7 @@ const SideBar = () => {
         { Icon: LiaBalanceScaleRightSolid, text: "Unidades de medida", link: `${url}/unidadesDeMedida`, active: active, setActive: setActive, subButton: null, child: false, roles: ['SUPERADMIN', 'ADMIN'] },
         { Icon: HiOutlineTicket, text: "Pedidos", link: `${url}/pedidos`, active: active, setActive: setActive, subButton: null, child: false, roles: ['SUPERADMIN', 'ADMIN', 'COCINERO', 'CAJERO', 'DELIVERY'] },
         { Icon: GrTable, text: "Grilla de pedidos ", link: `${url}/pedidosCajero`, active: active, setActive: setActive, subButton: null, child: false, roles: ['SUPERADMIN', 'ADMIN', 'COCINERO', 'CAJERO', 'DELIVERY'] },
+        { Icon: TbTruckDelivery, text: "Pedidos delivery ", link: `${url}/pedidosDelivery`, active: active, setActive: setActive, subButton: null, child: false, roles: ['SUPERADMIN', 'ADMIN', 'DELIVERY'] },
     ];
 
     //Con esto filtro los botones de la sidebar por el rol del empleado
@@ -75,9 +77,9 @@ const SideBar = () => {
         <>
             <div className=' hidden md:flex w-72 border-r h-screen  flex-col justify-around fixed z-50 bg-white '>
 
-                <div className='space-y-0 md:space-y-4 top-20 fixed'>
+                {/* <div className='space-y-0 md:space-y-4 top-20 fixed'>
                     <UserSection />
-                </div>
+                </div> */}
 
                 <div className='w-full'>
                     {filteredButtons.map((button: IButton) => (

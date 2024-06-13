@@ -91,7 +91,7 @@ const Manufacturados = () => {
             }
 
             else {
-                const url = search !== '' ? `ArticuloManufacturado/getArticulosManufacturados/${idSucursales}?limit=${ITEMS_POR_PAGINA}&startId=${idPagina}` : `ArticuloManufacturado/getArticulosManufacturados/${idSucursales}?limit=${ITEMS_POR_PAGINA}&startId=${idPagina}`;
+                const url = search !== '' ? `ArticuloManufacturado/getArticulosManufacturados/${idSucursales}?searchString=${search}&limit=${ITEMS_POR_PAGINA}&startId=${idPagina}` : `ArticuloManufacturado/getArticulosManufacturados/${idSucursales}?limit=${ITEMS_POR_PAGINA}&startId=${idPagina}`;
                 const manufacturados: IArticuloManufacturadoCategoria[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}${url}`, getAccessTokenSilently) as IArticuloManufacturadoCategoria[];
                 const manufacturadosHabilitados: IArticuloManufacturadoCategoria[] = manufacturados.filter((articulo) => articulo.eliminado === borrados)
                 const transformedData = transformData(manufacturadosHabilitados);

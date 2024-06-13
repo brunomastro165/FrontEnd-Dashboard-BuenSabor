@@ -76,7 +76,8 @@ const PedidosCajero = () => {
             id: pedido.id,
             denominacion: pedido.estado,
             param2: pedido.formaPago,
-            param3: pedido.empleado,
+            //@ts-ignore
+            param3: pedido?.empleado?.nombre,
             param4: pedido.domicilio.calle,
             endpoint: ''
         }));

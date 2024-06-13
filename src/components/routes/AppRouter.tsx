@@ -25,6 +25,7 @@ import { useAuth0 } from '@auth0/auth0-react'
 import { UserProfile } from '../auth0/UserProfile'
 import { RutaPrivada } from './RutaPrivada'
 import PedidosCajero from '../screens/PedidosCajero/PedidosCajero'
+import Delivery from '../screens/Delivery/Delivery'
 
 const AppRouter = () => {
 
@@ -117,6 +118,12 @@ const AppRouter = () => {
                         <Route path='/:idEmpresa/sucursales/:idSucursales/pedidosCajero' element={
                             <RutaPrivada roles={['SUPERADMIN', 'ADMIN', 'CAJERO']}>
                                 <PedidosCajero />
+                            </RutaPrivada>
+                        } />
+
+                        <Route path='/:idEmpresa/sucursales/:idSucursales/pedidosDelivery' element={
+                            <RutaPrivada roles={['SUPERADMIN', 'ADMIN', 'DELIVERY']}>
+                                <Delivery />
                             </RutaPrivada>
                         } />
 
