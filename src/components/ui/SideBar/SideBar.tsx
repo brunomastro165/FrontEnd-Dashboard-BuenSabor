@@ -18,14 +18,12 @@ import { FaRegBuilding } from "react-icons/fa6";
 import { TbSquarePercentage } from "react-icons/tb";
 import { setIdEmpresa } from '../../../redux/slices/idEmpresa';
 import { HiOutlineTicket } from "react-icons/hi2";
-
-
-
-
+import { GrTable } from "react-icons/gr";
 
 const SideBar = () => {
 
     const [active, setActive] = useState("Home");
+    console.log(active)
 
     //const { idEmpresa, idSucursales } = useParams()
 
@@ -35,46 +33,43 @@ const SideBar = () => {
 
     const url = useAppSelector((state) => state.globalUrl.url);
 
+    console.log(url);
+
     const idEmpresa = useAppSelector((state) => state.GlobalIdEmpresa.idEmpresa);
 
+    const empleado = useAppSelector((state) => state.GlobalEmpleado.empleado);
 
-    useEffect(() => {
-
-    }, [])
-
-    // const url = `/${idEmpresa}/sucursales/${idSucursales}`
-
-    const dispatch = useAppDispatch()
+    const [filteredButtons, setFilteredButtons] = useState<IButton[]>([]);
 
     //Hice todo para que modificando este JSON se modifiquen directamente los botones de la sidebar con sus configuraciones 
     const Buttons: IButton[] = [
-        { Icon: IoHomeOutline, text: "Inicio", link: `${url}/home`, active: active, setActive: setActive, subButton: null, child: false },
-        { Icon: TiTags, text: "Categorías", link: `${url}/categorias`, active: active, setActive: setActive, subButton: null, child: false },
+        { Icon: IoHomeOutline, text: "Inicio", link: `${url}/home`, active: active, setActive: setActive, subButton: null, child: false, roles: ['SUPERADMIN', 'ADMIN', 'COCINERO', 'CAJERO', 'DELIVERY'] },
+        { Icon: TiTags, text: "Categorías", link: `${url}/categorias`, active: active, setActive: setActive, subButton: null, child: false, roles: ['SUPERADMIN', 'ADMIN', 'COCINERO', 'CAJERO'] },
         //El ícono de productos va a tener otros dos dentro
         {
-            Icon: MdOutlineShoppingBag, text: "Productos", link: "", active: active, setActive: setActive,
+            Icon: MdOutlineShoppingBag, text: "Productos", link: "", active: active, setActive: setActive, roles: ['SUPERADMIN', 'ADMIN', 'COCINERO', 'CAJERO'],
             subButton: [
-                { Icon: MdOutlineShoppingBag, text: "Manufacturados", link: `${url}/manufacturados`, active: active, setActive: setActive, subButton: null, child: true },
-                { Icon: MdOutlineShoppingBag, text: "Insumos", link: `${url}/insumos`, active: active, setActive: setActive, subButton: null, child: true }],
+                { Icon: MdOutlineShoppingBag, text: "Manufacturados", link: `${url}/manufacturados`, active: active, setActive: setActive, subButton: null, child: true, roles: ['SUPERADMIN', 'ADMIN', 'COCINERO', 'CAJERO'] },
+                { Icon: MdOutlineShoppingBag, text: "Insumos", link: `${url}/insumos`, active: active, setActive: setActive, subButton: null, child: true, roles: ['SUPERADMIN', 'ADMIN', 'COCINERO', 'CAJERO'] }],
             child: false,
         },
-        { Icon: TbSquarePercentage, text: "Promociones", link: `${url}/promociones`, active: active, setActive: setActive, subButton: null, child: false },
-        { Icon: FaRegBuilding, text: "Sucursales", link: `${idEmpresa}/sucursales`, active: active, setActive: setActive, subButton: null, child: false },
-        { Icon: FaRegUser, text: "Usuarios", link: `${url}/usuarios`, active: active, setActive: setActive, subButton: null, child: false },
-        { Icon: LiaBalanceScaleRightSolid, text: "Unidades de medida", link: `${url}/unidadesDeMedida`, active: active, setActive: setActive, subButton: null, child: false },
-        { Icon: HiOutlineTicket, text: "Pedidos", link: `${url}/pedidos`, active: active, setActive: setActive, subButton: null, child: false },
+        { Icon: TbSquarePercentage, text: "Promociones", link: `${url}/promociones`, active: active, setActive: setActive, subButton: null, child: false, roles: ['SUPERADMIN', 'ADMIN', 'COCINERO', 'CAJERO'] },
+        { Icon: FaRegBuilding, text: "Sucursales", link: `${idEmpresa}/sucursales`, active: active, setActive: setActive, subButton: null, child: false, roles: ['SUPERADMIN', 'ADMIN'] },
+        { Icon: FaRegUser, text: "Usuarios", link: `${url}/usuarios`, active: active, setActive: setActive, subButton: null, child: false, roles: ['SUPERADMIN', 'ADMIN'] },
+        { Icon: LiaBalanceScaleRightSolid, text: "Unidades de medida", link: `${url}/unidadesDeMedida`, active: active, setActive: setActive, subButton: null, child: false, roles: ['SUPERADMIN', 'ADMIN'] },
+        { Icon: HiOutlineTicket, text: "Pedidos", link: `${url}/pedidos`, active: active, setActive: setActive, subButton: null, child: false, roles: ['SUPERADMIN', 'ADMIN', 'COCINERO', 'CAJERO', 'DELIVERY'] },
+        { Icon: GrTable, text: "Grilla de pedidos ", link: `${url}/pedidosCajero`, active: active, setActive: setActive, subButton: null, child: false, roles: ['SUPERADMIN', 'ADMIN', 'COCINERO', 'CAJERO', 'DELIVERY'] },
     ];
 
+    //Con esto filtro los botones de la sidebar por el rol del empleado
+    const filtrarBotonesPorRol = (buttons: IButton[]) => {
+        const botonesFiltrados: IButton[] = buttons.filter((button) => button.roles.includes(empleado.tipoEmpleado));
+        setFilteredButtons(botonesFiltrados);
+    }
 
-    const ResponsiveButtons: IButton[] = [
-        { Icon: MdOutlineShoppingBag, text: "Insumos", link: `${url}/insumos`, active: active, setActive: setActive, subButton: null, child: false },
-        { Icon: MdOutlineShoppingBag, text: "Manufacturados", link: `${url}/manufacturados`, active: active, setActive: setActive, subButton: null, child: false },
-        { Icon: TbSquarePercentage, text: "Promociones", link: `${url}/promociones`, active: active, setActive: setActive, subButton: null, child: false },
-        { Icon: IoHomeOutline, text: "Inicio", link: `${url}/home`, active: active, setActive: setActive, subButton: null, child: false },
-        { Icon: GoFileDirectory, text: "Empresa", link: `${url}/empresa`, active: active, setActive: setActive, subButton: null, child: false },
-        { Icon: FaRegUser, text: "Usuarios", link: `${url}/usuarios`, active: active, setActive: setActive, subButton: null, child: false },
-        { Icon: TbCategory2, text: "Categorías", link: `${url}/categorias`, active: active, setActive: setActive, subButton: null, child: false },
-    ];
+    useEffect(() => {
+        filtrarBotonesPorRol(Buttons);
+    }, [url, active])
 
     return (
         <>
@@ -85,15 +80,15 @@ const SideBar = () => {
                 </div>
 
                 <div className='w-full'>
-                    {Buttons.map((button: IButton) => (
+                    {filteredButtons.map((button: IButton) => (
                         <ButtonContainer Icon={button.Icon} text={button.text}
                             link={button.link} active={button.active} setActive={button.setActive} subButton={button.subButton}
-                            child={button.child} />
+                            child={button.child} roles={button.roles} />
                     ))}
                 </div>
 
             </div>
-
+            {/* 
             <div className='md:hidden w-full  fixed bottom-0 inset-x-0 z-50 h-24 flex justify-end items-end '>
 
                 <div className='w-full bg-white  flex flex-row justify-center items-center overflow-x-scroll   shadow-black'>
@@ -104,7 +99,7 @@ const SideBar = () => {
                     ))}
                 </div>
 
-            </div>
+            </div> */}
         </>
     )
 }

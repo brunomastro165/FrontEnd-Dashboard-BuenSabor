@@ -57,7 +57,7 @@ const BasePage: FC<IBasePage> = ({ data, title, loading, row1, row2, row3, row4,
 
             <div className='m-0 md:m-16 pt-14 '>
 
-                <SearchBar />
+               {endpoint !== 'pedido' && <SearchBar />} 
                 <div className='pt-16'>
                     {data.length >= 0 ?
                         <Table items={data} row1={row1} row2={row2} row3={row3}

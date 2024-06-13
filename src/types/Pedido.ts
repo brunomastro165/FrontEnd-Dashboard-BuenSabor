@@ -1,5 +1,6 @@
 import { IDetallePedido } from "./DetallePedido";
 import { IDomicilio } from "./Domicilio/Domicilio";
+import { IFactura } from "./Factura";
 import { ISucursal } from "./Sucursal";
 
 export interface IPedido {
@@ -14,7 +15,7 @@ export interface IPedido {
   cliente: string;
   sucursal: ISucursal;
   empleado: string;
-  factura: string;
+  factura: IFactura;
   detallesPedido: IDetallePedido[];
   horaEstimadaFinalizacion: Date;
 }

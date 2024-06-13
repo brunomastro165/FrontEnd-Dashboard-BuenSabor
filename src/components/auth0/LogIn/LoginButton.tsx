@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import { setGlobalEmpleado } from "../../../redux/slices/empleadoCompleto";
 import { useNavigate } from "react-router-dom";
 import { setLogged } from "../../../redux/slices/logged";
+import { errorGenerico } from "../../toasts/ToastAlerts";
 
 const LoginButton = () => {
     const { loginWithRedirect, isAuthenticated, user, getAccessTokenSilently } = useAuth0();
@@ -23,34 +24,32 @@ const LoginButton = () => {
     useEffect(() => {
         const traerEmpleado = async () => {
             if (user?.email) {
-                try { //No me dejaba usar el post genérico, asi que tuve que usar uno normal
-                    async function postRequest() {
-                        const url = `${import.meta.env.VITE_LOCAL}empleado/getPorMail`;
-                        const data = user?.email;
-                        try {
-                            const response = await fetch(url, {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'text/plain'
-                                },
-                                body: data
-                            });
 
-                            if (!response.ok) {
-                                throw new Error(`HTTP error! Status: ${response.status}`);
-                            }
+                async function postRequest() {
+                    const url = `${import.meta.env.VITE_LOCAL}empleado/getPorMail`;
+                    const data = user?.email;
+                    try {
+                        const response = await fetch(url, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'text/plain'
+                            },
+                            body: data
+                        });
 
-                            const empleado = await response.json() as IEmpleado;
-                            dispatch(setGlobalEmpleado({ empleado: empleado }))
-                            console.log("Empleado traído de la bd:", empleado);
-                        } catch (error) {
-                            console.error('Error:', error);
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! Status: ${response.status}`);
                         }
+
+                        const empleado = await response.json() as IEmpleado;
+                        dispatch(setGlobalEmpleado({ empleado: empleado }))
+                        console.log("Empleado traído de la bd:", empleado);
+                    } catch (error) {
+                        console.error('Error:', error);
+                        errorGenerico("Porfavor, asegurese de crear el usuario en la sección 'usuarios'")
                     }
-                    postRequest()
-                } catch (error) {
-                    console.error(error)
                 }
+                postRequest()
             }
         }
         traerEmpleado();
@@ -60,16 +59,17 @@ const LoginButton = () => {
     useEffect(() => {
         if (!logged) {
             if (empledo.email !== '') {
+                //@ts-ignore
                 const idEmpresa = empledo.sucursal.empresa.id;
                 const idSucursal = empledo.sucursal.id
                 switch (empledo.tipoEmpleado) {
                     case 'CAJERO':
                         dispatch(setLogged(true))
-                        navigate(`/${idEmpresa}/sucursales/${idSucursal}/pedidos`);
+                        navigate(`/${idEmpresa}/sucursales/${idSucursal}/home`);
                         break;
                     case 'COCINERO':
                         dispatch(setLogged(true))
-                        navigate(`/${idEmpresa}/sucursales/${idSucursal}/pedidos`);
+                        navigate(`/${idEmpresa}/sucursales/${idSucursal}/home`);
                         break;
                     case 'DELIVERY':
                         dispatch(setLogged(true))
@@ -77,7 +77,11 @@ const LoginButton = () => {
                         break;
                     case 'ADMIN':
                         dispatch(setLogged(true))
-                        navigate(`/${idEmpresa}/sucursales/`);
+                        navigate(`/${idEmpresa}/sucursales/${idSucursal}/home`);
+                        break;
+                    case 'SUPERADMIN':
+                        dispatch(setLogged(true))
+                        navigate(`/`);
                         break;
                     default:
                         navigate('/ruta-default');

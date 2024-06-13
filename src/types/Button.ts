@@ -8,4 +8,5 @@ export interface IButton {
     setActive: Dispatch<SetStateAction<string>>,
     subButton: IButton[] | null,
     child: boolean,
+    roles: string[]
 }

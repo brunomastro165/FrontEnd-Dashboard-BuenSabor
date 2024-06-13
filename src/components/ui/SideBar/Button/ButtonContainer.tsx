@@ -1,13 +1,12 @@
-//@ts-nocheck
 import React, { FC } from 'react'
 import { Link } from 'react-router-dom'
 import { IButton } from '../../../../types/Button'
 import { useState, useEffect } from 'react'
 import { IoIosArrowDown } from "react-icons/io";
 import Button from './Button';
-import ChildButton from './ChildButton';
 
-const ButtonContainer: FC<IButton> = ({ Icon, link, text, active, setActive, subButton, child }) => {
+
+const ButtonContainer: FC<IButton> = ({ Icon, link, text, active, setActive, subButton, child, roles }) => {
 
     const [subActive, setSubActive] = useState(false);
 
@@ -60,7 +59,8 @@ const ButtonContainer: FC<IButton> = ({ Icon, link, text, active, setActive, sub
                                             subButton={button.subButton}
                                             text={button.text}
                                             key={button.text}
-                                            child={true} />
+                                            child={true} 
+                                            roles={button.roles}/>
                                     );
                                 })}
                             </div>
@@ -79,6 +79,7 @@ const ButtonContainer: FC<IButton> = ({ Icon, link, text, active, setActive, sub
                     subButton={subButton}
                     text={text}
                     child={false}
+                    roles={roles}
                 />
             )
         }

@@ -23,6 +23,8 @@ import { setLogged } from '../../redux/slices/logged'
 import Pedidos from '../screens/Pedidos/Pedidos'
 import { useAuth0 } from '@auth0/auth0-react'
 import { UserProfile } from '../auth0/UserProfile'
+import { RutaPrivada } from './RutaPrivada'
+import PedidosCajero from '../screens/PedidosCajero/PedidosCajero'
 
 const AppRouter = () => {
 
@@ -43,22 +45,82 @@ const AppRouter = () => {
                 {/* <UserProfile/> */}
                 <div className={`${selector && 'md:ml-72'} w-full`}>
                     <Routes>
+
                         <Route path='/' element={<Inicio />}></Route>
-                        <Route path='/:idEmpresa/sucursales/' element={<Sucursal />}></Route> {/*SUCURSALES */}
-                        <Route path='/sucursal' element={<Inicio />}></Route>
+
+                        {/* RUTA PRIVADA */}
+                        <Route path='/:idEmpresa/sucursales' element={
+                            <RutaPrivada roles={['SUPERADMIN', 'ADMIN']}>
+                                <Sucursal />
+                            </RutaPrivada>}
+                        />
+
+
+                        {/* RUTA PÚBLICA */}
                         <Route path='/:idEmpresa/sucursales/:idSucursales/home' element={<Home />}></Route>
-                        <Route path='/:idEmpresa/sucursales/:idSucursales/manufacturados' element={<Manufacturados />} />
-                        <Route path='/:idEmpresa/sucursales/:idSucursales/insumos' element={<Insumos />} />
-                        <Route path='/:idEmpresa/sucursales/:idSucursales/promociones' element={<Promociones />} />
-                        <Route path='/:idEmpresa/sucursales/:idSucursales/promociones/:idPromocion' element={<ProductosPorPromociones />} />
+
+                        {/* RUTA PRIVADA */}
+                        <Route path='/:idEmpresa/sucursales/:idSucursales/manufacturados' element={
+                            <RutaPrivada roles={['SUPERADMIN', 'ADMIN', 'CAJERO']}>
+                                <Manufacturados />
+                            </RutaPrivada>
+                        } />
+
+                        <Route path='/:idEmpresa/sucursales/:idSucursales/insumos' element={
+                            <RutaPrivada roles={['SUPERADMIN', 'ADMIN', 'CAJERO', 'COCINERO']}>
+                                <Insumos />
+                            </RutaPrivada>
+                        } />
+
+                        <Route path='/:idEmpresa/sucursales/:idSucursales/promociones' element={
+                            <RutaPrivada roles={['SUPERADMIN', 'ADMIN', 'CAJERO', 'COCINERO']}>
+                                <Promociones />
+                            </RutaPrivada>
+                        } />
+
+                        <Route path='/:idEmpresa/sucursales/:idSucursales/usuarios' element={
+                            <RutaPrivada roles={['SUPERADMIN', 'ADMIN']}>
+                                <UsuariosPorRol />
+                            </RutaPrivada>
+                        } />
+
+                        <Route path='/:idEmpresa/sucursales/:idSucursales/categorias' element={
+                            <RutaPrivada roles={['SUPERADMIN', 'ADMIN', 'CAJERO', 'COCINERO']}>
+                                <Categorias />
+                            </RutaPrivada>
+                        } />
+
+                        {/* <Route path='/:idEmpresa/sucursales/:idSucursales/promociones/:idPromocion' element={<ProductosPorPromociones />} /> */}
                         {/* <Route path='/empresa' element={<Empresa />} /> */}
-                        <Route path='/:idEmpresa/sucursales/:idSucursales/usuarios' element={<UsuariosPorRol />} />
-                        <Route path="/:idEmpresa/sucursales/:idSucursales/usuarios/:id" element={<UsuariosPorRol />} />
-                        <Route path='/:idEmpresa/sucursales/:idSucursales/categorias' element={<Categorias />} />
-                        <Route path='/:idEmpresa/sucursales' element={<Sucursal />} />
-                        <Route path='/:idEmpresa/sucursales/:idSucursales/empresas/:id' element={<SucursalPorEmpresa />} />
-                        <Route path='/:idEmpresa/sucursales/:idSucursales/unidadesDeMedida' element={<UnidadesMedida />} />
-                        <Route path='/:idEmpresa/sucursales/:idSucursales/pedidos' element={<Pedidos />} />
+
+                        {/* <Route path="/:idEmpresa/sucursales/:idSucursales/usuarios/:id" element={<UsuariosPorRol />} /> */}
+
+                        {/* <Route path='/:idEmpresa/sucursales' element={<Sucursal />} /> */}
+
+                        {/* <Route path='/:idEmpresa/sucursales/:idSucursales/empresas/:id' element={<SucursalPorEmpresa />} /> */}
+
+                        <Route path='/:idEmpresa/sucursales/:idSucursales/unidadesDeMedida' element={
+                            <RutaPrivada roles={['SUPERADMIN', 'ADMIN', 'CAJERO', 'COCINERO']}>
+                                <UnidadesMedida />
+                            </RutaPrivada>
+                        } />
+
+                        {/* <Route path='/:idEmpresa/sucursales/:idSucursales/unidadesDeMedida' element={<UnidadesMedida />} /> */}
+
+                        <Route path='/:idEmpresa/sucursales/:idSucursales/pedidos' element={
+                            <RutaPrivada roles={['SUPERADMIN', 'ADMIN', 'COCINERO']}>
+                                <Pedidos />
+                            </RutaPrivada>
+                        } />
+
+
+                        <Route path='/:idEmpresa/sucursales/:idSucursales/pedidosCajero' element={
+                            <RutaPrivada roles={['SUPERADMIN', 'ADMIN', 'CAJERO']}>
+                                <PedidosCajero />
+                            </RutaPrivada>
+                        } />
+
+                        {/* <Route path='/:idEmpresa/sucursales/:idSucursales/pedidos' element={<Pedidos />} /> */}
                     </Routes>
                 </div>
             </div>

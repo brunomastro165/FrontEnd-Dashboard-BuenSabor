@@ -5,8 +5,11 @@ import CardPedido from '../Cards/CardPedido';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { setGlobalUpdated } from '../../../redux/slices/globalUpdate';
 import { useAuth0 } from '@auth0/auth0-react';
+import { useParams } from 'react-router-dom';
 
 const ContainerCardPedido = () => {
+
+    const { idSucursales } = useParams();
 
     const backend = new BackendMethods();
 
@@ -20,9 +23,19 @@ const ContainerCardPedido = () => {
 
     const [estadoActual, setEstadoActual] = useState<string>();
 
+    const today = new Date();
+
+    const prevDay = new Date();
+    prevDay.setDate(today.getDate() - 20)
+    const prevDayString = prevDay.toISOString().split('T')[0]
+
+    const nextDay = new Date();
+    nextDay.setDate(today.getDate() + 1);
+    const nextDayString = nextDay.toISOString().split('T')[0];
+
     useEffect(() => {
         const traerPedidos = async () => {
-            const res: IPedido[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}pedido`, getAccessTokenSilently) as IPedido[];
+            const res: IPedido[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}pedido/getPorFecha/${idSucursales}?fechaInicio=${prevDayString}&fechaFin=${nextDayString}`, getAccessTokenSilently) as IPedido[];
             console.log(res);
             setPedidos(res);
         }
@@ -30,132 +43,59 @@ const ContainerCardPedido = () => {
         dispatch(setGlobalUpdated(false))
     }, [updated])
 
+    const estados = ["PENDIENTE", "PREPARACION", "ENVIANDO", "ENTREGADO", "CANCELADO", "RECHAZADO"];
+
+    const estadoColores: { [key: string]: string } = {
+        PENDIENTE: "bg-gray-500",
+        PREPARACION: "bg-blue-500",
+        ENVIANDO: "bg-blue-500",
+        ENTREGADO: "bg-green-500",
+        CANCELADO: "bg-red-500",
+        RECHAZADO: "bg-red-500",
+    };
 
     console.log(pedidos)
 
+    const pedidosPorEstado: { [key: string]: IPedido[] } = pedidos.reduce((acc, pedido) => {
+        if (!acc[pedido.estado]) {
+            acc[pedido.estado] = [];
+        }
+        acc[pedido.estado].push(pedido);
+        return acc;
+    }, {} as { [key: string]: IPedido[] });
+
     return (
-        <div className='flex flex-row w-full justify-around items-start overflow-x-auto'>
+        <div className='flex flex-row w-full justify-start items-start  overflow-x-auto'>
 
-            <div className='flex flex-col justify-start items-start text-xl'>
-                <h1 className='p-2 bg-gray-500 rounded-md text-white font-Roboto mb-5'>Pedidos pendientes</h1>
-                {pedidos.filter((pedido) => pedido.estado === "PENDIENTE")
-                    .map((pedido, index) => (
-                        <CardPedido
-                            cliente={pedido.cliente}
-                            eliminado={pedido.eliminado}
-                            estado={pedido.estado}
-                            id={pedido.id}
-                            fechaPedido={pedido.fechaPedido}
-                            formaPago={pedido.formaPago}
-                            tipoEnvio={pedido.tipoEnvio}
-                            domicilio={pedido.domicilio}
-                            empleado={pedido.empleado}
-                            factura={pedido.factura}
-                            sucursal={pedido.sucursal}
-                            total={pedido.total}
-                            detallesPedido={pedido.detallesPedido}
-                            horaEstimadaFinalizacion={pedido.horaEstimadaFinalizacion}
-                            key={pedido.id}
-                        />
-                    ))}
-            </div>
+            <div className='flex flex-row'>
+                {estados.map((estado) => (
 
-            <div className='flex flex-col justify-start items-start text-xl'>
-                <h1 className='p-2 bg-blue-500 rounded-md text-white font-Roboto mb-5'>Pedidos en preparación</h1>
-                {pedidos.filter((pedido) => pedido.estado === "PREPARACION")
-                    .map((pedido, index) => (
-                        <CardPedido
-                            cliente={pedido.cliente}
-                            eliminado={pedido.eliminado}
-                            estado={pedido.estado}
-                            id={pedido.id}
-                            fechaPedido={pedido.fechaPedido}
-                            formaPago={pedido.formaPago}
-                            tipoEnvio={pedido.tipoEnvio}
-                            domicilio={pedido.domicilio}
-                            empleado={pedido.empleado}
-                            factura={pedido.factura}
-                            sucursal={pedido.sucursal}
-                            total={pedido.total}
-                            detallesPedido={pedido.detallesPedido}
-                            horaEstimadaFinalizacion={pedido.horaEstimadaFinalizacion}
-                            key={pedido.id}
-                        />
-                    ))}
-            </div>
+                    <div className='flex flex-col w-full  justify-start items-start text-xl' key={estado}>
+                        <h1 className={`p-2 ${estadoColores[estado]} rounded-md text-white mx-2 font-Roboto mb-5`}>{estado}</h1>
+                        {pedidosPorEstado[estado] && pedidosPorEstado[estado]
+                            .filter((pedido) => !pedido.eliminado)
+                            .map((pedido) => (
+                                <CardPedido
+                                    cliente={pedido.cliente}
+                                    eliminado={pedido.eliminado}
+                                    estado={pedido.estado}
+                                    id={pedido.id}
+                                    fechaPedido={pedido.fechaPedido}
+                                    formaPago={pedido.formaPago}
+                                    tipoEnvio={pedido.tipoEnvio}
+                                    domicilio={pedido.domicilio}
+                                    empleado={pedido.empleado}
+                                    factura={pedido.factura}
+                                    sucursal={pedido.sucursal}
+                                    total={pedido.total}
+                                    detallesPedido={pedido.detallesPedido}
+                                    horaEstimadaFinalizacion={pedido.horaEstimadaFinalizacion}
+                                    key={pedido.id}
+                                />
 
-            <div className='flex flex-col justify-start items-start text-xl'>
-                <h1 className='p-2 bg-green-500 rounded-md text-white font-Roboto  mb-5'>Pedidos entregados</h1>
-                {pedidos.filter((pedido) => pedido.estado === "ENTREGADO")
-                    .map((pedido, index) => (
-                        <CardPedido
-                            cliente={pedido.cliente}
-                            eliminado={pedido.eliminado}
-                            estado={pedido.estado}
-                            id={pedido.id}
-                            fechaPedido={pedido.fechaPedido}
-                            formaPago={pedido.formaPago}
-                            tipoEnvio={pedido.tipoEnvio}
-                            domicilio={pedido.domicilio}
-                            empleado={pedido.empleado}
-                            factura={pedido.factura}
-                            sucursal={pedido.sucursal}
-                            total={pedido.total}
-                            detallesPedido={pedido.detallesPedido}
-                            horaEstimadaFinalizacion={pedido.horaEstimadaFinalizacion}
-                            key={pedido.id}
-                        />
-                    ))}
-            </div>
-
-
-            <div className='flex flex-col justify-start items-start text-xl'>
-                <h1 className='p-2 bg-red-500 rounded-md text-white font-Roboto  mb-5'>Pedidos cancelados</h1>
-                {pedidos.filter((pedido) => pedido.estado === "CANCELADO")
-                    .map((pedido, index) => (
-                        <CardPedido
-                            cliente={pedido.cliente}
-                            eliminado={pedido.eliminado}
-                            estado={pedido.estado}
-                            id={pedido.id}
-                            fechaPedido={pedido.fechaPedido}
-                            formaPago={pedido.formaPago}
-                            tipoEnvio={pedido.tipoEnvio}
-                            domicilio={pedido.domicilio}
-                            empleado={pedido.empleado}
-                            factura={pedido.factura}
-                            sucursal={pedido.sucursal}
-                            total={pedido.total}
-                            detallesPedido={pedido.detallesPedido}
-                            horaEstimadaFinalizacion={pedido.horaEstimadaFinalizacion}
-                            key={pedido.id}
-                        />
-                    ))}
-            </div>
-
-
-            <div className='flex flex-col justify-start items-start text-xl'>
-                <h1 className='p-2 bg-red-500 rounded-md text-white font-Roboto  mb-5'>Pedidos rechazados</h1>
-                {pedidos.filter((pedido) => pedido.estado === "RECHAZADO")
-                    .map((pedido, index) => (
-                        <CardPedido
-                            cliente={pedido.cliente}
-                            eliminado={pedido.eliminado}
-                            estado={pedido.estado}
-                            id={pedido.id}
-                            fechaPedido={pedido.fechaPedido}
-                            formaPago={pedido.formaPago}
-                            tipoEnvio={pedido.tipoEnvio}
-                            domicilio={pedido.domicilio}
-                            empleado={pedido.empleado}
-                            factura={pedido.factura}
-                            sucursal={pedido.sucursal}
-                            total={pedido.total}
-                            detallesPedido={pedido.detallesPedido}
-                            horaEstimadaFinalizacion={pedido.horaEstimadaFinalizacion}
-                            key={index}
-                        />
-                    ))}
+                            ))}
+                    </div>
+                ))}
             </div>
 
 

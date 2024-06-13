@@ -19,6 +19,8 @@ import { IArticuloInsumo } from '../../../types/ArticuloInsumo';
 import { useAuth0 } from '@auth0/auth0-react';
 import EmpleadoForm from '../Form/EmpleadoForm';
 import { errorGenerico } from '../../toasts/ToastAlerts';
+import CardPedidoAdmin from '../Cards/CardPedidoAdmin';
+import { MdOutlineRemoveRedEye } from "react-icons/md";
 
 
 //@ts-ignore
@@ -41,8 +43,6 @@ const TableItem: FC<IItem> = ({ id, denominacion, param2, param3, param4, endpoi
     const fetchIndividual = async () => {
         try {
             const response: any = await CRUD.getById(`${import.meta.env.VITE_LOCAL}${endpoint}/${id}`, getAccessTokenSilently)
-            console.log("RESPONSE")
-            console.log(response);
             if (response.categoria) {
                 delete response.categoria;
             }
@@ -52,7 +52,6 @@ const TableItem: FC<IItem> = ({ id, denominacion, param2, param3, param4, endpoi
         } catch (error) {
             console.log(error)
         }
-
     }
 
     const deleteLogico = async () => {
@@ -77,8 +76,13 @@ const TableItem: FC<IItem> = ({ id, denominacion, param2, param3, param4, endpoi
                 <td className='w-48 text-2xl items-center '>
                     {!borrados &&
                         <>
-                            <button className='hover:text-blue-600 rounded  p-1' onClick={fetchIndividual}><FiEdit2 /></button>
-                            <button className='hover:text-red-600 ml-5 p-1' onClick={deleteLogico}><MdOutlineDelete /></button>
+                            <button className='hover:text-blue-600 rounded  p-1' onClick={fetchIndividual}>
+                                {endpoint !== 'pedido' ? <FiEdit2 /> : <MdOutlineRemoveRedEye />}
+                            </button>
+
+                            {endpoint !== 'pedido' &&
+                                <button className='hover:text-red-600 ml-5 p-1' onClick={deleteLogico}><MdOutlineDelete /></button>
+                            }
                         </>
                     }
                 </td>
@@ -96,6 +100,7 @@ const TableItem: FC<IItem> = ({ id, denominacion, param2, param3, param4, endpoi
                             {endpoint === "ArticuloManufacturado" && <AManufacturadoForm open={open} setOpen={setOpen} method='PUT' />}
                             {endpoint === "ArticuloInsumo" && <AInsumoForm open={open} setOpen={setOpen} method='PUT' />}
                             {endpoint === "empleado" && <EmpleadoForm open={open} setOpen={setOpen} method='PUT' />}
+                            {endpoint === "pedido" && <CardPedidoAdmin open={open} setOpen={setOpen} />}
                             {/* {endpoint === "sucursal" && <SucursalForm open={open} setOpen={setOpen} />} */}
                         </div>
                     </div>

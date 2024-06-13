@@ -258,6 +258,26 @@ export abstract class BackendClient<T> extends AbstractBackendClient<T> {
     return this.request(path, options);
   }
 
+  async putNoData(url: string, getAccessTokenSilently: any): Promise<T> {
+    const token = await getAccessTokenSilently({
+      authorizationParams: {
+        audience: import.meta.env.VITE_AUTH0_AUDIENCE,
+      },
+    });
+
+    const path = `${url}`;
+    const options: RequestInit = {
+      method: "PUT",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    return this.request(path, options);
+  }
+
   // Método para eliminar un elemento por su ID
   async delete(url: string, getAccessTokenSilently: any): Promise<void> {
     const token = await getAccessTokenSilently({

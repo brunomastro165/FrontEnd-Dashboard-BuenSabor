@@ -11,8 +11,11 @@ import useRankingArticulos from '../../hooks/useRankingArticulos';
 
 
 export const GraficoBarra = () => {
+
   const [inicio, setInicio] = useState<string>('2024-01-01');
+
   const [fin, setFin] = useState<string>('2030-11-12');
+
   const [errorFecha, setErrorFecha] = useState<string>('');
 
   const { data, loading, error, fetchRankingArticulos } = useRankingArticulos({
