@@ -62,7 +62,7 @@ const AppRouter = () => {
 
                         {/* RUTA PRIVADA */}
                         <Route path='/:idEmpresa/sucursales/:idSucursales/manufacturados' element={
-                            <RutaPrivada roles={['SUPERADMIN', 'ADMIN', 'CAJERO']}>
+                            <RutaPrivada roles={['SUPERADMIN', 'ADMIN', 'CAJERO', 'COCINERO']}>
                                 <Manufacturados />
                             </RutaPrivada>
                         } />

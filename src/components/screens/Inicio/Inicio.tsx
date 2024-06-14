@@ -33,7 +33,7 @@ const Inicio = () => {
             const res: IEmpresa[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}empresa/noEliminados`, getAccessTokenSilently);
             setEmpresas(res);
         } catch (error) {
-            errorGenerico('No se pudieron traer las empresas {ERROR DE CONEXIÓN}')
+            errorGenerico('Debe loguearse para poder tener acceso al sistema')
             console.error(error)
         }
     }

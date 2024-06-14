@@ -181,6 +181,7 @@ const EmpleadoForm: FC<IForm> = ({ open, setOpen, method }) => {
                         </label>
                         <select name="tipoEmpleado" id="tipoEmpleado" onChange={handleChange} className='select select-bordered w-full'>
                             <option value=""></option>
+                            <option value="SUPERADMIN">Super administrador</option>
                             <option value="ADMIN">Administrador</option>
                             <option value="COCINERO">Cocinero</option>
                             <option value="CAJERO">Cajero</option>
