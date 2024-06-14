@@ -58,7 +58,7 @@ const SideBar = () => {
         { Icon: LiaBalanceScaleRightSolid, text: "Unidades de medida", link: `${url}/unidadesDeMedida`, active: active, setActive: setActive, subButton: null, child: false, roles: ['SUPERADMIN', 'ADMIN'] },
         { Icon: HiOutlineTicket, text: "Pedidos", link: `${url}/pedidos`, active: active, setActive: setActive, subButton: null, child: false, roles: ['SUPERADMIN', 'ADMIN', 'COCINERO'] },
         { Icon: GrTable, text: "Grilla de pedidos ", link: `${url}/pedidosCajero`, active: active, setActive: setActive, subButton: null, child: false, roles: ['SUPERADMIN', 'ADMIN', 'CAJERO'] },
-        { Icon: TbTruckDelivery, text: "Pedidos delivery ", link: `${url}/pedidosDelivery`, active: active, setActive: setActive, subButton: null, child: false, roles: ['SUPERADMIN', 'ADMIN', 'DELIVERY'] },
+        { Icon: TbTruckDelivery, text: "Pedidos delivery ", link: `${url}/pedidosDelivery`, active: active, setActive: setActive, subButton: null, child: false, roles: ['DELIVERY'] },
     ];
 
     const rol = useAppSelector((state) => state.GlobalRol.rol);

@@ -6,7 +6,7 @@ import { setGlobalUpdated } from '../../../redux/slices/globalUpdate';
 import { useAuth0 } from '@auth0/auth0-react';
 import { useParams } from 'react-router-dom';
 import { IEmpleado } from '../../../types/Empleado';
-import { errorGenerico } from '../../toasts/ToastAlerts';
+import { errorGenerico, succesGenerico } from '../../toasts/ToastAlerts';
 
 interface IArticuloGenerico {
     id: number,
@@ -44,19 +44,25 @@ const CardPedido: FC<IPedido> = ({ cliente, domicilio, eliminado, empleado, esta
     //     // });
     // }, []);
 
-    const traerEmpleados = async () => {
-        try {
-            const res: IEmpleado[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}empleado/getPorSucursal/${idSucursales}`, getAccessTokenSilently) as IEmpleado[];
-            setEmpleados(res)
-        } catch (error) {
-            errorGenerico('No se encontraron empleados')
-            console.error(error)
+    useEffect(() => {
+        const traerEmpleados = async () => {
+            try {
+                const res: IEmpleado[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}empleado/getPorSucursal/${idSucursales}`, getAccessTokenSilently) as IEmpleado[];
+                setEmpleados(res)
+            } catch (error) {
+                errorGenerico('No se encontraron empleados')
+                console.error(error)
+            }
         }
-    }
+        traerEmpleados();
+    }, [])
+
+
 
     const asignarEmpleado = async (empleado: IEmpleado) => {
         try {
             const res = await backend.putNoData(`${import.meta.env.VITE_LOCAL}pedido/asignarEmpleado/${empleado.id}/${id}`, getAccessTokenSilently)
+            succesGenerico(`Se asignó el empleado ${empleado.nombre}`)
         } catch (error) {
             console.error(error)
             errorGenerico('No se pudo asignar el empleado')
@@ -65,6 +71,23 @@ const CardPedido: FC<IPedido> = ({ cliente, domicilio, eliminado, empleado, esta
 
     const cambiarEstado = async (estado: string) => {
         try {
+            if (estado === "CANCELADO") {
+                const res = await backend.putNoData(`${import.meta.env.VITE_LOCAL}pedido/cancelar/${id}`, getAccessTokenSilently)
+                console.log(res)
+            }
+        } catch (error) {
+            console.error(error)
+        }
+
+        try {
+            if (estado === "PENDIENTE") {
+                const res = await backend.putNoData(`${import.meta.env.VITE_LOCAL}pedido/pendiente/${id}`, getAccessTokenSilently)
+                console.log(res)
+            }
+        } catch (error) {
+            console.error(error)
+        }
+        try {
             const res = await backend.put(`${import.meta.env.VITE_LOCAL}pedido/cambiarEstado/${id}`, estado, getAccessTokenSilently);
             dispatch(setGlobalUpdated(true))
             console.log(res)
@@ -72,8 +95,12 @@ const CardPedido: FC<IPedido> = ({ cliente, domicilio, eliminado, empleado, esta
             console.error(error)
             dispatch(setGlobalUpdated(true))
         }
+
+        
     }
 
+
+    console.log(detallesPedido)
     return (
         <>
             <div className="card w-64 bg-base-100  shadow-md my-4">
@@ -86,7 +113,7 @@ const CardPedido: FC<IPedido> = ({ cliente, domicilio, eliminado, empleado, esta
                         {/* <h1>{fechaPedido.toString()}</h1> */}
                         <h1>Entrega: {horaEstimadaFinalizacion?.toString()}</h1>
                         {detallesPedido && detallesPedido.length > 0 && detallesPedido.map((detalle, index) => {
-                            const denominacion = detalle.articuloManufacturado?.denominacion || detalle.articuloInsumo?.denominacion;
+                            const denominacion = detalle.articuloManufacturado?.denominacion || detalle.articuloInsumo?.denominacion || detalle.promocion?.denominacion;
                             return denominacion ? (
                                 <div className='flex flex-row space-x-2' key={index}>
                                     <h1 className='w-32'>{denominacion}</h1>
@@ -94,13 +121,16 @@ const CardPedido: FC<IPedido> = ({ cliente, domicilio, eliminado, empleado, esta
                                 </div>
                             ) : null;
                         })}
+
+
+
                         <h1 className='bg-green-500 text-white w-max p-1 rounded mt-1'>{formaPago}</h1>
                     </div>
                     {/* <p>{detallesPedido}</p> */}
                 </div>
 
                 {/*@ts-ignore */}
-                <button className='mb-2 btn mx-2' onClick={() => { document.getElementById('my_modal_1').showModal(), traerEmpleados() }} >
+                <button className='mb-2 btn mx-2' onClick={async () => {  document.getElementById(`my_modal_${id}`).showModal() }} >
                     Asignar empleado
                 </button>
 
@@ -118,7 +148,7 @@ const CardPedido: FC<IPedido> = ({ cliente, domicilio, eliminado, empleado, esta
                 </select>
             </div>
 
-            <dialog id={`my_modal_1`} className="modal">
+            <dialog id={`my_modal_${id}`} className="modal">
                 <div className="modal-box">
                     <h3 className="font-bold text-lg">Asigne un empleado al pedido</h3>
                     <p className="py-4">Seleccione un empleado </p>
@@ -126,7 +156,7 @@ const CardPedido: FC<IPedido> = ({ cliente, domicilio, eliminado, empleado, esta
                         {empleados
                             // .filter((empleado) => empleado.tipoEmpleado==="DELIVERY")
                             .map((empleado) =>
-                                <h1 className='font-Roboto w my-2' onClick={() => asignarEmpleado(empleado)}>{empleado.nombre}</h1>
+                                <h1 className='font-Roboto w my-2 btn' onClick={() => asignarEmpleado(empleado)}>{empleado.nombre}</h1>
                             )}
                     </div>
                     <div className="modal-action">

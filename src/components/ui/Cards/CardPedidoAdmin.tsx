@@ -29,6 +29,17 @@ const CardPedidoAdmin: FC<ICardEmpleado> = ({ open, setOpen }) => {
         //@ts-ignore
         doc.text(`CLIENTE: ${pedido.cliente.nombre}`, 10, 50)
         doc.text(`CALLE: ${pedido.domicilio.calle}`, 10, 60)
+        doc.text(`DETALLES DEL PEDIDO:`, 10, 70)
+        if (pedido.detallesPedido.length >= 1) {
+            let index = 80; // Valor inicial de index
+
+            pedido.detallesPedido.forEach((detalle) => {
+                const denominacion = detalle.articuloManufacturado?.denominacion || detalle.articuloInsumo?.denominacion || detalle.promocion?.denominacion;
+                doc.text(` ${denominacion} x${detalle.cantidad}`, 10, index);
+                index += 10; // Incrementar index para la siguiente línea
+            });
+        }
+
         doc.save(`factura_id_${factura.id}.pdf`);
     };
 
@@ -66,9 +77,9 @@ const CardPedidoAdmin: FC<ICardEmpleado> = ({ open, setOpen }) => {
                                     <h1>{detalle.articuloManufacturado?.denominacion}</h1><h1>x</h1><h2>{detalle.cantidad}</h2>
                                 </h1>)
                                 :
-                                detalle.promo !== null ?
+                                detalle.promocion !== null ?
                                     (<h1 className='flex flex-row space-x-2 text-lg p-2'>
-                                        <h1>{detalle.promo?.denominacion}</h1><h1>x</h1><h2>{detalle.cantidad}</h2>
+                                        <h1>{detalle.promocion?.denominacion}</h1><h1>x</h1><h2>{detalle.cantidad}</h2>
                                     </h1>)
                                     : null
                     )}
