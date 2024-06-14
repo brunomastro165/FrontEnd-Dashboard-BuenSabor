@@ -87,6 +87,8 @@ const CategoriaButton: FC<ICategoriaButton> = ({ categoria, edicion }) => {
         }
     }
 
+    const rol = useAppSelector((state) => state.GlobalRol.rol)
+
     return (
         <>
 
@@ -94,24 +96,29 @@ const CategoriaButton: FC<ICategoriaButton> = ({ categoria, edicion }) => {
                 <>
                     <>
                         <div className='flex flex-row justify-end '>
-                            <button className='flex justify-end  mx-2 items-end'
-                                onClick={() => {
-                                    dispatch(setGlobalInitialValues(transformData(categoria))),
-                                        setOpen(true)
-                                }}
-                            >
-                                <span className=' text-sm size-13 font-Roboto  '>
-                                    <h1 className='text-xl text-white px-2 rounded-md bg-success'>+</h1>
-                                </span>
-                            </button>
+                            {(rol === 'ADMIN' || rol === 'SUPERADMIN') &&
+                                <>
+                                    <button className='flex justify-end  mx-2 items-end'
+                                        onClick={() => {
+                                            dispatch(setGlobalInitialValues(transformData(categoria))),
+                                                setOpen(true)
+                                        }}
+                                    >
+                                        <span className=' text-sm size-13 font-Roboto  '>
+                                            <h1 className='text-xl text-white px-2 rounded-md bg-success'>+</h1>
+                                        </span>
+                                    </button>
 
-                            <button className='flex justify-end  items-end'
-                                onClick={() => eliminarCategoria()}
-                            >
-                                <span className=' text-sm size-13 font-Roboto btn-error'>
-                                    <h1 className='text-xl text-white px-2 rounded-md bg-error'>x</h1>
-                                </span>
-                            </button>
+
+                                    <button className='flex justify-end  items-end'
+                                        onClick={() => eliminarCategoria()}
+                                    >
+                                        <span className=' text-sm size-13 font-Roboto btn-error'>
+                                            <h1 className='text-xl text-white px-2 rounded-md bg-error'>x</h1>
+                                        </span>
+                                    </button>
+                                </>
+                            }
                         </div>
                     </>
                     <div className={` m-5 flex items-start flex-col justify-end  `}>

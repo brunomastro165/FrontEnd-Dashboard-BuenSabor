@@ -47,7 +47,7 @@ const ContainerDelivery = () => {
         dispatch(setGlobalUpdated(false))
     }, [updated])
 
-    const estados = ["PENDIENTE", "ENVIANDO", "ENTREGADO", "CANCELADO"];
+    const estados = ["PENDIENTE","ENVIANDO", "ENTREGADO", "CANCELADO"];
 
     const estadoColores: { [key: string]: string } = {
         PENDIENTE: "bg-gray-500",

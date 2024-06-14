@@ -90,7 +90,7 @@ const Insumos = () => {
 
     useEffect(() => {
         dispatch(setIdPaginador(1))
-    }, [search])
+    }, [search, updated])
 
 
     const idPagina = useAppSelector((state) => state.GlobalIdPaginador.idPaginador);
@@ -98,11 +98,16 @@ const Insumos = () => {
     useEffect(() => {
         const fetchInsumo = async () => {
             if (selectedCategory !== 'Todos') {
-                const url = search !== '' ? `categoria/getInsumos/${idCategoriaSeleccionada}?searchString=${search}&limit=${ITEMS_POR_PAGINA}&startId=${idPagina}` : `categoria/getInsumos/${idCategoriaSeleccionada}?limit=${ITEMS_POR_PAGINA}&startId=${idPagina}`;
-                const insumos: IArticuloInsumoCategoria[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}${url}`, getAccessTokenSilently) as IArticuloInsumoCategoria[];
-                const insumosHabilitados: IArticuloInsumoCategoria[] = insumos.filter((articulo) => articulo.eliminado === borrados)
-                const transformedData = transformData(insumosHabilitados);
-                setData(transformedData);
+
+                try {
+                    const url = search !== '' ? `categoria/getInsumos/${idCategoriaSeleccionada}?searchString=${search}&limit=${ITEMS_POR_PAGINA}&startId=${idPagina}` : `categoria/getInsumos/${idCategoriaSeleccionada}?limit=${ITEMS_POR_PAGINA}&startId=${idPagina}`;
+                    const insumos: IArticuloInsumoCategoria[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}${url}`, getAccessTokenSilently) as IArticuloInsumoCategoria[];
+                    const insumosHabilitados: IArticuloInsumoCategoria[] = insumos.filter((articulo) => articulo.eliminado === borrados)
+                    const transformedData = transformData(insumosHabilitados);
+                    setData(transformedData);
+                } catch (error) {
+                    console.error(error)
+                }
             }
             else {
                 try {
@@ -114,7 +119,7 @@ const Insumos = () => {
                     setData(transformedData);
                 }
                 catch (error) {
-                    console.log(error)
+                    console.error(error)
                 }
             }
             setLoading(true);

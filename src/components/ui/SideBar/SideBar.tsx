@@ -34,8 +34,6 @@ const SideBar = () => {
 
     const url = useAppSelector((state) => state.globalUrl.url);
 
-    console.log(url);
-
     const idEmpresa = useAppSelector((state) => state.GlobalIdEmpresa.idEmpresa);
 
     const empleado = useAppSelector((state) => state.GlobalEmpleado.empleado);
@@ -58,20 +56,22 @@ const SideBar = () => {
         { Icon: FaRegBuilding, text: "Sucursales", link: `${idEmpresa}/sucursales`, active: active, setActive: setActive, subButton: null, child: false, roles: ['SUPERADMIN', 'ADMIN'] },
         { Icon: FaRegUser, text: "Usuarios", link: `${url}/usuarios`, active: active, setActive: setActive, subButton: null, child: false, roles: ['SUPERADMIN', 'ADMIN'] },
         { Icon: LiaBalanceScaleRightSolid, text: "Unidades de medida", link: `${url}/unidadesDeMedida`, active: active, setActive: setActive, subButton: null, child: false, roles: ['SUPERADMIN', 'ADMIN'] },
-        { Icon: HiOutlineTicket, text: "Pedidos", link: `${url}/pedidos`, active: active, setActive: setActive, subButton: null, child: false, roles: ['SUPERADMIN', 'ADMIN', 'COCINERO', 'CAJERO', 'DELIVERY'] },
-        { Icon: GrTable, text: "Grilla de pedidos ", link: `${url}/pedidosCajero`, active: active, setActive: setActive, subButton: null, child: false, roles: ['SUPERADMIN', 'ADMIN', 'COCINERO', 'CAJERO', 'DELIVERY'] },
+        { Icon: HiOutlineTicket, text: "Pedidos", link: `${url}/pedidos`, active: active, setActive: setActive, subButton: null, child: false, roles: ['SUPERADMIN', 'ADMIN', 'COCINERO', 'DELIVERY'] },
+        { Icon: GrTable, text: "Grilla de pedidos ", link: `${url}/pedidosCajero`, active: active, setActive: setActive, subButton: null, child: false, roles: ['SUPERADMIN', 'ADMIN', 'CAJERO', 'DELIVERY'] },
         { Icon: TbTruckDelivery, text: "Pedidos delivery ", link: `${url}/pedidosDelivery`, active: active, setActive: setActive, subButton: null, child: false, roles: ['SUPERADMIN', 'ADMIN', 'DELIVERY'] },
     ];
 
+    const rol = useAppSelector((state) => state.GlobalRol.rol);
+
     //Con esto filtro los botones de la sidebar por el rol del empleado
     const filtrarBotonesPorRol = (buttons: IButton[]) => {
-        const botonesFiltrados: IButton[] = buttons.filter((button) => button.roles.includes(empleado.tipoEmpleado));
+        const botonesFiltrados: IButton[] = buttons.filter((button) => button.roles.includes(rol));
         setFilteredButtons(botonesFiltrados);
     }
 
     useEffect(() => {
         filtrarBotonesPorRol(Buttons);
-    }, [url, active])
+    }, [url, active, rol])
 
     return (
         <>

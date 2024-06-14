@@ -11,11 +11,13 @@ interface RankingArticulo {
 interface UseRankingArticulosProps {
   fechaInicio: string; // formato "yyyy-MM-dd"
   fechaFin: string; // formato "yyyy-MM-dd"
+  endpoint: string,
 }
 
 const useRankingArticulos = ({
   fechaInicio,
   fechaFin,
+  endpoint,
 }: UseRankingArticulosProps) => {
 
   const backend = new BackendMethods();
@@ -35,7 +37,7 @@ const useRankingArticulos = ({
     setError(null);
 
     try {
-      const res: RankingArticulo[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}pedido/ranking-articulos/${idSucursales}?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`, getAccessTokenSilently) as RankingArticulo[]
+      const res: RankingArticulo[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}${endpoint}/${idSucursales}?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`, getAccessTokenSilently) as RankingArticulo[]
       console.log(res)
       setData(res)
       setLoading(false)

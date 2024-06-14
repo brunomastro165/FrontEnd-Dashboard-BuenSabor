@@ -21,6 +21,7 @@ import EmpleadoForm from '../Form/EmpleadoForm';
 import { errorGenerico } from '../../toasts/ToastAlerts';
 import CardPedidoAdmin from '../Cards/CardPedidoAdmin';
 import { MdOutlineRemoveRedEye } from "react-icons/md";
+import GlobalRol from '../../../redux/slices/rol';
 
 
 //@ts-ignore
@@ -54,16 +55,20 @@ const TableItem: FC<IItem> = ({ id, denominacion, param2, param3, param4, endpoi
         }
     }
 
+    const updated = useAppSelector((state) => state.GlobalUpdated.updated)
+
     const deleteLogico = async () => {
         try {
             const response = await CRUD.delete(`${import.meta.env.VITE_LOCAL}${endpoint}/${id}`, getAccessTokenSilently)
-            dispatch(setGlobalUpdated(true))
+            dispatch(setGlobalUpdated(!updated))
         } catch (error: any) {
-            dispatch(setGlobalUpdated(true))
+            dispatch(setGlobalUpdated(!updated))
             errorGenerico(error?.data?.message)
-            dispatch(setGlobalUpdated(true))
+            dispatch(setGlobalUpdated(!updated))
         }
     }
+
+    const rol = useAppSelector((state) => state.GlobalRol.rol)
 
     return (
         <>
@@ -74,7 +79,7 @@ const TableItem: FC<IItem> = ({ id, denominacion, param2, param3, param4, endpoi
                 <td className='w-72'>{param3}</td>
                 <td className='w-72'>{param4}</td>
                 <td className='w-48 text-2xl items-center '>
-                    {!borrados &&
+                    {(rol === 'ADMIN' || rol === 'SUPERADMIN') &&
                         <>
                             <button className='hover:text-blue-600 rounded  p-1' onClick={fetchIndividual}>
                                 {endpoint !== 'pedido' ? <FiEdit2 /> : <MdOutlineRemoveRedEye />}

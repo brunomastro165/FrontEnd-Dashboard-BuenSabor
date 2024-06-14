@@ -5,7 +5,7 @@ import { genericInput } from './Inputs/GenericInput';
 import { BackendClient } from '../../../services/BackendClient';
 import { IEmpresa } from '../../../types/Empresa';
 import { IEmpresaShort } from '../../../types/ShortDtos/EmpresaShort';
-import { useAppDispatch } from '../../../hooks/redux';
+import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { setGlobalUpdated } from '../../../redux/slices/globalUpdate';
 import * as Yup from 'yup'
 import Swal from 'sweetalert2'
@@ -72,13 +72,13 @@ const EmpresaForm: FC<IForm> = ({ open, setOpen, data, method }) => {
   //     }),
   // });
 
+  const updated = useAppSelector((state) => state.GlobalUpdated.updated)
 
   const succes = () => {
-    dispatch(setGlobalUpdated(true))
+    dispatch(setGlobalUpdated(!updated))
     setSubiendo(false)
     setOpen(false);
     resetForm();
-    dispatch(setGlobalUpdated(true));
     successMessage();
   }
 

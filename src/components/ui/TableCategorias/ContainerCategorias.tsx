@@ -50,7 +50,7 @@ const ContainerCategorias = () => {
 
       const categoriasExistentes: ICategoria[] = categoriasPadre.filter((categoria) => categoria.eliminado === false)
 
-     
+
       let categoriasFiltradas: ICategoria[] = categoriasExistentes;
 
       if (filtros != 'all') {
@@ -78,6 +78,8 @@ const ContainerCategorias = () => {
   }, [updated, filtros])
 
 
+  const rol = useAppSelector((state) => state.GlobalRol.rol)
+  
   return (
     <>
       <div className='w-full  flex justify-end items-center'>
@@ -90,10 +92,11 @@ const ContainerCategorias = () => {
           </ul>
         </details>
 
-        <button className='text-2xl font-Roboto btn btn-success my-4 bg-white text-green-600 hover:text-white mr-10 hover:bg-green-600'
-          onClick={() => setOpen(true)}
-        >Agregar +</button>
-
+        {(rol === 'ADMIN' || rol === 'SUPERADMIN') &&
+          <button className='text-2xl font-Roboto btn btn-success my-4 bg-white text-green-600 hover:text-white mr-10 hover:bg-green-600'
+            onClick={() => setOpen(true)}
+          >Agregar +</button>
+        }
 
         {/* <button className='text-2xl font-Roboto btn bg-white border-blue-600 my-4 bg-blue text-blue-600 hover:text-white mr-10 hover:bg-blue-600'
           onClick={() => setEdicion(!edicion)}
@@ -108,7 +111,7 @@ const ContainerCategorias = () => {
                   <div className='flex  justify-center items-center'>
                     <div className='shadow-md rounded-xl w-2/3  p-5 m-5'>
                       <h1 className={`font-Roboto  w-max px-4 py-1 rounded-md text-white ${categoria.esInsumo ? 'bg-blue-600' : 'bg-red-600'}`}>{categoria.esInsumo ? 'Insumo' : 'Manufacturado'}</h1>
-                      <CategoriaButton categoria={categoria} edicion={edicion} key={categoria.id}/>
+                      <CategoriaButton categoria={categoria} edicion={edicion} key={categoria.id} />
                     </div>
                   </div>
                 </>

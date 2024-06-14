@@ -92,24 +92,27 @@ const Table: FC<ITable> = ({ items, row1, row2, row3, row4, row5, endpoint }) =>
         setOpen(true);
     }
 
+    const rol = useAppSelector((state) => state.GlobalRol.rol);
+
     return (
         <>
             <div className='w-full  flex justify-end space-x-4 my-4'>
 
                 {borrados ||
                     endpoint !== 'pedido' &&
+                    (rol === 'ADMIN' || rol === 'SUPERADMIN') &&
                     <button className='text-2xl font-Roboto btn btn-success bg-white text-green-600 hover:text-white  hover:bg-green-600'
                         onClick={() => { fetchForm() }}>
                         Agregar +
                     </button>
                 }
 
-                {endpoint !== 'pedido' &&
+                {/* {endpoint !== 'pedido' &&
                     <button className='text-2xl font-Roboto btn btn-error bg-white text-red-600 hover:text-white  hover:bg-red-600'
                         onClick={() => { dispatch(setBorrado(!borrados)) }}>
                         {borrados ? 'Ver activos' : 'Ver inactivos'}
                     </button>
-                }
+                } */}
 
                 {/*Este botón debería ir vinculado con el PUT de producto */}
                 {/* <button className='text-white text-5xl ml-4 rounded-md bg-green-600  shadow-lg justify-end'>

@@ -68,9 +68,9 @@ const PromoForm: FC<IForm> = ({ open, setOpen, method }) => {
     //const [selectedSucursales, setSelectedSucursales] = useState<ISucursal[] | undefined>([]);
 
     const { handleChange, values, resetForm, handleSelect, handleChoose, handleFileDrop, setValues } = useForm<FormState>(initialValues)
-
+    const updated = useAppSelector((state) => state.GlobalUpdated.updated)
     const succes = () => {
-        dispatch(setGlobalUpdated(true))
+        dispatch(setGlobalUpdated(!updated))
         setSubiendo(false)
         setOpen(false);
         resetForm();

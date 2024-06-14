@@ -75,9 +75,12 @@ const Manufacturados = () => {
         }));
     }
 
+
     useEffect(() => {
+        console.log("laputamadre")
+        console.log(updated)
         dispatch(setIdPaginador(1))
-    }, [search])
+    }, [search, updated])
 
     useEffect(() => {
         const fetchManufacturado = async () => {

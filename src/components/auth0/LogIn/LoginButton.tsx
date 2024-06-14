@@ -7,6 +7,7 @@ import { setGlobalEmpleado } from "../../../redux/slices/empleadoCompleto";
 import { useNavigate } from "react-router-dom";
 import { setLogged } from "../../../redux/slices/logged";
 import { errorGenerico } from "../../toasts/ToastAlerts";
+import { setRol } from "../../../redux/slices/rol";
 
 const LoginButton = () => {
     const { loginWithRedirect, isAuthenticated, user, getAccessTokenSilently } = useAuth0();
@@ -22,9 +23,24 @@ const LoginButton = () => {
     const logged = useAppSelector((state) => state.logged.logged)
 
     useEffect(() => {
-        const traerEmpleado = async () => {
+        const traerEmpleado = () => {
+
             if (user?.email) {
 
+                //TRAER EL ROL DESDE AUTH0
+                async function traerRol() {
+                    try {
+                        const res: any = await backend.getById(`${import.meta.env.VITE_LOCAL}empleado/role`, getAccessTokenSilently);
+                        dispatch(setRol(res.role))
+                        console.log(res.role);
+                    } catch (error) {
+                        console.error(error)
+                        errorGenerico('Error al traer los datos desde auth0')
+                    }
+                }
+                traerRol();
+
+                //TRAER LOS DATOS DEL EMPLEADO GUARDADOS LOCALMENTE
                 async function postRequest() {
                     const url = `${import.meta.env.VITE_LOCAL}empleado/getPorMail`;
                     const data = user?.email;
@@ -48,6 +64,7 @@ const LoginButton = () => {
                         console.error('Error:', error);
                         errorGenerico("Porfavor, asegurese de crear el usuario en la sección 'usuarios'")
                     }
+
                 }
                 postRequest()
             }

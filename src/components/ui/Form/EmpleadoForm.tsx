@@ -76,13 +76,13 @@ const EmpleadoForm: FC<IForm> = ({ open, setOpen, method }) => {
 
     const { handleChange, values, resetForm, handleChoose, handleFileDrop, setValues } = useForm<FormState>(initialValues)
 
+    const updated = useAppSelector((state) => state.GlobalUpdated.updated)
 
     const succes = () => {
-        dispatch(setGlobalUpdated(true))
+        dispatch(setGlobalUpdated(!updated))
         setSubiendo(false)
         setOpen(false);
         resetForm();
-        dispatch(setGlobalUpdated(true));
         successMessage();
     }
 

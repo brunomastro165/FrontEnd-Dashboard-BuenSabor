@@ -7,7 +7,9 @@ export const RutaPrivada = ({ children, roles }: { children: ReactNode, roles: s
 
     const empleado = useAppSelector((state) => state.GlobalEmpleado.empleado)
 
+    const rol = useAppSelector((state) => state.GlobalRol.rol)
+
     //Si hay un usuario loggeado, entonces lo dejo pasar, sino, vuelve al inicio de la aplicación
-    return roles.includes(empleado.tipoEmpleado) ? children : <Navigate to='/' />;
+    return roles.includes(rol) ? children : <Navigate to='/' />;
 
 };

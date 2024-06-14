@@ -67,6 +67,8 @@ const AInsumoForm: FC<IForm> = ({ open, setOpen, method }) => {
 
     const dispatch = useAppDispatch();
 
+    const updated = useAppSelector((state) => state.GlobalUpdated.updated)
+
 
 
     //USE FORM
@@ -84,11 +86,10 @@ const AInsumoForm: FC<IForm> = ({ open, setOpen, method }) => {
 
 
     const succes = () => {
-        dispatch(setGlobalUpdated(true))
+        dispatch(setGlobalUpdated(!updated))
         setSubiendo(false)
         setOpen(false);
         resetForm();
-        dispatch(setGlobalUpdated(true));
         successMessage();
     }
 

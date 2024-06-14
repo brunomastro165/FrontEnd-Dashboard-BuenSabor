@@ -6,7 +6,7 @@ import { FaTrashAlt } from "react-icons/fa";
 import { IUsuario } from '../../../types/Usuario';
 import { ISucursal } from '../../../types/Sucursal';
 import { MdEdit } from "react-icons/md";
-import { useAppDispatch } from '../../../hooks/redux';
+import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { setLogged } from '../../../redux/slices/logged';
 import { useParams } from 'react-router-dom';
 import { ISucursalShort } from '../../../types/ShortDtos/SucursalShort';
@@ -108,6 +108,7 @@ const CardSucursal: FC<ISucursalShort> = ({ esCasaMatriz, eliminado, horarioAper
         </>
     }
 
+    const rol = useAppSelector((state) => state.GlobalRol.rol)
     return (
         <>
             <div className=' rounded-xl shadow-xl w-full md:h-auto md:w-80 flex flex-col items-center justify-start  cursor-pointer
@@ -119,11 +120,12 @@ const CardSucursal: FC<ISucursalShort> = ({ esCasaMatriz, eliminado, horarioAper
                         <h1 className='text-lg'>Ingresar</h1>
                         <div className='w-full bg-gray-500 h-0.5 group-hover:bg-red-600' />
                     </button>
-
-                    <div className='flex'>
-                        <MdEdit className=' text-gray-500 hover:text-blue-600 transition-all mx-4 text-2xl' onClick={() => setOpen(true)} />
-                        <FaTrashAlt className='text-gray-500 hover:text-red-600 transition-all text-2xl' onClick={() => setModalEliminar(true)} />
-                    </div>
+                    {(rol === 'ADMIN' || rol === 'SUPERADMIN') &&
+                        <div className='flex'>
+                            <MdEdit className=' text-gray-500 hover:text-blue-600 transition-all mx-4 text-2xl' onClick={() => setOpen(true)} />
+                            <FaTrashAlt className='text-gray-500 hover:text-red-600 transition-all text-2xl' onClick={() => setModalEliminar(true)} />
+                        </div>
+                    }
                 </div>
                 <div className='p-5 flex flex-col items-center justify-start rounded'>
                     <FaBuilding className='group-hover:text-red-600 text-gray-600 p-1 transition-all text-5xl text-center' />

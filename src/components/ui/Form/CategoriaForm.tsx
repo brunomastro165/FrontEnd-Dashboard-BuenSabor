@@ -70,11 +70,10 @@ const CategoriaForm: FC<IForm> = ({ open, setOpen, method }) => {
     const [errors, setErrors] = useState<any>({})
 
     const succes = () => {
-        dispatch(setGlobalUpdated(true))
+        dispatch(setGlobalUpdated(!updated))
         setSubiendo(false)
         setOpen(false);
         resetForm();
-        dispatch(setGlobalUpdated(true));
         successMessage();
     }
 

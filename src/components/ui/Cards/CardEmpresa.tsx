@@ -9,7 +9,7 @@ import { IoIosBriefcase } from 'react-icons/io';
 import { BackendClient } from '../../../services/BackendClient';
 import { AiOutlineExclamationCircle } from "react-icons/ai";
 import { setGlobalUpdated } from '../../../redux/slices/globalUpdate';
-import { useAppDispatch } from '../../../hooks/redux';
+import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import EmpresaForm from '../Form/EmpresaForm';
 import { useAuth0 } from '@auth0/auth0-react';
 
@@ -92,6 +92,7 @@ const CardEmpresa: FC<IEmpresa> = ({ cuil, id, nombre, razonSocial, sucursales, 
         </>
     }
 
+    const rol = useAppSelector((state) => state.GlobalRol.rol)
     return (
         <>
             <div
@@ -99,10 +100,12 @@ const CardEmpresa: FC<IEmpresa> = ({ cuil, id, nombre, razonSocial, sucursales, 
         active:scale-95 transition-all hover:shadow-2xl m-5 group "
 
             >
-                <div className="flex justify-end m-4 w-full px-4  text-2xl">
-                    <MdEdit className=" text-blue-500 mx-3" onClick={() => { setModalEditar(true), setOpen(true) }} />
-                    <FaTrashAlt className="text-red-600 hover:scale-110 transition-all duration-100" onClick={() => setModalEliminar(true)} />
-                </div>
+                {(rol === 'ADMIN' || rol === 'SUPERADMIN') &&
+                    <div className="flex justify-end m-4 w-full px-4  text-2xl">
+                        <MdEdit className=" text-blue-500 mx-3" onClick={() => { setModalEditar(true), setOpen(true) }} />
+                        <FaTrashAlt className="text-red-600 hover:scale-110 transition-all duration-100" onClick={() => setModalEliminar(true)} />
+                    </div>
+                }
                 <div className="p-5 flex flex-col items-center justify-start rounded">
                     <h1 className="text-xl font-normal mt-5 mb-3">{nombre}</h1>
                     <h1 className="text-xl font-extralight mb-5">{razonSocial}</h1>

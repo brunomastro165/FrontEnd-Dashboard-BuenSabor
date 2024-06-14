@@ -57,7 +57,7 @@ type FileWithPreview = File & { preview: string };
 
 const SucursalForm: FC<IForm> = ({ open, setOpen, data, method }) => {
 
-    const {getAccessTokenSilently} = useAuth0()
+    const { getAccessTokenSilently } = useAuth0()
 
     const [subiendo, setSubiendo] = useState<boolean>(false);
 
@@ -95,13 +95,12 @@ const SucursalForm: FC<IForm> = ({ open, setOpen, data, method }) => {
     //             .typeError('El piso debe ser un valor numérico')
     //     })
     // });
-
+    const updated = useAppSelector((state) => state.GlobalUpdated.updated)
     const succes = () => {
-        dispatch(setGlobalUpdated(true))
+        dispatch(setGlobalUpdated(!updated))
         setSubiendo(false)
         setOpen(false);
         resetForm();
-        dispatch(setGlobalUpdated(true));
         successMessage();
     }
 

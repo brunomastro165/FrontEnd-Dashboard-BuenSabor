@@ -1,16 +1,23 @@
 import { BarChart } from '@tremor/react';
 import { BackendClient } from '../../services/BackendClient';
 import { IRol } from '../../types/Rol';
-import { useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { IArticuloInsumo } from '../../types/ArticuloInsumo';
 import { IPromos } from '../../types/Promos';
 import { IUsuario } from '../../types/Usuario';
 import { IEmpresa } from '../../types/Empresa';
 import { useAuth0 } from '@auth0/auth0-react';
 import useRankingArticulos from '../../hooks/useRankingArticulos';
+import { useParams } from 'react-router-dom';
 
 
-export const GraficoBarra = () => {
+interface IGrafico {
+  endpoint: string,
+}
+
+export const GraficoBarra: FC<IGrafico> = ({ endpoint }) => {
+
+  const { idSucursales } = useParams();
 
   const [inicio, setInicio] = useState<string>('2024-01-01');
 
@@ -21,6 +28,7 @@ export const GraficoBarra = () => {
   const { data, loading, error, fetchRankingArticulos } = useRankingArticulos({
     fechaInicio: inicio,
     fechaFin: fin,
+    endpoint: endpoint
   });
 
   useEffect(() => {

@@ -5,6 +5,7 @@ import EmpresaForm from '../Form/EmpresaForm';
 import RolForm from '../Form/RolForm';
 import { useNavigate } from 'react-router-dom';
 import { IEmpresaShort } from '../../../types/ShortDtos/EmpresaShort';
+import { useAppSelector } from '../../../hooks/redux';
 
 const ContainerCards: FC<IContainerCards> = ({ data }) => {
 
@@ -19,6 +20,8 @@ const ContainerCards: FC<IContainerCards> = ({ data }) => {
         imagenes: [],
         sucursales: []
     });
+
+    const rol = useAppSelector((state) => state.GlobalRol.rol)
 
     return (
         <>
@@ -36,16 +39,18 @@ const ContainerCards: FC<IContainerCards> = ({ data }) => {
                             imagenes={empresa.imagenes}
                         />
                     ))}
-                    <>
-                        <div className=' rounded-xl w-full h-64 md:w-80 flex flex-col items-center justify-center  cursor-pointer
+                    {(rol === 'ADMIN' || rol === 'SUPERADMIN') &&
+                        <>
+                            <div className=' rounded-xl w-full h-64 md:w-80 flex flex-col items-center justify-center  cursor-pointer
         active:scale-95 transition-all  m-5 group  border-dashed hover:border-red-600 border-gray-600 border-2 group'
-                            onClick={() => setOpen(true)}
-                        >
-                            <h1 className='font-Roboto text-gray-600 group-hover:text-red-600 text-2xl'>Agregar empresa</h1>
-                            <h2 className='text-6xl text-gray-600 group-hover:text-red-600'>+</h2>
+                                onClick={() => setOpen(true)}
+                            >
+                                <h1 className='font-Roboto text-gray-600 group-hover:text-red-600 text-2xl'>Agregar empresa</h1>
+                                <h2 className='text-6xl text-gray-600 group-hover:text-red-600'>+</h2>
 
-                        </div>
-                    </>
+                            </div>
+                        </>
+                    }
                 </div>
             </div>
 

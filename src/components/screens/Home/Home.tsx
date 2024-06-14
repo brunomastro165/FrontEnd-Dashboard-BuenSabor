@@ -58,10 +58,14 @@ const Home = () => {
 
             <div className='flex flex-col'>
                 <div className=' m-5 rounded-btn mt-24 shadow-lg'>
-                    <h1 className=' mx-auto font-Roboto text-2xl p-5  text-red-600 rounded-t'>Articulos más vendidos:</h1>
+                    <h1 className=' mx-auto font-Roboto text-2xl p-5  text-red-600 rounded-t'>Ventas por producto</h1>
                     <div className=' flex flex-col md:flex-col justify-center items-center align-middle '>
-                        <div className='p-5 rounded-md size-full '>
-                            <GraficoBarra />
+                        <div className='p-5 rounded-md size-full space-y-4 '>
+                            <h1>Articulos más vendidos</h1>
+                            <GraficoBarra endpoint='pedido/ranking-articulos'/>
+
+                            <h1>Promociones más vendidas</h1>
+                            <GraficoBarra endpoint='pedido/ranking-promociones'/>
                         </div>
                         {/* <div className='p-5 rounded-md size-full md:size-3/6'>
                             <BarListVisitas articulos={articulosManufacturados} />
@@ -73,9 +77,7 @@ const Home = () => {
                 <div className='border m-5 rounded-btn mt-24 shadow-lg'>
                     <h1 className=' mx-auto font-Roboto text-2xl p-5  text-red-600 rounded-t'>Ventas:</h1>
                     <div className=' flex flex-col md:flex-row  justify-center items-center align-middle '>
-                        <div className='p-5 rounded-md size-full'>
-                            <Example />
-                        </div>
+
                         {/* <div className='p-5 rounded-md size-full'>
                     <TrackerServ />
                 </div> */}
@@ -86,7 +88,7 @@ const Home = () => {
                 </div>
 
 
-                <div className='border m-5 rounded-btn mt-24 shadow-lg'>
+                {/* <div className='border m-5 rounded-btn mt-24 shadow-lg'>
                     <h1 className=' mx-auto font-Roboto text-2xl p-5  text-red-600 rounded-t'>Servidor:</h1>
                     <div className=' flex flex-col md:flex-row justify-center items-center align-middle '>
 
@@ -100,7 +102,7 @@ const Home = () => {
                         </div>
 
                     </div>
-                </div>
+                </div> */}
             </div>
         </div>
     )

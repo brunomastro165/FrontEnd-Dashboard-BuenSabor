@@ -66,11 +66,10 @@ const AManufacturadoForm: FC<IForm> = ({ open, setOpen, method }) => {
 
 
     const succes = () => {
-        dispatch(setGlobalUpdated(true))
+        dispatch(setGlobalUpdated(!updated))
         setSubiendo(false)
         setOpen(false);
         resetForm();
-        dispatch(setGlobalUpdated(true));
         successMessage();
     }
 
