@@ -7,5 +7,6 @@ export interface IDetallePedido {
   cantidad: number;
   articuloManufacturado: IArticuloManufacturado | undefined;
   articuloInsumo: IArticuloInsumo | undefined;
-  promo: IPromos | undefined;
+  promocion: IPromos | undefined;
+  subTotal: number;
 }

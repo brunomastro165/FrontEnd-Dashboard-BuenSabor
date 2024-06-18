@@ -18,6 +18,8 @@ const CardPedidoAdmin: FC<ICardEmpleado> = ({ open, setOpen }) => {
 
     const pedido: IPedido = useAppSelector((state) => state.GlobalInitialValues.data)
 
+    console.log(pedido);
+
     const factura = pedido.factura;
 
     const loadImageAsBase64 = (url: string): Promise<string> => {
@@ -95,14 +97,14 @@ const CardPedidoAdmin: FC<ICardEmpleado> = ({ open, setOpen }) => {
         // Agregar una tabla para los detalles del pedido
         const tableData = pedido.detallesPedido.map((detalle, index) => {
             const denominacion = detalle.articuloManufacturado?.denominacion || detalle.articuloInsumo?.denominacion || detalle.promocion?.denominacion || 'N/A';
-            const precio = detalle.articuloManufacturado?.precioVenta || detalle.articuloInsumo?.precioVenta || detalle.promocion?.precioPromocional || 0;
-            const precioTotal = precio * detalle.cantidad;
+            const precio = detalle.subTotal;
+            const precioInidividual = precio / detalle.cantidad;
             return [
                 index + 1,
                 denominacion,
                 detalle.cantidad,
-                `$${precio.toFixed(2)}`,
-                `$${precioTotal.toFixed(2)}`
+                `$${precioInidividual.toFixed(2)}`,
+                `$${precio.toFixed(2)}`
             ];
         });
 
