@@ -75,7 +75,7 @@ const PedidosCajero = () => {
         return insumosData.map(pedido => ({
             id: pedido.id,
             denominacion: pedido.estado,
-            param2: pedido.formaPago,
+            param2: pedido.factura.formaPago,
             //@ts-ignore
             param3: pedido?.empleado?.nombre,
             param4: pedido.domicilio.calle,

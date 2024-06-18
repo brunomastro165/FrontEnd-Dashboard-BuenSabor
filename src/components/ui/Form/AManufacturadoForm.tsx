@@ -393,7 +393,7 @@ const AManufacturadoForm: FC<IForm> = ({ open, setOpen, method }) => {
 
                     <div className='w-full flex flex-col md:flex-row space-x-0 md:space-x-4'>
                         {genericInput('tiempoEstimadoMinutos', 'number', values.tiempoEstimadoMinutos, handleChange, errors)}
-                        {genericInput('stock', 'number', values.stock, handleChange, errors)}
+                       
                     </div>
 
 

@@ -61,8 +61,8 @@ const Insumos = () => {
         return insumosData.map(insumo => ({
             id: insumo.id,
             denominacion: insumo.denominacion,
-            param2: insumo.precioVenta,
-            param3: insumo.unidadMedida.denominacion,
+            param2: insumo.unidadMedida.denominacion,
+            param3: insumo.stockActual,
             param4: insumo.categoria.denominacion,
             endpoint: ''
         }));
@@ -161,8 +161,8 @@ const Insumos = () => {
                 loading={loading}
                 row1="ID"
                 row2="Denominación"
-                row3="Precio venta"
-                row4="Unidad de medida"
+                row3="Unidad de medida"
+                row4="Stock"
                 row5="Categoría"
                 endpoint="ArticuloInsumo"
             />

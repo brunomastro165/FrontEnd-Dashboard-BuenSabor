@@ -221,7 +221,7 @@ const DetalleInput: FC<IDetalleInput> = ({ values, setValues, idSucursales }) =>
             <div className='flex flex-wrap my-2 h-auto '>
                 {aMDetalles?.map((detalle) => (
                     <div className='text-xl px-2 py-1 rounded mr-2 bg-green-400 w-max text-white '>{detalle.articuloInsumo?.denominacion}
-                        <span className='text-xs mx-2'>x</span>{detalle.cantidad}</div>
+                        <span className='text-xs mx-2'>x</span>{detalle.cantidad}<span className='text-sm mx-2'>{detalle.articuloInsumo?.unidadMedida.denominacion}</span></div>
                 ))}
             </div>
         </div>
