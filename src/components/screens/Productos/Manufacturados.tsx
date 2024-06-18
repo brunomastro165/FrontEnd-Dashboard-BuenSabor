@@ -75,10 +75,7 @@ const Manufacturados = () => {
         }));
     }
 
-
     useEffect(() => {
-        console.log("laputamadre")
-        console.log(updated)
         dispatch(setIdPaginador(1))
     }, [search, updated])
 

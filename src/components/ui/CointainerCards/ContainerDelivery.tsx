@@ -47,7 +47,7 @@ const ContainerDelivery = () => {
         dispatch(setGlobalUpdated(false))
     }, [updated])
 
-    const estados = ["PENDIENTE","ENVIANDO", "ENTREGADO", "CANCELADO"];
+    const estados = ["PENDIENTE", "ENVIANDO", "ENTREGADO", "CANCELADO"];
 
     const estadoColores: { [key: string]: string } = {
         PENDIENTE: "bg-gray-500",
@@ -57,8 +57,6 @@ const ContainerDelivery = () => {
         CANCELADO: "bg-red-500",
         RECHAZADO: "bg-red-500",
     };
-
-    console.log(pedidos)
 
     const pedidosPorEstado: { [key: string]: IPedido[] } = pedidos.reduce((acc, pedido) => {
         if (!acc[pedido.estado]) {

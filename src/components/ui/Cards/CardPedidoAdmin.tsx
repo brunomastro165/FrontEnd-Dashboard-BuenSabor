@@ -4,6 +4,10 @@ import GlobalInitialValues from '../../../redux/slices/globalInitialValues'
 import { IPedido } from '../../../types/Pedido'
 import { Dispatch } from '@reduxjs/toolkit';
 import { jsPDF } from 'jspdf';
+import 'jspdf-autotable';
+import html2canvas from 'html2canvas';
+import { IFactura } from '../../../types/Factura';
+import { useParams } from 'react-router-dom';
 
 interface ICardEmpleado {
     open: boolean;
@@ -16,29 +20,103 @@ const CardPedidoAdmin: FC<ICardEmpleado> = ({ open, setOpen }) => {
 
     const factura = pedido.factura;
 
-    const generatePDF = () => {
+    const loadImageAsBase64 = (url: string): Promise<string> => {
+        return new Promise((resolve, reject) => {
+            const img = new Image();
+            img.crossOrigin = 'anonymous';
+            img.src = url;
+            img.onload = () => {
+                const canvas = document.createElement('canvas');
+                canvas.width = img.width;
+                canvas.height = img.height;
+                const ctx = canvas.getContext('2d');
+                if (ctx) {
+                    ctx.drawImage(img, 0, 0);
+                    const dataURL = canvas.toDataURL('image/jpeg');
+                    resolve(dataURL);
+                } else {
+                    reject(new Error('Failed to get canvas context'));
+                }
+            };
+            img.onerror = reject;
+        });
+    };
+
+    const generatePDF = async () => {
         const doc = new jsPDF();
-        const fecha = factura.fechaFcturacion;
-        console.log(fecha)
-        let y = 10;
-        doc.text(`ID: ${factura.id}`, 10, 10);
-        doc.text(`FECHA DE FACTURACIÓN: ${fecha}`, 10, 20);
-        doc.text(`FORMA DE PAGO: ${factura.formaPago}`, 10, 30);
-        doc.text(`TOTAL DE VENTA: $${factura.totalVenta}`, 10, 40);
+        const fecha = factura.fechaFcturacion || 'N/A'; // Asegúrate de tener datos por defecto
+        const imgSrc = pedido.sucursal.imagenes[0].url; // Ruta de la imagen local o URL
 
-        //@ts-ignore
-        doc.text(`CLIENTE: ${pedido.cliente.nombre}`, 10, 50)
-        doc.text(`CALLE: ${pedido.domicilio.calle}`, 10, 60)
-        doc.text(`DETALLES DEL PEDIDO:`, 10, 70)
-        if (pedido.detallesPedido.length >= 1) {
-            let index = 80; // Valor inicial de index
-
-            pedido.detallesPedido.forEach((detalle) => {
-                const denominacion = detalle.articuloManufacturado?.denominacion || detalle.articuloInsumo?.denominacion || detalle.promocion?.denominacion;
-                doc.text(` ${denominacion} x${detalle.cantidad}`, 10, index);
-                index += 10; // Incrementar index para la siguiente línea
-            });
+        try {
+            const imgData = await loadImageAsBase64(imgSrc);
+            // Agregar una imagen en la cabecera
+            doc.addImage(imgData, 'JPEG', 140, 10, 50, 25); // Posición y tamaño de la imagen
+        } catch (error) {
+            console.error('Error loading image:', error);
         }
+
+        // Agregar texto de cabecera con estilo
+        doc.setFontSize(36);
+        doc.setTextColor(0, 51, 102); // Color azul oscuro
+        doc.setFont('helvetica', 'bold');
+        doc.text('EL BUEN SABOR', 10, 20);
+        doc.setFontSize(20);
+        doc.setTextColor(0, 51, 102); // Color azul oscuro
+        doc.setFont('helvetica');
+        doc.text(`SUCURSAL: ${pedido.sucursal.nombre}`, 10, 30)
+
+        let y = 40; // Posición inicial después de la cabecera
+
+        // Mover datos de facturación a la derecha
+        const datosFacturacionX = 100; // Nueva posición X para los datos de facturación
+
+        doc.setFontSize(14);
+        doc.setFont('helvetica', 'bold');
+        doc.setTextColor(0, 51, 102); // Azul oscuro
+        doc.text(`FECHA DE FACTURACIÓN: ${fecha}`, datosFacturacionX, y + 10);
+        doc.text(`FORMA DE PAGO: ${factura.formaPago}`, datosFacturacionX, y + 20);
+        doc.text(`TOTAL DE VENTA: $${factura.totalVenta}`, datosFacturacionX, y + 30);
+
+        // Agregar detalles del cliente (izquierda)
+        doc.setFontSize(14);
+        doc.setFont('helvetica', 'bold');
+        doc.setTextColor(0, 51, 102); // Azul oscuro
+        doc.text(`ID FACTURA: ${factura.id}`, 10, y + 10);
+        //@ts-ignore
+        doc.text(`CLIENTE: ${pedido.cliente.nombre}`, 10, y + 20);
+        doc.text(`CALLE: ${pedido.domicilio.calle}`, 10, y + 30);
+
+        // Separador
+        y += 40;
+        doc.setDrawColor(0, 51, 102); // Azul oscuro
+        doc.setLineWidth(0.5);
+        doc.line(10, y - 5, 200, y - 5);
+
+        // Agregar una tabla para los detalles del pedido
+        const tableData = pedido.detallesPedido.map((detalle, index) => {
+            const denominacion = detalle.articuloManufacturado?.denominacion || detalle.articuloInsumo?.denominacion || detalle.promocion?.denominacion || 'N/A';
+            const precio = detalle.articuloManufacturado?.precioVenta || detalle.articuloInsumo?.precioVenta || detalle.promocion?.precioPromocional || 0;
+            const precioTotal = precio * detalle.cantidad;
+            return [
+                index + 1,
+                denominacion,
+                detalle.cantidad,
+                `$${precio.toFixed(2)}`,
+                `$${precioTotal.toFixed(2)}`
+            ];
+        });
+
+        // Configurar las opciones de autoTable
+        //@ts-ignore
+        doc.autoTable({
+            startY: y + 10,
+            head: [['#', 'Descripción', 'Cantidad', 'Individual', 'Total']],
+            body: tableData,
+            theme: 'grid',
+            headStyles: { fillColor: [22, 160, 133] },
+            alternateRowStyles: { fillColor: [241, 241, 241] },
+            margin: { top: 10 },
+        });
 
         doc.save(`factura_id_${factura.id}.pdf`);
     };
