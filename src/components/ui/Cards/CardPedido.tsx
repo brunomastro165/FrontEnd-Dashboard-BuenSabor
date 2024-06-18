@@ -111,6 +111,7 @@ const CardPedido: FC<IPedido> = ({ cliente, domicilio, eliminado, empleado, esta
                     {/* MOSTRAR LOS MANUFACTURADOS */}
                     <div className='flex justify-between items-center'>
                         <h1 className="w-max text-sm  mb-2 text-white px-2  font-Roboto  bg-blue-600  rounded ">ID: {id}</h1>
+                        {/*@ts-ignore */}
                         <CiCircleInfo className='text-3xl hover:text-blue-600 cursor-pointer' onClick={() => document?.getElementById(`detalles_${id}`)?.showModal()} />
                     </div>
                     <label className="inline-flex items-center justify-center cursor-pointer">
@@ -195,6 +196,7 @@ const CardPedido: FC<IPedido> = ({ cliente, domicilio, eliminado, empleado, esta
                                 ) : null;
                             })}
                         </div>
+                         {/*@ts-ignore */}
                         {empleado.nombre && <h1>Empleado a cargo: {empleado?.nombre}</h1>}
                         <h1 className='bg-green-500 text-white w-max p-1 rounded mt-1'>{formaPago}</h1>
                     </div>

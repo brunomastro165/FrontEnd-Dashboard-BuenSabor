@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+ {/*@ts-ignore */}
 export const genericInput = (name, type, value, handleChange, errors) => {
     const [textColor, setTextColor] = useState('');
 

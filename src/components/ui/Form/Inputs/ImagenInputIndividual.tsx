@@ -17,6 +17,7 @@ const ImageInputIndividual: FC<IImageInput> = ({ file, setFile, id, imagen }) =>
     const loadedImagesRef = useRef<Set<string>>(new Set());
 
     const { getRootProps, getInputProps } = useDropzone({
+        /*@ts-ignore */
         accept: 'image/*',
         onDrop: (acceptedFiles: File[]) => {
             const newFile = Object.assign(acceptedFiles[0], {
