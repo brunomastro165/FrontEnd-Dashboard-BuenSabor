@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { setLogged } from "../../../redux/slices/logged";
 import { errorGenerico } from "../../toasts/ToastAlerts";
 import { setRol } from "../../../redux/slices/rol";
+import { TbBrandAuth0 } from "react-icons/tb";
 
 const LoginButton = () => {
     const { loginWithRedirect, isAuthenticated, user, getAccessTokenSilently } = useAuth0();
@@ -98,7 +99,7 @@ const LoginButton = () => {
                         break;
                     case 'SUPERADMIN':
                         dispatch(setLogged(true))
-                        navigate(`/`);
+                        navigate(`/empresas`);
                         break;
                     default:
                         navigate('/ruta-default');
@@ -121,12 +122,14 @@ const LoginButton = () => {
             :
             (
                 <button
-                    className="btn btn-error text-white"
+                    className="btn btn-outline border-2 text-black btn-wide"
                     onClick={() =>
-                        loginWithRedirect()
+                        loginWithRedirect({
+
+                        })
                     }
                 >
-                    Log In
+                    Ingresar con Auth0 <span><TbBrandAuth0 className="text-2xl" /></span>
                 </button>
             )
 

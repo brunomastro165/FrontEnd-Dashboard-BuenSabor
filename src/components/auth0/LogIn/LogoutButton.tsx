@@ -1,6 +1,8 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import { useAppDispatch } from "../../../hooks/redux";
 import { setLogged } from "../../../redux/slices/logged";
+import { SiAuth0 } from "react-icons/si";
+
 
 const LogoutButton = () => {
     const { logout, isAuthenticated } = useAuth0();
@@ -15,9 +17,9 @@ const LogoutButton = () => {
                     logout({ logoutParams: { returnTo: window.location.origin } })
                 }
                 }
-                className="btn btn-error text-white"
+                className="btn btn-outline text-black"
             >
-                Log Out
+                <span className="flex flex-row ">Salir <SiAuth0 className="ml-2"/></span>
             </button>
         )
     );

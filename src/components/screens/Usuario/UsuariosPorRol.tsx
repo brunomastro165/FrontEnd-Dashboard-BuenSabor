@@ -26,7 +26,7 @@ const UsuariosPorRol = () => {
 
     const [empleados, setEmpleados] = useState<IEmpleado[]>([])
 
-    const [title, setTitle] = useState<string>('');
+    const [title, setTitle] = useState<string>('Empleados');
 
     const [data, setData] = useState<IItem[]>([]);
 

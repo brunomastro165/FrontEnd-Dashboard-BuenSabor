@@ -26,6 +26,7 @@ import { UserProfile } from '../auth0/UserProfile'
 import { RutaPrivada } from './RutaPrivada'
 import PedidosCajero from '../screens/PedidosCajero/PedidosCajero'
 import Delivery from '../screens/Delivery/Delivery'
+import LogInScreen from '../screens/LogIn/LogInScreen'
 
 const AppRouter = () => {
 
@@ -47,7 +48,15 @@ const AppRouter = () => {
                 <div className={`${selector && 'md:ml-72'} w-full`}>
                     <Routes>
 
-                        <Route path='/' element={<Inicio />}></Route>
+                        <Route path='/' element={<LogInScreen />}></Route>
+
+
+                        <Route path='/empresas' element={
+                            <RutaPrivada roles={['SUPERADMIN', 'ADMIN']}>
+                                <Inicio />
+                            </RutaPrivada>}
+                        />
+
 
                         {/* RUTA PRIVADA */}
                         <Route path='/:idEmpresa/sucursales' element={
