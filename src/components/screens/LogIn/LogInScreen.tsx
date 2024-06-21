@@ -17,66 +17,68 @@ const LogInScreen = () => {
 
     const navigate = useNavigate();
 
-    useEffect(() => {
-        if (empleado.email !== '') {
-            //@ts-ignore
-            const idEmpresa = empledo.sucursal.empresa.id;
-            const idSucursal = empleado.sucursal.id
-            switch (empleado.tipoEmpleado) {
-                case 'CAJERO':
-                    dispatch(setLogged(true))
-                    navigate(`/${idEmpresa}/sucursales/${idSucursal}/home`);
-                    break;
-                case 'COCINERO':
-                    dispatch(setLogged(true))
-                    navigate(`/${idEmpresa}/sucursales/${idSucursal}/home`);
-                    break;
-                case 'DELIVERY':
-                    dispatch(setLogged(true))
-                    navigate(`/${idEmpresa}/sucursales/${idSucursal}/home`);
-                    break;
-                case 'ADMIN':
-                    dispatch(setLogged(true))
-                    navigate(`/${idEmpresa}/sucursales/${idSucursal}/home`);
-                    break;
-                case 'SUPERADMIN':
-                    dispatch(setLogged(true))
-                    navigate(`/`);
-                    break;
-                default:
-                    navigate('/');
-                    break;
-            }
-        }
-        else {
-            switch (rol) {
-                case 'CAJERO':
-                    dispatch(setLogged(true))
-                    navigate(`/notLogged`);
-                    break;
-                case 'COCINERO':
-                    dispatch(setLogged(true))
-                    navigate(`/notLogged`);
-                    break;
-                case 'DELIVERY':
-                    dispatch(setLogged(true))
-                    navigate(`/notLogged`);
-                    break;
-                case 'ADMIN':
-                    dispatch(setLogged(true))
-                    navigate(`/notLogged`);
-                    break;
-                case 'SUPERADMIN':
-                    dispatch(setLogged(true))
-                    navigate(`/empresas`);
-                    break;
-                default:
-                    navigate('/');
-                    break;
-            }
-        }
+    console.log(empleado)
 
-    }, [empleado, rol]);
+    // useEffect(() => {
+    //     if (empleado.email !== '') {
+    //         //@ts-ignore
+    //         const idEmpresa = empledo.sucursal.empresa.id;
+    //         const idSucursal = empleado.sucursal.id
+    //         switch (empleado.tipoEmpleado) {
+    //             case 'CAJERO':
+    //                 dispatch(setLogged(true))
+    //                 navigate(`/${idEmpresa}/sucursales/${idSucursal}/home`);
+    //                 break;
+    //             case 'COCINERO':
+    //                 dispatch(setLogged(true))
+    //                 navigate(`/${idEmpresa}/sucursales/${idSucursal}/home`);
+    //                 break;
+    //             case 'DELIVERY':
+    //                 dispatch(setLogged(true))
+    //                 navigate(`/${idEmpresa}/sucursales/${idSucursal}/home`);
+    //                 break;
+    //             case 'ADMIN':
+    //                 dispatch(setLogged(true))
+    //                 navigate(`/${idEmpresa}/sucursales/${idSucursal}/home`);
+    //                 break;
+    //             case 'SUPERADMIN':
+    //                 dispatch(setLogged(true))
+    //                 navigate(`/`);
+    //                 break;
+    //             default:
+    //                 navigate('/');
+    //                 break;
+    //         }
+    //     }
+    //     // else {
+    //     //     switch (rol) {
+    //     //         case 'CAJERO':
+    //     //             dispatch(setLogged(true))
+    //     //             navigate(`/notLogged`);
+    //     //             break;
+    //     //         case 'COCINERO':
+    //     //             dispatch(setLogged(true))
+    //     //             navigate(`/notLogged`);
+    //     //             break;
+    //     //         case 'DELIVERY':
+    //     //             dispatch(setLogged(true))
+    //     //             navigate(`/notLogged`);
+    //     //             break;
+    //     //         case 'ADMIN':
+    //     //             dispatch(setLogged(true))
+    //     //             navigate(`/notLogged`);
+    //     //             break;
+    //     //         case 'SUPERADMIN':
+    //     //             dispatch(setLogged(true))
+    //     //             navigate(`/empresas`);
+    //     //             break;
+    //     //         default:
+    //     //             navigate('/');
+    //     //             break;
+    //     //     }
+    //     // }
+
+    // }, [empleado, rol]);
     
 
     return (

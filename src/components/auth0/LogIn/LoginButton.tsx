@@ -112,55 +112,63 @@ const LoginButton = () => {
                     break;
             }
         }
-        else {
-            switch (rol) {
-                case 'CAJERO':
-                    dispatch(setLogged(true))
-                    navigate(`/notLogged`);
-                    break;
-                case 'COCINERO':
-                    dispatch(setLogged(true))
-                    navigate(`/notLogged`);
-                    break;
-                case 'DELIVERY':
-                    dispatch(setLogged(true))
-                    navigate(`/notLogged`);
-                    break;
-                case 'ADMIN':
-                    dispatch(setLogged(true))
-                    navigate(`/notLogged`);
-                    break;
-                case 'SUPERADMIN':
-                    dispatch(setLogged(true))
-                    navigate(`/`);
-                    break;
-                default:
-                    navigate('/');
-                    break;
-            }
-        }
+        // else {
+        //     switch (rol) {
+        //         case 'CAJERO':
+        //             dispatch(setLogged(true))
+        //             navigate(`/`);
+        //             break;
+        //         case 'COCINERO':
+        //             dispatch(setLogged(true))
+        //             navigate(`/`);
+        //             break;
+        //         case 'DELIVERY':
+        //             dispatch(setLogged(true))
+        //             navigate(`/`);
+        //             break;
+        //         case 'ADMIN':
+        //             dispatch(setLogged(true))
+        //             navigate(`/`);
+        //             break;
+        //         case 'SUPERADMIN':
+        //             dispatch(setLogged(true))
+        //             navigate(`/`);
+        //             break;
+        //         default:
+        //             navigate('/');
+        //             break;
+        //     }
+        // }
 
     }, [empledo, rol]);
 
     return (
         isAuthenticated ? (
-            <div className="flex items-center space-x-2  rounded">
-                <h1 className="text-xl font-Roboto">Usted ya está registrado como {user?.name}</h1>
-            </div>
+            <>
+                <div className="flex items-center space-x-2  rounded">
+                    <h1 className="text-xl font-Roboto">Usted ya está registrado como {user?.name} en auth0</h1>
+                </div>
+                {empledo.email === '' && (<div>Debe solicitar a un superior su registro en el sistema formal</div>)}
+            </>
         )
             :
             (
-                <button
-                    className="btn btn-outline border-2 text-black btn-wide"
-                    onClick={() =>
-                        loginWithRedirect({
+                <>
+                    <buttons
+                        className="btn btn-outline border-2 text-black btn-wide"
+                        onClick={() =>
+                            loginWithRedirect({
 
-                        })
-                    }
-                >
-                    Ingresar con Auth0 <span><TbBrandAuth0 className="text-2xl" /></span>
-                </button>
+                            })
+                        }
+                    >
+                        Ingresar con Auth0 <span><TbBrandAuth0 className="text-2xl" /></span>
+                    </button>
+
+
+                </>
             )
+
 
     );
 };
