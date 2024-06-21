@@ -76,76 +76,76 @@ const LoginButton = () => {
     }, [isAuthenticated, user])
 
 
+    console.log("me voy a suicidar")
+    console.log(rol)
+    console.log(logged)
+
     useEffect(() => {
-        if (!logged) {
-            if (empledo.email !== '') {
-                //@ts-ignore
-                const idEmpresa = empledo.sucursal.empresa.id;
-                const idSucursal = empledo.sucursal.id
-                switch (empledo.tipoEmpleado) {
-                    case 'CAJERO':
-                        dispatch(setLogged(true))
-                        navigate(`/${idEmpresa}/sucursales/${idSucursal}/home`);
-                        break;
-                    case 'COCINERO':
-                        dispatch(setLogged(true))
-                        navigate(`/${idEmpresa}/sucursales/${idSucursal}/home`);
-                        break;
-                    case 'DELIVERY':
-                        dispatch(setLogged(true))
-                        navigate(`/${idEmpresa}/sucursales/${idSucursal}/home`);
-                        break;
-                    case 'ADMIN':
-                        dispatch(setLogged(true))
-                        navigate(`/${idEmpresa}/sucursales/${idSucursal}/home`);
-                        break;
-                    case 'SUPERADMIN':
-                        dispatch(setLogged(true))
-                        navigate(`/empresas`);
-                        break;
-                    default:
-                        navigate('/');
-                        break;
-                }
-            }
-            else {
-                switch (rol) {
-                    case 'CAJERO':
-                        dispatch(setLogged(true))
-                        navigate(`/notLogged`);
-                        break;
-                    case 'COCINERO':
-                        dispatch(setLogged(true))
-                        navigate(`/notLogged`);
-                        break;
-                    case 'DELIVERY':
-                        dispatch(setLogged(true))
-                        navigate(`/notLogged`);
-                        break;
-                    case 'ADMIN':
-                        dispatch(setLogged(true))
-                        navigate(`/notLogged`);
-                        break;
-                    case 'SUPERADMIN':
-                        dispatch(setLogged(true))
-                        navigate(`/empresas`);
-                        break;
-                    default:
-                        navigate('/');
-                        break;
-                }
+
+        if (empledo.email !== '') {
+            //@ts-ignore
+            const idEmpresa = empledo.sucursal.empresa.id;
+            const idSucursal = empledo.sucursal.id
+            switch (empledo.tipoEmpleado) {
+                case 'CAJERO':
+                    dispatch(setLogged(true))
+                    navigate(`/${idEmpresa}/sucursales/${idSucursal}/home`);
+                    break;
+                case 'COCINERO':
+                    dispatch(setLogged(true))
+                    navigate(`/${idEmpresa}/sucursales/${idSucursal}/home`);
+                    break;
+                case 'DELIVERY':
+                    dispatch(setLogged(true))
+                    navigate(`/${idEmpresa}/sucursales/${idSucursal}/home`);
+                    break;
+                case 'ADMIN':
+                    dispatch(setLogged(true))
+                    navigate(`/${idEmpresa}/sucursales/${idSucursal}/home`);
+                    break;
+                case 'SUPERADMIN':
+                    dispatch(setLogged(true))
+                    navigate(`/empresas`);
+                    break;
+                default:
+                    navigate('/');
+                    break;
             }
         }
+        else {
+            switch (rol) {
+                case 'CAJERO':
+                    dispatch(setLogged(true))
+                    navigate(`/notLogged`);
+                    break;
+                case 'COCINERO':
+                    dispatch(setLogged(true))
+                    navigate(`/notLogged`);
+                    break;
+                case 'DELIVERY':
+                    dispatch(setLogged(true))
+                    navigate(`/notLogged`);
+                    break;
+                case 'ADMIN':
+                    dispatch(setLogged(true))
+                    navigate(`/notLogged`);
+                    break;
+                case 'SUPERADMIN':
+                    dispatch(setLogged(true))
+                    navigate(`/empresas`);
+                    break;
+                default:
+                    navigate('/');
+                    break;
+            }
+        }
+
     }, [empledo, rol]);
 
     return (
         isAuthenticated ? (
             <div className="flex items-center space-x-2  rounded">
-                <img src={user?.picture} alt="" className="size-10 rounded-full" />
-                <div>
-                    <h1 className="bg-red-500 text-white px-1 rounded">{empledo.tipoEmpleado}</h1>
-                    <h2>{user?.nickname}</h2>
-                </div>
+                <h1 className="text-xl font-Roboto">Usted ya está registrado como {user?.name}</h1>
             </div>
         )
             :

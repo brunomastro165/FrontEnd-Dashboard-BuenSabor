@@ -9,6 +9,7 @@ import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import { setGlobalUpdated } from "../../../redux/slices/globalUpdate";
 import { useAuth0 } from "@auth0/auth0-react";
 import { errorGenerico } from "../../toasts/ToastAlerts";
+import { setLogged } from "../../../redux/slices/logged";
 
 
 //@ts-ignore
@@ -44,6 +45,7 @@ const Inicio = () => {
     }
 
     useEffect(() => {
+        dispatch(setLogged(false))
         traerGetters();
         setLoaded(false)
         dispatch(setGlobalUpdated(false));

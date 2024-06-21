@@ -13,7 +13,7 @@ const NavBar: FC<INavBar> = ({ title }) => {
             <h1 className='font-Roboto text-2xl text-red-600 '>{title}</h1>
 
             <div className='flex items-center space-x-4 mr-72'>
-                <LoginButton />
+                {/* <LoginButton /> */}
                 <LogoutButton />
             </div>
 
