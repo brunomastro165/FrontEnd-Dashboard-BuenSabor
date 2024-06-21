@@ -27,6 +27,7 @@ import { RutaPrivada } from './RutaPrivada'
 import PedidosCajero from '../screens/PedidosCajero/PedidosCajero'
 import Delivery from '../screens/Delivery/Delivery'
 import LogInScreen from '../screens/LogIn/LogInScreen'
+import NotLogged from '../screens/NotLoggedMessage/NotLogged'
 
 const AppRouter = () => {
 
@@ -50,6 +51,7 @@ const AppRouter = () => {
 
                         <Route path='/' element={<LogInScreen />}></Route>
 
+                        <Route path='/notLogged' element={<NotLogged />}></Route>
 
                         <Route path='/empresas' element={
                             <RutaPrivada roles={['SUPERADMIN', 'ADMIN']}>

@@ -23,6 +23,8 @@ const LoginButton = () => {
 
     const logged = useAppSelector((state) => state.logged.logged)
 
+    const rol = useAppSelector((state) => state.GlobalRol.rol)
+
     useEffect(() => {
         const traerEmpleado = () => {
 
@@ -102,12 +104,39 @@ const LoginButton = () => {
                         navigate(`/empresas`);
                         break;
                     default:
-                        navigate('/ruta-default');
+                        navigate('/');
+                        break;
+                }
+            }
+            else {
+                switch (rol) {
+                    case 'CAJERO':
+                        dispatch(setLogged(true))
+                        navigate(`/notLogged`);
+                        break;
+                    case 'COCINERO':
+                        dispatch(setLogged(true))
+                        navigate(`/notLogged`);
+                        break;
+                    case 'DELIVERY':
+                        dispatch(setLogged(true))
+                        navigate(`/notLogged`);
+                        break;
+                    case 'ADMIN':
+                        dispatch(setLogged(true))
+                        navigate(`/notLogged`);
+                        break;
+                    case 'SUPERADMIN':
+                        dispatch(setLogged(true))
+                        navigate(`/empresas`);
+                        break;
+                    default:
+                        navigate('/');
                         break;
                 }
             }
         }
-    }, [empledo]);
+    }, [empledo, rol]);
 
     return (
         isAuthenticated ? (

@@ -14,7 +14,8 @@ export const Auth0ProviderWithNavigate = ({ children }: Props) => {
   const audience = import.meta.env.VITE_AUTH0_AUDIENCE;
 
   const onRedirectCallback = (appState: AppState | undefined) => {
-    navigate(appState?.returnTo || window.location.pathname);
+    console.log(appState)
+    navigate(appState?.returnTo || '/empresas');
   };
 
   if (!(domain && clientId && redirectUri)) {
