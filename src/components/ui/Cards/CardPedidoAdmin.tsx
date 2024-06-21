@@ -165,8 +165,8 @@ const CardPedidoAdmin: FC<ICardEmpleado> = ({ open, setOpen }) => {
                     )}
                 </div>
             </div>
-            <div className='btn btn-error text-white'>
-                <button onClick={() => generatePDF()}>DESCARGAR FACTURA</button>
+            <div className='btn btn-error text-white' onClick={() => generatePDF()}>
+                <button>DESCARGAR FACTURA</button>
             </div>
         </div>
     )

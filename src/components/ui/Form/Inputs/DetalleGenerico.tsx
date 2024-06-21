@@ -88,11 +88,7 @@ const DetalleGenerico: FC<IDetalleInput> = ({ values, setValues, idSucursales })
 
     //     setAmDetalles(newDetalles);
     // }
-
-
-    //TODO CONTINUAR CON ESTO (PODER EDITAR BIEN EL DETALLE DE LA PROMOCIÓN)
-    console.log("detallines")
-    console.log(values.detalles)
+    
     useEffect(() => {
 
         const traerArticulos = async () => {

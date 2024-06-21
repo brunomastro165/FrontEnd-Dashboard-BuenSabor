@@ -123,11 +123,7 @@ const LoginButton = () => {
                 <button
                     className="btn btn-error text-white"
                     onClick={() =>
-                        loginWithRedirect({
-                            appState: {
-                                returnTo: window.location.pathname,
-                            },
-                        })
+                        loginWithRedirect()
                     }
                 >
                     Log In
