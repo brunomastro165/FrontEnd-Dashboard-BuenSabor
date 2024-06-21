@@ -105,7 +105,7 @@ const LoginButton = () => {
                     break;
                 case 'SUPERADMIN':
                     dispatch(setLogged(true))
-                    navigate(`/empresas`);
+                    navigate(`/`);
                     break;
                 default:
                     navigate('/');
@@ -132,7 +132,7 @@ const LoginButton = () => {
                     break;
                 case 'SUPERADMIN':
                     dispatch(setLogged(true))
-                    navigate(`/empresas`);
+                    navigate(`/`);
                     break;
                 default:
                     navigate('/');
