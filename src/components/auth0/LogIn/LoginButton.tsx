@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { useAuth0 } from "@auth0/auth0-react";
 import { useEffect } from "react";
 import { IEmpleado } from "../../../types/Empleado";
@@ -115,10 +116,10 @@ const LoginButton = () => {
                 }
                 break;
             case 'SUPERADMIN':
-
-                dispatch(setLogged(true))
-                navigate(`/empresas`);
-
+                if (idEmpresa !== undefined) {
+                    dispatch(setLogged(true))
+                    navigate(`/empresas`);
+                }
                 break;
             default:
                 //navigate('/notLogged');
@@ -160,28 +161,48 @@ const LoginButton = () => {
     }, [empledo, rol]);
 
     return (
-        isAuthenticated ? (
-            <>
-                {empledo.email === '' && (<div className="bg-blue-500 px-4 py-2 rounded text-white font-Roboto flex items-center ">Debe solicitar a un superior su registro en el sistema formal <IoIosInformationCircle className="text-2xl ml-4" /></div>)}
-            </>
-        )
-            :
-            (
+        <>
+            {isAuthenticated ? (
                 <>
-                    <button
-                        className="btn btn-outline border-2 text-black btn-wide"
-                        onClick={() =>
-                            loginWithRedirect({
-
-                            })
-                        }
-                    >
-                        Ingresar con Auth0 <span><SiAuth0 className="text-xl" /></span>
-                    </button>
+                    {empledo.email === '' && (
+                        <div
+                            className="bg-blue-500 px-4 py-2 rounded text-white font-Roboto flex items-center cursor-pointer"
+                            onClick={() => document.getElementById('my_modal_4')?.showModal()}
+                        >Debe solicitar a un superior su registro en el sistema formal <IoIosInformationCircle className="text-2xl ml-4" />
+                        </div>
+                    )}
                 </>
             )
+                :
+                (
+                    <>
+                        <button
+                            className="btn btn-outline border-2 text-black btn-wide"
+                            onClick={() =>
+                                loginWithRedirect({
 
+                                })
+                            }
+                        >
+                            Ingresar con Auth0 <span><SiAuth0 className="text-xl" /></span>
+                        </button>
+                    </>
+                )
+            }
 
+            <dialog id="my_modal_4" className="modal">
+                <div className="modal-box w-1/3 max-w-5xl font-Roboto">
+                    <h3 className="font-bold text-lg bg-blue-500 w-max px-4 py-2 rounded text-white">Bienvenido!</h3>
+                    <p className="py-4">Usted ya está registrado con Auth0, pero debe de solicitar su registro (a un <span className="font-bold">superadministrador</span>) en el dashboard del sistema para poder interactuar con su correspondiente empresa/sucursal.</p>
+                    <div className="modal-action">
+                        <form method="dialog">
+                            {/* if there is a button, it will close the modal */}
+                            <button className="btn">Entendido!</button>
+                        </form>
+                    </div>
+                </div>
+            </dialog>
+        </>
     );
 };
 

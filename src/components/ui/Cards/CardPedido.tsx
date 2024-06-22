@@ -6,7 +6,7 @@ import { setGlobalUpdated } from '../../../redux/slices/globalUpdate';
 import { useAuth0 } from '@auth0/auth0-react';
 import { useParams } from 'react-router-dom';
 import { IEmpleado } from '../../../types/Empleado';
-import { errorGenerico, succesGenerico } from '../../toasts/ToastAlerts';
+import { errorGenerico, infoGenerico, succesGenerico } from '../../toasts/ToastAlerts';
 import { CiCircleInfo } from "react-icons/ci";
 
 interface IArticuloGenerico {
@@ -100,11 +100,22 @@ const CardPedido: FC<IPedido> = ({ cliente, domicilio, eliminado, empleado, esta
         }
     }
 
+    // useEffect(() => {
+
+    //     if (modificarStock) {
+    //         infoGenerico('La modificación de stock está activada')
+    //     }
+    //     else {
+    //         infoGenerico('La modificación de stock está desactivada')
+    //     }
+
+    // }, [modificarStock])
+
     console.log(modificarStock);
 
     return (
         <>
-            <div className="card w-64 bg-base-100  shadow-md my-4">
+            <div className="card w-64 bg-base-100  shadow-md my-4 mx-2">
 
                 <div className="p-4 flex flex-col ">
                     {/* <h1 className='font-Roboto'>Articulos en el pedido:</h1> */}
@@ -115,9 +126,9 @@ const CardPedido: FC<IPedido> = ({ cliente, domicilio, eliminado, empleado, esta
                         <CiCircleInfo className='text-3xl hover:text-blue-600 cursor-pointer' onClick={() => document?.getElementById(`detalles_${id}`)?.showModal()} />
                     </div>
                     <label className="inline-flex items-center justify-center cursor-pointer">
-                        <input type="checkbox" value="" className="sr-only peer" onChange={() => setModificarStock(!modificarStock)} />
-                        <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
-                        <span className="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">Alterar stock</span>
+                        <input type="checkbox" value="" className="sr-only peer" onChange={() => { setModificarStock(!modificarStock), !modificarStock ? infoGenerico(`Se activó la modificación de stock del pedido ${id}`) : infoGenerico(`Se desactivó la modificación de stock del pedido ${id}`)}} />
+                        <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300  rounded-full peer  peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all  peer-checked:bg-blue-600"></div>
+                        <span className="ms-3 text-sm font-medium text-gray-900">Alterar stock</span>
                     </label>
 
                     {/* <div>
@@ -161,7 +172,7 @@ const CardPedido: FC<IPedido> = ({ cliente, domicilio, eliminado, empleado, esta
                 <div className="modal-box">
                     <h3 className="font-bold text-lg">Asigne un empleado al pedido</h3>
                     <p className="py-4">Seleccione un empleado </p>
-                    <div className='p-2 bg-gray-200 rounded flex flex-col h-80 overflow-y-scroll'>
+                    <div className='p-2  rounded flex flex-col h-80 overflow-y-scroll'>
                         {empleados
                             // .filter((empleado) => empleado.tipoEmpleado==="DELIVERY")
                             .map((empleado) =>
