@@ -116,10 +116,10 @@ const LoginButton = () => {
                 }
                 break;
             case 'SUPERADMIN':
-                if (idEmpresa !== undefined) {
-                    dispatch(setLogged(true))
-                    navigate(`/empresas`);
-                }
+
+                dispatch(setLogged(true))
+                navigate(`/empresas`);
+
                 break;
             default:
                 //navigate('/notLogged');
