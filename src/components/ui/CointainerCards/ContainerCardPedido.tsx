@@ -6,6 +6,9 @@ import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { setGlobalUpdated } from '../../../redux/slices/globalUpdate';
 import { useAuth0 } from '@auth0/auth0-react';
 import { useParams } from 'react-router-dom';
+import ModificarStock, { setModificarStock } from '../../../redux/slices/modificarStock';
+import { infoGenerico } from '../../toasts/ToastAlerts';
+import { FcInfo } from "react-icons/fc";
 
 const ContainerCardPedido = () => {
 
@@ -20,6 +23,8 @@ const ContainerCardPedido = () => {
     const dispatch = useAppDispatch();
 
     const updated = useAppSelector((state) => state.GlobalUpdated.updated)
+
+    const modificarStock = useAppSelector((state) => state.ModificarStock.modificarStock)
 
     const [estadoActual, setEstadoActual] = useState<string>();
 
@@ -90,9 +95,11 @@ const ContainerCardPedido = () => {
         return acc;
     }, {} as { [key: string]: IPedido[] });
 
+    console.log(modificarStock)
+
     return (
         <>
-            <div className='flex flex-row space-x-4  p-5'>
+            <div className='flex flex-row space-x-4 items-center p-5'>
                 <input
                     type="date"
                     className='border rounded cursor-pointer'
@@ -105,6 +112,13 @@ const ContainerCardPedido = () => {
                     value={fin}
                     onChange={handleFinChange}
                 />
+                <label className="inline-flex items-center justify-center cursor-pointer">
+                    <input type="checkbox" value="" className="sr-only peer" checked={modificarStock} onChange={() => { dispatch(setModificarStock(!modificarStock)), !modificarStock ? infoGenerico(`Se activó la modificación de stock del pedido`) : infoGenerico(`Se desactivó la modificación de stock del pedido`) }} />
+                    <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300  rounded-full peer  peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all  peer-checked:bg-blue-600"></div>
+                    <span className="ms-3 text-sm font-medium text-gray-900">Alterar stock</span>
+                </label>
+                {/*@ts-ignore*/}
+                <FcInfo className='text-4xl cursor-pointer' onClick={() => document?.getElementById(`info_modificarStock`)?.showModal()} />
             </div>
             <div className='flex flex-row w-full justify-start items-start  overflow-x-auto'>
                 <div className='flex flex-row m-2'>
@@ -136,9 +150,30 @@ const ContainerCardPedido = () => {
                         </div>
                     ))}
                 </div>
-
-
             </div>
+
+            <dialog id={`info_modificarStock`} className="modal">
+                <div className="modal-box">
+                    <h3 className="font-bold text-lg font-Roboto">Acerca de alterar stock...</h3>
+                    <p className="py-4 font-Roboto">Con alterar stock usted le indica al sistema si el stock de los productos contenidos en sus pedidos va a ser alterado o no cuando cambie de estado.
+                        <br />
+                        Ejemplos de uso
+                        <br /> <br />
+                        Pasando de <span className='px-2 py-1 bg-gray-500 text-white rounded text-center'>PENDIENTE</span> a <span className='px-2 py-1 bg-red-500 text-white rounded text-center'>CANCELADO</span> usted va a <span className='font-bold'>reponer</span> el stock de sus productos.
+                        <br /> <br />
+                        Pasando de <span className='px-2 py-1 bg-red-500 text-white rounded text-center'>CANCELADO</span> a <span className='px-2 py-1 bg-gray-500 text-white rounded text-center'>PENDIENTE</span> usted le <span className='font-bold'>volverá a descontar el stock</span> a sus productos.
+                        <br /> <br />
+                        En los demás estados no está planificada la resta o suma del stock, si tiene la necesidad puntual de que así sea, comuniquese con nosotros.
+                    </p>
+                    <div className="modal-action">
+
+                        <form method="dialog">
+                            {/* if there is a button in form, it will close the modal */}
+                            <button className="btn">Entendido</button>
+                        </form>
+                    </div>
+                </div>
+            </dialog>
         </>
     )
 }

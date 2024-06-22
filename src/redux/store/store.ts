@@ -16,6 +16,7 @@ import GlobalError from "../slices/globalError";
 import GlobalIdPaginador from "../slices/idPaginador";
 import GlobalEmpleado from "../slices/empleadoCompleto";
 import GlobalRol from "../slices/rol";
+import ModificarStock from "../slices/modificarStock";
 
 const persistConfig = {
   key: "root",
@@ -66,6 +67,7 @@ export const store = configureStore({
     GlobalIdPaginador: GlobalIdPaginador.reducer,
     GlobalEmpleado: GlobalEmpleado.reducer,
     GlobalRol: GlobalRol.reducer,
+    ModificarStock: ModificarStock.reducer,
   },
 });
 

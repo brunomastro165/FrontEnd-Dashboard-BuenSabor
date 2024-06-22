@@ -29,6 +29,8 @@ const CardPedido: FC<IPedido> = ({ cliente, domicilio, eliminado, empleado, esta
 
     const updated = useAppSelector((state) => state.GlobalUpdated.updated)
 
+    const modificarStock = useAppSelector((state) => state.ModificarStock.modificarStock)
+
     const [detalleGenerico, setDetalleGenerico] = useState<IArticuloGenerico>();
 
     const [empleados, setEmpleados] = useState<IEmpleado[]>([]);
@@ -43,7 +45,7 @@ const CardPedido: FC<IPedido> = ({ cliente, domicilio, eliminado, empleado, esta
     //     // });
     // }, []);
 
-    const [modificarStock, setModificarStock] = useState<boolean>(false);
+    // const [modificarStock, setModificarStock] = useState<boolean>(false);
 
     useEffect(() => {
         const traerEmpleados = async () => {
@@ -125,11 +127,11 @@ const CardPedido: FC<IPedido> = ({ cliente, domicilio, eliminado, empleado, esta
                         {/*@ts-ignore */}
                         <CiCircleInfo className='text-3xl hover:text-blue-600 cursor-pointer' onClick={() => document?.getElementById(`detalles_${id}`)?.showModal()} />
                     </div>
-                    <label className="inline-flex items-center justify-center cursor-pointer">
+                    {/* <label className="inline-flex items-center justify-center cursor-pointer">
                         <input type="checkbox" value="" className="sr-only peer" onChange={() => { setModificarStock(!modificarStock), !modificarStock ? infoGenerico(`Se activó la modificación de stock del pedido ${id}`) : infoGenerico(`Se desactivó la modificación de stock del pedido ${id}`)}} />
                         <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300  rounded-full peer  peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all  peer-checked:bg-blue-600"></div>
                         <span className="ms-3 text-sm font-medium text-gray-900">Alterar stock</span>
-                    </label>
+                    </label> */}
 
                     {/* <div>
                      
