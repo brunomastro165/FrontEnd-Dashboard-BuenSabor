@@ -115,10 +115,10 @@ const LoginButton = () => {
                 }
                 break;
             case 'SUPERADMIN':
-                if (idEmpresa !== undefined) {
-                    dispatch(setLogged(true))
-                    navigate(`/empresas`);
-                }
+
+                dispatch(setLogged(true))
+                navigate(`/empresas`);
+
                 break;
             default:
                 //navigate('/notLogged');
@@ -162,7 +162,7 @@ const LoginButton = () => {
     return (
         isAuthenticated ? (
             <>
-                {empledo.email === '' && (<div className="bg-blue-500 px-4 py-2 rounded text-white font-Roboto flex items-center ">Debe solicitar a un superior su registro en el sistema formal <IoIosInformationCircle className="text-2xl ml-4"/></div>)}
+                {empledo.email === '' && (<div className="bg-blue-500 px-4 py-2 rounded text-white font-Roboto flex items-center ">Debe solicitar a un superior su registro en el sistema formal <IoIosInformationCircle className="text-2xl ml-4" /></div>)}
             </>
         )
             :
