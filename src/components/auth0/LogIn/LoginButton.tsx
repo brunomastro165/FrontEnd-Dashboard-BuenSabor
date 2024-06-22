@@ -6,9 +6,12 @@ import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import { setGlobalEmpleado } from "../../../redux/slices/empleadoCompleto";
 import { useNavigate } from "react-router-dom";
 import { setLogged } from "../../../redux/slices/logged";
-import { errorGenerico } from "../../toasts/ToastAlerts";
+import { errorGenerico, succesGenerico } from "../../toasts/ToastAlerts";
 import { setRol } from "../../../redux/slices/rol";
 import { TbBrandAuth0 } from "react-icons/tb";
+import { SiAuth0 } from "react-icons/si";
+import { IoIosInformationCircle } from "react-icons/io";
+
 
 const LoginButton = () => {
     const { loginWithRedirect, isAuthenticated, user, getAccessTokenSilently } = useAuth0();
@@ -82,36 +85,46 @@ const LoginButton = () => {
 
     useEffect(() => {
 
-        if (empledo.email !== '') {
-            //@ts-ignore
-            const idEmpresa = empledo.sucursal.empresa.id;
-            const idSucursal = empledo.sucursal.id
-            switch (empledo.tipoEmpleado) {
-                case 'CAJERO':
+
+        //@ts-ignore
+        const idEmpresa = empledo?.sucursal?.empresa?.id;
+        const idSucursal = empledo?.sucursal.id
+        switch (rol) {
+            case 'CAJERO':
+                if (idEmpresa !== undefined) {
                     dispatch(setLogged(true))
                     navigate(`/${idEmpresa}/sucursales/${idSucursal}/home`);
-                    break;
-                case 'COCINERO':
+                }
+                break;
+            case 'COCINERO':
+                if (idEmpresa !== undefined) {
                     dispatch(setLogged(true))
                     navigate(`/${idEmpresa}/sucursales/${idSucursal}/home`);
-                    break;
-                case 'DELIVERY':
+                }
+                break;
+            case 'DELIVERY':
+                if (idEmpresa !== undefined) {
                     dispatch(setLogged(true))
                     navigate(`/${idEmpresa}/sucursales/${idSucursal}/home`);
-                    break;
-                case 'ADMIN':
+                }
+                break;
+            case 'ADMIN':
+                if (idEmpresa !== undefined) {
                     dispatch(setLogged(true))
                     navigate(`/${idEmpresa}/sucursales/${idSucursal}/home`);
-                    break;
-                case 'SUPERADMIN':
+                }
+                break;
+            case 'SUPERADMIN':
+                if (idEmpresa !== undefined) {
                     dispatch(setLogged(true))
-                    navigate(`/`);
-                    break;
-                default:
-                    navigate('/');
-                    break;
-            }
+                    navigate(`/empresas`);
+                }
+                break;
+            default:
+                //navigate('/notLogged');
+                break;
         }
+
         // else {
         //     switch (rol) {
         //         case 'CAJERO':
@@ -140,21 +153,22 @@ const LoginButton = () => {
         //     }
         // }
 
+        // setTimeout(() => {
+        //     succesGenerico('Debe solicitar a un superior su registro en el sistema interno')
+        // }, 8000);
+
     }, [empledo, rol]);
 
     return (
         isAuthenticated ? (
             <>
-                <div className="flex items-center space-x-2  rounded">
-                    <h1 className="text-xl font-Roboto">Usted ya está registrado como {user?.name} en auth0</h1>
-                </div>
-                {empledo.email === '' && (<div>Debe solicitar a un superior su registro en el sistema formal</div>)}
+                {empledo.email === '' && (<div className="bg-blue-500 px-4 py-2 rounded text-white font-Roboto flex items-center ">Debe solicitar a un superior su registro en el sistema formal <IoIosInformationCircle className="text-2xl ml-4"/></div>)}
             </>
         )
             :
             (
                 <>
-                    <buttons
+                    <button
                         className="btn btn-outline border-2 text-black btn-wide"
                         onClick={() =>
                             loginWithRedirect({
@@ -162,10 +176,8 @@ const LoginButton = () => {
                             })
                         }
                     >
-                        Ingresar con Auth0 <span><TbBrandAuth0 className="text-2xl" /></span>
+                        Ingresar con Auth0 <span><SiAuth0 className="text-xl" /></span>
                     </button>
-
-
                 </>
             )
 

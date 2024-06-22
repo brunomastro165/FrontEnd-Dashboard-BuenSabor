@@ -82,13 +82,15 @@ const LogInScreen = () => {
     
 
     return (
-        <div className='h-screen flex flex-col justify-center  items-center space-y-20 '>
+        <div className='h-auto min-h-screen flex flex-col justify-center  items-center space-y-20 '>
             <h1 className='text-2xl font-Roboto flex flex-col items-center'>El Buen Sabor
                 <span className='text-red-600 text-4xl'>DASHBOARD</span>
             </h1>
             <img src="/assets/img/Icon.svg" alt="icono-buen-sas" className='size-72' />
             <LoginButton />
-            <LogoutButton />
+            <div className='flex flex-row border p-5 rounded-xl space-x-5'>  <LogoutButton /></div>
+          
+         
         </div>
     )
 }
