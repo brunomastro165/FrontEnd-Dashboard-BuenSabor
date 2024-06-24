@@ -1,4 +1,4 @@
-# El Buen Sabor - Sistema de Administración de Inventario para Ecommerce de Comida
+# El Buen Sabor - Dashboard
 
 ¡Bienvenido a El Buen Sabor! Este es un sistema de administración de inventario diseñado específicamente para ecommerces de comida. Nuestro objetivo es ayudar a los negocios a gestionar eficientemente su inventario, realizar seguimientos de stock, y optimizar sus operaciones diarias.
 
@@ -11,10 +11,16 @@
 - **Informes y Estadísticas:** Genera informes sobre el estado del inventario y estadísticas de ventas.
 - **Integración con E-commerce:** Sincroniza automáticamente el inventario con tu tienda en línea.
 
-## Requisitos del Sistema
+## Caracteristicas técnicas
 
-- **Servidor Web:** Apache/Nginx
-- **Lenguaje de Programación:** PHP 7.4+
-- **Base de Datos:** MySQL 5.7+
-- **Frontend:** HTML, CSS, JavaScript
-- **Otros:** Composer para gestión de dependencias
+- **FrontEnd: React Typescript**
+- **Backend: Java Springboot**
+- **Base de datos: Supabase**
+
+## Usuarios para probar el sistema
+
+- **Superadministrador:** Usuario: superadmin@gmail.com Contraseña: superadmin1234//
+- **Administrador:** Usuario: admin@gmail.com Contraseña: admin1234//
+- **Cocinero:** Usuario: cocinerocopado@gmail.com Contraseña: cocinero1234//
+- **Cajero:** Usuario: cajero@gmail.com Contraseña: cajero1234//
+- **Delivery:** Delivery: delivery@gmail.com Contraseña: delivery1234//
