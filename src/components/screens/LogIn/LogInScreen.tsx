@@ -89,8 +89,6 @@ const LogInScreen = () => {
             <img src="/assets/img/Icon.svg" alt="icono-buen-sas" className='size-72' />
             <LoginButton />
             <div className='flex flex-row border p-5 rounded-xl space-x-5'>  <LogoutButton /></div>
-          
-         
         </div>
     )
 }

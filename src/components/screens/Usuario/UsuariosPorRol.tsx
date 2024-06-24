@@ -11,6 +11,7 @@ import { IEmpleado } from '../../../types/Empleado';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { setGlobalUpdated } from '../../../redux/slices/globalUpdate';
 import { setCategoriaSelector } from '../../../redux/slices/mostrarCategoriaSelector';
+import LoadingMessage from '../../ui/LoadingMessage/LoadingMessage';
 
 const ITEMS_POR_PAGINA = 5;
 
@@ -18,7 +19,7 @@ const UsuariosPorRol = () => {
 
     const backend = new BackendMethods()
 
-    const [loading, setLoading] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(true);
 
     const updated = useAppSelector((state) => state.GlobalUpdated.updated)
 
@@ -65,6 +66,7 @@ const UsuariosPorRol = () => {
                 const data: IItem[] = transformData(empleadoFiltrado)
                 setData(data);
                 setEmpleados(res)
+                setLoading(false);
             } catch (error) {
                 console.error(error)
             }
@@ -75,7 +77,7 @@ const UsuariosPorRol = () => {
 
     return (
         <>
-            <BasePage
+            {!loading ? (<BasePage
                 title={title}
                 data={data}
                 loading={loading}
@@ -85,7 +87,8 @@ const UsuariosPorRol = () => {
                 row4="Email"
                 row5="Rol"
                 endpoint={`empleado`}
-            />
+            />) : (<LoadingMessage titulo='Cargando usuarios desde el servidor'/>)}
+
         </>
     )
 }

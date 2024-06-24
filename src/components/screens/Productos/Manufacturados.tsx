@@ -16,6 +16,7 @@ import GlobalEsInsumo, { setEsInsumo } from '../../../redux/slices/esInsumo';
 import GlobalCategory from '../../../redux/slices/globalCategory';
 import { useAuth0 } from '@auth0/auth0-react';
 import { setIdPaginador } from '../../../redux/slices/idPaginador';
+import LoadingMessage from '../../ui/LoadingMessage/LoadingMessage';
 
 //class Backend extends BackendClient<IArticuloManufacturadoCategoria> { }
 
@@ -49,7 +50,7 @@ const Manufacturados = () => {
 
     const dispatch = useAppDispatch();
 
-    const [loading, setLoading] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(true);
 
     const [data, setData] = useState<IItem[]>([]);
 
@@ -99,7 +100,7 @@ const Manufacturados = () => {
             }
 
             dispatch((setGlobalUpdated(false), setEsInsumo(false)))
-            setLoading(true);
+            setLoading(false);
         }
 
         fetchManufacturado();
@@ -107,7 +108,7 @@ const Manufacturados = () => {
 
     return (
         <>
-            <BasePage
+            {!loading ? (<BasePage
                 title="Articulos manufacturados"
                 data={data}
                 loading={loading}
@@ -117,7 +118,8 @@ const Manufacturados = () => {
                 row4="Precio venta"
                 row5="Categoría"
                 endpoint="ArticuloManufacturado"
-            />
+            />) : (<LoadingMessage titulo='Cargando manufacturados desde el servidor' />)}
+
         </>
     )
 

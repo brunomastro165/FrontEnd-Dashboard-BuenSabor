@@ -13,6 +13,7 @@ import { setGlobalUpdated } from "../../../redux/slices/globalUpdate";
 import { setEsInsumo } from "../../../redux/slices/esInsumo";
 import { useAuth0 } from "@auth0/auth0-react";
 import { setIdPaginador } from "../../../redux/slices/idPaginador";
+import LoadingMessage from "../../ui/LoadingMessage/LoadingMessage";
 
 
 const ITEMS_POR_PAGINA = 5;
@@ -51,9 +52,10 @@ const Insumos = () => {
 
     const [filteredData, setFilteredData] = useState<IArticuloInsumoCategoria[]>([]);
 
-    const [loading, setLoading] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(true);
 
     const [data, setData] = useState<IItem[]>([]);
+
 
 
     const transformData = (insumosData: IArticuloInsumoCategoria[]): IItem[] => {
@@ -122,7 +124,7 @@ const Insumos = () => {
                     console.error(error)
                 }
             }
-            setLoading(true);
+            setLoading(false);
             dispatch((setGlobalUpdated(false), setEsInsumo(true)))
         }
         fetchInsumo();
@@ -155,7 +157,7 @@ const Insumos = () => {
 
     return (
         <>
-            <BasePage
+            {!loading ? (<BasePage
                 title="Articulos insumo"
                 data={data}
                 loading={loading}
@@ -165,7 +167,8 @@ const Insumos = () => {
                 row4="Stock"
                 row5="Categoría"
                 endpoint="ArticuloInsumo"
-            />
+            />) : (<LoadingMessage titulo="Cargando insumos desde el servidor"/>)}
+
         </>
     )
 }

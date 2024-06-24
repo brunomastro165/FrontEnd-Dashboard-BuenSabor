@@ -8,6 +8,7 @@ import { IItem } from '../../../types/Table/TableItem';
 import { setIdPaginador } from '../../../redux/slices/idPaginador';
 import BasePage from '../Productos/BasePage';
 import { setGlobalUpdated } from '../../../redux/slices/globalUpdate';
+import LoadingMessage from '../../ui/LoadingMessage/LoadingMessage';
 
 const PedidosCajero = () => {
 
@@ -27,7 +28,7 @@ const PedidosCajero = () => {
 
     const [filteredData, setFilteredData] = useState<IPedido[]>([]);
 
-    const [loading, setLoading] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(true);
 
     const [data, setData] = useState<IItem[]>([]);
 
@@ -96,9 +97,10 @@ const PedidosCajero = () => {
             const data = transformData(res);
             setData(data);
             dispatch((setGlobalUpdated(false)))
+            setLoading(false);
         }
         fetchPedidos();
-    }, [loading, updated, idPagina, inicio, fin])
+    }, [updated, idPagina, inicio, fin])
 
     useEffect(() => {
         const handleFocus = () => {
@@ -114,7 +116,7 @@ const PedidosCajero = () => {
     }, []);
 
     return (
-        <>
+        !loading ? (<>
             <div className='flex flex-row space-x-4 fixed translate-y-32 p-5'>
                 <input
                     type="date"
@@ -140,7 +142,8 @@ const PedidosCajero = () => {
                 row5="Calle"
                 endpoint="pedido"
             />
-        </>
+        </>) : (<LoadingMessage titulo='Cargando pedidos desde el servidor' />)
+
     )
 }
 

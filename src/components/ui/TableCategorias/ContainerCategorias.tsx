@@ -12,6 +12,7 @@ import { BsPencil } from "react-icons/bs";
 import GenericWaiter from '../Waiters/GenericWaiter';
 import { GoChevronDown } from "react-icons/go";
 import { useAuth0 } from '@auth0/auth0-react';
+import LoadingMessage from '../LoadingMessage/LoadingMessage';
 
 
 class CRUDMetods extends BackendClient<any> { }
@@ -40,9 +41,10 @@ const ContainerCategorias = () => {
 
   const dispatch = useAppDispatch();
 
+  const [loading, setLoading] = useState<boolean>(true);
+
   useEffect(() => {
 
-    //TODO TRAER CATEGORÍAS SIN ARTICULOS (PARA OPTIMIZAR LA CARGA DE DATOS)
     const getCategorias = async () => {
       const res: ICategoria[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}sucursal/getCategorias/${idSucursales}`, getAccessTokenSilently);
 
@@ -62,6 +64,7 @@ const ContainerCategorias = () => {
         .sort((a, b) => a.denominacion.localeCompare(b.denominacion));
 
       setCategorias(categoriasOrdenadas);
+      setLoading(false);
     }
     getCategorias();
 
@@ -79,7 +82,7 @@ const ContainerCategorias = () => {
 
 
   const rol = useAppSelector((state) => state.GlobalRol.rol)
-  
+
   return (
     <>
       <div className='w-full  flex justify-end items-center'>
@@ -102,25 +105,31 @@ const ContainerCategorias = () => {
           onClick={() => setEdicion(!edicion)}
         >Editar <BsPencil /></button> */}
       </div>
-      {categorias.length >= 1 ? (
-        <>
-          <AnimatePresence>
-            <div className=' mx-auto w-full  '>
-              {categorias.map((categoria) => (
-                <>
-                  <div className='flex  justify-center items-center'>
-                    <div className='shadow-md rounded-xl w-2/3  p-5 m-5'>
-                      <h1 className={`font-Roboto  w-max px-4 py-1 rounded-md text-white ${categoria.esInsumo ? 'bg-blue-600' : 'bg-red-600'}`}>{categoria.esInsumo ? 'Insumo' : 'Manufacturado'}</h1>
-                      <CategoriaButton categoria={categoria} edicion={edicion} key={categoria.id} />
+      {!loading ? (
+        categorias.length >= 1 ? (
+          <>
+            <AnimatePresence>
+              <div className=' mx-auto w-full  '>
+                {categorias.map((categoria) => (
+                  <>
+                    <div className='flex  justify-center items-center'>
+                      <div className='shadow-md rounded-xl w-2/3  p-5 m-5'>
+                        <h1 className={`font-Roboto  w-max px-4 py-1 rounded-md text-white ${categoria.esInsumo ? 'bg-blue-600' : 'bg-red-600'}`}>{categoria.esInsumo ? 'Insumo' : 'Manufacturado'}</h1>
+                        <CategoriaButton categoria={categoria} edicion={edicion} key={categoria.id} />
+                      </div>
                     </div>
-                  </div>
-                </>
-              ))}
-            </div>
-          </AnimatePresence>
-        </>
+                  </>
+                ))}
+              </div>
+            </AnimatePresence>
+          </>
+        ) : (
+          <GenericWaiter text='Parece que no has agregado nada...' url='search.svg' />
+        )
       ) : (
-        <GenericWaiter text='Parece que no has agregado nada...' url='search.svg' />
+        <div>
+          <LoadingMessage titulo='Cargando categorías desde el servidor' />
+        </div>
       )}
 
 

@@ -10,6 +10,7 @@ import { IEmpresa } from '../../../types/Empresa';
 import { setGlobalUpdated } from '../../../redux/slices/globalUpdate';
 import NavBar from '../../ui/NavBar/NavBar';
 import { useAuth0 } from '@auth0/auth0-react';
+import LoadingMessage from '../../ui/LoadingMessage/LoadingMessage';
 
 const Sucursal = () => {
 
@@ -27,6 +28,8 @@ const Sucursal = () => {
 
     const dispatch = useAppDispatch();
 
+    const [loading, setLoading] = useState<boolean>(true);
+
     const updated = useAppSelector((state) => state.GlobalUpdated.updated);
 
     useEffect(() => {
@@ -37,6 +40,7 @@ const Sucursal = () => {
                 const sucursales: ISucursalShort[] = res.sucursales;
                 console.log(sucursales)
                 dispatch(setGlobalUpdated(false))
+                setLoading(false);
                 setSucursales(sucursales);
             } catch (error) {
                 console.log(error)
@@ -50,11 +54,15 @@ const Sucursal = () => {
 
     return (
         <>
-            <NavBar title={`Sucursales de ${nombreEmpresa}`} />
-            <div className='mt-24'>
-                <ContainerCardSucursal
-                    data={sucursales} />
-            </div>
+            {!loading ? (
+                <>
+                    <NavBar title={`Sucursales`} />
+                    <div className='mt-24'>
+                        <ContainerCardSucursal
+                            data={sucursales} />
+                    </div>
+                </>
+            ) : (<LoadingMessage titulo='Cargando sucursales desde el servidor' />)}
         </>
     )
 }

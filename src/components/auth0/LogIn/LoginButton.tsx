@@ -1,6 +1,6 @@
 //@ts-nocheck
 import { useAuth0 } from "@auth0/auth0-react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { IEmpleado } from "../../../types/Empleado";
 import { BackendMethods } from "../../../services/BackendClient";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
@@ -12,6 +12,7 @@ import { setRol } from "../../../redux/slices/rol";
 import { TbBrandAuth0 } from "react-icons/tb";
 import { SiAuth0 } from "react-icons/si";
 import { IoIosInformationCircle } from "react-icons/io";
+import LoadingMessage from "../../ui/LoadingMessage/LoadingMessage";
 
 
 const LoginButton = () => {
@@ -29,9 +30,11 @@ const LoginButton = () => {
 
     const rol = useAppSelector((state) => state.GlobalRol.rol)
 
+    const [loading, setLoading] = useState<boolean>(true);
+
     useEffect(() => {
         const traerEmpleado = () => {
-
+            setLoading(true);
             if (user?.email) {
 
                 //TRAER EL ROL DESDE AUTH0
@@ -75,18 +78,12 @@ const LoginButton = () => {
                 }
                 postRequest()
             }
+            setLoading(false);
         }
         traerEmpleado();
     }, [isAuthenticated, user])
 
-
-    console.log("me voy a suicidar")
-    console.log(rol)
-    console.log(logged)
-
     useEffect(() => {
-
-
         //@ts-ignore
         const idEmpresa = empledo?.sucursal?.empresa?.id;
         const idSucursal = empledo?.sucursal.id
@@ -125,6 +122,7 @@ const LoginButton = () => {
                 //navigate('/notLogged');
                 break;
         }
+        setLoading(false);
 
         // else {
         //     switch (rol) {
@@ -189,6 +187,8 @@ const LoginButton = () => {
                     </>
                 )
             }
+
+            {loading && <LoadingMessage />}
 
             <dialog id="my_modal_4" className="modal">
                 <div className="modal-box w-1/3 max-w-5xl font-Roboto">

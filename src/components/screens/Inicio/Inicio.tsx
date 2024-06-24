@@ -10,6 +10,7 @@ import { setGlobalUpdated } from "../../../redux/slices/globalUpdate";
 import { useAuth0 } from "@auth0/auth0-react";
 import { errorGenerico } from "../../toasts/ToastAlerts";
 import { setLogged } from "../../../redux/slices/logged";
+import LoadingMessage from "../../ui/LoadingMessage/LoadingMessage";
 
 
 //@ts-ignore
@@ -33,6 +34,7 @@ const Inicio = () => {
         try {
             const res: IEmpresa[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}empresa/noEliminados`, getAccessTokenSilently);
             setEmpresas(res);
+            setLoaded(true);
         } catch (error) {
             errorGenerico('Debe loguearse para poder tener acceso al sistema')
             console.error(error)
@@ -49,16 +51,17 @@ const Inicio = () => {
         traerGetters();
         setLoaded(false)
         dispatch(setGlobalUpdated(false));
-    }, [loaded, updated])
+    }, [updated])
 
 
     return (
-        <>
+        loaded ? (<>
             <NavBar title='Empresas' />
             <div className='mt-24'>
                 <ContainerCards data={empresas} />
             </div>
-        </>
+        </>) : (<LoadingMessage titulo="Cargando empresas desde el servidor" />)
+
     )
 }
 

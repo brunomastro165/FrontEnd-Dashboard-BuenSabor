@@ -9,10 +9,11 @@ import { setGlobalInitialValues } from '../../../redux/slices/globalInitialValue
 import CardUnidadMedida from '../Cards/CardUnidadMedida';
 import SearchBar from '../SearchBar/SearchBar';
 import { useAuth0 } from '@auth0/auth0-react';
+import LoadingMessage from '../LoadingMessage/LoadingMessage';
 
 const ContainerUnidadesDeMedida = () => {
 
-    const {getAccessTokenSilently} = useAuth0()
+    const { getAccessTokenSilently } = useAuth0()
     const backend = new BackendMethods();
 
     const dispatch = useAppDispatch();
@@ -28,6 +29,8 @@ const ContainerUnidadesDeMedida = () => {
 
     const [open, setOpen] = useState<boolean>(false);
 
+    const [loading, setLoading] = useState<boolean>(true);
+
     const hanlderOpen = () => {
         dispatch(setGlobalInitialValues({ denominacion: '' }))
         setOpen(true)
@@ -37,6 +40,7 @@ const ContainerUnidadesDeMedida = () => {
         const res: IUnidadMedida[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}UnidadMedida`, getAccessTokenSilently) as IUnidadMedida[];
         const unidadesHabilitadas = res.filter((unidad) => !unidad.eliminado)
         setUnidades(unidadesHabilitadas)
+        setLoading(false);
         dispatch(setGlobalUpdated(false))
     }
 
@@ -57,23 +61,25 @@ const ContainerUnidadesDeMedida = () => {
 
     return (
         <>
-            <div className=' p-10'>
-                <SearchBar />
-            </div>
+            {!loading ? (<>
+                <div className=' p-10'>
+                    <SearchBar />
+                </div>
 
-            <div className='flex justify-end fixed right-0'>
-                <button className='text-2xl z-50 font-Roboto btn btn-success my-4 bg-white text-green-600 hover:text-white mr-10 hover:bg-green-600'
-                    onClick={() => hanlderOpen()}
-                >Agregar +</button>
-            </div>
+                <div className='flex justify-end fixed right-0'>
+                    <button className='text-2xl z-50 font-Roboto btn btn-success my-4 bg-white text-green-600 hover:text-white mr-10 hover:bg-green-600'
+                        onClick={() => hanlderOpen()}
+                    >Agregar +</button>
+                </div>
 
-            <div className='flex flex-wrap justify-center items-center  m-5 mt-10'>
-                {filtro.map((unidad) => (
-                    <CardUnidadMedida
-                        denominacion={unidad.denominacion}
-                        id={unidad.id} />
-                ))}
-            </div>
+                <div className='flex flex-wrap justify-center items-center  m-5 mt-10'>
+                    {filtro.map((unidad) => (
+                        <CardUnidadMedida
+                            denominacion={unidad.denominacion}
+                            id={unidad.id} />
+                    ))}
+                </div>
+            </>) : (<LoadingMessage titulo='Cargando unidades de medida desde el servidor' />)}
 
             {open &&
                 <div className="fixed z-50 inset-0 overflow-y-auto w-full">

@@ -62,6 +62,7 @@ const ContainerCardSucursal: FC<IContainerCardSucursal> = ({ data }) => {
             <div className='m-5 flex items-center justify-center min-h-screen h-auto p-2'>
                 <div className='flex mb-24 flex-wrap items-center w-full justify-center'>
 
+
                     {data.length >= 1 &&
                         data.map((sucursal, index) => (
                             <CardSucursal

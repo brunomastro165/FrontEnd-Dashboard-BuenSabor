@@ -7,8 +7,9 @@ import { setGlobalUpdated } from '../../../redux/slices/globalUpdate';
 import { useAuth0 } from '@auth0/auth0-react';
 import { useParams } from 'react-router-dom';
 import ModificarStock, { setModificarStock } from '../../../redux/slices/modificarStock';
-import { infoGenerico } from '../../toasts/ToastAlerts';
+import { errorGenerico, infoGenerico } from '../../toasts/ToastAlerts';
 import { FcInfo } from "react-icons/fc";
+import LoadingMessage from '../LoadingMessage/LoadingMessage';
 
 const ContainerCardPedido = () => {
 
@@ -44,6 +45,8 @@ const ContainerCardPedido = () => {
 
     const [errorFecha, setErrorFecha] = useState<string>('');
 
+    const [loading, setLoading] = useState<boolean>(true);
+
     const validarFechas = (fechaInicio: string, fechaFin: string) => {
         if (fechaInicio > fechaFin) {
             setErrorFecha('La fecha de inicio no puede ser mayor que la fecha de fin');
@@ -69,8 +72,14 @@ const ContainerCardPedido = () => {
 
     useEffect(() => {
         const traerPedidos = async () => {
-            const res: IPedido[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}pedido/getPorFecha/${idSucursales}?fechaInicio=${inicio}&fechaFin=${fin}`, getAccessTokenSilently) as IPedido[];
-            setPedidos(res);
+            try {
+                const res: IPedido[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}pedido/getPorFecha/${idSucursales}?fechaInicio=${inicio}&fechaFin=${fin}`, getAccessTokenSilently) as IPedido[];
+                setPedidos(res);
+                setLoading(false);
+            } catch (error) {
+                console.error(error)
+                errorGenerico('No se pudieron traer los pedidos')
+            }
         }
         traerPedidos();
         dispatch(setGlobalUpdated(false))
@@ -98,7 +107,7 @@ const ContainerCardPedido = () => {
     console.log(modificarStock)
 
     return (
-        <>
+        !loading ? (<>
             <div className='flex flex-row space-x-4 items-center p-5'>
                 <input
                     type="date"
@@ -174,7 +183,8 @@ const ContainerCardPedido = () => {
                     </div>
                 </div>
             </dialog>
-        </>
+        </>) : (<LoadingMessage titulo='Cargando pedidos desde el servidor' />)
+
     )
 }
 

@@ -10,6 +10,7 @@ import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { setGlobalInitialValues } from '../../../redux/slices/globalInitialValues';
 import { setGlobalUpdated } from '../../../redux/slices/globalUpdate';
 import { useAuth0 } from '@auth0/auth0-react';
+import LoadingMessage from '../LoadingMessage/LoadingMessage';
 
 const CPromos = () => {
 
@@ -28,12 +29,14 @@ const CPromos = () => {
 
     const updated = useAppSelector((state) => state.GlobalUpdated.updated)
 
+    const rol = useAppSelector((state) => state.GlobalRol.rol)
+
 
     const [promos, setPromos] = useState<IPromos[] | undefined>([]);
 
     const [filteredPromos, setFilteredPromos] = useState<IPromos[] | undefined>([]);
 
-    const [loading, setLoading] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(true);
 
     const { idEmpresa, idSucursales } = useParams();
 
@@ -60,6 +63,7 @@ const CPromos = () => {
         const promosHabilitadas = res.filter((promo) => !promo.eliminado)
         setPromos(promosHabilitadas)
         dispatch(setGlobalUpdated(false))
+        setLoading(false);
     }
 
     useEffect(() => {
@@ -76,19 +80,21 @@ const CPromos = () => {
     }, [search, promos, updated])
 
 
-    return ( 
+    return (
         <>
             <div className='p-10'>
                 <SearchBar />
             </div>
 
-            <div className='flex justify-end fixed right-0 z-50'>
-                <button className='text-2xl z-50 font-Roboto btn btn-success my-4 bg-white text-green-600 hover:text-white mr-10 hover:bg-green-600'
-                    onClick={() => hanlderOpen()}
-                >Agregar +</button>
-            </div>
+            {rol === 'ADMIN' || rol === 'SUPERADMIN' || rol === 'COCINERO' &&
+                <div className='flex justify-end fixed right-0 z-50'>
+                    <button className='text-2xl z-50 font-Roboto btn btn-success my-4 bg-white text-green-600 hover:text-white mr-10 hover:bg-green-600'
+                        onClick={() => hanlderOpen()}
+                    >Agregar +</button>
+                </div >
+            }
 
-            <div className='flex flex-wrap justify-center items-center  m-5 z-0 mt-10'>
+            {!loading ? (<div className='flex flex-wrap justify-center items-center  m-5 z-0 mt-10'>
                 {filteredPromos?.map((promo, index) => (
                     <CardPromo
                         eliminado={promo.eliminado}
@@ -107,21 +113,26 @@ const CPromos = () => {
                         sucursales={promo.sucursales}
                     />
                 ))}
-            </div>
+            </div>)
+                : (<LoadingMessage titulo='Cargando promociones desde el servidor' />)
+            }
 
-            {open && (
-                <div className="fixed z-50 inset-0 overflow-y-auto w-full">
-                    <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0 m-14">
-                        <div className="fixed inset-0 transition-opacity" aria-hidden="true">
-                            <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
-                        </div>
-                        <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-                        <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle  w-full md:w-1/2">
-                            <PromoForm open={open} setOpen={setOpen} method='POST' />
+
+            {
+                open && (
+                    <div className="fixed z-50 inset-0 overflow-y-auto w-full">
+                        <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0 m-14">
+                            <div className="fixed inset-0 transition-opacity" aria-hidden="true">
+                                <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
+                            </div>
+                            <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+                            <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle  w-full md:w-1/2">
+                                <PromoForm open={open} setOpen={setOpen} method='POST' />
+                            </div>
                         </div>
                     </div>
-                </div>
-            )}
+                )
+            }
         </>
     )
 }
