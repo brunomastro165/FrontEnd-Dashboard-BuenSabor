@@ -6,7 +6,6 @@
 
 - **Gestión de Inventario:** Agrega, edita y elimina productos del inventario.
 - **Seguimiento de Stock:** Monitorea los niveles de stock en tiempo real.
-- **Alertas de Inventario:** Recibe notificaciones cuando el stock de un producto esté bajo.
 - **Historial de Movimientos:** Mantén un registro detallado de las entradas y salidas de productos.
 - **Informes y Estadísticas:** Genera informes sobre el estado del inventario y estadísticas de ventas.
 - **Integración con E-commerce:** Sincroniza automáticamente el inventario con tu tienda en línea.
