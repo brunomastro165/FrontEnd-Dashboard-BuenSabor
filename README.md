@@ -1,31 +1,20 @@
-# React + TypeScript + Vite
+# El Buen Sabor - Sistema de Administración de Inventario para Ecommerce de Comida
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+¡Bienvenido a El Buen Sabor! Este es un sistema de administración de inventario diseñado específicamente para ecommerces de comida. Nuestro objetivo es ayudar a los negocios a gestionar eficientemente su inventario, realizar seguimientos de stock, y optimizar sus operaciones diarias.
 
-Currently, two official plugins are available:
+## Características
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Gestión de Inventario:** Agrega, edita y elimina productos del inventario.
+- **Seguimiento de Stock:** Monitorea los niveles de stock en tiempo real.
+- **Alertas de Inventario:** Recibe notificaciones cuando el stock de un producto esté bajo.
+- **Historial de Movimientos:** Mantén un registro detallado de las entradas y salidas de productos.
+- **Informes y Estadísticas:** Genera informes sobre el estado del inventario y estadísticas de ventas.
+- **Integración con E-commerce:** Sincroniza automáticamente el inventario con tu tienda en línea.
 
-## Expanding the ESLint configuration
+## Requisitos del Sistema
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
-
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
-- JSON SERVER `npx json-server --watch public/data/db.json --port 8080`
+- **Servidor Web:** Apache/Nginx
+- **Lenguaje de Programación:** PHP 7.4+
+- **Base de Datos:** MySQL 5.7+
+- **Frontend:** HTML, CSS, JavaScript
+- **Otros:** Composer para gestión de dependencias
