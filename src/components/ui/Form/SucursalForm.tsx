@@ -230,6 +230,7 @@ const SucursalForm: FC<IForm> = ({ open, setOpen, data, method }) => {
                         setSelectedProvincia(selectedProvincia);
                     }}
                 >
+                    <option key={'unique'}></option>
                     {provincias.map((provincia, index) => (
                         <option key={index} value={provincia.nombre} className='rounded-full hover:bg-red-600'>
                             {provincia.nombre}
@@ -319,7 +320,7 @@ const SucursalForm: FC<IForm> = ({ open, setOpen, data, method }) => {
                 style={{ minHeight: '70vh' }}>
                 <div className="relative z-0 w-full mb-5 group">
                     {genericInput('nombre', "text", values.nombre, handleChange, errors)} {/* Nombre */}
-                    <div className='flex justify-center w-full'>
+                    <div className='flex justify-center w-full space-x-2'>
                         {genericInput('horarioApertura', 'time', values.horarioApertura, handleChange, errors)}
                         {genericInput('horarioCierre', 'time', values.horarioCierre, handleChange, errors)}
                     </div>
@@ -330,7 +331,7 @@ const SucursalForm: FC<IForm> = ({ open, setOpen, data, method }) => {
                 </div>
             </div>
 
-            <div className={`${seccionDomicilio || 'hidden'}`}
+            <div className={`${seccionDomicilio || 'hidden'} w-full `}
                 style={{ minHeight: '70vh' }}>
                 <div className={`flex justify-center w-full space-x-5 mt-4`}>
                     {provinciaInput()}
@@ -339,17 +340,17 @@ const SucursalForm: FC<IForm> = ({ open, setOpen, data, method }) => {
                 </div>
                 {(
                     <>
-                        <div className='flex justify-center w-full'>
+                        <div className='flex justify-center w-full space-x-2'>
                             {genericInput('calle', 'text', values.domicilio?.calle, handleChangeDomicilio, errors)}
                             {genericInput('numero', 'number', values.domicilio?.numero, handleChangeDomicilio, errors)}
                         </div>
 
-                        <div className='flex justify-center w-full'>
+                        <div className='flex justify-center w-full space-x-2'>
                             {genericInput('cp', 'number', values.domicilio?.cp, handleChangeDomicilio, errors)}
                             {genericInput('nroDpto', 'number', values.domicilio?.nroDpto, handleChangeDomicilio, errors)}
                         </div>
 
-                        <div className='flex justify-center w-full'>
+                        <div className='flex justify-center w-full space-x-2'>
                             {genericInput('nombre', 'text', values.domicilio?.nombre, handleChangeDomicilio, errors)}
                             {genericInput('piso', 'number', values.domicilio?.piso, handleChangeDomicilio, errors)}
                         </div>

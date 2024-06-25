@@ -152,6 +152,7 @@ const PromoForm: FC<IForm> = ({ open, setOpen, method }) => {
                             <h1 className={`first-letter:uppercase transition-all duration-500 `}>{'Tipo de promoción'}</h1>
                         </label>
                         <select name="tipoPromocion" id="tipoPromocion" onChange={handleChange} className='select select-bordered w-full'>
+                            <option value=""></option>
                             <option value="HAPPY_HOUR">Happy hour</option>
                             <option value="PROMOCION">Promoción</option>
                         </select>

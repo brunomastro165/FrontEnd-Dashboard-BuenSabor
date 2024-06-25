@@ -8,6 +8,7 @@ import { IDetallePromo } from '../../../../types/DetallePromo';
 import { IDetallePromoCreate } from '../../../../types/CreateDtos/DetallePromoCreate';
 import { useParams } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';
+import { IArticuloManufacturado } from '../../../../types/ArticuloManufacturado';
 
 
 interface IDetalleInput {
@@ -88,14 +89,66 @@ const DetalleGenerico: FC<IDetalleInput> = ({ values, setValues, idSucursales })
 
     //     setAmDetalles(newDetalles);
     // }
-    
-    useEffect(() => {
 
+    function transform(response: any) {
+        return {
+            id: response.id,
+            eliminado: response.eliminado,
+            denominacion: response.denominacion,
+            precioVenta: null,
+            imagenes: [],
+            unidadMedida: response.unidadMedida,
+            categoria: null,
+            precioCompra: null,
+            stockActual: null,
+            stockMinimo: null,
+            stockMaximo: null,
+            esParaElaborar: null
+        }
+    }
+
+
+    // "id": 4,
+    // "eliminado": false,
+    // "denominacion": "Hamburguesa con queso",
+    // "precioVenta": null,
+    // "imagenes": [],
+    // "unidadMedida": {
+    //     "id": 1,
+    //     "eliminado": false,
+    //     "denominacion": "Gramos"
+    // },
+    // "categoria": null,
+    // "precioCompra": 8000,
+    // "stockActual": null,
+    // "stockMinimo": null,
+    // "stockMaximo": null,
+    // "esParaElaborar": null
+
+
+    //Este useEffect lo necesité para poder mostrar visualmente los articulos que forman la promo al momento de editarla
+    useEffect(() => {
         const traerArticulos = async () => {
             values.detalles?.map(async (detalle: any) => {
-                const res: IArticuloGenerico[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}ArticuloInsumo/getArticulos/${detalle.insumos.denominacion}/${idSucursales}`, getAccessTokenSilently) as IArticuloGenerico[]
-                setArticulosGenericos(res);
-                setFiltroGenerico(res);
+                try {
+                    const res: IArticuloGenerico[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}ArticuloManufacturado/${detalle.idArticulo}`, getAccessTokenSilently) as IArticuloGenerico[]
+                    const transformedRes = transform(res);
+                    //@ts-ignore
+                    setArticulosGenericos(prevArticulos => [...prevArticulos, res]);
+                    console.log("sexualidad")
+                } catch (error) {
+                    console.error(error);
+                }
+
+                try {
+                    const res: IArticuloGenerico[] = await backend.getAll(`${import.meta.env.VITE_LOCAL}ArticuloInsumo/${detalle.idArticulo}`, getAccessTokenSilently) as IArticuloGenerico[]
+                    const transformedRes = transform(res);
+                    //@ts-ignore
+                    setArticulosGenericos(prevArticulos => [...prevArticulos, res]);
+                    console.log("sexualidad")
+                } catch (error) {
+                    console.error(error);
+                }
             })
         }
         traerArticulos()
@@ -104,12 +157,12 @@ const DetalleGenerico: FC<IDetalleInput> = ({ values, setValues, idSucursales })
 
     }, [])
 
+    console.log(articulosGenericos)
+    console.log("articulos genéricos")
 
     const handleDirectQuantity = (e: ChangeEvent<HTMLInputElement>, id: number) => {
 
         const cantidad = Number(e.target.value);
-
-
 
         let existe: boolean = false;
 
@@ -276,8 +329,7 @@ const DetalleGenerico: FC<IDetalleInput> = ({ values, setValues, idSucursales })
                             {articulosGuardados
                                 .filter((articulo) => articulo.id === detalle.idArticulo)
                                 .map((articuloFiltrado) => (
-                                    // Aquí puedes renderizar el componente o la información que desees mostrar
-                                    <p>{articuloFiltrado.denominacion} <span className='text-xs mx-2'>x</span> {detalle.cantidad}</p> // Suponiendo que tu objeto articulo tiene una propiedad nombre
+                                    <p>{articuloFiltrado.denominacion} <span className='text-xs mx-2'>x</span> {detalle.cantidad}</p>
                                 ))}
                         </>
                     </div>

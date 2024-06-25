@@ -198,7 +198,7 @@ const AInsumoForm: FC<IForm> = ({ open, setOpen, method }) => {
                     <div className="relative z-0 w-full mb-5 group">
                         <div className='w-full flex flex-row md:space-x-5'>
                             {genericInput('denominacion', "text", values.denominacion, handleChange, errors)}
-                            {genericInput('descripcion', 'text', values.descripcion, handleChange, errors)}
+                            {/* {genericInput('descripcion', 'text', values.descripcion, handleChange, errors)} */}
                         </div>
 
                         <div className='flex justify-center w-full md:space-x-5'>

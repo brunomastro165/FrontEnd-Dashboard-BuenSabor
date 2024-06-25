@@ -31,6 +31,8 @@ const CPromos = () => {
 
     const rol = useAppSelector((state) => state.GlobalRol.rol)
 
+    console.log(rol)
+    console.log("el rol la puta amdre")
 
     const [promos, setPromos] = useState<IPromos[] | undefined>([]);
 
@@ -86,7 +88,7 @@ const CPromos = () => {
                 <SearchBar />
             </div>
 
-            {rol === 'ADMIN' || rol === 'SUPERADMIN' || rol === 'COCINERO' &&
+            {(rol === 'ADMIN' || rol === 'SUPERADMIN' || rol === 'COCINERO') &&
                 <div className='flex justify-end fixed right-0 z-50'>
                     <button className='text-2xl z-50 font-Roboto btn btn-success my-4 bg-white text-green-600 hover:text-white mr-10 hover:bg-green-600'
                         onClick={() => hanlderOpen()}

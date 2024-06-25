@@ -2,7 +2,7 @@ import * as Yup from 'yup'
 
 export const validationInsumo = Yup.object().shape({
     denominacion: Yup.string().required('La denominación es requerida'),
-    descripcion: Yup.string().required('La descripción es requerida'),
+    // descripcion: Yup.string().required('La descripción es requerida'),
     precioVenta: Yup.number()
         .typeError('El precio de venta debe ser un número')
         .required('El precio de venta es requerido'),
