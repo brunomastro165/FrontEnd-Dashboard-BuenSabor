@@ -201,7 +201,7 @@ const PromoForm: FC<IForm> = ({ open, setOpen, method }) => {
                     </div>
 
                     <div className='flex w-full flex-col'>
-                        <SucursalesInput key={1} setValues={setValues} values={values} idEmpresa={idEmpresa} />
+                        <SucursalesInput key={1} setValues={setValues} values={values} idEmpresa={idEmpresa} text='Sucursales dónde estará la promoción:'/>
                         <h1 className={`font-Roboto h-5 mb-4  flex text-start justify-start text-red-600 transition-all duration-500 ${errors?.idSucursales || 'opacity-0'}`}>{errors?.idSucursales}</h1>
                     </div>
 

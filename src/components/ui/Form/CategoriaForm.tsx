@@ -204,7 +204,7 @@ const CategoriaForm: FC<IForm> = ({ open, setOpen, method }) => {
                     {method === 'POST' && booleanInput('esInsumo', 'boolean', values.esInsumo, handleChange, 'Es insumo', 'No es insumo', errors)}
 
                     <div className='w-full flex flex-col'>
-                        {method === 'POST' && <SucursalesInput idEmpresa={idEmpresa} setValues={setValues} values={values} />}
+                        {method === 'POST' && <SucursalesInput idEmpresa={idEmpresa} setValues={setValues} values={values} text='Sucursales dónde estará la categoría:' />}
                         <h1 className={`font-Roboto h-5 mb-4  flex text-start justify-start text-red-600 transition-all duration-500 ${errors?.idSucursales || 'opacity-0'}`}>{errors?.idSucursales}</h1>
                     </div>
                 </div>

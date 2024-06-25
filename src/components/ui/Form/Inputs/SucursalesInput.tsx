@@ -8,9 +8,10 @@ interface ISucursalesInput {
     values: any,
     setValues: any,
     idEmpresa: string | undefined,
+    text: string,
 }
 
-const SucursalesInput: FC<ISucursalesInput> = ({ setValues, values, idEmpresa }) => {
+const SucursalesInput: FC<ISucursalesInput> = ({ setValues, values, idEmpresa, text }) => {
 
     const backend = new BackendMethods();
 
@@ -45,7 +46,7 @@ const SucursalesInput: FC<ISucursalesInput> = ({ setValues, values, idEmpresa })
 
     return (
         <>
-            <div className='font-Roboto text-xl'>Sucursales dónde estará la promoción: </div>
+            <div className='font-Roboto text-xl'>{text}</div>
             {sucursalesPorEmpresa.map((sucursal, index) => (
                 <div key={index}>
                     <input

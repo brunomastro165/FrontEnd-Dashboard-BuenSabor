@@ -229,7 +229,7 @@ const EmpleadoForm: FC<IForm> = ({ open, setOpen, method }) => {
                         <div className='w-full flex justify-center flex-col '>
                             <div className='flex flex-col'>
                                 <ImageInputIndividual file={file as FileWithPreview} setFile={setFile as any} id={values.id} imagen={values.imagenes} />
-                                <SucursalIndividualInput idEmpresa={idEmpresa} setValues={setValues} values={values} key={1} />
+                                <SucursalIndividualInput idEmpresa={idEmpresa} setValues={setValues} values={values} key={1} text='Sucursal dónde trabaja el empleado:'/>
                                 {tipoEmpleadoInput()}
                             </div>
                         </div>

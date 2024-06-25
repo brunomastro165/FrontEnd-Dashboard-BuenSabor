@@ -211,7 +211,7 @@ const CardPedido: FC<IPedido> = ({ cliente, domicilio, eliminado, empleado, esta
                         </div>
                         {/*@ts-ignore */}
                         {empleado?.nombre && <h1>Empleado a cargo: {empleado?.nombre}</h1>}
-                        <h1 className='bg-green-500 text-white w-max p-1 rounded mt-1'>{factura.formaPago}</h1>
+                        <h1 className='bg-green-500 text-white w-max p-1 rounded mt-1'>{factura?.formaPago}</h1>
                     </div>
                     <div className="modal-action">
 

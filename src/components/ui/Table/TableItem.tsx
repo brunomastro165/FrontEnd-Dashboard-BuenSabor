@@ -79,7 +79,7 @@ const TableItem: FC<IItem> = ({ id, denominacion, param2, param3, param4, endpoi
                 <td className='w-72'>{param3}</td>
                 <td className='w-72'>{param4}</td>
                 <td className='w-48 text-2xl items-center '>
-                    {(rol === 'ADMIN' || rol === 'SUPERADMIN') &&
+                    {(rol === 'ADMIN' || rol === 'SUPERADMIN' || rol === 'CAJERO' || rol === 'COCINERO') &&
                         <>
                             <button className='hover:text-blue-600 rounded  p-1' onClick={fetchIndividual}>
                                 {endpoint !== 'pedido' ? <FiEdit2 /> : <MdOutlineRemoveRedEye />}
