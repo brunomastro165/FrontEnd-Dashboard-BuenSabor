@@ -364,6 +364,8 @@ const AManufacturadoForm: FC<IForm> = ({ open, setOpen, method }) => {
 
     //Manejo de imagenes 
 
+    console.log(errors)
+
     const [files, setFiles] = useState<FileWithPreview[]>([]);
 
     return (
